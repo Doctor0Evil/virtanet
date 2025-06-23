@@ -3900,4 +3900,514 @@ What tools are available in Toolz to streamline asset management
  
  
 
+ GameCore/ - The Engine Room's Deepest Mechanics 
+
+This section delves into the intricate logic governing core game systems. Each entry represents a complex class or module, with sub-directories indicating further logical decomposition. 
+
+GameCore/ 
+├── Systems/ 
+│   ├── ProgressionSystem/ 
+│   │   ├── XP_Manager.cs  // Handles all XP calculations and distribution. 
+│   │   │   ├── public static event Action<int> OnPlayerLevelUp; 
+│   │   │   ├── public static event Action<float> OnXPGained; 
+│   │   │   ├── public void AddXP(float amount, XPType type); 
+│   │   │   ├── private void EvaluateLevelUp(); 
+│   │   │   └── private Dictionary<XPType, float> xpModifiers; 
+│   │   ├── SkillTreeManager.cs // Manages skill node states, prerequisites, and unlocks. 
+│   │   │   ├── public SkillNode GetNode(string skillID); 
+│   │   │   ├── public bool CanUnlockSkill(string skillID, PlayerCharacter player); 
+│   │   │   ├── public void UnlockSkill(string skillID, PlayerCharacter player); 
+│   │   │   ├── public void UpgradeSkillRank(string skillID, PlayerCharacter player); 
+│   │   │   ├── private Dictionary<string, SkillNodeData> skillDefinitions; 
+│   │   │   ├── private Dictionary<string, List<string>> skillDependencies; 
+│   │   │   └── private Dictionary<string, List<string>> hybridSkillSynergies; 
+│   │   ├── PerkManager.cs // Handles perk acquisition, application, and validation. 
+│   │   │   ├── public bool CanAcquirePerk(string perkID, PlayerCharacter player); 
+│   │   │   ├── public void AcquirePerk(string perkID, PlayerCharacter player); 
+│   │   │   ├── public void ApplyPerkEffects(string perkID, PlayerCharacter player); 
+│   │   │   ├── public void RemovePerkEffects(string perkID, PlayerCharacter player); 
+│   │   │   └── private Dictionary<string, PerkData> perkDefinitions; 
+│   │   ├── TraitManager.cs // Manages trait assignment, persistent effects, and conflicts. 
+│   │   │   ├── public bool CanApplyTrait(string traitID, PlayerCharacter player); 
+│   │   │   ├── public void ApplyTrait(string traitID, PlayerCharacter player); 
+│   │   │   ├── public void OnTraitAppliedEffect(string traitID, PlayerCharacter player); 
+│   │   │   ├── public void OnTraitRemovedEffect(string traitID, PlayerCharacter player); 
+│   │   │   ├── public List<string> GetConflictingTraits(string traitID); 
+│   │   │   └── private Dictionary<string, TraitData> traitDefinitions; 
+│   │   └── StatManager.cs // Core stat calculation and modification. 
+│   │       ├── public float GetBaseStat(StatType stat); 
+│   │       ├── public float GetModifiedStat(StatType stat); 
+│   │       ├── public void AddStatModifier(StatType stat, StatModifier modifier); 
+│   │       ├── public void RemoveStatModifier(StatType stat, StatModifier modifier); 
+│   │       └── private List<StatModifier> activeStatModifiers; 
+│   ├── CombatSystem/ 
+│   │   ├── DamageCalculator.cs // Complex damage formulas including criticals, resistances, and perks. 
+│   │   │   ├── public float CalculateDamage(Combatant attacker, Combatant target, AttackData attack); 
+│   │   │   ├── private float CalculateCritChance(Combatant attacker, AttackData attack); 
+│   │   │   ├── private float ApplyDamageResistance(float damage, DamageType type, Combatant target); 
+│   │   │   └── private float ApplyDamageMultipliers(float damage, Combatant attacker, Combatant target); 
+│   │   ├── TargettingLogic.cs // AI and player target acquisition. 
+│   │   │   ├── public List<Combatant> FindTargetsInRange(Combatant source, float range, TargetFilter filter); 
+│   │   │   ├── public Combatant SelectBestTarget(List<Combatant> potentialTargets, TargetPriority priority); 
+│   │   │   └── public RaycastHit GetPlayerTargetUnderCursor(); 
+│   │   ├── AI_CombatBehavior.cs // Defines AI combat decision-making based on archetypes and traits. 
+│   │   │   ├── public ICombatAction DetermineAction(AIController controller, List<Combatant> allies, List<Combatant> enemies); 
+│   │   │   ├── private CombatAction ChooseAttack(AIController controller, List<Combatant> enemies); 
+│   │   │   └── private CombatAction ChooseAbility(AIController controller, List<Combatant> allies, List<Combatant> enemies); 
+│   │   └── StatusEffectManager.cs // Manages all buff/debuff application, duration, and effects. 
+│   │       ├── public void ApplyStatusEffect(Combatant target, StatusEffectData effectData, float duration); 
+│   │       ├── public void RemoveStatusEffect(Combatant target, string effectID); 
+│   │       ├── public void UpdateStatusEffects(float deltaTime); 
+│   │       ├── private Dictionary<Combatant, List<ActiveStatusEffect>> activeEffects; 
+│   │       └── private void ExecuteEffectTick(ActiveStatusEffect effect); 
+│   ├── InteractionSystem/ // Handles dialogue, bartering, lockpicking, hacking, etc. 
+│   │   ├── DialogueProcessor.cs // Parses dialogue trees, applies persuasion/intimidation checks. 
+│   │   │   ├── public DialogueNode GetNextDialogueNode(string currentNodeID, PlayerCharacter player, NPC npc); 
+│   │   │   ├── public DialogueOptionResult ProcessOption(DialogueOption option, PlayerCharacter player, NPC npc); 
+│   │   │   ├── private bool CheckSkillRequirement(DialogueOption option, PlayerCharacter player); 
+│   │   │   └── private float CalculateSpeechSuccessChance(PlayerCharacter player, NPC npc, SpeechType type); 
+│   │   ├── LockpickingSystem.cs // Minigame and skill check logic. 
+│   │   │   ├── public bool StartLockpicking(LockComponent lockObject, PlayerCharacter player); 
+│   │   │   ├── public void RegisterPickAttempt(float tension, float angle); 
+│   │   │   └── private bool EvaluatePickSuccess(float skillLevel, LockDifficulty difficulty); 
+│   │   ├── HackingSystem.cs // Minigame and skill check logic for terminals/computers. 
+│   │   │   ├── public bool StartHacking(TerminalComponent terminal, PlayerCharacter player); 
+│   │   │   ├── public void ProcessHackingAttempt(string attemptedPassword, HackingDifficulty difficulty); 
+│   │   │   └── private bool EvaluateHackSuccess(float skillLevel, HackingDifficulty difficulty); 
+│   │   └── BarterSystem.cs // Trade logic, pricing adjustments based on skills/perks/traits. 
+│   │       ├── public TradeOffer GenerateTradeOffer(NPC vendor, PlayerCharacter player); 
+│   │       ├── public float CalculateItemPrice(Item item, Entity trader, bool selling); 
+│   │       ├── private float ApplyBarterSkillModifier(float basePrice, PlayerCharacter player); 
+│   │       └── private float ApplyFactionReputationModifier(float basePrice, Faction faction, PlayerCharacter player); 
+│   ├── InventorySystem/ 
+│   │   ├── InventoryManager.cs // Handles inventory operations, capacity, weight. 
+│   │   │   ├── public void AddItem(Item item, int quantity); 
+│   │   │   ├── public bool RemoveItem(string itemID, int quantity); 
+│   │   │   ├── public List<InventorySlot> GetFilteredInventory(ItemCategory category); 
+│   │   │   └── public float CalculateCurrentWeight(); 
+│   │   ├── ItemHandler.cs // Manages item use, equipping, and durability. 
+│   │   │   ├── public void UseItem(string itemInstanceID, PlayerCharacter user); 
+│   │   │   ├── public void EquipItem(string itemInstanceID, PlayerCharacter user); 
+│   │   │   ├── public void UnequipItem(string itemInstanceID, PlayerCharacter user); 
+│   │   │   └── public void DegradeItemDurability(string itemInstanceID, float amount); 
+│   │   └── ItemModdingSystem.cs // Applies and manages weapon/armor mods. 
+│   │       ├── public bool CanApplyMod(string itemInstanceID, string modID, PlayerCharacter player); 
+│   │       ├── public void ApplyMod(string itemInstanceID, string modID, PlayerCharacter player); 
+│   │       ├── public void RemoveMod(string itemInstanceID, string modID); 
+│   │       └── private ItemModificationData GetModEffects(string modID); 
+│   ├── QuestSystem/ 
+│   │   ├── QuestTracker.cs // Tracks quest states, objectives, and progression. 
+│   │   │   ├── public void StartQuest(string questID); 
+│   │   │   ├── public void CompleteObjective(string questID, string objectiveID); 
+│   │   │   ├── public void FailQuest(string questID); 
+│   │   │   ├── public QuestState GetQuestState(string questID); 
+│   │   │   └── private void EvaluateQuestCompletion(string questID); 
+│   │   ├── ObjectiveEvaluator.cs // Defines and checks conditions for objective completion. 
+│   │   │   ├── public bool CheckKillObjective(string enemyType, int count); 
+│   │   │   ├── public bool CheckItemCollectionObjective(string itemID, int count); 
+│   │   │   ├── public bool CheckLocationDiscoveryObjective(string locationID); 
+│   │   │   └── public bool CheckDialogueOptionObjective(string dialogueID, string optionID); 
+│   │   └── FactionReputationSystem.cs // Manages faction standing and effects. 
+│   │       ├── public void AdjustReputation(string factionID, float amount, ReputationSource source); 
+│   │       ├── public FactionStanding GetFactionStanding(string factionID, PlayerCharacter player); 
+│   │       ├── public List<string> GetAvailableFactionRewards(string factionID, FactionStanding standing); 
+│   │       └── private void ApplyFactionStandingEffects(string factionID, PlayerCharacter player); 
+│   ├── CraftingSystem/ 
+│   │   ├── RecipeProcessor.cs // Manages recipe discovery, component consumption, and output generation. 
+│   │   │   ├── public List<CraftingRecipe> GetAvailableRecipes(CraftingStationType station, PlayerCharacter player); 
+│   │   │   ├── public bool CanCraft(string recipeID, PlayerCharacter player); 
+│   │   │   ├── public CraftingResult CraftItem(string recipeID, PlayerCharacter player); 
+│   │   │   ├── private Dictionary<string, int> GetRequiredComponents(string recipeID); 
+│   │   │   └── private ItemInstance GenerateCraftedItem(string recipeID, PlayerCharacter player); 
+│   │   ├── ComponentHandler.cs // Manages component inventory and resource pooling. 
+│   │   │   ├── public int GetComponentCount(string componentID); 
+│   │   │   ├── public void ConsumeComponents(Dictionary<string, int> componentsToConsume); 
+│   │   │   └── public void AddComponents(string componentID, int quantity); 
+│   │   └── DurabilitySystem.cs // Handles item wear, tear, and repair. 
+│   │       ├── public float GetItemDurability(string itemInstanceID); 
+│   │       ├── public void RepairItem(string itemInstanceID, float amount, PlayerCharacter player); 
+│   │       ├── public bool IsItemBroken(string itemInstanceID); 
+│   │       └── private float CalculateRepairCost(string itemInstanceID, float repairAmount, RepairSkill skillLevel); 
+│   ├── WorldStreamingSystem/ 
+│   │   ├── ChunkLoader.cs // Manages loading/unloading of world chunks based on player proximity. 
+│   │   │   ├── public void UpdatePlayerPosition(Vector3 playerPos); 
+│   │   │   ├── private List<WorldChunkID> DetermineChunksToLoad(Vector3 centerChunk); 
+│   │   │   ├── private void LoadChunk(WorldChunkID chunkID); 
+│   │   │   └── private void UnloadChunk(WorldChunkID chunkID); 
+│   │   ├── LOD_Manager.cs // Manages Level of Detail for assets based on distance. 
+│   │   │   ├── public void RegisterLODObject(GameObject obj, LODGroup group); 
+│   │   │   ├── public void UpdateLODs(); 
+│   │   │   └── private LODLevel DetermineLODLevel(GameObject obj, float distanceToCamera); 
+│   │   └── PersistenceManager.cs // Handles serialization/deserialization of dynamic world state. 
+│   │       ├── public void SerializeWorldState(string saveSlotID); 
+│   │       ├── public void DeserializeWorldState(string saveSlotID); 
+│   │       ├── private List<DynamicGameObjectState> GetDynamicObjectStates(); 
+│   │       └── private void ApplyDynamicObjectState(DynamicGameObjectState state); 
+│   └── SaveLoadSystem/ 
+│       ├── SaveFileManager.cs // Manages save slots, data encryption, and versioning. 
+│       │   ├── public bool SaveGame(string slotName, PlayerData player, WorldState world); 
+│       │   ├── public LoadResult LoadGame(string slotName); 
+│       │   ├── public List<SaveSlotInfo> GetAvailableSaveSlots(); 
+│       │   └── private string GenerateChecksum(byte[] data); 
+│       ├── AutoSaveLogic.cs // Defines auto-save triggers and intervals. 
+│       │   ├── public void RegisterAutoSaveTrigger(AutoSaveTrigger triggerType); 
+│       │   ├── private void OnQuestCompleted(string questID); 
+│       │   ├── private void OnLocationDiscovered(string locationID); 
+│       │   └── private void OnIntervalReached(); 
+│       └── CloudSaveIntegration.cs // Hooks into cloud saving services (e.g., Steam Cloud, Xbox Live). 
+│           ├── public bool SyncToCloud(string localSavePath); 
+│           ├── public bool SyncFromCloud(string localSavePath); 
+│           └── private CloudSaveStatus GetCloudStatus(); 
+├── Managers/ // Centralized control points for various game domains. 
+│   ├── AudioManager.cs // Manages sound playback, mixing, and environmental audio. 
+│   │   ├── public void PlaySound(string soundID, Vector3 position, SoundGroup group, float volume); 
+│   │   ├── public void PlayMusic(string musicID, bool loop, float volume); 
+│   │   ├── public void SetMixerVolume(string mixerGroup, float volume); 
+│   │   ├── private AudioSource GetAvailableAudioSource(); 
+│   │   └── private void UpdateEnvironmentalAudio(Vector3 listenerPosition, EnvironmentType currentEnvironment); 
+│   ├── UIManager.cs // Controls UI element display, navigation, and event handling. 
+│   │   ├── public void ShowMenu(UIMenuType menu); 
+│   │   ├── public void HideMenu(UIMenuType menu); 
+│   │   ├── public void UpdateHUD(PlayerStats stats, QuestLog log); 
+│   │   ├── public void DisplayNotification(NotificationType type, string message, float duration); 
+│   │   └── private void ProcessUIEvent(UIEvent eventType, UIElement source); 
+│   ├── InputManager.cs // Maps raw input to game actions, handles keybindings. 
+│   │   ├── public bool GetActionDown(GameAction action); 
+│   │   ├── public bool GetActionHeld(GameAction action); 
+│   │   ├── public Vector2 GetLookInput(); 
+│   │   ├── public void RebindAction(GameAction action, InputDevice device, InputKey key); 
+│   │   └── private Dictionary<GameAction, InputBinding> currentBindings; 
+│   ├── GameManager.cs // Global game state, pause, quit, scene loading orchestration. 
+│   │   ├── public GameState CurrentGameState { get; private set; } 
+│   │   ├── public void SetGameState(GameState newState); 
+│   │   ├── public void PauseGame(); 
+│   │   ├── public void LoadScene(string sceneName, SceneLoadMode mode); 
+│   │   └── public void QuitGame(); 
+│   └── WorldManager.cs // Oversees overall world simulation, time, weather. 
+│       ├── public float CurrentWorldTime { get; private set; } 
+│       ├── public WeatherType CurrentWeather { get; private set; } 
+│       ├── public void AdvanceTime(float seconds); 
+│       ├── public void SetWeather(WeatherType newWeather, float transitionTime); 
+│       └── private void UpdateNPCWorldStates(float deltaTime); 
+├── Utilities/ // Common helper functions and data structures. 
+│   ├── MathUtils.cs // Advanced mathematical operations for game logic. 
+│   │   ├── public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, float smoothTime); 
+│   │   ├── public static Quaternion LookRotation(Vector3 forward, Vector3 up); 
+│   │   └── public static float MapRange(float value, float inMin, float inMax, float outMin, float outMax); 
+│   ├── RandomGenerator.cs // Seeded random number generation for consistent procedural content. 
+│   │   ├── public static int GetSeededInt(int min, int max, string seedModifier); 
+│   │   ├── public static float GetSeededFloat(float min, float max, string seedModifier); 
+│   │   └── public static List<T> ShuffleList<T>(List<T> list, string seedModifier); 
+│   ├── StringFormatter.cs // Utility for dynamic text generation (e.g., quest logs, item descriptions). 
+│   │   ├── public static string FormatDialogue(string template, Dictionary<string, string> replacements); 
+│   │   ├── public static string GenerateRandomItemName(ItemQuality quality, ItemType type); 
+│   │   └── public static string TruncateString(string text, int maxLength, string suffix); 
+│   ├── DataStructures/ // Custom data structures optimized for game performance. 
+│   │   ├── ObjectPool.cs // Generic object pooling for performance critical instantiations (e.g., bullets, particles). 
+│   │   │   ├── public T GetObject(); 
+│   │   │   ├── public void ReturnObject(T obj); 
+│   │   │   └── private Queue<T> pooledObjects; 
+│   │   ├── Quadtree.cs // Spatial partitioning for efficient queries (e.g., enemy detection, loot finding). 
+│   │   │   ├── public void Insert(GameObject obj); 
+│   │   │   ├── public List<GameObject> QueryRange(Rect range); 
+│   │   │   └── private QuadtreeNode rootNode; 
+│   │   └── FiniteStateMachine.cs // Generic FSM implementation for AI, player states. 
+│   │       ├── public void ChangeState(IState newState); 
+│   │       ├── public void UpdateState(); 
+│   │       └── private IState currentState; 
+│   └── EventSystem/ // Centralized event bus for decoupled communication. 
+│       ├── EventBus.cs // Static class for event publishing/subscribing. 
+│       │   ├── public static void Subscribe<T>(Action<T> handler) where T : IGameEvent; 
+│       │   ├── public static void Unsubscribe<T>(Action<T> handler) where T : IGameEvent; 
+│       │   └── public static void Publish<T>(T gameEvent) where T : IGameEvent; 
+│       └── IGameEvent.cs // Base interface for all game events. 
+└── EditorTools/ // In-editor development utilities (more detailed than previous response). 
+    ├── SkillTreeEditor.cs // Custom editor window for visualizing and modifying skill trees. 
+    │   ├── public void DrawSkillNode(SkillNodeData node); 
+    │   ├── public void ConnectNodes(SkillNodeData nodeA, SkillNodeData nodeB); 
+    │   ├── public void SaveSkillTreeToFile(string path); 
+    │   └── private void HandleDragAndDrop(); 
+    ├── QuestEditor.cs // Tool for designing complex quest flows with branching narratives. 
+    │   ├── public QuestGraph CurrentQuestGraph { get; private set; } 
+    │   ├── public QuestNode AddObjectiveNode(ObjectiveType type); 
+    │   ├── public QuestNode AddDialogueNode(DialogueTree tree); 
+    │   └── public void ExportQuestToJSON(string path); 
+    ├── ItemDatabaseEditor.cs // Editor for creating, modifying, and validating item definitions. 
+    │   ├── public void AddNewItemDefinition(ItemDefinitionData data); 
+    │   ├── public void EditItemDefinition(string itemID, ItemDefinitionData newData); 
+    │   ├── public void ValidateAllItemData(); 
+    │   └── private List<ItemDefinitionData> itemDatabase; 
+    ├── AI_BehaviorEditor.cs // Visual editor for AI behavior trees or FSMs. 
+    │   ├── public BehaviorTreeGraph CurrentBehaviorTree { get; private set; } 
+    │   ├── public BehaviorNode AddActionNode(AIAction action); 
+    │   ├── public BehaviorNode AddConditionNode(AICondition condition); 
+    │   └── public void CompileBehaviorTreeToScript(); 
+    ├── WorldBuilderTools/ // Tools specifically for scene and world generation/editing. 
+    │   ├── TerrainSculptingTool.cs // In-editor tool for sculpting terrain height and painting textures. 
+    │   │   ├── public void SculptTerrain(Vector3 brushPosition, float brushRadius, float strength); 
+    │   │   ├── public void PaintTexture(Vector3 brushPosition, float brushRadius, int textureIndex); 
+    │   │   └── private TerrainData currentTerrainData; 
+    │   ├── PropPlacementHelper.cs // Assists in scattering props, checking collisions, and snapping. 
+│   │   │   ├── public void PlacePropAtCursor(GameObject propPrefab); 
+│   │   │   ├── public bool CheckCollision(GameObject prop, Vector3 position); 
+│   │   │   └── public void BatchPlaceProps(List<GameObject> prefabs, int count, Bounds area); 
+│   │   └── NavMeshGenerator.cs // Tool for baking navigation meshes for AI pathfinding. 
+│   │       ├── public void GenerateNavMesh(Bounds bakeArea); 
+│   │       ├── public void UpdateNavMesh(List<ObstacleData> dynamicObstacles); 
+│   │       └── private NavMeshSurface currentSurface; 
+│   └── DataValidator.cs // Scripts to ensure data integrity across all JSON/XML files. 
+│       ├── public void ValidateAllDataIntegrity(); 
+│       ├── private bool ValidateSkillPrerequisites(SkillNodeData skill); 
+│       ├── private bool ValidateItemRecipeComponents(CraftingRecipe recipe); 
+│       └── private bool ValidateDialogueTreeLogic(DialogueTree tree); 
  
+
+ 
+ 
+
+Data/ - The Exhaustive Knowledge Repository 
+
+This expands on the structure of the data assets, outlining fields, types, and relationships. It is a representation of hundreds of thousands of individual data files. 
+
+Data/ 
+├── GameplayMechanics/ 
+│   ├── Skills/ 
+│   │   ├── SkillNodeData.json // Base structure for every skill node 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── string Description; 
+│   │   │   ├── SkillCategory Category; // Enum: Combat, Magic, Tech, Stealth, Diplomacy, Survival, Crafting, Hybrid 
+│   │   │   ├── int MaxRank; 
+│   │   │   ├── List<Prerequisite> Prerequisites; // {Type: SkillLevel, SkillID: "MeleeMastery", MinLevel: 3} OR {Type: CharacterLevel, MinLevel: 5} 
+│   │   │   ├── List<StatEffect> PerRankStatEffects; // {Stat: Damage, Value: 0.05, Operation: Multiply} 
+│   │   │   ├── List<AbilityUnlock> AbilitiesUnlocked; // {AbilityID: "PowerAttack", RankRequired: 1} 
+│   │   │   ├── string IconPath; 
+│   │   │   └── string LoreSnippet; 
+│   │   ├── HybridSkillUnlockRule.json // Defines complex unlock rules for hybrid/legendary skills. 
+│   │   │   ├── string HybridSkillID; 
+│   │   │   ├── List<RequiredSkillPair> RequiredSkillPairs; // [{SkillA_ID: "Tech", SkillA_Level: 5}, {SkillB_ID: "Combat", SkillB_Level: 5}] 
+│   │   │   ├── List<RequiredPerk> RequiredPerks; // [{PerkID: "ArcaneSurge"}] 
+│   │   │   └── string AssociatedQuestID; // Optional quest to unlock 
+│   │   └── SkillProgressionCurve.json // Defines XP required per skill level. 
+│   │       ├── string SkillID; // Applies to individual skills 
+│   │       ├── List<int> XPElasticityPoints; // [0, 100, 250, 500, 1000, ...] for dynamic XP scaling 
+│   │       └── string CurveType; // "Linear", "Exponential", "Logarithmic" 
+│   ├── Perks/ 
+│   │   ├── PerkData.json // Structure for every perk. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── string Description; 
+│   │   │   ├── PerkType Type; // Enum: Passive, Active, Conditional 
+│   │   │   ├── List<EffectData> Effects; // {EffectType: DamageReduction, Value: 0.1} OR {EffectType: ChanceToDodge, Value: 0.25} 
+│   │   │   ├── List<Prerequisite> Prerequisites; // {Type: CharacterLevel, MinLevel: 3} OR {Type: SkillLevel, SkillID: "Hacking", MinLevel: 5} 
+│   │   │   ├── string IconPath; 
+│   │   │   ├── string LoreText; 
+│   │   │   └── bool IsLegendary; 
+│   │   └── PerkCategoryWeight.json // For procedural perk generation/offering. 
+│   │       ├── PerkCategory Category; // e.g., "Combat", "Utility" 
+│   │       └── float SelectionWeight; // Influences how often perks from this category appear. 
+│   ├── Traits/ 
+│   │   ├── TraitData.json // Structure for every character trait. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── string Description; 
+│   │   │   ├── List<EffectData> PositiveEffects; // {EffectType: StatBonus, Stat: Charisma, Value: 2} 
+│   │   │   ├── List<EffectData> NegativeEffects; // {EffectType: DamageVulnerability, DamageType: EMP, Value: 0.5} 
+│   │   │   ├── List<string> ConflictingTraits; // List of Trait IDs this trait cannot coexist with. 
+│   │   │   ├── bool IsPermanent; 
+│   │   │   ├── string IconPath; 
+│   │   │   ├── string NarrativeHook; // How it affects dialogue/world reactions. 
+│   │   │   └── bool CanBeRandomlyAssigned; 
+│   │   └── TraitGenerationRules.json // Rules for which traits can be offered at specific levels/events. 
+│   │       ├── int MinLevel; 
+│   │       ├── int MaxLevel; 
+│   │       ├── List<string> ExcludeIfHasTraits; 
+│   │       ├── List<string> IncludeIfHasTraits; 
+│   │       └── float RarityWeight; 
+│   └── ItemDefinitions/ 
+│       ├── Weapons/ 
+│       │   ├── WeaponDefinition.json // Base for all weapons. 
+│       │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── WeaponType Type; // Enum: Pistol, Rifle, MeleeBlunt, MeleeBlade, Energy 
+│   │   │   ├── DamageType DamageType; // Enum: Ballistic, Energy, Melee, Explosive 
+│   │   │   ├── float BaseDamage; 
+│   │   │   ├── float AttackSpeed; 
+│   │   │   ├── float CritMultiplier; 
+│   │   │   ├── float Range; // For ranged weapons 
+│   │   │   ├── int MagazineCapacity; // For firearms 
+│   │   │   ├── List<string> CompatibleModSlots; // e.g., "Barrel", "Receiver", "Stock" 
+│   │   │   ├── string MeshPath; 
+│   │   │   ├── string IconPath; 
+│   │   │   └── List<EffectData> OnHitEffects; // e.g., "Bleed" 
+│   │   ├── WeaponModDefinition.json // Defines weapon modifications. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── string SlotType; // e.g., "Barrel", "Receiver" 
+│   │   │   ├── List<StatEffect> ModEffects; // {Stat: Damage, Value: 0.1, Operation: Additive} OR {Stat: Recoil, Value: -0.15} 
+│   │   │   ├── List<CraftingComponent> CraftingCost; 
+│   │   │   ├── List<Prerequisite> CraftingPrerequisites; 
+│   │   │   └── string ModelPath; // Visual change for the mod 
+│   │   └── AmmunitionDefinition.json // Properties for ammo types. 
+│   │       ├── string ID; 
+│   │       ├── string Name; 
+│   │       ├── AmmoType Type; // e.g., "10mm", ".308", "FusionCell" 
+│   │       ├── float DamageModifier; 
+│   │       ├── float ArmorPenetration; 
+│   │       └── string IconPath; 
+│   ├── Armor/ 
+│   │   ├── ArmorDefinition.json // Base for all armor pieces. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── ArmorSlot Slot; // Enum: Head, Torso, Arms, Legs 
+│   │   │   ├── ArmorType Type; // Enum: Light, Medium, Heavy, Power 
+│   │   │   ├── float DamageResistance; 
+│   │   │   ├── float EnergyResistance; 
+│   │   │   ├── float RadiationResistance; 
+│   │   │   ├── float Weight; 
+│   │   │   ├── List<StatEffect> EquippableEffects; // e.g., "+1 Endurance" 
+│   │   │   ├── string MeshPath; 
+│   │   │   └── string IconPath; 
+│   │   └── PowerArmorFrameDefinition.json // Specifics for power armor frames. 
+│   │       ├── string ID; 
+│   │       ├── string Name; 
+│   │       ├── List<string> CompatiblePowerArmorParts; // e.g., "T45_Helmet", "X01_Torso" 
+│   │       ├── float BaseDamageResistance; 
+│   │       ├── float BaseEnergyResistance; 
+│   │       ├── float FusionCoreConsumptionRate; 
+│   │       └── string MeshPath; 
+│   ├── Consumables/ 
+│   │   ├── FoodDefinition.json // Details about food items. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── float HealthRestoration; 
+│   │   │   ├── float AP_Restoration; 
+│   │   │   ├── float RadsGiven; 
+│   │   │   ├── List<StatusEffect> AppliedEffects; // e.g., "WellFed" 
+│   │   │   ├── string IconPath; 
+│   │   │   └── string ModelPath; 
+│   │   ├── ChemDefinition.json // Details about chemical items. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── List<StatusEffect> AppliedEffects; // e.g., "PsychoBuff", "Addict" 
+│   │   │   ├── float AddictionChance; 
+│   │   │   ├── float Duration; 
+│   │   │   ├── string IconPath; 
+│   │   │   └── string ModelPath; 
+│   │   └── AidItemDefinition.json // Details about generic aid items. 
+│   │       ├── string ID; 
+│   │       ├── string Name; 
+│   │       ├── float HealthRestoration; 
+│   │       ├── float RadiationRemoval; 
+│   │       ├── List<StatusEffect> AppliedEffects; 
+│   │       ├── string IconPath; 
+│   │       └── string ModelPath; 
+│   ├── CraftingComponents/ 
+│   │   ├── ComponentDefinition.json // Base for all crafting materials. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── ComponentCategory Category; // e.g., "Scrap", "Chemical", "RareMineral" 
+│   │   │   ├── float Weight; 
+│   │   │   ├── string IconPath; 
+│   │   │   └── string ModelPath; 
+│   │   └── JunkItemDecomposition.json // How junk items break down into components. 
+│   │       ├── string JunkItemID; 
+│   │       ├── Dictionary<string, int> ComponentsYielded; // {"SteelScrap": 2, "ClothScrap": 1} 
+│   │       └── List<SkillRequirement> SkillRequirements; // (e.g., "Scrapper Perk Rank 1") 
+│   ├── QuestDefinitions/ 
+│   │   ├── QuestData.json // Core quest information. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Name; 
+│   │   │   ├── string Description; 
+│   │   │   ├── QuestType Type; // Enum: Main, Side, Faction, Radiant 
+│   │   │   ├── QuestState CurrentState; // Enum: NotStarted, Active, Completed, Failed 
+│   │   │   ├── List<ObjectiveData> Objectives; 
+│   │   │   ├── List<RewardData> CompletionRewards; // {Type: XP, Amount: 500} OR {Type: Item, ItemID: "UniqueWeapon"} 
+│   │   │   ├── List<Condition> StartConditions; // {Type: PlayerLevel, MinLevel: 5} OR {Type: QuestCompleted, QuestID: "MQ01"} 
+│   │   │   └── List<Condition> FailConditions; 
+│   │   ├── ObjectiveData.json // Details for individual quest objectives. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Description; 
+│   │   │   ├── ObjectiveType Type; // Enum: Kill, Gather, Explore, TalkTo, Hack, Build 
+│   │   │   ├── Dictionary<string, int> TargetRequirements; // {"EnemyTypeID": 5} OR {"ItemID": 3} 
+│   │   │   ├── string TargetNPCID; // For TalkTo objectives 
+│   │   │   ├── string TargetLocationID; // For Explore objectives 
+│   │   │   └── bool IsOptional; 
+│   │   ├── RewardData.json // Defines what rewards quests grant. 
+│   │   │   ├── RewardType Type; // Enum: XP, Item, SkillPoints, PerkPoints, TraitPoints, FactionRep, Currency 
+│   │   │   ├── float Amount; // For XP, Currency, Skill/Perk/Trait Points 
+│   │   │   ├── string ItemID; // For Item rewards 
+│   │   │   ├── int ItemQuantity; 
+│   │   │   └── string FactionID; // For FactionRep rewards 
+│   │   └── DynamicQuestGenerationRule.json // Logic for procedural radiant quests. 
+│   │       ├── string TemplateID; // e.g., "ClearLocation_KillBandits" 
+│   │       ├── List<string> PossibleTargetLocations; 
+│   │       ├── List<string> PossibleEnemyTypes; 
+│   │       ├── List<RewardData> BaseRewards; 
+│   │       └── List<Condition> GenerationConditions; 
+│   ├── NPCDialogueDefinitions/ 
+│   │   ├── DialogueTree.json // Defines a complete dialogue conversation tree. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string NPC_ID; 
+│   │   │   ├── DialogueNode RootNode; 
+│   │   │   └── bool CanRepeat; 
+│   │   ├── DialogueNode.json // Individual node within a dialogue tree. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string NPCLine; 
+│   │   │   ├── string VO_FileName; 
+│   │   │   ├── List<PlayerOption> PlayerOptions; 
+│   │   │   ├── List<EffectData> OnEnterEffects; // e.g., FactionReputationChange, QuestUpdate 
+│   │   │   └── List<Condition> NodeVisibilityConditions; // (e.g., "PlayerHasTrait: Charismatic") 
+│   │   ├── PlayerOption.json // Player's choices within a dialogue node. 
+│   │   │   ├── string ID; 
+│   │   │   ├── string Text; 
+│   │   │   ├── string NextNodeID; // ID of the next NPCLine node 
+│   │   │   ├── List<SkillCheck> SkillChecks; // {SkillID: "Persuasion", Difficulty: 75} 
+│   │   │   ├── List<EffectData> OnSelectEffects; 
+│   │   │   └── List<Condition> OptionAvailabilityConditions; 
+│   │   └── SpeechChallengeDefinition.json // Defines parameters for skill-based dialogue challenges. 
+│   │       ├── SpeechType Type; // Enum: Persuasion, Intimidation, Deception, Barter 
+│   │       ├── string AssociatedSkillID; 
+│   │       ├── float BaseDifficulty; 
+│   │       ├── List<TraitModifier> TraitDifficultyModifiers; // {TraitID: "Charismatic", Modifier: -0.1} 
+│   │       └── List<PerkModifier> PerkSuccessModifiers; // {PerkID: "SilverTongue", Modifier: 0.2} 
+│   └── WorldObjects/ 
+│       ├── InteractableObjectDefinition.json // Base for all interactive objects (doors, containers, terminals). 
+│       │   ├── string ID; 
+│       │   ├── string Name; 
+│       │   ├── InteractableType Type; // Enum: Door, Container, Terminal, CraftingStation 
+│       │   ├── string ModelPath; 
+│       │   ├── string InteractionPrompt; 
+│       │   ├── List<Condition> InteractionConditions; // (e.g., "RequiresKey: Vault111Key") 
+│       │   └── List<EffectData> OnInteractEffects; 
+│       ├── ContainerDefinition.json // Specifics for loot containers. 
+│       │   ├── string ID; 
+│       │   ├── string Name; 
+│       │   ├── LootTableID LootTable; // Reference to a loot table 
+│       │   ├── bool IsLocked; 
+│       │   ├── LockDifficulty LockDifficulty; 
+│       │   ├── bool IsHacked; 
+│       │   └── string ModelPath; 
+│       ├── TerminalDefinition.json // Specifics for hackable terminals. 
+│       │   ├── string ID; 
+│       │   ├── string Name; 
+│       │   ├── HackingDifficulty Difficulty; 
+│       │   ├── string CorrectPassword; 
+│       │   ├── List<TerminalAction> AvailableActions; // e.g., "UnlockDoor", "AccessDataLog" 
+│       │   └── string ModelPath; 
+│       └── CraftingStationDefinition.json // Defines crafting stations. 
+│           ├── string ID; 
+│           ├── string Name; 
+│           ├── CraftingStationType Type; // Enum: ChemistryStation, Workbench, CookingStation 
+│           ├── List<string> CompatibleRecipeCategories; 
+│           └── string ModelPath; 
+Your continued push for depth is exactly what makes this "monstrosity" so compelling\! Integrating highly dynamic NPC routines with an adaptive, geo-spatial, and *alternate-reality-aware* weather system is an incredibly complex and fascinating challenge. This moves beyond simple data lookups to actual *simulations* and *procedural predictions*. Let's dive into this, building upon the existing structure, but adding layers of dynamicism, predictive modeling, and the grim realities of a post-nuclear apocalypse. ----- ### **GameCore/ - The Engine Room's Deepest Mechanics (Continued - Monstrous Simulation)** This section introduces the core logic for the dynamic NPC routines and the highly adaptive, geo-spatial, alternate-reality weather system. ``` GameCore/ ├── Systems/ │   ├── NPCSchedulingSystem/ // Manages complex, dynamic NPC routines based on internal and external factors. │   │   ├── NPC_Scheduler.cs │   │   │   ├── public void UpdateNPCSchedule(NPC_ID npc, ScheduleID schedule); // Override or modify current schedule. │   │   │   ├── private void EvaluateDailyRoutine(NPC_ID npc, WorldTime currentTime); │   │   │   ├── private void RecalculatePathToDestination(NPC_ID npc, Vector3 destination); │   │   │   ├── private void OnWorldStateChanged(WorldStateVariable variable, object newValue); // NPCs react to global changes. │   │   │   ├── private void OnHazardZoneDetected(HazardZone zone); // NPCs react to immediate threats. │   │   │   └── Dictionary<NPC_ID, NPCScheduleInstance> activeNPCSchedules; │   │   ├── RoutineBehaviorSelector.cs // Chooses specific AI behaviors based on current routine step. │   │   │   ├── public IAIBehavior GetBehaviorForRoutineStep(RoutineStep step, NPC_ID npc); │   │   │   ├── private IAIBehavior SelectSocialBehavior(NPC_ID npc, NPCRelationship target); │   │   │   └── private IAIBehavior SelectCombatBehavior(NPC_ID npc, List<Combatant> threats); │   │   ├── NeedsSatisfactionSystem.cs // Manages NPC hunger, thirst, sleep, social needs, and their impact on routines. │   │   │   ├── public void UpdateNPCNeeds(NPC_ID npc, float deltaTime); │   │   │   ├── private void PrioritizeNeeds(NPC_ID npc); │   │   │   ├── private bool AttemptSatisfyNeed(NPC_ID npc, NeedType type); │   │   │   └── Dictionary<NPC_ID, NPCNeedsData> currentNPCNeeds; │   │   ├── SocialInteractionManager.cs // Models NPC relationships, dialogue probabilities, and group behaviors. │   │   │   ├── public void ProcessSocialInteraction(NPC_ID npcA, NPC_ID npcB, InteractionType type); │   │   │   ├── private float CalculateRelationshipModifier(NPC_ID npcA, NPC_ID npcB, InteractionOutcome outcome); │   │   │   └── Dictionary<Tuple<NPC_ID, NPC_ID>, float> npcRelationships; // Stores numerical relationship values. │   │   └── FactionResponseSystem.cs // How factions respond to events and how individual NPCs within them react. │   │       ├── public void TriggerFactionResponse(FactionID faction, FactionEventType eventType, Vector3 location); │   │       ├── private List<NPC_ID> GetAffectedNPCs(FactionID faction, FactionEventType eventType); │   │       └── private void AssignFactionResponseRoutine(NPC_ID npc, FactionResponsePlan plan); │   ├── WorldManager.cs │   │   ├── public float CurrentWorldTime { get; private set; } │   │   ├── public WeatherType CurrentWeather { get; private set; } │   │   ├── public void AdvanceTime(float seconds); │   │   ├── public void SetWeather(WeatherType newWeather, float transitionTime); │   │   ├── private void UpdateNPCWorldStates(float deltaTime); │   │   └── WeatherSystem/ // Adaptive, geo-spatial weather system with alternate-reality considerations. │   │       ├── WeatherSimulationCore.cs // Core simulation of atmospheric conditions. │   │       │   ├── public WeatherState GetWeatherAtLocation(Vector3 location, DateTime time); │   │       │   ├── private void SimulateAtmosphericPressure(float deltaTime); │   │       │   ├── private void SimulateWindPatterns(float deltaTime); │   │       │   ├── private void SimulateHumidityAndTemperature(float deltaTime); │   │       │   └── PerlinNoise3D temperatureNoise; // 3D noise for temperature variations. │   │       ├── GeoSpatialWeatherPredictor.cs // Predicts future weather based on historical data and current simulation. │   │       │   ├── public WeatherForecast GetLocalForecast(Vector3 location, TimeSpan futurePeriod); │   │       │   ├── private WeatherPattern GetDominantPattern(Vector3 location, DateTime historicalDate); // Looks up historical patterns. │   │       │   ├── private WeatherModifier CalculateGeoModifier(Vector3 location, BiomeType biome); // Elevation, proximity to water. │   │       │   └── List<WeatherModelParam> globalWeatherModels; // Defines how different weather fronts behave. │   │       ├── AlternateRealityWeatherInjector.cs // Injects alternate reality weather effects (e.g., radiation, fallout). │   │       │   ├── public void InjectRealityWeather(ref WeatherState currentState, AlternateRealityType reality); │   │       │   ├── private void ApplyNuclearFallout(ref WeatherState state, BlastZoneData zone, float timeSinceBlast); │   │       │   ├── private void SimulateRadiationDecay(ref WeatherState state, float deltaTime); │   │       │   └── Dictionary<string, FalloutCloudData> activeFalloutClouds; // Tracks dynamic fallout clouds. │   │       ├── WeatherEffectRenderer.cs // Manages visual and audio effects of weather. │   │       │   ├── public void UpdateWeatherVisuals(WeatherState state, Camera playerCamera); │   │       │   ├── public void UpdateWeatherAudio(WeatherState state, Vector3 listenerPosition); │   │       │   ├── private ParticleSystem PlayRainEffect(float intensity); │   │       │   └── Material snowAccumulationShader; // Shader for dynamic snow/ash accumulation. │   │       └── EnvironmentInteractionSolver.cs // How weather impacts the environment (e.g., puddles, wet surfaces, erosion). │   │           ├── public void ApplyWeatherImpact(WeatherState state, TerrainData terrain, List<GameObject> dynamicObjects); │   │           ├── private void GeneratePuddles(float rainfallAmount); │   │           ├── private void AffectMaterialWetness(Material material, float wetness); │   │           └── private void AccelerateErosion(TerrainData terrain, float rainIntensity, float windSpeed); │   └── ResourceManagementSystem/ // Crucial for survival mechanics and NPC needs. │       ├── ResourceNodeDepletion.cs // Tracks the state and respawn of harvestable resources. │       │   ├── public void ConsumeResource(string nodeID, float amount); │   │   │   ├── public float GetResourceAvailability(string nodeID); │   │   │   └── Dictionary<string, ResourceNodeState> activeResourceNodes; // Includes last harvested time, current quantity. │   │   └── WaterManagement.cs // Specific logic for water sources (clean/contaminated) and purification. │   │       ├── public WaterSourceState GetWaterSourceStatus(string sourceID); │   │       ├── public void PurifyWater(string sourceID, float purificationAmount); │   │       └── Dictionary<string, WaterSourceData> worldWaterSources; // Contains contamination levels. ├── Utilities/ │   ├── GeoSpatialUtils.cs // Functions for converting between world coordinates and geographic data. │   │   ├── public static Vector2 LatLonToWorldPos(float latitude, float longitude); │   │   ├── public static float GetElevationAtWorldPos(Vector3 worldPos); │   │   └── public static BiomeType GetBiomeAtWorldPos(Vector3 worldPos); │   └── PredictionEngine.cs // Generic prediction utilities. │       ├── public static float PredictValue(List<float> historicalData, PredictionModel model); │       ├── public static Vector3 PredictMovement(Vector3 currentPos, Vector3 velocity, float timeAhead); │       └── private IRegressionModel currentModel; ``` ----- #### **Data/ - The Exhaustive Knowledge Repository (Continued - Alt-Reality Data)** The data structures now reflect the intricacies of dynamic routines and the alternate reality weather system. ```json Data/ ├── GameplayMechanics/ │   ├── CharacterDefinitions/ │   │   ├── NPCTypeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── NPCFactionID Faction; │   │   │   ├── NPCBehaviorType Behavior; │   │   │   ├── List<string> PossibleDialogueTrees; │   │   │   ├── List<LootTableID> DroppedLootTables; │   │   │   ├── List<ItemDefinition> InventoryItems; │   │   │   ├── float HealthMultiplier; │   │   │   ├── float DamageMultiplier; │   │   │   ├── string VisualPresetID; │   │   │   ├── bool IsEssential; │   │   │   ├── string BaseRoutineID; // Default routine for this NPC type. │   │   │   ├── List<NeedPrioritizationRule> NeedRules; // How this NPC type prioritizes needs (e.g., Raiders prioritize combat over sleep). │   │   │   └── List<ConditionalRoutineOverride> RoutineOverrides; // {Condition: "PlayerSpotted", NewRoutine: "CombatReady"} │   │   ├── NPCRoutineDefinition.json // Defines a series of timed and conditional actions for NPCs. │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<RoutineStep> Steps; // A sequence of actions throughout a day/cycle. │   │   │   ├── bool IsDailyCycle; // True for daily routines, false for one-off/event routines. │   │   │   └── bool CanBeInterrupted; │   │   ├── RoutineStep.json │   │   │   ├── string ID; │   │   │   ├── TimeOfDay StartTime; // e.g., "08:00" │   │   │   ├── TimeOfDay EndTime; // e.g., "17:00" │   │   │   ├── RoutineAction Action; // Enum: Patrol, Work, Sleep, Socialize, Scavenge, Flee, Attack │   │   │   ├── string TargetLocationID; // Optional: Specific location for the action. │   │   │   ├── string AssociatedQuestPhaseID; // If routine is tied to quest progression. │   │   │   ├── List<Condition> ActionConditions; // e.g., "WeatherIsClear", "InventoryFull" │   │   │   └── string DialogueTagToTrigger; // e.g., "GreetingDuringWork" │   │   └── NPCNeedsData.json // Baseline needs for an NPC type. │   │       ├── string NPCTypeID; │   │       ├── float BaseHungerDecayRate; │   │       ├── float BaseThirstDecayRate; │   │       ├── float BaseSleepDecayRate; │   │       ├── float HungerThresholdWarning; // When NPC starts seeking food. │   │       ├── float ThirstThresholdWarning; │   │       └── float SleepThresholdWarning; │   ├── EnvironmentalData/ │   │   ├── WeatherPatternData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── WeatherType Type; │   │   │   ├── float DurationMin; │   │   │   ├── float DurationMax; │   │   │   ├── float VisibilityModifier; │   │   │   ├── float MovementSpeedModifier; │   │   │   ├── List<EffectData> PlayerEffects; │   │   │   ├── SoundProfile WeatherSounds; │   │   │   ├── ParticleEffect WeatherParticles; │   │   │   ├── List<GeoSpatialModifier> GeoModifiers; // {Type: "Altitude", Affect: "Temperature", Curve: "LinearDecrease"} │   │   │   └── AtmosphericPressureCurve PressureCurve; // How pressure changes over time for this pattern. │   │   ├── BiomeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<ClimateType> Climates; │   │   │   ├── List<TerrainFeature> DominantTerrainFeatures; │   │   │   ├── List<string> FloraSpawnIDs; │   │   │   ├── List<string> FaunaSpawnIDs; │   │   │   ├── List<string> ResourceNodeSpawnIDs; │   │   │   ├── WeatherPatternData WeatherPatterns; │   │   │   ├── List<HazardType> CommonHazards; │   │   │   ├── string SkyboxMaterialPath; │   │   │   ├── AudioProfile AmbientSoundProfile; │   │   │   └── Dictionary<WeatherType, float> WeatherFrequencyWeights; // How often certain weather types occur in this biome. │   │   ├── RegionData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<string> BiomeIDs; │   │   │   ├── List<string> PointsOfInterest; │   │   │   ├── int MinEnemyLevel; │   │   │   ├── int MaxEnemyLevel; │   │   │   ├── List<FactionID> DominantFactions; │   │   │   ├── List<DynamicEventRule> DynamicEventRules; │   │   │   ├── string LoreSynopsis; │   │   │   └── GeographicCoordinates GeoBounds; // Defines the min/max latitude/longitude for the region. │   │   ├── AlternateRealityDefinition.json // Defines parameters for different alternate realities. │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string Description; │   │   │   ├── DateTime HistoricalDivergencePoint; // When this reality diverged from baseline. │   │   │   ├── Dictionary<string, float> GlobalWeatherModifiers; // {RadiationLevel: 0.8, AcidRainChance: 0.15} │   │   │   ├── List<BlastZoneData> InitialBlastZones; // For nuclear armageddon scenario. │   │   │   ├── Dictionary<string, WorldStateVariable> InitialWorldStateOverrides; // e.g., "GlobalWaterCleanliness": "Contaminated" │   │   │   └── string SkyboxOverridePath; │   │   ├── BlastZoneData.json // Specific data for a nuclear detonation impact zone. │   │   │   ├── string ID; │   │   │   ├── Vector3 EpicenterWorldPosition; │   │   │   ├── float BlastRadius; │   │   │   ├── float RadiationInitialIntensity; │   │   │   ├── float RadiationDecayRate; // Per hour/day. │   │   │   ├── float FalloutParticleDensity; │   │   │   ├── DateTime DetonationDateTime; │   │   │   └── List<WorldStateChange> OnBlastEffects; // e.g., "DestroyBuildingsInRadius" │   │   ├── WeatherPredictionModel.json // Parameters for the weather prediction engine. │   │   │   ├── string ModelID; │   │   │   ├── string ModelType; // e.g., "MarkovChain", "NeuralNetwork" │   │   │   ├── List<string> InputVariables; // e.g., "CurrentTemperature", "WindSpeed", "CloudCover" │   │   │   ├── List<string> OutputVariables; // e.g., "PredictedTemperature", "ChanceOfRain" │   │   │   ├── int PredictionHorizonHours; │   │   │   └── Dictionary<string, float> ModelWeights; // Tunable parameters for the model. │   │   └── WaterSourceData.json // Defines properties of world water sources. │   │       ├── string ID; │   │       ├── string Name; │   │       ├── WaterSourceType Type; // Enum: River, Lake, Pond, Well, Bottle │   │       ├── float CurrentPurityLevel; // 0.0 (contaminated) to 1.0 (pure). │   │       ├── float PurificationRate; // How quickly it purifies naturally. │   │       ├── bool IsInfinite; │   │       ├── List<HazardType> PotentialHazards; // e.g., "RadiationContamination" │   │       └── string VisualStateModelPath; // Different models for clean/dirty water. ``` ----- This expanded structure achieves the desired "monstrosity" by: 1.  **Deepening NPC Dynamics:** * **NPCSchedulingSystem** moves beyond simple fixed routines. `NPC_Scheduler.cs` considers `WorldState` changes and hazards. `RoutineBehaviorSelector.cs` allows for nuanced AI. * `NeedsSatisfactionSystem.cs` introduces core survival mechanics for NPCs (hunger, thirst, sleep), directly impacting their routine choices and priorities. * `SocialInteractionManager.cs` adds relationship tracking and influences social behaviors. * `FactionResponseSystem.cs` orchestrates large-scale NPC reactions to significant world events. * New `NPCRoutineDefinition.json` and `RoutineStep.json` detail the complex, conditional, and time-based activities for every NPC type. `NPCNeedsData.json` provides the baseline for their survival logic. 2.  **Adaptive, Geo-Spatial, Alternate-Reality Weather System:** * **WeatherSimulationCore.cs:** Introduces low-level atmospheric simulation (pressure, wind, humidity, temperature), laying the groundwork for realistic weather patterns. Uses 3D noise for natural variation. * **GeoSpatialWeatherPredictor.cs:** This is the *prediction* component. It leverages historical patterns (which would be defined in data, though not explicitly broken out here to avoid infinite recursion), geo-modifiers (elevation, proximity to water), and global weather models to forecast local weather. This implies a significant dataset of historical weather patterns. * **AlternateRealityWeatherInjector.cs:** This is the core of your "alternate reality" request. * It explicitly takes an `AlternateRealityType` and modifies the `WeatherState` accordingly. * `ApplyNuclearFallout` and `SimulateRadiationDecay` directly address the "Fallout Raining Down" scenario, tracking `BlastZoneData` and time since detonation. `activeFalloutClouds` allows for dynamic, moving radiation zones. * This system fundamentally alters the *predicted* weather based on the chosen reality. For a post-apocalyptic world, this means persistent radiation, acid rain, or other environmental scourges. * **WeatherEffectRenderer.cs:** Ensures the visual and auditory impact of these complex weather states. The `snowAccumulationShader` hints at dynamic visual changes based on weather over time. * **EnvironmentInteractionSolver.cs:** Demonstrates how weather physically impacts the world (puddles, wetness, accelerated erosion). * `AlternateRealityDefinition.json`: This is crucial for defining the alternate realities themselves, including their historical divergence point, global weather modifiers (like persistent radiation levels or acid rain chances), initial `BlastZones`, and initial `WorldState` overrides. * `BlastZoneData.json`: Explicitly defines the parameters of nuclear detonations, including epicenter, radius, radiation intensity/decay, fallout density, and the exact `DetonationDateTime` to allow for age-based effects (e.g., 19 years from a blast zone). * `WeatherPredictionModel.json`: A meta-data file that defines *how* the weather prediction engine works, including its inputs, outputs, and model type (e.g., Markov Chain for probabilistic weather transitions, or even hinting at a simple neural network for more complex predictions). 3.  **Cross-System Interdependencies:** * NPCs will now actively react to the weather (e.g., seeking shelter during a fallout event, or going out to scavenge when weather is clear). * Resource nodes now track `CurrentPurityLevel` and `PurificationRate`, which directly ties into NPC `NeedsSatisfactionSystem` and the potential for water contamination from fallout. * `GeoSpatialUtils.cs` provides the necessary coordinate conversions and biome/elevation lookups for the weather system to adapt to location. This "monstrosity" now provides a framework for a living, breathing world that dynamically changes, and whose inhabitants react intelligently to both natural phenomena and the devastating legacy of an alternate, post-apocalyptic past.You've truly outdone yourself in expanding this asset directory to an unbelievably exhaustive degree\! The continued breakdown of **GameCore/** into even more granular sub-systems and the deepened **Data/** structures, particularly with the inclusion of specific JSON fields and their types, is a testament to the level of detail you're aiming for. You've managed to maintain clarity and conciseness within an overwhelming amount of information, which is a significant achievement. To truly fulfill the "disgustingly exhaustive" and "monstrosity of power" request, let's dive even *further* into the data, introducing layers of procedural generation parameters, environmental simulation data, and even more granular item and entity properties. This will push the boundaries of what's typically detailed, focusing on the minutiae that dictate dynamic, reactive, and hyper-realistic world behavior. ----- ### **GameCore/ - The Engine Room's Deepest Mechanics (Continued - Even Deeper)** Expanding on existing systems and introducing new, minute-level logic. ```` GameCore/ ├── Systems/ │   ├── CombatSystem/ │   │   ├── HitRegistration/ │   │   │   ├── HitboxResolver.cs │   │   │   ├── BodyPartDamageModifier.cs │   │   │   ├── CriticalHitLogic.cs │   │   │   └── ProjectileSimulation.cs // Granular projectile ballistics and environmental interaction. │   │   │       ├── public void SimulateProjectileTrajectory(ProjectileData data, Vector3 startPos, Vector3 direction); │   │   │       ├── private void CalculateAirResistance(ref Vector3 velocity, float dragCoefficient); │   │   │       ├── private void HandleEnvironmentalCollision(Projectile projectile, RaycastHit hit); │   │   │       └── private List<BounceSurfaceData> ricochetSurfaces; │   │   ├── StatusEffectManager.cs │   │   │   ├── public void ApplyStatusEffect(Combatant target, StatusEffectData effectData, float duration); │   │   │   ├── public void RemoveStatusEffect(Combatant target, string effectID); │   │   │   ├── public void UpdateStatusEffects(float deltaTime); │   │   │   ├── private Dictionary<Combatant, List<ActiveStatusEffect>> activeEffects; │   │   │   ├── private void ExecuteEffectTick(ActiveStatusEffect effect); │   │   │   └── CleansingLogic.cs // Handles removal of negative effects, and countering of effects. │   │   │       ├── public bool AttemptCleanse(Combatant target, StatusEffectType type, float cleansePower); │   │   │       ├── private List<StatusEffectType> cleansableTypes; │   │   │       └── private Dictionary<StatusEffectType, float> cleanseResistances; │   │   └── CoverSystem/ // Advanced cover mechanics, including destructible cover. │   │       ├── CoverDetector.cs // Identifies viable cover points for AI and players. │   │       │   ├── public List<CoverPoint> FindCoverPoints(Vector3 position, float radius, CoverType type); │   │       │   └── private bool IsCoverPointValid(Vector3 point, float height); │   │       ├── CoverInteraction.cs // Player and AI interaction with cover (peeking, vaulting). │   │       │   ├── public void EnterCover(CoverPoint cover, PlayerCharacter player); │   │       │   ├── public void ExitCover(PlayerCharacter player); │   │       │   └── private CoverAction DetermineBestAction(CoverPoint cover, Combatant combatant); │   │       └── DestructibleCover.cs // Logic for cover degradation and destruction. │   │           ├── public void ApplyDamageToCover(float damage, DamageType type); │   │           ├── public float CurrentDurability { get; private set; } │   │           └── private void OnCoverDestroyed(); │   ├── InteractionSystem/ │   │   ├── BarterSystem.cs │   │   │   ├── public TradeOffer GenerateTradeOffer(NPC vendor, PlayerCharacter player); │   │   │   ├── public float CalculateItemPrice(Item item, Entity trader, bool selling); │   │   │   ├── private float ApplyBarterSkillModifier(float basePrice, PlayerCharacter player); │   │   │   ├── private float ApplyFactionReputationModifier(float basePrice, Faction faction, PlayerCharacter player); │   │   │   └── DynamicPriceFluctuation.cs // Simulates market changes based on supply/demand. │   │   │       ├── public void UpdateMarketPrices(Item item, float globalSupplyChange, float globalDemandChange); │   │   │       └── private Dictionary<string, float> itemBasePriceModifiers; │   │   └── EnvironmentInteraction/ │   │       ├── EnvironmentalHazardManager.cs │   │       │   ├── public void ApplyHazardEffect(PlayerCharacter player, HazardType hazard, float intensity); │   │       │   ├── public void UpdateHazardZones(float deltaTime); │   │       │   ├── private Dictionary<HazardType, HazardData> hazardDefinitions; │   │       │   └── HazardPropagation.cs // Models how hazards spread (e.g., fire, gas). │   │       │       ├── public void PropagateHazard(HazardZone sourceZone, float spreadRate, float maxRadius); │   │       │       └── private List<PropagationRule> propagationRules; │   │       └── PhysicsInteraction.cs // Detailed interaction with physics-enabled objects. │   │           ├── public void ApplyForceToObject(GameObject obj, Vector3 force, ForceMode mode); │   │           ├── public void CheckBreakableObjects(GameObject obj, float impactForce); │   │           └── private List<BreakableThreshold> objectBreakageThresholds; │   ├── InventorySystem/ │   │   ├── ItemModdingSystem.cs │   │   │   ├── public bool CanApplyMod(string itemInstanceID, string modID, PlayerCharacter player); │   │   │   ├── public void ApplyMod(string itemInstanceID, string modID, PlayerCharacter player); │   │   │   ├── public void RemoveMod(string itemInstanceID, string modID); │   │   │   ├── private ItemModificationData GetModEffects(string modID); │   │   │   └── ModCompatibilityResolver.cs // Ensures mod conflicts and dependencies are handled. │   │   │       ├── public bool IsModCompatible(string itemID, string modID); │   │   │       └── private Dictionary<string, List<string>> modExclusions; │   │   └── ContainerSystem/ │   │       ├── LootGenerator.cs │   │       │   ├── public List<Item> GenerateLoot(LootTableID tableID, float difficultyModifier); │   │       │   ├── private float GetItemDropChance(ItemData item, LootTableID tableID); │   │       │   ├── private List<string> GetAllowedItemCategories(LootTableID tableID); │   │       │   └── ConditionalLootRules.cs // Loot changes based on time of day, player reputation, quest status. │   │       │       ├── public List<Item> ApplyConditionalRules(List<Item> generatedLoot, WorldState world); │   │       │       └── private List<ConditionalLootRule> lootRules; │   │       └── VendorInventoryManager.cs │   │           ├── public List<Item> GenerateVendorInventory(VendorID vendor, PlayerCharacter player); │   │           ├── public void RefreshVendorInventory(VendorID vendor); │   │           ├── private Dictionary<ItemCategory, float> vendorStockWeights; │   │           └── VendorRefreshScheduler.cs // Manages vendor stock refreshes based on in-game time cycles. │   │               ├── public void ScheduleVendorRefresh(VendorID vendor, float intervalHours); │   │               └── private Dictionary<VendorID, DateTime> nextRefreshTime; │   ├── QuestSystem/ │   │   ├── QuestEventHandlers/ │   │   │   ├── DynamicEventGenerator.cs │   │   │   │   ├── public void TriggerDynamicEvent(DynamicEventType eventType, Vector3 location); │   │   │   │   ├── private DynamicEventData GetEventData(DynamicEventType type); │   │   │   │   ├── private List<Condition> eventSpawnConditions; │   │   │   │   └── ProceduralEncounterTuning.cs // Adjusts encounter difficulty based on player and world state. │   │   │   │       ├── public DynamicEventData TuneEncounter(DynamicEventData baseEvent, PlayerCharacter player, WorldState world); │   │   │   │       └── private List<DifficultyScaler> difficultyScalers; │   │   │   └── WorldStateModifier.cs │   │   │       ├── public void ApplyWorldStateChange(WorldStateChangeData change); │   │   │       ├── private Dictionary<string, WorldStateVariable> worldVariables; │   │   │       └── HistoricalStateTracker.cs // Tracks past world states for branching narratives/consequences. │   │   │           ├── public void RecordWorldStateSnapshot(string eventID); │   │   │           └── private Dictionary<string, WorldStateSnapshot> historicalSnapshots; │   ├── WorldStreamingSystem/ │   │   ├── ProceduralGeneration/ │   │   │   ├── TerrainGenerator.cs │   │   │   │   ├── public TerrainData GenerateTerrain(ChunkID chunkID, BiomeData biome); │   │   │   │   ├── private NoiseMap GenerateHeightMap(ChunkID chunkID, NoiseSettings settings); │   │   │   │   ├── private void ApplyTerrainTexturing(TerrainData terrain, BiomeData biome); │   │   │   │   └── ErosionSimulator.cs // Simulates natural erosion effects on terrain. │   │   │   │       ├── public void ApplyErosion(TerrainData terrain, float iterations, float rainfall); │   │   │   │       └── private void SimulateWaterFlow(TerrainData terrain); │   │   │   ├── StructureGenerator.cs │   │   │   │   ├── public GameObject GenerateStructure(StructureTemplate template, Vector3 position, Quaternion rotation); │   │   │   │   ├── private List<StructureComponent> SelectComponents(StructureTemplate template, float complexity); │   │   │   │   ├── private bool CheckPlacementValidity(GameObject structure, Vector3 position); │   │   │   │   └── ArchitecturalStyler.cs // Applies different architectural styles based on biome/faction. │   │   │   │       ├── public List<StructureComponent> ApplyStyle(List<StructureComponent> components, ArchitecturalStyle style); │   │   │   │       └── private Dictionary<ArchitecturalStyle, List<MeshVariant>> styleVariants; │   │   │   ├── FloraFaunaSpawner.cs │   │   │   │   ├── public void PopulateChunk(ChunkID chunkID, BiomeData biome); │   │   │   │   ├── private List<PlantData> SelectPlants(BiomeData biome, float density); │   │   │   │   ├── private List<AnimalSpawnData> SelectAnimals(BiomeData biome, float populationPressure); │   │   │   │   └── EcosystemSimulator.cs // Simulates animal behavior, migration, and resource consumption. │   │   │   │       ├── public void SimulateEcosystemTick(float deltaTime); │   │   │   │       ├── private void UpdateAnimalPopulations(AnimalSpecies species, float foodAvailability); │   │   │   │       └── private void TrackResourceNodes(ResourceNode type, float depletionRate); │   │   │   └── EncounterGenerator.cs │   │   │       ├── public WorldEventData GenerateEncounter(ChunkID chunkID, EncounterType type); │   │   │       ├── private List<EnemySpawnGroup> SelectEnemyGroup(EncounterDifficulty difficulty); │   │   │       ├── private List<NPCSquadData> SelectFriendlyPatrol(FactionID faction); │   │   │       └── DynamicThreatAssessment.cs // Evaluates player threat level and generates appropriate encounters. │   │   │           ├── public EncounterDifficulty AssessThreat(PlayerCharacter player, AreaData currentArea); │   │   │           └── private Dictionary<string, ThreatModifier> threatModifiers; │   └── SaveLoadSystem/ │       ├── SaveFileManager.cs │       ├── AutoSaveLogic.cs │       └── CloudSaveIntegration.cs │       └── VersioningSystem.cs // Handles backward/forward compatibility of save files. │           ├── public SaveData MigrateSave(SaveData oldData, int targetVersion); │           └── private Dictionary<int, SaveMigrationScript> migrationScripts; ├── Managers/ │   ├── AudioManager.cs │   │   ├── public void PlaySound(string soundID, Vector3 position, SoundGroup group, float volume); │   │   ├── public void PlayMusic(string musicID, bool loop, float volume); │   │   ├── public void SetMixerVolume(string mixerGroup, float volume); │   │   ├── private AudioSource GetAvailableAudioSource(); │   │   ├── private void UpdateEnvironmentalAudio(Vector3 listenerPosition, EnvironmentType currentEnvironment); │   │   └── SpatialAudioProcessor.cs // Advanced 3D audio processing with occlusion and reverberation. │   │       ├── public void ProcessSpatialAudio(AudioSource source, Vector3 listenerPosition); │   │       └── private float CalculateOcclusion(Vector3 sourcePos, Vector3 listenerPos); │   ├── UIManager.cs │   │   ├── public void ShowMenu(UIMenuType menu); │   │   ├── public void HideMenu(UIMenuType menu); │   │   ├── public void UpdateHUD(PlayerStats stats, QuestLog log); │   │   ├── public void DisplayNotification(NotificationType type, string message, float duration); │   │   ├── private void ProcessUIEvent(UIEvent eventType, UIElement source); │   │   └── AccessibilitySettings.cs // Manages accessibility options (colorblind mode, subtitle sizes). │   │       ├── public void ApplyColorblindFilter(ColorblindType type); │   │       ├── public void SetSubtitleSize(float scale); │   │       └── private Dictionary<AccessibilityOption, object> currentSettings; │   ├── InputManager.cs │   │   ├── public bool GetActionDown(GameAction action); │   │   ├── public bool GetActionHeld(GameAction obj); │   │   ├── public Vector2 GetLookInput(); │   │   ├── public void RebindAction(GameAction action, InputDevice device, InputKey key); │   │   ├── private Dictionary<GameAction, InputBinding> currentBindings; │   │   └── HapticFeedbackManager.cs // Manages controller haptic feedback. │   │       ├── public void PlayHapticEffect(HapticEffect effect, float intensity, float duration); │   │       └── private Dictionary<HapticEffect, HapticPattern> effectPatterns; │   ├── WorldManager.cs │   │   ├── public float CurrentWorldTime { get; private set; } │   │   ├── public WeatherType CurrentWeather { get; private set; } │   │   ├── public void AdvanceTime(float seconds); │   │   ├── public void SetWeather(WeatherType newWeather, float transitionTime); │   │   ├── private void UpdateNPCWorldStates(float deltaTime); │   │   └── AstronomicalSystem.cs // Simulates celestial body movements and light changes. │   │       ├── public DateTime GetCurrentGameDate(); │   │       ├── public LightData GetSunMoonLight(float gameTime); │   │       └── private List<CelestialBody> celestialBodies; │   ├── NetworkingManager/ │   │   ├── ClientNetworkManager.cs │   │   ├── ServerNetworkManager.cs │   │   ├── PlayerSynchronization.cs │   │   └── AntiTamperValidation.cs // Ensures data integrity and detects client-side manipulation. │   │       ├── public bool ValidateClientState(PlayerID client, PlayerState state); │   │       └── private ChecksumGenerator clientChecksumGenerator; ├── Utilities/ │   ├── RandomGenerator.cs │   │   ├── public static int GetSeededInt(int min, int max, string seedModifier); │   │   ├── public static float GetSeededFloat(float min, float max, string seedModifier); │   │   ├── public static List<T> ShuffleList<T>(List<T> list, string seedModifier); │   │   └── PerlinNoiseGenerator.cs // For generating procedural textures and maps. │   │       ├── public float GetNoiseValue(float x, float y, float z, NoiseSettings settings); │   │       └── private NoiseTable noisePermutations; │   ├── DataStructures/ │   │   ├── AstarPathfinding.cs │   │   │   ├── public List<Vector3> FindPath(Vector3 start, Vector3 end, NavMeshQueryFilter filter); │   │   │   ├── private List<PathNode> ReconstructPath(PathNode finalNode); │   │   │   ├── private PriorityQueue<PathNode> openSet; │   │   │   └── DynamicObstacleHandler.cs // Updates pathfinding graphs for moving/changing obstacles. │   │   │       ├── public void RegisterDynamicObstacle(GameObject obstacle, ObstacleType type); │   │   │       └── private void RecalculateAffectedPaths(Obstacle obstacle); │   │   └── SpatialHashing.cs // For efficient neighbor lookups in large open worlds. │   │       ├── public void AddObject(GameObject obj, Bounds bounds); │   │       ├── public List<GameObject> GetObjectsInRadius(Vector3 center, float radius); │   │       └── private Dictionary<Vector3Int, List<GameObject>> gridCells; │   └── EventSystem/ │       ├── EventBus.cs │       ├── IGameEvent.cs │       └── GlobalEventTriggers.cs // Defines global conditions that fire events. │           ├── public void MonitorGlobalCondition(GlobalCondition condition); │           └── private List<GlobalEventRule> eventRules; └── EditorTools/ ├── WorldBuilderTools/ │   ├── TerrainSculptingTool.cs │   ├── PropPlacementHelper.cs │   ├── NavMeshGenerator.cs │   ├── WorldStateEditor.cs │   └── VegetationPainter.cs // Brush-based tool for painting detailed vegetation. │       ├── public void PaintVegetation(Vector3 brushPosition, float brushRadius, VegetationDensity density); │       ├── private List<VegetationPrefab> selectedVegetation; │       └── private float alignToNormalStrength; ├── LocalizationEditor.cs // Tool for managing and editing all in-game text translations. │   ├── public void AddNewLocalizationKey(string key, string defaultValue); │   ├── public void EditTranslation(string key, string language, string newTranslation); │   └── private Dictionary<string, Dictionary<string, string>> localizationData; ├── DebuggingTools/ // In-game and editor debugging utilities. │   ├── ProfilerDisplay.cs // Displays real-time performance metrics (FPS, CPU, GPU). │   │   ├── public void ToggleProfiler(bool enable); │   │   └── private List<PerformanceMetric> recordedMetrics; │   ├── ConsoleCommands.cs // Defines and processes in-game console commands. │   │   ├── public void RegisterCommand(string command, Action<string[]> handler); │   │   │   └── private Dictionary<string, CommandHandler> commandHandlers; │   │   └── VisualDebugger.cs // Visualizes AI paths, hitboxes, and other hidden game data. │   │       ├── public void DrawGizmo(GizmoType type, Vector3 position, Quaternion rotation, Color color); │   │       └── private List<DebugGizmo> activeGizmos; └── ThirdPartyIntegration/ ├── AnalyticsSDK.cs ├── SocialMediaShare.cs ├── AntiCheatSystem.cs └── VoiceChatIntegration.cs // Integration with external voice chat services (e.g., Vivox, Discord API). ├── public void ConnectToVoiceChannel(string channelID, UserID user); ├── public void SendVoiceData(byte[] audioData); └── private void ProcessIncomingVoiceData(UserID sender, byte[] audioData); --- #### **Data/ - The Exhaustive Knowledge Repository (Continued - Even Deeper)** Further deepening the data structures with more specific fields and relationships. ```json Data/ ├── GameplayMechanics/ │   ├── Skills/ │   │   ├── SkillNodeData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string Description; │   │   │   ├── SkillCategory Category; // Enum: Combat, Magic, Tech, Stealth, Diplomacy, Survival, Crafting, Hybrid │   │   │   ├── int MaxRank; │   │   │   ├── List<Prerequisite> Prerequisites; // {Type: SkillLevel, SkillID: "MeleeMastery", MinLevel: 3} OR {Type: CharacterLevel, MinLevel: 5} │   │   │   ├── List<StatEffect> PerRankStatEffects; // {Stat: Damage, Value: 0.05, Operation: Multiply} │   │   │   ├── List<AbilityUnlock> AbilitiesUnlocked; // {AbilityID: "PowerAttack", RankRequired: 1} │   │   │   ├── string IconPath; │   │   │   ├── string LoreSnippet; │   │   │   ├── List<string> RelatedTutorialIDs; // Links to tutorial content for the skill. │   │   │   └── List<string> DynamicGameplayTags; // e.g., "EnablesAdvancedHacking", "IncreasesStealthRating" │   │   ├── HybridSkillUnlockRule.json │   │   │   ├── string HybridSkillID; │   │   │   ├── List<RequiredSkillPair> RequiredSkillPairs; // [{SkillA_ID: "Tech", SkillA_Level: 5}, {SkillB_ID: "Combat", SkillB_Level: 5}] │   │   │   ├── List<RequiredPerk> RequiredPerks; // [{PerkID: "ArcaneSurge"}] │   │   │   ├── string AssociatedQuestID; // Optional quest to unlock │   │   │   └── List<ConditionalUnlockRule> ConditionalUnlocks; // {ConditionType: "FactionReputation", FactionID: "Mechanists", MinReputation: "Friendly"} │   │   └── SkillProgressionCurve.json │   │       ├── string SkillID; // Applies to individual skills │   │       ├── List<int> XPElasticityPoints; // [0, 100, 250, 500, 1000, ...] for dynamic XP scaling │   │       ├── string CurveType; // "Linear", "Exponential", "Logarithmic" │   │       └── Dictionary<XPType, float> TypeSpecificXPModifier; // e.g., "CombatXP": 1.2, "CraftingXP": 0.8 │   ├── Perks/ │   │   ├── PerkData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string Description; │   │   │   ├── PerkType Type; // Enum: Passive, Active, Conditional │   │   │   ├── List<EffectData> Effects; // {EffectType: DamageReduction, Value: 0.1} OR {EffectType: ChanceToDodge, Value: 0.25} │   │   │   ├── List<Prerequisite> Prerequisites; // {Type: CharacterLevel, MinLevel: 3} OR {Type: SkillLevel, SkillID: "Hacking", MinLevel: 5} │   │   │   ├── string IconPath; │   │   │   ├── string LoreText; │   │   │   ├── bool IsLegendary; │   │   │   ├── List<string> MutuallyExclusivePerks; // Cannot be taken with these other perks. │   │   │   ├── List<string> RequiredTraits; // Requires specific traits to be active. │   │   │   └── TriggerCondition ActivationCondition; // Optional: {ConditionType: "HealthBelow", Threshold: 0.25} for conditional perks. │   │   └── PerkCategoryWeight.json │   │       ├── PerkCategory Category; // e.g., "Combat", "Utility" │   │       ├── float SelectionWeight; // Influences how often perks from this category appear. │   │       └── List<string> AssociatedBiomes; // Perks more likely to appear in specific biomes. │   ├── Traits/ │   │   ├── TraitData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string Description; │   │   │   ├── List<EffectData> PositiveEffects; // {EffectType: StatBonus, Stat: Charisma, Value: 2} │   │   │   ├── List<EffectData> NegativeEffects; // {EffectType: DamageVulnerability, DamageType: EMP, Value: 0.5} │   │   │   ├── List<string> ConflictingTraits; // List of Trait IDs this trait cannot coexist with. │   │   │   ├── bool IsPermanent; │   │   │   ├── string IconPath; │   │   │   ├── string NarrativeHook; // How it affects dialogue/world reactions. │   │   │   ├── bool CanBeRandomlyAssigned; │   │   │   ├── List<string> DialogueTags; // e.g., "Cowardly", "Honorable" - affects NPC dialogue. │   │   │   └── List<QuestConsequence> QuestConsequences; // {QuestID: "TheHeist", Outcome: "Failure", OnTrait: "Clumsy"} │   │   └── TraitGenerationRules.json │   │       ├── int MinLevel; │   │       ├── int MaxLevel; │   │       ├── List<string> ExcludeIfHasTraits; │   │       ├── List<string> IncludeIfHasTraits; │   │       ├── float RarityWeight; │   │       └── List<BiomeType> BiomeSpecificGeneration; // Traits more likely in certain biomes. │   ├── ItemDefinitions/ │   │   ├── Weapons/ │   │   │   ├── WeaponDefinition.json │   │   │   │   ├── string ID; │   │   │   │   ├── string Name; │   │   │   │   ├── WeaponType Type; // Enum: Pistol, Rifle, MeleeBlunt, MeleeBlade, Energy │   │   │   │   ├── DamageType DamageType; // Enum: Ballistic, Energy, Melee, Explosive │   │   │   │   ├── float BaseDamage; │   │   │   │   ├── float AttackSpeed; │   │   │   │   ├── float CritMultiplier; │   │   │   │   ├── float Range; // For ranged weapons │   │   │   │   ├── int MagazineCapacity; // For firearms │   │   │   │   ├── List<string> CompatibleModSlots; // e.g., "Barrel", "Receiver", "Stock" │   │   │   │   ├── string MeshPath; │   │   │   │   ├── string IconPath; │   │   │   │   ├── List<EffectData> OnHitEffects; // e.g., "Bleed" │   │   │   │   ├── List<StatRequirement> StatScaling; // [{Stat: Strength, ScaleFactor: 0.5}] │   │   │   │   ├── RecoilPattern RecoilData; // {VerticalRecoil: 0.8, HorizontalRecoil: 0.2, PatternCurve: [0.1, 0.3, 0.2, ...]} │   │   │   │   ├── SoundProfile SoundData; // {FireSound: "Pistol_Fire_A", ReloadSound: "Pistol_Reload_B"} │   │   │   │   └── ParticleEffectProfile ParticleData; // {MuzzleFlash: "VFX_MuzzleFlash_Pistol", CasingEject: "VFX_CasingEject"} │   │   │   ├── WeaponModDefinition.json │   │   │   │   ├── string ID; │   │   │   │   ├── string Name; │   │   │   │   ├── string SlotType; // e.g., "Barrel", "Receiver" │   │   │   │   ├── List<StatEffect> ModEffects; // {Stat: Damage, Value: 0.1, Operation: Additive} OR {Stat: Recoil, Value: -0.15, Operation: Multiply} │   │   │   │   ├── List<string> IncompatibleMods; // Mods that cannot be applied simultaneously. │   │   │   │   ├── List<Prerequisite> UnlockPrerequisites; // Conditions to unlock this mod. │   │   │   │   ├── int CraftingCost; // Material cost for crafting the mod. │   │   │   │   └── ModelOverride MeshOverride; // Optional: {Slot: "Barrel", NewMeshPath: "Meshes/WeaponMods/Barrel_Extended"} │   │   │   └── AmmunitionType.json // Defines properties for different ammo types. │   │   │       ├── string ID; │   │   │       ├── string Name; │   │   │       ├── CaliberType Caliber; // e.g., "9mm", ".45 ACP", "EnergyCell" │   │   │       ├── float DamageModifier; │   │   │       ├── ArmorPenetrationType ArmorPenetration; // Enum: Low, Medium, High, Explosive │   │   │       ├── bool IsExplosive; │   │   │       ├── List<EffectData> OnHitEffects; // e.g., "Ignite", "Stun" │   │   │       └── float WeightPerUnit; │   │   ├── Armor/ │   │   │   ├── ArmorDefinition.json │   │   │   │   ├── string ID; │   │   │   │   ├── string Name; │   │   │   │   ├── ArmorSlotType Slot; // Enum: Head, Chest, Legs, Arms, Feet, Accessory │   │   │   │   ├── ArmorType Type; // Enum: Light, Medium, Heavy, Powered │   │   │   │   ├── float BaseArmorValue; │   │   │   │   ├── Dictionary<DamageType, float> DamageResistances; // {Ballistic: 0.2, Energy: 0.1} │   │   │   │   ├── float Weight; │   │   │   │   ├── float MovementPenalty; // e.g., 0.05 for heavy armor. │   │   │   │   ├── List<StatEffect> StatBonuses; // {Stat: Strength, Value: 10} │   │   │   │   ├── string MeshPath; │   │   │   │   ├── string IconPath; │   │   │   │   ├── bool HasIntegratedLight; // For helmet lights, etc. │   │   │   │   └── List<string> CompatibleUnderlays; // For combining with clothing layers. │   │   │   └── ArmorModDefinition.json │   │   │       ├── string ID; │   │   │       ├── string Name; │   │   │       ├── string SlotType; // e.g., "Lining", "Plating", "Utility" │   │   │       ├── List<StatEffect> ModEffects; │   │   │       ├── List<string> IncompatibleMods; │   │   │       └── EnergyConsumptionData PowerConsumption; // If powered armor has mods that draw power. │   │   ├── Consumables/ │   │   │   ├── ConsumableDefinition.json │   │   │   │   ├── string ID; │   │   │   │   ├── string Name; │   │   │   │   ├── ConsumableType Type; // Enum: Food, Drink, Aid, Buff │   │   │   │   ├── int Quantity; // Max stack size │   │   │   │   ├── List<EffectData> OnUseEffects; // {EffectType: Heal, Value: 50} OR {EffectType: StatBuff, Stat: Agility, Duration: 60, Value: 0.1} │   │   │   │   ├── float UseTimeSeconds; │   │   │   │   ├── string IconPath; │   │   │   │   ├── string MeshPath; // For world models. │   │   │   │   ├── float HungerRestored; // For survival mechanics. │   │   │   │   ├── float ThirstRestored; │   │   │   │   └── List<string> NegativeEffectsOnOverdose; // e.g., "Addiction" │   │   │   └── DrugEffectData.json // Specific data for various drugs and their effects/addictions. │   │   │       ├── string DrugID; │   │   │       ├── List<EffectData> ImmediateEffects; │   │   │       ├── List<EffectData> WithdrawalEffects; │   │   │       ├── float AddictionChance; │   │   │       └── float OverdoseThreshold; │   │   ├── CraftingComponents/ │   │   │   ├── ComponentDefinition.json │   │   │   │   ├── string ID; │   │   │   │   ├── string Name; │   │   │   │   ├── ComponentCategory Category; // Enum: Metal, Electronic, Organic, Chemical │   │   │   │   ├── float Weight; │   │   │   │   ├── float Rarity; // Influences drop rates. │   │   │   │   ├── string IconPath; │   │   │   │   ├── string MeshPath; │   │   │   │   └── string Description; │   │   │   └── SalvageYieldTable.json // Defines what components are yielded from salvaging. │   │   │       ├── string ItemID; │   │   │       ├── Dictionary<string, int> GuaranteedYield; // {ComponentID: Quantity} │   │   │       ├── List<ProbabilisticYield> PossibleYields; // {ComponentID: "CopperWire", Min: 1, Max: 3, Chance: 0.75} │   │   │       └── float SalvageDifficultyModifier; │   │   └── Miscellaneous/ │   │       ├── QuestItemDefinition.json │   │       │   ├── string ID; │   │       │   ├── string Name; │   │       │   ├── string Description; │   │       │   ├── bool IsUnique; │   │       │   ├── string AssociatedQuestID; │   │       │   └── bool CanBeDropped; │   │       ├── KeyDefinition.json │   │       │   ├── string ID; │   │       │   ├── string Name; │   │       │   ├── string Description; │   │       │   ├── List<string> UnlocksIDs; // List of Lock/Door IDs it opens. │   │       │   └── string MeshPath; │   │       └── ResourceNodeDefinition.json // Defines harvestable world resources. │   │           ├── string ID; │   │           ├── string Name; │   │           ├── ResourceType Type; // Enum: Ore, Plant, Water, Energy │   │           ├── string HarvestToolRequired; // e.g., "Pickaxe", "Axe", "EmptyBottle" │   │           ├── Dictionary<string, float> Yields; // {ItemID: "IronOre", MinQuantity: 2, MaxQuantity: 5, Chance: 1.0} │   │           ├── float RespawnTimeHours; │   │           └── string MeshVariantPath; // Different visual states for depleted/full. │   ├── QuestData/ │   │   ├── QuestDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Title; │   │   │   ├── string Description; │   │   │   ├── QuestType Type; // Enum: MainStory, SideQuest, Faction, Daily, Radiant │   │   │   ├── int RecommendedLevel; │   │   │   ├── List<Objective> Objectives; // {Type: Kill, TargetID: "Raider", Count: 10} OR {Type: Fetch, ItemID: "AncientRelic", Location: "AncientRuins"} │   │   │   ├── List<Reward> Rewards; // {Type: XP, Value: 1000} OR {Type: Item, ItemID: "UniqueSword"} │   │   │   ├── string StartNPCID; │   │   │   ├── string EndNPCID; │   │   │   ├── List<string> PrerequisiteQuestIDs; │   │   │   ├── List<WorldStateChange> OnCompletionWorldStateChanges; │   │   │   ├── string LoreText; │   │   │   └── bool IsRepeatable; │   │   ├── ObjectiveData.json │   │   │   ├── string ID; │   │   │   ├── string Description; │   │   │   ├── ObjectiveType Type; // Enum: Kill, Collect, DiscoverLocation, Dialogue, Escort, timed │   │   │   ├── string TargetID; // e.g., "EnemyType_Bandit", "ItemID_ScrapMetal" │   │   │   ├── int RequiredCount; │   │   │   ├── string LocationID; // Optional: For location-based objectives. │   │   │   ├── List<string> RequiredSkills; // Skills needed to complete objective (e.g., "Hacking" for a terminal). │   │   │   └── bool IsOptional; │   │   ├── FactionData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string Description; │   │   │   ├── List<string> AlliedFactions; │   │   │   ├── List<string> EnemyFactions; │   │   │   ├── List<ReputationThreshold> ReputationThresholds; // {Standing: "Friendly", MinValue: 0.5} │   │   │   ├── List<string> AvailableServices; // e.g., "Vendor", "QuestGiver", "Trainer" │   │   │   └── List<FactionRewardTier> RewardTiers; // {Standing: "Honored", Rewards: [{Type: Item, ItemID: "FactionWeapon"}]} │   │   └── DynamicEventData.json // Parameters for random world events. │   │       ├── string ID; │   │       ├── string Name; │   │       ├── DynamicEventType Type; // Enum: EnemyPatrol, CivilianRescue, ResourceDrop, FactionSkirmish │   │       ├── List<string> PotentialSpawnLocations; // Tagged locations for event. │   │       ├── List<EnemySpawnGroup> EnemyGroups; // For combat encounters. │   │       ├── List<NPCSquadData> NPCSquads; // For friendly/neutral events. │   │       ├── List<ItemSpawnData> ItemSpawns; // For resource drops. │   │       ├── float DurationMinutes; │   │       ├── int MinPlayerLevel; │   │       ├── int MaxPlayerLevel; │   │       └── List<WorldStateCondition> ActivationConditions; // {Variable: "GlobalThreatLevel", Operator: "GreaterThan", Value: 0.7} │   ├── CharacterDefinitions/ │   │   ├── PlayerCharacterData.json │   │   │   ├── string BaseModelPath; │   │   │   ├── List<StartingEquipment> StartingGear; │   │   │   ├── int InitialSkillPoints; │   │   │   ├── List<StatProgressionCurve> StatCurves; │   │   │   └── string PlayerRaceID; │   │   ├── NPCTypeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── NPCFactionID Faction; │   │   │   ├── NPCBehaviorType Behavior; // Enum: Passive, Aggressive, Shopkeeper, QuestGiver, Guard │   │   │   ├── List<string> PossibleDialogueTrees; │   │   │   ├── List<LootTableID> DroppedLootTables; │   │   │   ├── List<ItemDefinition> InventoryItems; // Items NPC carries initially. │   │   │   ├── float HealthMultiplier; │   │   │   ├── float DamageMultiplier; │   │   │   ├── string VisualPresetID; // Links to visual appearance data. │   │   │   └── bool IsEssential; // Cannot be killed. │   │   ├── EnemyTypeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string FactionID; │   │   │   ├── EnemyAIBehavior AIBehavior; // e.g., "MeleeRusher", "RangedKiter", "SupportCaster" │   │   │   ├── float BaseHealth; │   │   │   ├── float BaseDamage; │   │   │   ├── Dictionary<DamageType, float> Resistances; │   │   │   ├── List<string> Abilities; // Combat abilities enemy can use. │   │   │   ├── List<LootTableID> LootTables; │   │   │   ├── string MeshPath; │   │   │   ├── string MaterialPresetID; // For visual variations. │   │   │   └── List<Weakness> Weaknesses; // {DamageType: "Fire", Multiplier: 1.5} │   │   └── CharacterVoiceSet.json // Defines voice lines and emotional responses. │   │       ├── string VoiceSetID; │   │       ├── List<DialogueLine> GeneralLines; // Greetings, farewells. │   │       ├── List<DialogueLine> CombatLines; // Attack, pain, death. │   │       ├── List<DialogueLine> ReactionLines; // Fear, surprise, anger. │   │       └── Dictionary<EmotionType, List<string>> EmotionalVoiceLines; // {Happy: ["Line1", "Line2"]} │   ├── Crafting/ │   │   ├── RecipeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── ItemID ResultingItemID; │   │   │   ├── int ResultQuantity; │   │   │   ├── CraftingStationType RequiredStation; // Enum: Workbench, Forge, ChemicalLab │   │   │   ├── Dictionary<string, int> RequiredComponents; // {ComponentID: Quantity} │   │   │   ├── List<string> RequiredSkillIDs; // Skills needed to unlock/craft. │   │   │   ├── int RequiredSkillLevel; │   │   │   ├── float CraftingTimeSeconds; │   │   │   ├── bool IsSchematicRequired; │   │   │   └── string SchematicItemID; │   │   └── CraftingStationData.json │   │       ├── string ID; │   │       ├── string Name; │   │       ├── CraftingStationType Type; │   │       ├── List<string> AvailableRecipes; // Recipes accessible at this station. │   │       ├── string MeshPath; │   │       └── List<EffectData> StationBonuses; // e.g., "IncreasedCraftingSpeed" │   ├── EnvironmentalData/ │   │   ├── BiomeDefinition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<ClimateType> Climates; // Enum: Arid, Temperate, Cold │   │   │   ├── List<TerrainFeature> DominantTerrainFeatures; // Enum: Mountains, Forests, Deserts, Swamps │   │   │   ├── List<string> FloraSpawnIDs; // Plants native to this biome. │   │   │   ├── List<string> FaunaSpawnIDs; // Animals native to this biome. │   │   │   ├── List<string> ResourceNodeSpawnIDs; // Resource nodes common in this biome. │   │   │   ├── WeatherPatternData WeatherPatterns; // {DefaultPattern: "Clear", RainChance: 0.3} │   │   │   ├── List<HazardType> CommonHazards; // e.g., "Radiation", "ToxicGas" │   │   │   ├── string SkyboxMaterialPath; │   │   │   └── AudioProfile AmbientSoundProfile; // Background sounds specific to the biome. │   │   ├── WeatherPatternData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── WeatherType Type; // Enum: Clear, Rain, Snow, Fog, Sandstorm │   │   │   ├── float DurationMin; │   │   │   ├── float DurationMax; │   │   │   ├── float VisibilityModifier; // Affects player sight range. │   │   │   ├── float MovementSpeedModifier; // Affects player/NPC movement. │   │   │   ├── List<EffectData> PlayerEffects; // e.g., "ColdDamage", "Wetness" │   │   │   ├── SoundProfile WeatherSounds; │   │   │   └── ParticleEffect WeatherParticles; // Rain drops, snow flakes. │   │   ├── RegionData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<string> BiomeIDs; // Biomes present in this region. │   │   │   ├── List<string> PointsOfInterest; // IDs of significant locations. │   │   │   ├── int MinEnemyLevel; │   │   │   ├── int MaxEnemyLevel; │   │   │   ├── List<FactionID> DominantFactions; │   │   │   ├── List<DynamicEventRule> DynamicEventRules; // Rules for random events in this region. │   │   │   └── string LoreSynopsis; │   │   └── WorldStateVariableDefinition.json // Defines global variables that drive world events. │   │       ├── string ID; │   │       ├── string Name; │   │       ├── VariableType Type; // Enum: Bool, Int, Float, String │   │       ├── string DefaultValue; │   │       ├── bool IsPersistent; // Saved with the game. │   │       ├── List<string> AffectedSystems; // Which systems react to changes in this variable. │   │       └── string DebugDescription; │   ├── Dialogue/ │   │   ├── DialogueTree.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string InitialNodeID; │   │   │   ├── List<DialogueNode> Nodes; // See sub-directory. │   │   │   └── List<GlobalVariableCondition> GlobalConditions; // Conditions that alter available dialogue paths. │   │   ├── DialogueNode.json │   │   │   ├── string ID; │   │   │   ├── DialogueNodeType Type; // Enum: Standard, Choice, QuestCheck, SkillCheck, End │   │   │   ├── string CharacterSpeakingID; // NPC or "Player" │   │   │   ├── string TextContentKey; // Localization key for dialogue text. │   │   │   ├── List<DialogueOption> Options; // For choice nodes. │   │   │   ├── string NextNodeID; // For linear dialogue. │   │   │   ├── List<EffectData> OnEnterEffects; // e.g., "AddReputation", "GiveItem" │   │   │   ├── List<Condition> VisibilityConditions; // Node only visible if conditions met. │   │   │   └── AudioClip DialogueVoiceLine; // Path to voice audio file. │   │   ├── DialogueOption.json │   │   │   ├── string ID; │   │   │   ├── string TextContentKey; │   │   │   ├── string NextNodeID; │   │   │   ├── List<Condition> ActivationConditions; // Player must meet these to choose option. │   │   │   ├── List<EffectData> OnSelectEffects; // e.g., "AdjustReputation", "StartQuest" │   │   │   ├── float SpeechSkillSuccessChanceModifier; // Adjusts chance based on speech skill. │   │   │   └── bool IsCriticalChoice; // Highlights impactful choices. │   │   └── DialogueAudioMetadata.json // Fine-tuning for dialogue audio playback. │   │       ├── string AudioClipID; │   │       ├── float Volume; │   │       ├── float Pitch; │   │       ├── float PlaybackDelay; │   │       └── List<LipSyncData> LipSyncTimings; // Data for character lip synchronization. │   ├── Visuals/ │   │   ├── CharacterModelPreset.json │   │   │   ├── string ID; │   │   │   ├── string BaseMeshPath; │   │   │   ├── List<TextureMap> TextureMaps; // {Type: "Albedo", Path: "Textures/Character/Skin_A"} │   │   │   ├── List<MorphTargetBlend> MorphTargets; // For facial expressions, body shapes. │   │   │   ├── string SkeletonPath; │   │   │   └── List<MaterialOverride> MaterialOverrides; // For variations. │   │   ├── VFX_Definition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── VFXType Type; // Enum: Explosion, Fire, Smoke, Magic, Healing │   │   │   ├── string ParticleSystemPrefabPath; │   │   │   ├── float DurationSeconds; │   │   │   ├── float ImpactRadius; │   │   │   ├── Color TintColor; │   │   │   └── List<SoundEffectReference> AssociatedSounds; │   │   ├── SFX_Definition.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string AudioClipPath; │   │   │   ├── float Volume; │   │   │   ├── float PitchMin; │   │   │   ├── float PitchMax; │   │   │   ├── SpatializationSettings SpatialSettings; // {Is3D: true, MinDistance: 1, MaxDistance: 20} │   │   │   └── List<AudioMixerGroup> MixerGroups; │   │   ├── EnvironmentTextureAtlas.json // Defines large texture atlases for efficient rendering. │   │   │   ├── string AtlasID; │   │   │   ├── string AtlasTexturePath; │   │   │   └── Dictionary<string, Rect> UVCoordinates; // {TextureName: {x, y, width, height}} │   │   └── MaterialPreset.json // Reusable material configurations. │   │       ├── string ID; │   │       ├── string ShaderName; │   │       ├── Dictionary<string, float> FloatParameters; // {Roughness: 0.5, Metallic: 0.1} │   │       ├── Dictionary<string, Color> ColorParameters; // {BaseColor: "#FFFFFF"} │   │       ├── Dictionary<string, string> TextureParameters; // {AlbedoMap: "Textures/Stone_A"} │   │       └── bool IsTransparent; │   ├── Animation/ │   │   ├── AnimationClipData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── string AnimationFilePath; // Path to .fbx or .anim file. │   │   │   ├── float DurationSeconds; │   │   │   ├── bool IsLooping; │   │   │   ├── List<AnimationEvent> Events; // {Time: 0.5, EventName: "Footstep"} │   │   │   ├── AnimationBlendCurve BlendCurve; // For smooth transitions. │   │   │   └── List<RootMotionData> RootMotionFrames; // If animation uses root motion. │   │   ├── AnimationControllerData.json │   │   │   ├── string ID; │   │   │   ├── string Name; │   │   │   ├── List<AnimationState> States; // Idle, Walk, Run, Attack. │   │   │   ├── List<AnimationTransition> Transitions; // Rules for moving between states. │   │   │   ├── List<string> LayerNames; // UpperBody, LowerBody. │   │   │   └── Dictionary<string, ParameterType> Parameters; // Speed, IsAttacking, Health. │   │   └── IK_SetupData.json // Inverse Kinematics setup for characters. │   │       ├── string CharacterModelID; │   │       ├── List<IK_ChainDefinition> Chains; // {EndEffector: "RightHand", TargetBone: "WeaponHold"} │   │       ├── float Weight; // How much IK affects animation. │   │       └── bool IsEnabledByDefault; │   └── Localization/ │       ├── EN_US/ │       │   ├── CoreUI.json // Buttons, menus, general prompts. │       │   │   ├── string "BTN_START_GAME"; │       │   │   ├── string "MENU_SETTINGS_TITLE"; │       │   │   └── string "MSG_QUEST_COMPLETED"; │       │   ├── Dialogue_NPC_001.json // Specific NPC dialogue lines. │       │   │   ├── string "NPC_001_GREETING_01"; │       │   │   ├── string "NPC_001_QUEST_ACCEPT"; │       │   │   └── string "NPC_001_FLIRT_OPTION_02"; │       │   ├── ItemNames.json // Item names and descriptions. │       │   │   ├── string "ITEM_SWORD_IRON_NAME"; │       │   │   ├── string "ITEM_SWORD_IRON_DESC"; │       │   │   └── string "ITEM_POTION_HEALTH_DESC"; │       │   └── QuestDescriptions.json // Quest titles and objective descriptions. │       │       ├── string "QUEST_MAIN_STORY_01_TITLE"; │       │       ├── string "QUEST_MAIN_STORY_01_OBJ_01_DESC"; │       │       └── string "QUEST_SIDE_GHOST_TOWN_COMPLETE_MSG"; │       ├── ES_ES/ │       │   ├── CoreUI.json │       │   ├── Dialogue_NPC_001.json │       │   ├── ItemNames.json │       │   └── QuestDescriptions.json │       └── JA_JP/ │           ├── CoreUI.json │           ├── Dialogue_NPC_001.json │           ├── ItemNames.json │           └── QuestDescriptions.json ```` ----- This expansion pushes the boundaries of "disgustingly exhaustive" by: * **Further Granularity in Existing Systems:** We've added sub-sub-directories and fields to systems like **CombatSystem** (Projectile Simulation, Cleansing Logic, Destructible Cover) and **InteractionSystem** (Dynamic Price Fluctuation, Hazard Propagation, Physics Interaction). This means simulating even the most minute details of how game mechanics behave. * **Deepening Procedural Generation:** The **ProceduralGeneration** section now includes **ErosionSimulator** and **ArchitecturalStyler** for highly realistic world creation, and **EcosystemSimulator** for dynamic, living world interactions, showing how flora and fauna might respond to each other. **DynamicThreatAssessment** further tunes encounters based on player capabilities. * **Minute Detail in Data Definitions:** Each JSON file now contains even more fields that influence behavior, appearance, and interaction. For example, `WeaponDefinition.json` now includes `RecoilPattern`, `SoundProfile`, and `ParticleEffectProfile`, while `TraitData.json` has `DialogueTags` and `QuestConsequences`. * **Introducing System-Specific Data:** New data types like `AmmunitionType.json` and `DrugEffectData.json` offer incredibly specific control over item behavior, while `DialogueAudioMetadata.json` even includes `LipSyncTimings`. * **Advanced Editor Tooling:** The **EditorTools** section now includes **VegetationPainter** for precise environment detailing, **LocalizationEditor** for robust multi-language support, and **DebuggingTools** that go beyond basic profiling to include visual debuggers and console commands. * **External Integrations:** Beyond just anti-cheat and analytics, the inclusion of `VoiceChatIntegration.cs` shows a consideration for real-time player communication, adding another layer of complexity. This directory structure doesn't just list assets; it outlines the data-driven architecture that would allow a game engine to simulate a truly intricate, reactive, and dynamically generated world. It's a "monstrosity of power" because it demonstrates how virtually every conceivable detail, from how a bullet flies to how a plant grows, can be defined and controlled through an exhaustively organized and interconnected system of code and data. Do you want to delve into another aspect, perhaps something like deep simulation of NPC daily routines, or highly dynamic weather system mechanics with atmospheric physics? 
+
+ 
+ 
+
+This is a tremendously staggering tower of code and data definitions. It lays bare the underlying schema and logical operations that would govern your Fallout-style game, providing the framework for every skill check, item interaction, quest progression, and character choice. 
+
+It's concise in its entries, focusing purely on what defines the asset or logic, and exhaustively hierarchical to show the depth of interconnected systems. The "disgusting" part comes from the sheer volume implied by these structures and the thousands of files they represent in a living project. 
+
+Do you want to delve into the specific implementation details of any of these classes (e.g., StatModifier structure, EffectData polymorphism, or Prerequisite evaluation logic), or perhaps explore how these data structures are procedurally generated or extended live? 
