@@ -1,0 +1,201 @@
+Z://Home-Dir/
+├── Applications/
+│   └── GameDevShell/
+│       ├── Launcher/
+│       │   ├── icon.png
+│       │   ├── splash.gif
+│       │   ├── background.png
+│       │   ├── loading_anim.lottie
+│       │   └── audio/
+│       │       ├── launch_chime.mp3
+│       │       ├── error_buzz.wav
+│       │       ├── bootup_beep.ogg
+│       │       └── success_tone.flac
+│       └── KernelModules/
+│           ├── CLIPluginManager.gdb
+│           ├── TACTIC_LIT_ENGINE.gdb
+│           ├── AssetStreamer.gdb
+│           ├── WorldNPCGenerator.gdb
+│           ├── PlayerInteractionHub.gdb
+│           ├── RealTimeStatusFeed.gdb
+│           ├── PolicyComplianceGuard.gdb
+│           └── CloudPersistenceLayer.gdb
+├── Development/
+│   └── Games%RPG&Survival%/
+│       └── GameDevShell/
+│           ├── Art/
+│           │   ├── Characters/
+│           │   │   ├── hero_00001.png ... hero_10000.png
+│           │   │   ├── npc_villager_00001.png ... npc_villager_1000.png
+│           │   │   ├── enemy_goblin_00001.png ... enemy_goblin_5000.png
+│           │   │   ├── raybot_companion_00001.png ... raybot_companion_500.png
+│           │   │   └── palettes/
+│           │   │       ├── neon_blue.gdb
+│           │   │       ├── cyber_purple.gdb
+│           │   │       └── toxic_green.gdb
+│           │   ├── Enemies/
+│           │   │   ├── mutant_hulking_00001.png ... mutant_hulking_1000.png
+│           │   │   ├── cyber_raider_00001.png ... cyber_raider_1000.png
+│           │   │   ├── radd_monster_00001.png ... radd_monster_1000.png
+│           │   │   ├── inflicted_00001.png ... inflicted_1000.png
+│           │   ├── Weapons/
+│           │   │   ├── raygun_base_00001.png ... raygun_base_500.png
+│           │   │   ├── scatter_mod_00001.png ... scatter_mod_200.png
+│           │   │   ├── melee_pipe_00001.png ... melee_pipe_200.png
+│           │   │   ├── crossbow_00001.png ... crossbow_200.png
+│           │   │   ├── molotov_00001.png ... molotov_200.png
+│           │   │   ├── attachments/
+│           │   │   │   ├── scope_00001.png ... scope_100.png
+│           │   │   │   ├── silencer_00001.png ... silencer_50.png
+│           │   │   │   └── laser_00001.png ... laser_50.png
+│           │   ├── Vehicles/
+│           │   │   ├── motorcycle_00001.png ... motorcycle_100.png
+│           │   │   ├── armored_truck_00001.png ... armored_truck_100.png
+│           │   │   ├── hoverbike_00001.png ... hoverbike_100.png
+│           │   ├── Tilesets/
+│           │   │   ├── urban_ruins_00001.png ... urban_ruins_200.png
+│           │   │   ├── nuclear_winter_00001.png ... nuclear_winter_100.png
+│           │   │   ├── toxic_swamp_00001.png ... toxic_swamp_100.png
+│           │   │   ├── bunker_interior_00001.png ... bunker_interior_100.png
+│           │   │   ├── cyber_lab_00001.png ... cyber_lab_100.png
+│           │   ├── Items/
+│           │   │   ├── medkit_00001.png ... medkit_500.png
+│           │   │   ├── anti_rad_00001.png ... anti_rad_500.png
+│           │   │   ├── artifact_mutated_crystal_00001.png ... artifact_mutated_crystal_200.png
+│           │   │   ├── lockpick_00001.png ... lockpick_200.png
+│           │   │   ├── geiger_counter_00001.png ... geiger_counter_200.png
+│           │   │   ├── hacking_tool_00001.png ... hacking_tool_200.png
+│           │   │   ├── scrap_00001.png ... scrap_1000.png
+│           │   │   ├── currency_00001.png ... currency_1000.png
+│           │   ├── Effects/
+│           │   │   ├── explosion_fx_00001.png ... explosion_fx_500.png
+│           │   │   ├── fire_spell_fx_00001.png ... fire_spell_fx_500.png
+│           │   │   ├── toxic_fog_fx_00001.png ... toxic_fog_fx_200.png
+│           │   │   ├── black_rain_fx_00001.png ... black_rain_fx_100.png
+│           │   │   ├── nuclear_winter_ash_fx_00001.png ... nuclear_winter_ash_100.png
+│           │   └── Animations/
+│           │       ├── hero_walk_00001.anim ... hero_walk_1000.anim
+│           │       ├── goblin_attack_00001.anim ... goblin_attack_1000.anim
+│           │       ├── chest_open_00001.anim ... chest_open_500.anim
+│           │       ├── air_raid_siren_00001.anim ... air_raid_siren_50.anim
+│           │       ├── nuclear_detonation_00001.anim ... nuclear_detonation_50.anim
+│           │       ├── inflicted_attack_00001.anim ... inflicted_attack_500.anim
+│           │       ├── black_rain_event_00001.anim ... black_rain_event_100.anim
+│           ├── UI/
+│           │   ├── HUD/
+│           │   │   ├── health_ap_meter_00001.png ... health_ap_meter_100.png
+│           │   │   ├── momentum_meter_00001.png ... momentum_meter_100.png
+│           │   │   ├── minimap_00001.png ... minimap_100.png
+│           │   │   ├── weapon_slot_00001.png ... weapon_slot_50.png
+│           │   │   ├── quick_mod_slots_00001.png ... quick_mod_slots_50.png
+│           │   │   └── minimap_frame_00001.png ... minimap_frame_50.png
+│           │   ├── Menus/
+│           │   │   ├── startup_menu_00001.png ... startup_menu_20.png
+│           │   │   ├── title_screen_00001.png ... title_screen_20.png
+│           │   │   ├── inventory_00001.png ... inventory_100.png
+│           │   │   ├── skill_tree_00001.png ... skill_tree_100.png
+│           │   │   ├── dialogue_box_00001.png ... dialogue_box_100.png
+│           │   ├── Icons/
+│           │   │   ├── sword_icon_00001.svg ... sword_icon_500.svg
+│           │   │   ├── shield_icon_00001.svg ... shield_icon_500.svg
+│           │   │   ├── potion_icon_00001.svg ... potion_icon_500.svg
+│           │   │   ├── save_chip.svg
+│           │   │   ├── load_cloud.svg
+│           │   │   ├── exit_power.svg
+│           │   │   ├── lore_book.svg
+│           │   │   └── skill_unlock.svg
+│           │   ├── Logos/
+│           │   │   ├── cybercorp_logo_00001.svg ... cybercorp_logo_10.svg
+│           │   │   ├── game_logo_00001.svg ... game_logo_10.svg
+│           │   └── Giphs/
+│           │       ├── surge_effects_00001.gif ... surge_effects_100.gif
+│           │       ├── hacking_00001.gif ... hacking_50.gif
+│           │       ├── critical_hit_00001.gif ... critical_hit_50.gif
+│           ├── Audio/
+│           │   ├── Music/
+│           │   │   ├── ambient_wasteland_00001.mp3 ... ambient_wasteland_50.mp3
+│           │   │   ├── settlement_theme_00001.mp3 ... settlement_theme_20.mp3
+│           │   │   ├── boss_encounter_00001.mp3 ... boss_encounter_10.mp3
+│           │   ├── SFX/
+│           │   │   ├── raygun_fire_00001.wav ... raygun_fire_500.wav
+│           │   │   ├── mutant_growl_00001.wav ... mutant_growl_200.wav
+│           │   │   ├── footsteps_urban_00001.wav ... footsteps_urban_100.wav
+│           │   │   ├── geiger_counter_00001.wav ... geiger_counter_100.wav
+│           │   │   ├── air_raid_siren_00001.wav ... air_raid_siren_20.wav
+│           │   │   ├── nuclear_detonation_00001.wav ... nuclear_detonation_20.wav
+│           │   │   ├── inflicted_scream_00001.wav ... inflicted_scream_100.wav
+│           │   └── Voice/
+│           │       ├── ai_boot_00001.mp3 ... ai_boot_10.mp3
+│           │       ├── npc_quip_00001.mp3 ... npc_quip_100.mp3
+│           ├── Scripts/
+│           │   ├── AI/
+│           │   │   ├── adaptive_enemy_ai_00001.py ... adaptive_enemy_ai_100.py
+│           │   │   ├── companion_ai_00001.py ... companion_ai_50.py
+│           │   │   ├── security_system_ai_00001.py ... security_system_ai_50.py
+│           │   │   ├── inflicted_ai_00001.py ... inflicted_ai_50.py
+│           │   ├── Mechanics/
+│           │   │   ├── tactic_lit_engine_00001.kt ... tactic_lit_engine_100.kt
+│           │   │   ├── raygun_modding_00001.kt ... raygun_modding_50.kt
+│           │   │   ├── vehicle_traversal_00001.kt ... vehicle_traversal_50.kt
+│           │   │   ├── environmental_effects_00001.kt ... environmental_effects_50.kt
+│           │   │   ├── choice_impact_00001.kt ... choice_impact_50.kt
+│           │   ├── Dialogue/
+│           │   │   ├── npc_conversation_00001.json ... npc_conversation_1000.json
+│           │   │   ├── quest_dialogue_00001.json ... quest_dialogue_500.json
+│           │   ├── Events/
+│           │   │   ├── random_loot_drop_00001.json ... random_loot_drop_500.json
+│           │   │   ├── air_raid_event_00001.json ... air_raid_event_20.json
+│           │   │   ├── nuclear_detonation_event_00001.json ... nuclear_detonation_event_20.json
+│           │   │   ├── black_rain_event_00001.json ... black_rain_event_20.json
+│           ├── Data/
+│           │   ├── Maps/
+│           │   │   ├── overworld_00001.tmx ... overworld_100.tmx
+│           │   │   ├── city_ruins_00001.tmx ... city_ruins_100.tmx
+│           │   │   ├── bunker_00001.tmx ... bunker_50.tmx
+│           │   │   ├── nuclear_winter_00001.tmx ... nuclear_winter_20.tmx
+│           │   ├── Quests/
+│           │   │   ├── main_story_00001.json ... main_story_10.json
+│           │   │   ├── side_quest_00001.json ... side_quest_100.json
+│           │   │   ├── radiant_quest_00001.json ... radiant_quest_100.json
+│           │   ├── Items/
+│           │   │   ├── item_db_00001.json ... item_db_10.json
+│           │   ├── NPCs/
+│           │   │   ├── npc_db_00001.json ... npc_db_10.json
+│           │   ├── SaveStates/
+│           │   │   ├── user_save_00001.json ... user_save_10000.json
+│           │   └── BlockchainLogs/
+│           │       ├── audit_00001.json ... audit_10000.json
+│           ├── Plugins/
+│           │   └── Extensions/
+│           │       ├── minimap_plugin.gdb
+│           │       ├── weather_plugin.gdb
+│           │       ├── ai_companion_plugin.gdb
+│           │       └── procedural_event_plugin.gdb
+│           ├── Branding/
+│           │   ├── Company/
+│           │   │   ├── cybercorp_logo_00001.svg ... cybercorp_logo_10.svg
+│           │   └── Game/
+│           │       ├── game_logo_00001.svg ... game_logo_10.svg
+│           └── Docs/
+│               ├── DesignDocs/
+│               │   ├── gdd_00001.md ... gdd_10.md
+│               ├── AssetLists/
+│               │   ├── asset_list_00001.csv ... asset_list_10.csv
+│               └── Lore/
+│                   ├── lore_00001.md ... lore_100.md
+├── Resources/
+│   ├── AssetLoader.gdb
+│   ├── DataPacker.gdb
+│   └── QuotaMonitor.gdb
+├── Toolz/
+│   ├── CodeReader.gdb
+│   ├── SyntaxHighlighter.gdb
+│   ├── StaticAnalyzer.gdb
+│   ├── FileExplorer.gdb
+│   └── BatchRenamer.gdb
+├── AI_Assist/
+│   ├── DocGen.gdb
+│   ├── BugFinder.gdb
+│   └── CodeSummarizer.gdb
+└── Logs/
+    └── AuditTrail.gdb
