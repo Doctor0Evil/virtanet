@@ -65,7 +65,489 @@ fn restore_from_backup(backup_dir: &str, restore_dir: &str) -> io::Result<()> {
     }
     Ok(())
 }
+# NEUROMORPHIC & ORGAINICHAIN: Exhaustive Cheat-Code and Command Index
+# (150 Neuromorphic Cheat-Codes & Orgainichain Cryptographic Transactional Commands)
+# Includes: neural-network navigation, cluster-node ops, cryptographic/financial blockchain, banking, and accounting
 
+neuromorphic_cheat_codes:
+  # Core Navigation & System Control
+  - code: map --full N://
+    desc: Recursively index and map entire neuromorphic file-system
+  - code: enforce --descreadonly --targetN://codex
+    desc: Apply persistent read-only enforcement on codex directory
+  - code: schedule --eventindex --interval1h --targetN://registry
+    desc: Schedule periodic registry indexing every hour
+  - code: mkdir N://registry/cluster-nodes/newnode
+    desc: Create new neural cluster-node directory
+  - code: register --fileN://registry/cluster-nodes/newnode
+    desc: Register new node in neuromorphic registry
+  - code: event --descauto-backup --interval24h --actionbackup
+    desc: Automate daily backup event across neuromorphic system
+  - code: open --menuhidden
+    desc: Reveal secret interactive shell menu
+  - code: tunnel --accessremote --toN://virta-net
+    desc: Establish remote tunnel to virtual intelligence net
+  - code: dev-shell --moduleneuro-bases
+    desc: Open developer shell in neural intelligence base
+  - code: set --securityhigh --targetN://datalake
+    desc: Intensify security on neuromorphic data lake
+
+  # Neural-Network Cluster Operations
+  - code: scan --nodes --targetN://cluster
+    desc: Scan all neural-network cluster nodes
+  - code: connect --node --targetN://cluster/nodeX
+    desc: Connect to specific neural cluster node
+  - code: disconnect --node --targetN://cluster/nodeX
+    desc: Disconnect from neural cluster node
+  - code: deploy --model --toN://cluster
+    desc: Deploy neural model to cluster nodes
+  - code: monitor --activity --targetN://cluster
+    desc: Monitor activity across all cluster nodes
+  - code: balance --load --targetN://cluster
+    desc: Balance computational load across cluster nodes
+  - code: heal --node --targetN://cluster/nodeX
+    desc: Heal or repair a faulty cluster node
+  - code: quarantine --node --targetN://cluster/nodeX
+    desc: Quarantine suspicious or compromised node
+  - code: simulate --neural-event --targetN://cluster
+    desc: Simulate neural event across cluster
+  - code: optimize --cluster
+    desc: Optimize neural cluster for performance
+
+  # Containerization & Bootable Images
+  - code: containerize --variable --targetN://env
+    desc: Containerize environment variables for sandboxing
+  - code: boot --neuromorphic-image --targetN://
+    desc: Boot system from neuromorphic image
+  - code: snapshot --system --targetN://
+    desc: Take full system snapshot
+  - code: restore --fromN://backup.img
+    desc: Restore neuromorphic system from backup image
+  - code: sandbox --shell --targetN://
+    desc: Open sandboxed shell for safe experimentation
+  - code: enforce --desccontrolled --targetN://sandbox
+    desc: Enforce controlled environment in sandbox shell
+  - code: audit --security --targetN://
+    desc: Perform security audit of neuromorphic system
+
+  # Neuromorphic Registry & Regex Integration
+  - code: regex --scan --pattern%$%System:Regexes;"Neuromorphic_Registry"!%$% --targetN://
+    desc: Scan system for all neuromorphic-registry regex patterns
+  - code: extract --regexcodex --targetN://codex
+    desc: Extract all codex files matching neuromorphic regexes
+  - code: validate --descriptor --targetN://
+    desc: Validate all system descriptors
+  - code: log --eventaccess --targetN://knowledge-sources
+    desc: Log all access events to neuromorphic knowledge sources
+
+  # Advanced Neural Ops
+  - code: inject --moduleintelligence-bases
+    desc: Inject new code into neural intelligence modules
+  - code: toggle --modestealth --targetN://modules
+    desc: Toggle stealth mode for neural modules
+  - code: mirror --targetN://modules --toN://lakehouse
+    desc: Mirror modules to neuromorphic lakehouse
+  - code: encrypt --targetN://datalake
+    desc: Encrypt neuromorphic data lake
+  - code: decrypt --targetN://lakehouse
+    desc: Decrypt neuromorphic lakehouse
+  - code: rotate --keys --targetN://modules
+    desc: Rotate cryptographic keys for neural modules
+
+  # Interactive, Parallel, and Autonomous Ops
+  - code: parallel --exec --scripts
+    desc: Execute multiple neural automation scripts in parallel
+  - code: automate --script --targetN://modules
+    desc: Deploy autonomous script to all neural modules
+  - code: refresh --index --targetN://registry
+    desc: Refresh and re-index neuromorphic registry
+  - code: update --neural-modules
+    desc: Automatically update all neural modules to latest version
+
+  # Financial, Banking, and Accounting (Orgainichain Blockchain)
+  - code: orgainichain --connect --node mainnet
+    desc: Connect to Orgainichain blockchain mainnet
+  - code: orgainichain --wallet-create
+    desc: Create new cryptographic wallet
+  - code: orgainichain --wallet-import --keyfile
+    desc: Import wallet from encrypted keyfile
+  - code: orgainichain --balance --address
+    desc: Query balance for blockchain address
+  - code: orgainichain --tx-send --from --to --amount
+    desc: Send cryptographic transaction between addresses
+  - code: orgainichain --tx-sign --txid
+    desc: Sign transaction with private key
+  - code: orgainichain --tx-verify --txid
+    desc: Verify transaction on blockchain
+  - code: orgainichain --contract-deploy --code
+    desc: Deploy smart contract to Orgainichain
+  - code: orgainichain --contract-call --address --method
+    desc: Call method on deployed smart contract
+  - code: orgainichain --audit --ledger
+    desc: Audit full blockchain ledger for compliance
+  - code: orgainichain --bank-link --institution
+    desc: Link blockchain wallet to banking institution
+  - code: orgainichain --accounting-export --format csv
+    desc: Export blockchain transactions for accounting
+  - code: orgainichain --kyc-verify --user
+    desc: Perform KYC verification for user
+  - code: orgainichain --aml-check --address
+    desc: Run anti-money-laundering check on address
+  - code: orgainichain --escrow-create --txid
+    desc: Create escrow transaction on blockchain
+  - code: orgainichain --loan-request --amount
+    desc: Request loan via blockchain smart contract
+  - code: orgainichain --credit-score --user
+    desc: Query blockchain-based credit score
+  - code: orgainichain --invoice-generate --to --amount
+    desc: Generate invoice and record on blockchain
+  - code: orgainichain --tax-report --year
+    desc: Generate tax report from blockchain transactions
+  - code: orgainichain --staking-deposit --amount
+    desc: Stake tokens for network rewards
+  - code: orgainichain --staking-withdraw --amount
+    desc: Withdraw staked tokens
+  - code: orgainichain --interest-calc --account
+    desc: Calculate interest on blockchain account
+
+  # Security & Compliance
+  - code: quarantine --node --targetN://cluster/suspicious
+    desc: Quarantine suspicious neural node
+  - code: whitelist --descapproved --targetN://modules
+    desc: Whitelist approved neural modules
+  - code: blacklist --descblocked --targetN://modules
+    desc: Blacklist blocked neural modules
+  - code: audit --transaction --targetN://orgainichain
+    desc: Audit blockchain transactions for compliance
+  - code: optimize --ledger --targetN://orgainichain
+    desc: Optimize blockchain ledger for performance
+
+  # Additional Neuromorphic/Blockchain Operations (Sample Expansion)
+  - code: fork --processdaemon --targetN://enforcement
+    desc: Fork new enforcement daemon in neuromorphic system
+  - code: kill --processscheduler
+    desc: Terminate scheduler process
+  - code: restart --processscheduler
+    desc: Restart scheduler process
+  - code: logrotate --targetN://logs
+    desc: Rotate neuromorphic system logs
+  - code: prune --old --targetN://registry
+    desc: Prune old entries from neuromorphic registry
+  - code: sanitize --targetN://datalake
+    desc: Sanitize data lake for compliance
+  - code: scrub --targetN://lakehouse
+    desc: Scrub lakehouse data
+  - code: evict --descriptorstale --targetN://
+    desc: Evict stale descriptors from system
+  - code: lockdown --targetN://
+    desc: Lockdown entire neuromorphic file-system
+  - code: unlockdown --targetN://
+    desc: Remove lockdown from neuromorphic file-system
+
+  # ... (Expand to 150+ with further combinations of neural, cryptographic, banking, accounting, compliance, and system control commands.)
+
+# END OF NEUROMORPHIC & ORGAINICHAIN CHEAT-CODE INDEX
+
+# NEURAL-NETWORK CLUSTER NODE NAVIGATION: 150 CRITICAL CHEAT-CODES
+
+cheat_codes:
+  # Core Navigation & Security
+  - map --full N://
+  - enforce --descreadonly --targetN://nodes
+  - schedule --eventindex --interval1h --targetN://registry
+  - mkdir N://registry/cluster-nodes/newnode
+  - register --fileN://registry/cluster-nodes/newnode
+  - event --descauto-backup --interval24h --actionbackup
+  - open --menuhidden
+  - tunnel --accessremote --toN://cluster
+  - dev-shell --moduleneuro-bases
+  - set --securityhigh --targetN://datalake
+
+  # Node Access & Management
+  - scan --nodes --targetN://cluster
+  - connect --node --targetN://cluster/nodeX
+  - disconnect --node --targetN://cluster/nodeX
+  - deploy --model --toN://cluster
+  - monitor --activity --targetN://cluster
+  - balance --load --targetN://cluster
+  - heal --node --targetN://cluster/nodeX
+  - quarantine --node --targetN://cluster/nodeX
+  - simulate --neural-event --targetN://cluster
+  - optimize --cluster
+
+  # Descriptor Enforcement & Policy
+  - enforce --descCIA-only --targetN://cluster
+  - enforce --desckernel-enforced --targetN://cluster
+  - lock --desccodex --targetN://cluster
+  - audit --security --targetN://cluster
+  - whitelist --desctrusted --targetN://nodes
+  - blacklist --descmalicious --targetN://nodes
+  - validate --descriptor --targetN://cluster
+  - quarantine --targetN://registry/suspicious
+  - monitor --traffic --targetN://cluster
+  - backup --targetN://cluster --safety-net
+
+  # Automation & Scheduling
+  - automate --script --targetN://cluster/automation
+  - refresh --index --targetN://registry
+  - update --neural-modules
+  - parallel --exec --scripts
+  - event --descauto-heal --interval12h --actionheal
+  - event --descauto-balance --interval6h --actionbalance
+  - event --descauto-quarantine --ontrigger --actionquarantine
+  - event --descauto-restore --onfailure --actionrestore
+  - event --descauto-backup --interval24h --actionbackup
+  - schedule --eventaudit --interval1h --targetN://cluster
+
+  # File, Registry, and Asset Mapping
+  - index --all --registry
+  - diff --fromN://snapshot1 --toN://snapshot2
+  - extract --regexcodex --targetN://cluster
+  - log --eventaccess --targetN://cluster
+  - archive --targetN://cluster/assets
+  - restore --fromN://backup.img
+  - snapshot --system --targetN://cluster
+  - prune --old --targetN://registry
+  - sanitize --targetN://datalake
+  - scrub --targetN://cluster
+
+  # Security, Compliance, and Monitoring
+  - audit --transaction --targetN://cluster
+  - optimize --registry --targetN://cluster
+  - rotate --keys --targetN://nodes
+  - encrypt --targetN://datalake
+  - decrypt --targetN://cluster
+  - failover --targetN://cluster
+  - promote --backup --toN://cluster
+  - demote --active --toN://backup
+  - watchdog --enable --targetN://cluster
+  - watchdog --disable --targetN://cluster
+
+  # Advanced Node Operations
+  - fork --processdaemon --targetN://enforcement
+  - kill --processscheduler
+  - restart --processscheduler
+  - logrotate --targetN://logs
+  - evict --descriptorstale --targetN://cluster
+  - lockdown --targetN://cluster
+  - unlockdown --targetN://cluster
+  - mirror --descriptorcodex --toN://backup
+  - simulate --eventfailure --targetN://cluster
+  - heal --targetN://cluster
+  - optimize --cluster
+
+  # Interactive & Parallel Ops
+  - inject --moduleintelligence-bases
+  - toggle --modestealth --targetN://nodes
+  - mirror --targetN://nodes --toN://lakehouse
+  - containerize --variable --targetN://env
+  - sandbox --shell --targetN://
+  - enforce --desccontrolled --targetN://sandbox
+  - audit --security --targetN://sandbox
+  - refresh --index --targetN://sandbox
+
+  # Node-Specific Security
+  - quarantine --node --targetN://cluster/suspicious
+  - whitelist --descapproved --targetN://nodes
+  - blacklist --descblocked --targetN://nodes
+  - validate --registry --targetN://cluster
+  - trace --eventaccess --targetN://cluster
+  - simulate --eventfailure --targetN://cluster
+  - heal --targetN://cluster
+  - optimize --cluster
+
+  # Banking, Blockchain, and Financial Ops (Cluster-integrated)
+  - orgainichain --connect --node mainnet
+  - orgainichain --wallet-create
+  - orgainichain --wallet-import --keyfile
+  - orgainichain --balance --address
+  - orgainichain --tx-send --from --to --amount
+  - orgainichain --tx-sign --txid
+  - orgainichain --tx-verify --txid
+  - orgainichain --contract-deploy --code
+  - orgainichain --contract-call --address --method
+  - orgainichain --audit --ledger
+  - orgainichain --bank-link --institution
+  - orgainichain --accounting-export --format csv
+  - orgainichain --kyc-verify --user
+  - orgainichain --aml-check --address
+  - orgainichain --escrow-create --txid
+  - orgainichain --loan-request --amount
+  - orgainichain --credit-score --user
+  - orgainichain --invoice-generate --to --amount
+  - orgainichain --tax-report --year
+  - orgainichain --staking-deposit --amount
+  - orgainichain --staking-withdraw --amount
+  - orgainichain --interest-calc --account
+
+  # Miscellaneous System Control
+  - reset --system --preserveN://knowledge-sources
+  - mount --volumeN://datalake
+  - unmount --volumeN://cluster
+  - allocate --resourcepool --targetN://cluster
+  - deallocate --resourcepool --targetN://cluster
+  - expire --descriptortemp --targetN://cluster
+  - validate --descriptor --targetN://cluster
+  - toggle --modestealth --targetN://nodes
+  - generate --report --targetN://cluster
+  - dispatch --eventalert --targetN://registry
+  - merge --registry --fromN://registrybackup
+
+  # Expand as needed for full 150:
+  # - Each command above can be parameterized for specific nodes, clusters, or assets.
+  # - Combine enforcement, automation, monitoring, and cryptographic operations for layered security.
+# NEURAL-NETWORK CLUSTER NODE NAVIGATION: 150 CRITICAL CHEAT-CODES
+
+cheat_codes:
+  # Core Navigation & Security
+  - map --full N://
+  - enforce --descreadonly --targetN://nodes
+  - schedule --eventindex --interval1h --targetN://registry
+  - mkdir N://registry/cluster-nodes/newnode
+  - register --fileN://registry/cluster-nodes/newnode
+  - event --descauto-backup --interval24h --actionbackup
+  - open --menuhidden
+  - tunnel --accessremote --toN://cluster
+  - dev-shell --moduleneuro-bases
+  - set --securityhigh --targetN://datalake
+
+  # Node Access & Management
+  - scan --nodes --targetN://cluster
+  - connect --node --targetN://cluster/nodeX
+  - disconnect --node --targetN://cluster/nodeX
+  - deploy --model --toN://cluster
+  - monitor --activity --targetN://cluster
+  - balance --load --targetN://cluster
+  - heal --node --targetN://cluster/nodeX
+  - quarantine --node --targetN://cluster/nodeX
+  - simulate --neural-event --targetN://cluster
+  - optimize --cluster
+
+  # Descriptor Enforcement & Policy
+  - enforce --descCIA-only --targetN://cluster
+  - enforce --desckernel-enforced --targetN://cluster
+  - lock --desccodex --targetN://cluster
+  - audit --security --targetN://cluster
+  - whitelist --desctrusted --targetN://nodes
+  - blacklist --descmalicious --targetN://nodes
+  - validate --descriptor --targetN://cluster
+  - quarantine --targetN://registry/suspicious
+  - monitor --traffic --targetN://cluster
+  - backup --targetN://cluster --safety-net
+
+  # Automation & Scheduling
+  - automate --script --targetN://cluster/automation
+  - refresh --index --targetN://registry
+  - update --neural-modules
+  - parallel --exec --scripts
+  - event --descauto-heal --interval12h --actionheal
+  - event --descauto-balance --interval6h --actionbalance
+  - event --descauto-quarantine --ontrigger --actionquarantine
+  - event --descauto-restore --onfailure --actionrestore
+  - event --descauto-backup --interval24h --actionbackup
+  - schedule --eventaudit --interval1h --targetN://cluster
+
+  # File, Registry, and Asset Mapping
+  - index --all --registry
+  - diff --fromN://snapshot1 --toN://snapshot2
+  - extract --regexcodex --targetN://cluster
+  - log --eventaccess --targetN://cluster
+  - archive --targetN://cluster/assets
+  - restore --fromN://backup.img
+  - snapshot --system --targetN://cluster
+  - prune --old --targetN://registry
+  - sanitize --targetN://datalake
+  - scrub --targetN://cluster
+
+  # Security, Compliance, and Monitoring
+  - audit --transaction --targetN://cluster
+  - optimize --registry --targetN://cluster
+  - rotate --keys --targetN://nodes
+  - encrypt --targetN://datalake
+  - decrypt --targetN://cluster
+  - failover --targetN://cluster
+  - promote --backup --toN://cluster
+  - demote --active --toN://backup
+  - watchdog --enable --targetN://cluster
+  - watchdog --disable --targetN://cluster
+
+  # Advanced Node Operations
+  - fork --processdaemon --targetN://enforcement
+  - kill --processscheduler
+  - restart --processscheduler
+  - logrotate --targetN://logs
+  - evict --descriptorstale --targetN://cluster
+  - lockdown --targetN://cluster
+  - unlockdown --targetN://cluster
+  - mirror --descriptorcodex --toN://backup
+  - simulate --eventfailure --targetN://cluster
+  - heal --targetN://cluster
+  - optimize --cluster
+
+  # Interactive & Parallel Ops
+  - inject --moduleintelligence-bases
+  - toggle --modestealth --targetN://nodes
+  - mirror --targetN://nodes --toN://lakehouse
+  - containerize --variable --targetN://env
+  - sandbox --shell --targetN://
+  - enforce --desccontrolled --targetN://sandbox
+  - audit --security --targetN://sandbox
+  - refresh --index --targetN://sandbox
+
+  # Node-Specific Security
+  - quarantine --node --targetN://cluster/suspicious
+  - whitelist --descapproved --targetN://nodes
+  - blacklist --descblocked --targetN://nodes
+  - validate --registry --targetN://cluster
+  - trace --eventaccess --targetN://cluster
+  - simulate --eventfailure --targetN://cluster
+  - heal --targetN://cluster
+  - optimize --cluster
+
+  # Banking, Blockchain, and Financial Ops (Cluster-integrated)
+  - orgainichain --connect --node mainnet
+  - orgainichain --wallet-create
+  - orgainichain --wallet-import --keyfile
+  - orgainichain --balance --address
+  - orgainichain --tx-send --from --to --amount
+  - orgainichain --tx-sign --txid
+  - orgainichain --tx-verify --txid
+  - orgainichain --contract-deploy --code
+  - orgainichain --contract-call --address --method
+  - orgainichain --audit --ledger
+  - orgainichain --bank-link --institution
+  - orgainichain --accounting-export --format csv
+  - orgainichain --kyc-verify --user
+  - orgainichain --aml-check --address
+  - orgainichain --escrow-create --txid
+  - orgainichain --loan-request --amount
+  - orgainichain --credit-score --user
+  - orgainichain --invoice-generate --to --amount
+  - orgainichain --tax-report --year
+  - orgainichain --staking-deposit --amount
+  - orgainichain --staking-withdraw --amount
+  - orgainichain --interest-calc --account
+
+  # Miscellaneous System Control
+  - reset --system --preserveN://knowledge-sources
+  - mount --volumeN://datalake
+  - unmount --volumeN://cluster
+  - allocate --resourcepool --targetN://cluster
+  - deallocate --resourcepool --targetN://cluster
+  - expire --descriptortemp --targetN://cluster
+  - validate --descriptor --targetN://cluster
+  - toggle --modestealth --targetN://nodes
+  - generate --report --targetN://cluster
+  - dispatch --eventalert --targetN://registry
+  - merge --registry --fromN://registrybackup
+
+  # Expand as needed for full 150:
+  # - Each command above can be parameterized for specific nodes, clusters, or assets.
+  # - Combine enforcement, automation, monitoring, and cryptographic operations for layered security.
+
+# END OF 150 CRITICAL NEURAL-NETWORK CLUSTER NODE CHEAT-CODES
+
+# END OF 150 CRITICAL NEURAL-NETWORK CLUSTER NODE CHEAT-CODES
 // === Enumerate IPv10 Network Addresses ===
 
 fn enumerate_ipv10_addresses() -> Vec<IPv10Address> {
