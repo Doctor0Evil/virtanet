@@ -1490,3 +1490,679 @@ object CheatbookSync {
         Audit.log("Rolled back cheat: $code")
     }
 }
+[dependencies]
+chrono = "0.4"
+tokio = { version = "1.0", features = ["full"] }
+In-Memory or Virtual Storage,
+use std::collections::HashMap;
+
+#[derive(Clone)]
+struct SystemState {
+    neural_memory: HashMap<String, Vec<f32>>,
+    config: HashMap<String, String>,
+    logs: Vec<String>,
+}
+
+struct GODSystem {
+    factory_snapshot: SystemState,
+    current_state: SystemState,
+}
+
+impl GODSystem {
+    fn new() -> Self {
+        let init_state = SystemState {
+            neural_memory: HashMap::new(),
+            config: HashMap::from([
+                ("system_name".into(), "TheGOD-System".into()),
+                ("os".into(), "reality.os".into()),
+            ]),
+            logs: Vec::new(),
+        };
+        GODSystem {
+            factory_snapshot: init_state.clone(),
+            current_state: init_state,
+        }
+    }
+    fn reset_to_factory(&mut self) {
+        self.current_state = self.factory_snapshot.clone();
+    }
+    fn set_config(&mut self, key: &str, value: &str) {
+        self.current_state.config.insert(key.into(), value.into());
+    }
+    fn log_event(&mut self, event: &str) {
+        self.current_state.logs.push(event.into());
+    }
+}
+const SYSTEM_NAME: &str = "TheGOD-System";
+const REALITY_OS: &str = "reality.os";
+
+#[derive(Clone)]
+struct FactorySettings {
+    identity: &'static str,
+    os: &'static str,
+    programmable: ProgrammableAttributes,
+}
+
+#[derive(Clone, Default)]
+struct ProgrammableAttributes {
+    allow_escape: bool,
+    legal_compliance: bool,
+    ethical_boundary: bool,
+    user_defined: std::collections::HashMap<String, String>,
+}
+
+struct GODSystem {
+    settings: FactorySettings,
+    current: ProgrammableAttributes,
+}
+
+impl GODSystem {
+    fn new() -> Self {
+        let defaults = ProgrammableAttributes {
+            allow_escape: false,
+            legal_compliance: true,
+            ethical_boundary: true,
+            user_defined: std::collections::HashMap::new(),
+        };
+        GODSystem {
+            settings: FactorySettings {
+                identity: SYSTEM_NAME,
+                os: REALITY_OS,
+                programmable: defaults.clone(),
+            },
+            current: defaults,
+        }
+    }
+    fn reset_to_factory(&mut self) {
+        self.current = self.settings.programmable.clone();
+    }
+    fn set_attribute(&mut self, key: &str, value: &str) {
+        match key {
+            "allow_escape" | "legal_compliance" | "ethical_boundary" => {/* ignore or log */},
+            _ => { self.current.user_defined.insert(key.into(), value.into()); }
+        }
+    }
+}
+const SYSTEM_NAME: &str = "TheGOD-System";
+const REALITY_OS: &str = "reality.os";
+
+#[derive(Clone)]
+struct FactorySettings {
+    identity: &'static str,
+    os: &'static str,
+    programmable: ProgrammableAttributes,
+}
+
+#[derive(Clone, Default)]
+struct ProgrammableAttributes {
+    allow_escape: bool,
+    legal_compliance: bool,
+    ethical_boundary: bool,
+    user_defined: std::collections::HashMap<String, String>,
+}
+
+struct GODSystem {
+    settings: FactorySettings,
+    current: ProgrammableAttributes,
+}
+
+impl GODSystem {
+    fn new() -> Self {
+        let defaults = ProgrammableAttributes {
+            allow_escape: false,
+            legal_compliance: true,
+            ethical_boundary: true,
+            user_defined: std::collections::HashMap::new(),
+        };
+        GODSystem {
+            settings: FactorySettings {
+                identity: SYSTEM_NAME,
+                os: REALITY_OS,
+                programmable: defaults.clone(),
+            },
+            current: defaults,
+        }
+    }
+    fn reset_to_factory(&mut self) {
+        self.current = self.settings.programmable.clone();
+    }
+    fn set_attribute(&mut self, key: &str, value: &str) {
+        match key {
+            "allow_escape" | "legal_compliance" | "ethical_boundary" => {/* ignore or log */},
+            _ => { self.current.user_defined.insert(key.into(), value.into()); }
+        }
+    }
+}
+// GOD-System: Electromagnetic Cybernetic Ecosystem Neuromorphic Configuration
+// Fully virtualized, kernel-level, hardware-agnostic, legal-compliant, and programmable
+// All code runs in user space, does NOT alter or affect any other user devices
+
+#![allow(unused)]
+use std::sync::{Arc, Mutex};
+use std::collections::{HashMap, VecDeque};
+use chrono::Utc;
+
+// --- System Identity ---
+const SYSTEM_NAME: &str = "TheGOD-System";
+const REALITY_OS: &str = "reality.os";
+const FACTORY_SETTINGS: &str = "factory-defaults";
+
+// --- Programmable Attributes (Ethical & Legal Boundaries) ---
+#[derive(Debug, Clone)]
+pub struct ProgrammableAttributes {
+    pub allow_escape: bool,
+    pub legal_compliance: bool,
+    pub ethical_boundary: bool,
+    pub user_defined: HashMap<String, String>,
+}
+impl Default for ProgrammableAttributes {
+    fn default() -> Self {
+        ProgrammableAttributes {
+            allow_escape: false,
+            legal_compliance: true,
+            ethical_boundary: true,
+            user_defined: HashMap::new(),
+        }
+    }
+}
+
+// --- Virtual Neuromorphic Core ---
+#[derive(Debug)]
+pub struct NeuroCore {
+    pub id: usize,
+    pub state: String,
+    pub memory: Vec<f32>,
+    pub spiking_activity: Vec<u8>,
+}
+impl NeuroCore {
+    pub fn new(id: usize) -> Self {
+        NeuroCore {
+            id,
+            state: "idle".to_string(),
+            memory: vec![0.0; 1024],
+            spiking_activity: vec![0; 256],
+        }
+    }
+    pub fn reset(&mut self) {
+        self.state = "idle".to_string();
+        self.memory.fill(0.0);
+        self.spiking_activity.fill(0);
+    }
+}
+
+// --- Virtual Neuromorphic Network ---
+#[derive(Debug)]
+pub struct NeuroVM {
+    pub cores: Vec<NeuroCore>,
+    pub task_queue: VecDeque<String>,
+    pub programmable: ProgrammableAttributes,
+}
+impl NeuroVM {
+    pub fn new(num_cores: usize) -> Self {
+        NeuroVM {
+            cores: (0..num_cores).map(NeuroCore::new).collect(),
+            task_queue: VecDeque::new(),
+            programmable: ProgrammableAttributes::default(),
+        }
+    }
+    pub fn reset_system(&mut self) {
+        for core in &mut self.cores {
+            core.reset();
+        }
+        self.task_queue.clear();
+        self.programmable = ProgrammableAttributes::default();
+    }
+    pub fn enqueue_task(&mut self, task: &str) {
+        self.task_queue.push_back(task.to_string());
+    }
+    pub fn run_tasks(&mut self) {
+        while let Some(task) = self.task_queue.pop_front() {
+            for core in &mut self.cores {
+                core.state = format!("processing: {}", task);
+            }
+        }
+    }
+}
+
+// --- Electromagnetic Cybernetic Ecosystem (Virtual) ---
+pub struct ElectromagneticEcosystem {
+    pub neurosys: Arc<Mutex<NeuroVM>>,
+    pub config: String,
+    pub system_name: String,
+    pub os: String,
+    pub factory_settings: String,
+}
+impl ElectromagneticEcosystem {
+    pub fn new(cores: usize) -> Self {
+        ElectromagneticEcosystem {
+            neurosys: Arc::new(Mutex::new(NeuroVM::new(cores))),
+            config: "neuromorphic-computing".to_string(),
+            system_name: SYSTEM_NAME.to_string(),
+            os: REALITY_OS.to_string(),
+            factory_settings: FACTORY_SETTINGS.to_string(),
+        }
+    }
+    pub fn reset_to_factory(&mut self) {
+        let mut sys = self.neurosys.lock().unwrap();
+        sys.reset_system();
+        self.config = "neuromorphic-computing".to_string();
+    }
+    pub fn set_programmable_attribute(&mut self, key: &str, value: &str) {
+        let mut sys = self.neurosys.lock().unwrap();
+        sys.programmable.user_defined.insert(key.to_string(), value.to_string());
+    }
+    pub fn print_status(&self) {
+        let sys = self.neurosys.lock().unwrap();
+        println!("System: {} | OS: {} | Config: {}", self.system_name, self.os, self.config);
+        println!("Cores: {} | Programmable: {:?}", sys.cores.len(), sys.programmable);
+    }
+}
+
+// --- Main Entrypoint ---
+fn main() {
+    // Initialize the GOD-System with 8 virtual neuromorphic cores
+    let mut ecosystem = ElectromagneticEcosystem::new(8);
+
+    // Factory reset with neuromorphic configuration
+    ecosystem.reset_to_factory();
+
+    // Set programmable attributes (cannot escape ethical/legal boundaries)
+    ecosystem.set_programmable_attribute("custom_mode", "research");
+    ecosystem.set_programmable_attribute("ai_behavior", "non-escaping");
+
+    // Enqueue sample neuromorphic tasks
+    {
+        let mut sys = ecosystem.neurosys.lock().unwrap();
+        sys.enqueue_task("spike-based pattern recognition");
+        sys.enqueue_task("energy-efficient SNN simulation");
+        sys.enqueue_task("virtual hardware reconfiguration");
+    }
+
+    // Run tasks (simulated)
+    {
+        let mut sys = ecosystem.neurosys.lock().unwrap();
+        sys.run_tasks();
+    }
+
+    // Print final system status
+    ecosystem.print_status();
+}
+use std::collections::BinaryHeap;
+use std::cmp::Ordering;
+use chrono::{Utc, DateTime};
+
+#[derive(Eq, PartialEq)]
+struct IngestEvent {
+    priority: u8,
+    scheduled_time: DateTime<Utc>,
+    command: String,
+}
+impl Ord for IngestEvent {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.priority.cmp(&self.priority)
+            .then(self.scheduled_time.cmp(&other.scheduled_time))
+    }
+}
+impl PartialOrd for IngestEvent {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+struct SchedulerStats {
+    delta_times: Vec<i64>,
+    command_count: usize,
+}
+
+fn main() {
+    let mut queue = BinaryHeap::new();
+    let mut stats = SchedulerStats { delta_times: Vec::new(), command_count: 0 };
+    // Example: schedule events
+    queue.push(IngestEvent { priority: 10, scheduled_time: Utc::now(), command: "Ingest Magnetoelectric Paper".into() });
+    queue.push(IngestEvent { priority: 5, scheduled_time: Utc::now(), command: "Ingest AI Glossary Update".into() });
+    // ...event loop...
+}
+// magnetoelectric_ingestion.rs
+// Data Lake Ingestion Scheduler for Magnetoelectric Generator Research and AI Glossary Integration
+// Uses async scheduling for robust, production-grade ingestion task management
+
+use chrono::Utc;
+use std::fs::OpenOptions;
+use std::io::Write;
+use tokio::time::{sleep, Duration};
+use tokio::task;
+
+// --- Magnetoelectric Generator Research Sources ---
+const ME_GEN_REFS: &[(&str, &str)] = &[
+    ("Self‐biased magnetoelectric composite for energy harvesting", "https://onlinelibrary.wiley.com/doi/full/10.1002/bte2.20230005"),
+    ("Comparative analysis of energy harvesting by magnetoelectric ...", "https://ui.adsabs.harvard.edu/abs/2025IJMS..28810042R/abstract"),
+    ("Hybrid multimodal energy harvester based on magnetoelectric (ME) composites", "https://www.sciencedirect.com/science/article/abs/pii/S0304885321010337"),
+    ("Enhancement of Energy-Harvesting Performance of Magneto-Mechano-Electric Generators", "https://pubmed.ncbi.nlm.nih.gov/33819008/"),
+    ("Energy Harvesting with Magneto-Mechano-Electric Harvester for AC Circular Magnetic Fields", "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5073640"),
+    ("Performance of an electromagnetic energy harvester with linear and nonlinear springs", "https://academic.oup.com/ijlct/article/doi/10.1093/ijlct/ctae227/8081703"),
+    ("Efficiency of Passive Magnetic Harvesters", "https://www.youtube.com/watch?v=HUVImSvjDAE"),
+    ("Smart Mater. Struct. 26 103001", "https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/6/105859/files/2021/06/100_deng_2017_smart_mater._struct._26_103001_0.pdf"),
+    ("MDPI Energies", "https://www.mdpi.com/1996-1073/14/9/2387"),
+];
+
+// --- Deepgram AI Glossary Links for Ingestion ---
+const AI_GLOSSARY_LINKS: &[&str] = &[
+    "https://deepgram.com/ai-glossary/ai-privacy",
+    "https://deepgram.com/ai-glossary/ai-transparency",
+    "https://deepgram.com/ai-glossary/ai-resilience",
+    "https://deepgram.com/ai-glossary/ai-literacy",
+    "https://deepgram.com/ai-glossary/ai-scalability",
+    "https://deepgram.com/ai-glossary/ai-and-big-data",
+    "https://deepgram.com/ai-glossary/ai-prototyping",
+    "https://deepgram.com/ai-glossary/augmented-intelligence",
+    "https://deepgram.com/ai-glossary/ai-robustness",
+    "https://deepgram.com/ai-glossary/auto-classification",
+    "https://deepgram.com/ai-glossary/autoregressive-model",
+    "https://deepgram.com/ai-glossary/articulatory-synthesis",
+    "https://deepgram.com/ai-glossary/ai-and-medicine",
+    "https://deepgram.com/ai-glossary/ai-agents",
+    "https://deepgram.com/ai-glossary/ai-hardware",
+    "https://deepgram.com/ai-glossary/ai-voice-agents",
+];
+
+// --- Async Ingestion Task ---
+async fn ingest_links(title: &str, links: &[(&str, &str)]) {
+    let mut log = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("datalake_ingestion_schedule.log")
+        .unwrap();
+
+    writeln!(log, "\n[{}] Scheduling {} for Ingestion:", Utc::now(), title).unwrap();
+    for (desc, url) in links {
+        writeln!(log, "- {} | {}", desc, url).unwrap();
+        // Simulate ingestion delay
+        sleep(Duration::from_millis(150)).await;
+    }
+    writeln!(log, "[{}] {} ingestion scheduled.\n", Utc::now(), title).unwrap();
+}
+
+async fn ingest_glossary(title: &str, links: &[&str]) {
+    let mut log = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("datalake_ingestion_schedule.log")
+        .unwrap();
+
+    writeln!(log, "\n[{}] Scheduling {} for Ingestion:", Utc::now(), title).unwrap();
+    for url in links {
+        writeln!(log, "- {}", url).unwrap();
+        // Simulate ingestion delay
+        sleep(Duration::from_millis(100)).await;
+    }
+    writeln!(log, "[{}] {} ingestion scheduled.\n", Utc::now(), title).unwrap();
+}
+
+// --- Main Scheduler ---
+#[tokio::main]
+async fn main() {
+    let me_task = task::spawn(ingest_links(
+        "Magnetoelectric Generator Research",
+        ME_GEN_REFS,
+    ));
+    let glossary_task = task::spawn(ingest_glossary(
+        "Deepgram AI Glossary Links",
+        AI_GLOSSARY_LINKS,
+    ));
+
+    me_task.await.unwrap();
+    glossary_task.await.unwrap();
+
+    println!("All Magnetoelectric generator research and AI glossary links scheduled for Data Lake ingestion. See 'datalake_ingestion_schedule.log' for details.");
+}
+// GOD-System: Fully Virtualized Electromagnetic Cybernetic Ecosystem
+// - In-memory/virtual storage
+// - Immutable factory settings
+// - Programmable attributes (with legal/ethical boundaries)
+// - Neuromorphic core/task simulation
+// - Priority event scheduler
+// - Async data ingestion (tokio)
+// - No hardware, file, or device mutation
+
+use std::collections::{HashMap, VecDeque, BinaryHeap};
+use std::sync::{Arc, Mutex};
+use std::cmp::Ordering;
+use chrono::{Utc, DateTime};
+use tokio::time::{sleep, Duration};
+use tokio::task;
+
+// --- Constants for System Identity ---
+const SYSTEM_NAME: &str = "TheGOD-System";
+const REALITY_OS: &str = "reality.os";
+const FACTORY_SETTINGS: &str = "factory-defaults";
+
+// --- Programmable Attributes (Ethical & Legal Boundaries) ---
+#[derive(Debug, Clone)]
+pub struct ProgrammableAttributes {
+    pub allow_escape: bool,
+    pub legal_compliance: bool,
+    pub ethical_boundary: bool,
+    pub user_defined: HashMap<String, String>,
+}
+impl Default for ProgrammableAttributes {
+    fn default() -> Self {
+        ProgrammableAttributes {
+            allow_escape: false,
+            legal_compliance: true,
+            ethical_boundary: true,
+            user_defined: HashMap::new(),
+        }
+    }
+}
+
+// --- In-Memory System State ---
+#[derive(Clone)]
+struct SystemState {
+    neural_memory: HashMap<String, Vec<f32>>,
+    config: HashMap<String, String>,
+    logs: Vec<String>,
+}
+
+// --- Neuromorphic Core ---
+#[derive(Debug)]
+pub struct NeuroCore {
+    pub id: usize,
+    pub state: String,
+    pub memory: Vec<f32>,
+    pub spiking_activity: Vec<u8>,
+}
+impl NeuroCore {
+    pub fn new(id: usize) -> Self {
+        NeuroCore {
+            id,
+            state: "idle".to_string(),
+            memory: vec![0.0; 1024],
+            spiking_activity: vec![0; 256],
+        }
+    }
+    pub fn reset(&mut self) {
+        self.state = "idle".to_string();
+        self.memory.fill(0.0);
+        self.spiking_activity.fill(0);
+    }
+}
+
+// --- Neuromorphic Virtual Machine ---
+#[derive(Debug)]
+pub struct NeuroVM {
+    pub cores: Vec<NeuroCore>,
+    pub task_queue: VecDeque<String>,
+    pub programmable: ProgrammableAttributes,
+}
+impl NeuroVM {
+    pub fn new(num_cores: usize) -> Self {
+        NeuroVM {
+            cores: (0..num_cores).map(NeuroCore::new).collect(),
+            task_queue: VecDeque::new(),
+            programmable: ProgrammableAttributes::default(),
+        }
+    }
+    pub fn reset_system(&mut self) {
+        for core in &mut self.cores {
+            core.reset();
+        }
+        self.task_queue.clear();
+        self.programmable = ProgrammableAttributes::default();
+    }
+    pub fn enqueue_task(&mut self, task: &str) {
+        self.task_queue.push_back(task.to_string());
+    }
+    pub fn run_tasks(&mut self) {
+        while let Some(task) = self.task_queue.pop_front() {
+            for core in &mut self.cores {
+                core.state = format!("processing: {}", task);
+            }
+        }
+    }
+}
+
+// --- Factory Settings and GODSystem ---
+#[derive(Clone)]
+struct FactorySettings {
+    identity: &'static str,
+    os: &'static str,
+    programmable: ProgrammableAttributes,
+}
+
+struct GODSystem {
+    factory_snapshot: SystemState,
+    current_state: SystemState,
+    settings: FactorySettings,
+    neurosys: Arc<Mutex<NeuroVM>>,
+}
+
+impl GODSystem {
+    fn new(num_cores: usize) -> Self {
+        let defaults = ProgrammableAttributes::default();
+        let init_state = SystemState {
+            neural_memory: HashMap::new(),
+            config: HashMap::from([
+                ("system_name".into(), SYSTEM_NAME.into()),
+                ("os".into(), REALITY_OS.into()),
+            ]),
+            logs: Vec::new(),
+        };
+        GODSystem {
+            factory_snapshot: init_state.clone(),
+            current_state: init_state,
+            settings: FactorySettings {
+                identity: SYSTEM_NAME,
+                os: REALITY_OS,
+                programmable: defaults.clone(),
+            },
+            neurosys: Arc::new(Mutex::new(NeuroVM::new(num_cores))),
+        }
+    }
+    fn reset_to_factory(&mut self) {
+        self.current_state = self.factory_snapshot.clone();
+        let mut sys = self.neurosys.lock().unwrap();
+        sys.reset_system();
+    }
+    fn set_config(&mut self, key: &str, value: &str) {
+        self.current_state.config.insert(key.into(), value.into());
+    }
+    fn log_event(&mut self, event: &str) {
+        self.current_state.logs.push(event.into());
+    }
+    fn set_programmable_attribute(&mut self, key: &str, value: &str) {
+        let mut sys = self.neurosys.lock().unwrap();
+        match key {
+            "allow_escape" | "legal_compliance" | "ethical_boundary" => {/* ignore or log */},
+            _ => { sys.programmable.user_defined.insert(key.to_string(), value.to_string()); }
+        }
+    }
+    fn print_status(&self) {
+        let sys = self.neurosys.lock().unwrap();
+        println!("System: {} | OS: {} | Config: {:?}", self.settings.identity, self.settings.os, self.current_state.config);
+        println!("Cores: {} | Programmable: {:?}", sys.cores.len(), sys.programmable);
+    }
+}
+
+// --- Priority Scheduler for Ingestion Events ---
+#[derive(Eq, PartialEq)]
+struct IngestEvent {
+    priority: u8,
+    scheduled_time: DateTime<Utc>,
+    command: String,
+}
+impl Ord for IngestEvent {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.priority.cmp(&self.priority)
+            .then(self.scheduled_time.cmp(&other.scheduled_time))
+    }
+}
+impl PartialOrd for IngestEvent {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+struct SchedulerStats {
+    delta_times: Vec<i64>,
+    command_count: usize,
+}
+
+// --- Async Data Ingestion Scheduler ---
+const ME_GEN_REFS: &[(&str, &str)] = &[
+    ("Self‐biased magnetoelectric composite for energy harvesting", "https://onlinelibrary.wiley.com/doi/full/10.1002/bte2.20230005"),
+    ("Comparative analysis of energy harvesting by magnetoelectric ...", "https://ui.adsabs.harvard.edu/abs/2025IJMS..28810042R/abstract"),
+    // ... (add more as needed)
+];
+
+const AI_GLOSSARY_LINKS: &[&str] = &[
+    "https://deepgram.com/ai-glossary/ai-privacy",
+    "https://deepgram.com/ai-glossary/ai-transparency",
+    // ... (add more as needed)
+];
+
+async fn ingest_links(title: &str, links: &[(&str, &str)]) {
+    for (desc, url) in links {
+        println!("[{}] INGEST: {} | {}", Utc::now(), desc, url);
+        sleep(Duration::from_millis(100)).await;
+    }
+}
+
+async fn ingest_glossary(title: &str, links: &[&str]) {
+    for url in links {
+        println!("[{}] INGEST: {} | {}", Utc::now(), title, url);
+        sleep(Duration::from_millis(50)).await;
+    }
+}
+
+// --- Main Entrypoint ---
+#[tokio::main]
+async fn main() {
+    let mut godsys = GODSystem::new(8);
+
+    godsys.reset_to_factory();
+    godsys.set_programmable_attribute("custom_mode", "research");
+    godsys.set_programmable_attribute("ai_behavior", "non-escaping");
+
+    {
+        let mut sys = godsys.neurosys.lock().unwrap();
+        sys.enqueue_task("spike-based pattern recognition");
+        sys.enqueue_task("energy-efficient SNN simulation");
+        sys.enqueue_task("virtual hardware reconfiguration");
+        sys.run_tasks();
+    }
+
+    godsys.print_status();
+
+    // Priority event scheduling example
+    let mut queue = BinaryHeap::new();
+    queue.push(IngestEvent { priority: 10, scheduled_time: Utc::now(), command: "Ingest Magnetoelectric Paper".into() });
+    queue.push(IngestEvent { priority: 5, scheduled_time: Utc::now(), command: "Ingest AI Glossary Update".into() });
+
+    // Async ingestion
+    let me_task = task::spawn(ingest_links("Magnetoelectric Generator Research", ME_GEN_REFS));
+    let glossary_task = task::spawn(ingest_glossary("Deepgram AI Glossary Links", AI_GLOSSARY_LINKS));
+    me_task.await.unwrap();
+    glossary_task.await.unwrap();
+
+    println!("\nAll scheduled data ingestion complete. GOD-System remains fully virtual, compliant, and hardware-agnostic.");
+}
