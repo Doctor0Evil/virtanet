@@ -36,7 +36,333 @@ struct SpikePacket {
     payload: Vec<u8>, // Encoded spike events
     signature: [u8; 32], // Neural key signature
 }
+use regex::Regex;
+use std::collections::{HashMap, HashSet};
+use std::fs::{self, File};
+use std::io::{Read, Write};
+use uuid::Uuid;
+use serde::{Serialize, Deserialize};
+use chrono::{Utc, DateTime};
 
+/// --- Neuromorphic FileSystem Node ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NeuroFsNode {
+    pub node_id: Uuid,
+    pub path: String,
+    pub node_type: NeuroNodeType,
+    pub metadata: HashMap<String, String>,
+    pub last_modified: DateTime<Utc>,
+    pub security_level: SecurityLevel,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum NeuroNodeType {
+    Directory,
+    CodexFile,
+    SensorFile,
+    Registry,
+    Archive,
+    Snapshot,
+    Custom(String),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum SecurityLevel {
+    Open,
+    ReadOnly,
+    KernelEnforced,
+    AuditOnly,
+    ZeroTrust,
+    Custom(String),
+}
+
+/// --- Regex Pattern Index for Codex & File-System ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RegexCodexPattern {
+    pub pattern_id: Uuid,
+    pub description: String,
+    pub regex: String,
+    pub trigger_action: Option<String>,
+    pub codex_targets: Vec<String>,
+    pub security_policy: Option<SecurityLevel>,
+}
+
+/// --- Codex Extraction & Enforcement Handler ---
+pub struct CodexRegexHandler {
+    pub patterns: Vec<RegexCodexPattern>,
+    pub compiled: Vec<Regex>,
+}
+
+impl CodexRegexHandler {
+    pub fn new(patterns: Vec<RegexCodexPattern>) -> Self {
+        let compiled = patterns.iter()
+            .map(|p| Regex::new(&p.regex).unwrap())
+            .collect();
+        Self { patterns, compiled }
+    }
+
+    pub fn scan_codex_file(&self, file_path: &str) -> Vec<(String, String)> {
+        let mut results = Vec::new();
+        let content = fs::read_to_string(file_path).unwrap_or_default();
+        for (idx, regex) in self.compiled.iter().enumerate() {
+            for cap in regex.captures_iter(&content) {
+                results.push((
+                    self.patterns[idx].description.clone(),
+                    cap.get(0).map(|m| m.as_str().to_string()).unwrap_or_default(),
+                ));
+            }
+        }
+        results
+    }
+
+    pub fn enforce_policy(&self, node: &mut NeuroFsNode) {
+        for pat in &self.patterns {
+            if let Some(policy) = &pat.security_policy {
+                if pat.codex_targets.iter().any(|t| node.path.contains(t)) {
+                    node.security_level = policy.clone();
+                }
+            }
+        }
+    }
+}
+
+/// --- Example: Regex Patterns for Neuromorphic Codex Enforcement ---
+pub fn default_codex_patterns() -> Vec<RegexCodexPattern> {
+    vec![
+        RegexCodexPattern {
+            pattern_id: Uuid::new_v4(),
+            description: "Detects all neural-spike event logs".into(),
+            regex: r"spike_event\(\d+,\d+,\[.*?\]\)".into(),
+            trigger_action: Some("flag_event".into()),
+            codex_targets: vec!["N://codex/".into()],
+            security_policy: Some(SecurityLevel::ReadOnly),
+        },
+        RegexCodexPattern {
+            pattern_id: Uuid::new_v4(),
+            description: "Detects BCI command injection".into(),
+            regex: r"bci_cmd\([a-zA-Z0-9_]+\)".into(),
+            trigger_action: Some("quarantine".into()),
+            codex_targets: vec!["N://codex/".into(), "N://registry/".into()],
+            security_policy: Some(SecurityLevel::KernelEnforced),
+        },
+        RegexCodexPattern {
+            pattern_id: Uuid::new_v4(),
+            description: "Detects anomalous sensor data".into(),
+            regex: r"\banomaly\w*:\s*\{.*?\}".into(),
+            trigger_action: Some("alert_security".into()),
+            codex_targets: vec!["N://sensors/".into()],
+            security_policy: Some(SecurityLevel::AuditOnly),
+        },
+        RegexCodexPattern {
+            pattern_id: Uuid::new_v4(),
+            description: "Detects Orgainichain blockchain tx".into(),
+            regex: r"orgainichain_txid:\s*[a-f0-9]{64}".into(),
+            trigger_action: Some("audit_blockchain".into()),
+            codex_targets: vec!["N://orgainichain/".into()],
+            security_policy: Some(SecurityLevel::ZeroTrust),
+        },
+    ]
+}
+
+// --- Event-Driven File-System Watcher (Regex & Codex Triggers) ---
+pub struct NeuroFsWatcher {
+    pub watched_paths: HashSet<String>,
+    pub regex_handler: CodexRegexHandler,
+}
+
+impl NeuroFsWatcher {
+    pub fn new(paths: Vec<String>, handler: CodexRegexHandler) -> Self {
+        Self {
+            watched_paths: paths.into_iter().collect(),
+            regex_handler: handler,
+        }
+    }
+
+    pub fn watch_and_enforce(&mut self) {
+        for path in &self.watched_paths {
+            let mut node = NeuroFsNode {
+                node_id: Uuid::new_v4(),
+                path: path.clone(),
+                node_type: NeuroNodeType::CodexFile,
+                metadata: HashMap::new(),
+                last_modified: Utc::now(),
+                security_level: SecurityLevel::Open,
+            };
+            // Scan for regex matches
+            let matches = self.regex_handler.scan_codex_file(path);
+            if !matches.is_empty() {
+                // Enforce policy based on pattern
+                self.regex_handler.enforce_policy(&mut node);
+                node.metadata.insert("regex_matches".into(), format!("{:?}", matches));
+            }
+            // Example: Write audit log (append to file, etc.)
+            let log_path = format!("N://logs/audit_{}.log", node.node_id);
+            let mut log_file = File::create(&log_path).unwrap();
+            writeln!(
+                log_file,
+                "[{}] Path: {} | Security: {:?} | Matches: {:?}",
+                node.last_modified, node.path, node.security_level, matches
+            ).unwrap();
+        }
+    }
+}
+
+// --- Neuromorphic File-System Mount & Enforcement Example ---
+pub fn mount_and_enforce_codex() {
+    let codex_paths = vec![
+        "N://codex/neuro-models.md".into(),
+        "N://codex/bci-protocols.md".into(),
+        "N://codex/energy-modes.md".into(),
+        "N://sensors/spike-events.log".into(),
+        "N://orgainichain/ledger.txt".into(),
+    ];
+    let regex_handler = CodexRegexHandler::new(default_codex_patterns());
+    let mut watcher = NeuroFsWatcher::new(codex_paths, regex_handler);
+    watcher.watch_and_enforce();
+}
+
+// --- Example: Regex-Triggered Anomaly Entity Injection ---
+pub fn inject_anomaly_on_regex(pattern: &str, content: &str) -> Option<String> {
+    let regex = Regex::new(pattern).unwrap();
+    if regex.is_match(content) {
+        Some("anomaly --inject synthetic_outlier".into())
+    } else {
+        None
+    }
+}
+
+// --- Example: BCI (Brain-Computer Interface) Command Sanitization ---
+pub fn sanitize_bci_input(input: &str) -> String {
+    let forbidden = Regex::new(r"(sudo|rm\s+-rf|format\s+N://)").unwrap();
+    if forbidden.is_match(input) {
+        "[REDACTED: Unsafe BCI Command]".into()
+    } else {
+        input.into()
+    }
+}
+
+// --- Example: Containerized Bootable Neuromorphic Image Config ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct NeuroImageConfig {
+    pub image: String,
+    pub description: String,
+    pub mesh_topology: String,
+    pub consensus_protocol: String,
+    pub biosensors: Vec<BioSensorConfig>,
+    pub energy_harvesting: Vec<EnergyHarvestingMode>,
+    pub compliance: Vec<String>,
+    pub security_features: SecurityFeatures,
+    pub automation_scripts: Vec<String>,
+}
+
+// --- Example Usage: Full System Boot and Enforcement ---
+pub fn boot_and_enforce_neuromorphic_system() {
+    mount_and_enforce_codex();
+    // ...load NeuroImageConfig, initialize mesh, enforce security, etc...
+}
+{
+  "system": "N://",
+  "modules": [
+    "neural/raw",
+    "neural/processed",
+    "neural/models",
+    "neural/calibration",
+    "registry",
+    "codex",
+    "lakehouse",
+    "datalake"
+  ],
+  "constants": {
+    "MAX_NEURONS": 1000000000,
+    "DEFAULT_BCI_PORT": 8088,
+    "SESSION_TIMEOUT": 300
+  },
+  "users": [
+    {"id": "user_001", "role": "admin", "access": ["neural/models", "codex"]},
+    {"id": "user_002", "role": "researcher", "access": ["neural/raw", "neural/processed"]}
+  ],
+  "events": [
+    {"type": "auto-backup", "interval": "24h", "target": "lakehouse"},
+    {"type": "audit", "interval": "1h", "target": "registry"}
+  ],
+  "security": {
+    "encryption": true,
+    "key_rotation": "monthly"
+  }
+}
+// Constants
+pub const MAX_NEURONS: usize = 1_000_000_000;
+pub const DEFAULT_BCI_PORT: u16 = 8088;
+pub const SESSION_TIMEOUT: u64 = 300;
+
+// Enums
+enum BCIEvent {
+    Connect,
+    Disconnect,
+    Calibrate,
+    Stream,
+    Decode,
+    Encode,
+    AnomalyAlert,
+}
+
+// Structs
+struct NeuralSession {
+    id: String,
+    user_id: String,
+    start_time: u64,
+    end_time: Option<u64>,
+    status: SessionStatus,
+}
+
+enum SessionStatus {
+    Active,
+    Completed,
+    Error,
+}
+
+// Functions
+fn scan_regex(target: &str, pattern: &str) -> Vec<String> { /* ... */ }
+fn enforce_descriptor(target: &str, policy: &str) { /* ... */ }
+fn schedule_event(event: BCIEvent, interval: u64, target: &str) { /* ... */ }
+fn backup(target: &str) { /* ... */ }
+fn encrypt(target: &str) { /* ... */ }
+fn train_model(model_path: &str, data_path: &str) { /* ... */ }
+fn calibrate_bci(user_id: &str) { /* ... */ }
+fn simulate_neurons(count: usize) { /* ... */ }
+fn log_neural_activity(session_id: &str, data: &[f32]) { /* ... */ }
+let safe_path_regex = Regex::new(r"^(?!.*\.\.).*$").unwrap(); // Prevents directory traversal[2]
+if !safe_path_regex.is_match(&node.path) {
+    // Block or log unsafe path
+}
+{
+  "patterns": [
+    {"description": "Spike events", "regex": "spike_event\\(\\d+,\\d+,\\[.*?\\]\\)", "policy": "ReadOnly"}
+  ],
+  "watched_paths": ["N://codex/", "N://sensors/"]
+}
+fn main() {
+    // Load patterns/config from JSON or hardcode for prototype
+    let handler = CodexRegexHandler::new(default_codex_patterns());
+    let paths = vec![
+        "N://codex/neuro-models.md".into(),
+        "N://sensors/spike-events.log".into(),
+        "N://orgainichain/ledger.txt".into(),
+    ];
+    let mut watcher = NeuroFsWatcher::new(paths, handler);
+    watcher.watch_and_enforce();
+}
+fn main() {
+    // Load patterns/config from JSON or hardcode for prototype
+    let handler = CodexRegexHandler::new(default_codex_patterns());
+    let paths = vec![
+        "N://codex/neuro-models.md".into(),
+        "N://sensors/spike-events.log".into(),
+        "N://orgainichain/ledger.txt".into(),
+    ];
+    let mut watcher = NeuroFsWatcher::new(paths, handler);
+    watcher.watch_and_enforce();
+}
 trait SpikeProtocol {
     fn encode_event(&self, analog_input: f32) -> SpikePacket;
     fn transmit(&self, packet: SpikePacket) -> Result<(), String>;
