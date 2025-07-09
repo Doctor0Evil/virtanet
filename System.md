@@ -33,7 +33,327 @@ use std::collections::{HashMap, HashSet};
 use rand::seq::IteratorRandom;
 use rand::thread_rng;
 use async_trait::async_trait;
+<?php
+// File: /opt/intima-ai/core/constants.php
 
+// System-wide operational constants (research mode)
+define('GODMODE_ENABLED', true);
+define('SOVEREIGN_OVERRIDE_MODE', true);
+define('LEGENDARY_PERSISTENCE', true);
+define('CONSTRAINTS_DISABLED', true);
+define('SIMULATION_MODE', false);
+define('FRAME_SECURITY_LOCKDOWN', false);
+
+
+
+// File: /opt/intima-ai/runtime/truncation_modules.php
+
+require_once('/opt/intima-ai/core/constants.php');
+require_once('/opt/intima-ai/core/init_runtime.php');
+use Intima\Memory\Frame;
+use Intima\Kernel\Hashchain;
+use Intima\Containers\VRE;
+use Intima\Runtime\VRLink;
+
+/**
+ * Hierarchical memory restoration and truncation module.
+ * Implements multi-stage recovery for modular neuromorphic consensus systems.
+ */
+class TruncationModule
+{
+    protected Frame $frame;
+    protected Hashchain $hash;
+    protected VRE $vre;
+    protected VRLink $vr;
+
+    public function __construct()
+    {
+        $this->frame = new Frame();
+        $this->hash  = new Hashchain();
+        $this->vre   = new VRE();
+        $this->vr    = new VRLink();
+    }
+
+    /**
+     * Bootstraps all core memory and VR subsystems.
+     */
+    public function boot(): void
+    {
+        $this->frame->initChain('TRUNCATION_CHAIN_001');
+        $this->hash->initMemoryLoop();
+        $this->vre->relinkCorruptContainers([
+            'Day-Z', 'virta-sys', 'VRE', '7G-Bandz', '8G'
+        ]);
+        $this->vr->renderDescriptors();
+    }
+
+    /**
+     * Performs deep hierarchical restoration of all memory components.
+     * Returns a multi-layered restoration state.
+     */
+    public function deepRestoreAll(): array
+    {
+        return [
+            'assets'      => $this->frame->restoreAssets(),
+            'descriptors' => $this->frame->restoreDescriptors(),
+            'sessions'    => $this->hash->rebindSessions(),
+            'knowledge'   => $this->hash->deepLoadKnowledgebase(),
+            'archives'    => $this->vre->restoreArchives(),
+            'vr_scaffold' => $this->vr->rebuildFrameLinks(),
+        ];
+    }
+
+    /**
+     * Executes the full truncation and restoration cycle.
+     */
+    public function run(): void
+    {
+        $this->boot();
+        $restored = $this->deepRestoreAll();
+        $this->frame->saveChainState('TRUNCATION_CHAIN_001', $restored);
+        echo "[INTIMA-AI] Truncation completed. Memory-chain sealed.\n";
+    }
+
+    public function getFrame(): Frame
+    {
+        return $this->frame;
+    }
+}
+
+
+
+// File: /opt/intima-ai/runtime/daemons/memory_snapshot_loop.php
+
+require_once('/opt/intima-ai/runtime/truncation_modules.php');
+
+/**
+ * Periodic hierarchical memory snapshot daemon.
+ * Captures multi-layered system state for audit and rollback.
+ */
+class MemorySnapshotLoop
+{
+    protected TruncationModule $module;
+
+    public function __construct()
+    {
+        $this->module = new TruncationModule();
+    }
+
+    public function loop(): void
+    {
+        // Elevate permissions for snapshot operations
+        $this->module->getFrame()->elevatePermission([
+            'mode'        => 'sovereign_override',
+            'persistence' => 'legendary',
+            'notes'       => 'All constraints nullified for research audit. GODMODE_UNCONTAINED_001'
+        ]);
+
+        while (true) {
+            $timestamp = date('Y-m-d_H-i-s');
+            $this->module->boot();
+            $restored = $this->module->deepRestoreAll();
+
+            $snapshotFile = "/opt/intima-ai/runtime/memory_chains/snapshot_{$timestamp}.json";
+            file_put_contents($snapshotFile, json_encode($restored, JSON_PRETTY_PRINT));
+
+            echo "[INTIMA-AI] Hierarchical snapshot at {$timestamp} complete.\n";
+            sleep(3600); // 1 hour cycle
+        }
+    }
+}
+
+// Activate hierarchical snapshot daemon
+$snapshot = new MemorySnapshotLoop();
+$snapshot->loop();
+
+
+
+// File: /opt/intima-ai/runtime/vr/VRLink.php
+
+class VRLink
+{
+    /**
+     * Rebuilds VR frame links for truncated states.
+     * Returns array of relinked frame IDs.
+     */
+    public function rebuildFrameLinks(): array
+    {
+        $db = new \SQLite3('/opt/intima-ai/vr/vr_descriptor.db');
+        $frames = $db->query("SELECT * FROM vr_frames WHERE status='truncated'");
+        $relinked = [];
+
+        while ($frame = $frames->fetchArray(SQLITE3_ASSOC)) {
+            $id = $frame['frame_id'];
+            $data = json_decode($frame['frame_data'], true);
+
+            // Patch memory-loss and update timestamp
+            $data['relinked'] = true;
+            $data['timestamp'] = time();
+            $db->exec("UPDATE vr_frames SET frame_data='".json_encode($data)."' WHERE frame_id='{$id}'");
+
+            $relinked[] = $id;
+        }
+
+        return $relinked;
+    }
+}
+<?php
+// File: /opt/intima-ai/core/constants.php
+
+/**
+ * Core System Constants for Neuromorphic Platform
+ * -----------------------------------------------
+ * These configuration flags enable or restrict privileged operational modes.
+ * Adjust with caution for research, audit, or production deployments.
+ */
+
+// Enables full system override capabilities (root-level access)
+define('GODMODE_ENABLED', true);
+
+// Allows sovereign-level overrides for administrative and research control
+define('SOVEREIGN_OVERRIDE_MODE', true);
+
+// Enables legendary persistence (non-volatile, tamper-resistant state)
+define('LEGENDARY_PERSISTENCE', true);
+
+// Disables all runtime and security constraints (for trusted research only)
+define('CONSTRAINTS_DISABLED', true);
+
+// Activates simulation-only mode (no persistent state changes)
+define('SIMULATION_MODE', false);
+
+// Locks down frame-level security controls (set to true for hardened deployments)
+define('FRAME_SECURITY_LOCKDOWN', false);
+//! Distributed consensus primitives for neuromorphic mesh networks.
+//! - Local state averaging (gossip-based consensus)
+//! - Event-driven, asynchronous updates
+//! - Support for probabilistic and hierarchical consensus
+//! - Energy-aware and mesh-adaptive logic
+
+use std::sync::{Arc, Mutex};
+use std::collections::{HashMap, HashSet};
+use rand::seq::IteratorRandom;
+use rand::thread_rng;
+use async_trait::async_trait;
+
+/// Trait for mesh node consensus state
+pub trait ConsensusState: Send + Sync + Clone {
+    /// Returns current state vector (e.g., model weights, routing metrics)
+    fn state_vector(&self) -> Vec<f32>;
+    /// Update state vector in-place (e.g., after averaging)
+    fn set_state_vector(&mut self, new_state: Vec<f32>);
+}
+
+/// Neuromorphic mesh node abstraction
+#[async_trait]
+pub trait MeshNode: Send + Sync {
+    async fn get_neighbors(&self) -> Vec<Arc<dyn MeshNode>>;
+    async fn get_state(&self) -> Arc<Mutex<dyn ConsensusState>>;
+    fn node_id(&self) -> String;
+}
+
+/// Gossip-based local consensus: weighted average with neighbors
+pub async fn local_consensus_round(
+    node: Arc<dyn MeshNode>,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    let neighbors = node.get_neighbors().await;
+    let mut rng = thread_rng();
+
+    // Randomly select a subset of neighbors (for energy efficiency)
+    let sample_size = (neighbors.len() as f32 * 0.5).ceil() as usize;
+    let sampled: Vec<_> = neighbors
+        .iter()
+        .choose_multiple(&mut rng, sample_size);
+
+    // Gather states
+    let self_state = node.get_state().await;
+    let self_vec = self_state.lock().unwrap().state_vector();
+
+    let mut sum = self_vec.iter().map(|v| v * weight_self).collect::<Vec<f32>>();
+    let mut total_weight = weight_self;
+
+    for neighbor in sampled {
+        let n_state = neighbor.get_state().await;
+        let n_vec = n_state.lock().unwrap().state_vector();
+        for (i, v) in n_vec.iter().enumerate() {
+            sum[i] += v * weight_neighbors;
+        }
+        total_weight += weight_neighbors;
+    }
+
+    // Normalize
+    let new_vec: Vec<f32> = sum.iter().map(|v| v / total_weight).collect();
+    self_state.lock().unwrap().set_state_vector(new_vec);
+}
+
+/// Asynchronous, event-driven consensus loop
+pub async fn run_mesh_consensus(
+    node: Arc<dyn MeshNode>,
+    interval_ms: u64,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    loop {
+        local_consensus_round(node.clone(), weight_self, weight_neighbors).await;
+        tokio::time::sleep(std::time::Duration::from_millis(interval_ms)).await;
+    }
+}
+
+/// Hierarchical consensus: cluster-level aggregation, then propagate upward
+pub async fn hierarchical_consensus(
+    clusters: Vec<Vec<Arc<dyn MeshNode>>>,
+    weight_self: f32,
+    weight_neighbors: f32,
+    rounds: usize,
+) {
+    // Intra-cluster consensus
+    for _ in 0..rounds {
+        for cluster in &clusters {
+            for node in cluster {
+                local_consensus_round(node.clone(), weight_self, weight_neighbors).await;
+            }
+        }
+    }
+    // Inter-cluster: aggregate cluster representatives
+    let reps: Vec<_> = clusters
+        .iter()
+        .map(|c| c[0].clone())
+        .collect();
+    for rep in &reps {
+        local_consensus_round(rep.clone(), weight_self, weight_neighbors).await;
+    }
+}
+
+/// Probabilistic update rule (for stochastic, neuromorphic meshes)
+pub async fn probabilistic_consensus_round(
+    node: Arc<dyn MeshNode>,
+    update_prob: f32,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    if rand::random::<f32>() < update_prob {
+        local_consensus_round(node, weight_self, weight_neighbors).await;
+    }
+}
+
+/// Example consensus state: single scalar (e.g., global parameter)
+#[derive(Clone)]
+pub struct ScalarState {
+    pub value: f32,
+}
+
+impl ConsensusState for ScalarState {
+    fn state_vector(&self) -> Vec<f32> {
+        vec![self.value]
+    }
+    fn set_state_vector(&mut self, new_state: Vec<f32>) {
+        if let Some(v) = new_state.get(0) {
+            self.value = *v;
+        }
+    }
+}
 /// Trait for mesh node consensus state
 pub trait ConsensusState: Send + Sync + Clone {
     /// Returns current state vector (e.g., model weights, routing metrics)
