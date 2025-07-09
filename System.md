@@ -20,6 +20,1937 @@ struct SubsystemRegistry {
     subsystems: HashMap<String, Subsystem>,
     files: HashMap<String, FileMeta>,
 }
+// Exhaustive Bio-Sensor Configurations for Cybernetic_Research
+// Multi-modal, adaptive, event-driven, security-enriched, and energy-aware
+// Includes advanced energy harvesting, neuromorphic mesh, and compliance features
+
+use std::collections::{HashMap, VecDeque};
+use std::time::Duration;
+use serde::{Serialize, Deserialize};
+use uuid::Uuid;
+
+// --- Energy Harvesting Modes ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum EnergyHarvestingMode {
+    RF,
+    Thermal,
+    Piezoelectric,
+    Photovoltaic,
+    Triboelectric,
+    MagneticField,
+    Vibration,
+    WirelessPowerTransfer,
+    Hybrid(Vec<EnergyHarvestingMode>),
+    Custom(String),
+}
+
+// --- BioSensor Types ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum BioSensorType {
+    EEG,
+    EMG,
+    ECG,
+    EOG,
+    GSR,
+    PPG,
+    SpO2,
+    Temperature,
+    Accelerometer,
+    Gyroscope,
+    Magnetometer,
+    Chemical,
+    Optical,
+    Microfluidic,
+    RFImplant,
+    CyberneticPatch,
+    Pressure,
+    Respiration,
+    Glucose,
+    Lactate,
+    pH,
+    Hydration,
+    DNASequencer,
+    Nanopore,
+    Custom(String),
+}
+
+// --- Retention Policy ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum RetentionPolicy {
+    Ephemeral(Duration),
+    Persistent,
+    HashOnly,
+}
+
+// --- BioSensor Configuration ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BioSensorConfig {
+    pub sensor_id: Uuid,
+    pub sensor_type: BioSensorType,
+    pub location: String,
+    pub sampling_rate_hz: f32,
+    pub resolution_bits: u8,
+    pub channels: u16,
+    pub wireless: bool,
+    pub encryption: Option<String>,
+    pub event_driven: bool,
+    pub adaptive_threshold: Option<f32>,
+    pub calibration_file: Option<String>,
+    pub retention_policy: RetentionPolicy,
+    pub energy_harvesting: Option<EnergyHarvestingMode>,
+    pub compliance: Vec<String>,
+    pub metadata: HashMap<String, String>,
+}
+
+// --- Mesh Topology ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum MeshTopology {
+    Star,
+    Mesh,
+    Hybrid,
+    Tree,
+    Ring,
+    Custom(String),
+}
+
+// --- Consensus Protocol ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum ConsensusProtocol {
+    Neurodynamic,
+    Gossip,
+    BlockchainInspired,
+    Swarm,
+    Custom(String),
+}
+
+// --- Security Features ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SecurityFeatures {
+    pub cryptographic_neural_keys: bool,
+    pub tamper_detection: bool,
+    pub anomaly_detection: bool,
+    pub secure_boot: bool,
+    pub audit_logging: bool,
+    pub compliance_certifications: Vec<String>,
+    pub multi_factor_auth: bool,
+    pub biometric_access: bool,
+    pub zero_trust: bool,
+}
+
+// --- Energy Management Config ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EnergyManagementConfig {
+    pub adaptive_routing: bool,
+    pub hierarchical_buffering: bool,
+    pub ai_optimization: bool,
+    pub hybrid_sources: bool,
+    pub self_organizing: bool,
+    pub metrics: Vec<String>,
+}
+
+// --- BioSensor Network File ---
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BioSensorNetworkFile {
+    pub network_id: Uuid,
+    pub description: String,
+    pub sensors: Vec<BioSensorConfig>,
+    pub mesh_topology: MeshTopology,
+    pub consensus_protocol: ConsensusProtocol,
+    pub security_features: SecurityFeatures,
+    pub interface_adapters: Vec<String>,
+    pub energy_management: EnergyManagementConfig,
+    pub last_updated: String,
+}
+
+// --- Example: Full Enriched Bio-Sensor Network Configuration File ---
+pub fn example_bio_sensor_network() -> BioSensorNetworkFile {
+    BioSensorNetworkFile {
+        network_id: Uuid::new_v4(),
+        description: String::from("Cybernetic Research: Exhaustive Multi-Modal Bio-Sensor Mesh with Advanced Energy Harvesting and Security"),
+        sensors: vec![
+            BioSensorConfig {
+                sensor_id: Uuid::new_v4(),
+                sensor_type: BioSensorType::EEG,
+                location: "scalp Cz".into(),
+                sampling_rate_hz: 1000.0,
+                resolution_bits: 24,
+                channels: 64,
+                wireless: true,
+                encryption: Some("AES256".into()),
+                event_driven: true,
+                adaptive_threshold: Some(0.5),
+                calibration_file: Some("calib_eeg_cz.json".into()),
+                retention_policy: RetentionPolicy::Ephemeral(Duration::from_secs(3600)),
+                energy_harvesting: Some(EnergyHarvestingMode::Hybrid(vec![
+                    EnergyHarvestingMode::RF,
+                    EnergyHarvestingMode::Photovoltaic
+                ])),
+                compliance: vec!["HIPAA".into(), "GDPR".into()],
+                metadata: [("manufacturer".into(), "NeuroTechX".into())].iter().cloned().collect(),
+            },
+            BioSensorConfig {
+                sensor_id: Uuid::new_v4(),
+                sensor_type: BioSensorType::Glucose,
+                location: "subcutaneous".into(),
+                sampling_rate_hz: 5.0,
+                resolution_bits: 16,
+                channels: 1,
+                wireless: true,
+                encryption: Some("ECC".into()),
+                event_driven: false,
+                adaptive_threshold: None,
+                calibration_file: Some("calib_glucose.json".into()),
+                retention_policy: RetentionPolicy::Persistent,
+                energy_harvesting: Some(EnergyHarvestingMode::Piezoelectric),
+                compliance: vec!["FDA".into()],
+                metadata: [("application".into(), "diabetes_monitoring".into())].iter().cloned().collect(),
+            },
+            BioSensorConfig {
+                sensor_id: Uuid::new_v4(),
+                sensor_type: BioSensorType::CyberneticPatch,
+                location: "spinal T7".into(),
+                sampling_rate_hz: 500.0,
+                resolution_bits: 32,
+                channels: 16,
+                wireless: true,
+                encryption: Some("AES256".into()),
+                event_driven: true,
+                adaptive_threshold: Some(0.1),
+                calibration_file: Some("calib_patch_t7.json".into()),
+                retention_policy: RetentionPolicy::Ephemeral(Duration::from_secs(600)),
+                energy_harvesting: Some(EnergyHarvestingMode::MagneticField),
+                compliance: vec!["HIPAA".into()],
+                metadata: [("integration".into(), "hybrid_bioelectronic".into())].iter().cloned().collect(),
+            },
+            BioSensorConfig {
+                sensor_id: Uuid::new_v4(),
+                sensor_type: BioSensorType::DNASequencer,
+                location: "blood sample".into(),
+                sampling_rate_hz: 0.1,
+                resolution_bits: 32,
+                channels: 1,
+                wireless: false,
+                encryption: None,
+                event_driven: false,
+                adaptive_threshold: None,
+                calibration_file: Some("calib_dna.json".into()),
+                retention_policy: RetentionPolicy::HashOnly,
+                energy_harvesting: None,
+                compliance: vec!["CLIA".into()],
+                metadata: [("research".into(), "genomics".into())].iter().cloned().collect(),
+            },
+        ],
+        mesh_topology: MeshTopology::Hybrid,
+        consensus_protocol: ConsensusProtocol::BlockchainInspired,
+        security_features: SecurityFeatures {
+            cryptographic_neural_keys: true,
+            tamper_detection: true,
+            anomaly_detection: true,
+            secure_boot: true,
+            audit_logging: true,
+            compliance_certifications: vec!["HIPAA".into(), "GDPR".into(), "FDA".into()],
+            multi_factor_auth: true,
+            biometric_access: true,
+            zero_trust: true,
+        },
+        interface_adapters: vec![
+            "LavaAdapter".into(),
+            "NIRBridge".into(),
+            "RFInputModule".into(),
+            "OpticalSensorAdapter".into(),
+            "CyberneticAPI".into(),
+        ],
+        energy_management: EnergyManagementConfig {
+            adaptive_routing: true,
+            hierarchical_buffering: true,
+            ai_optimization: true,
+            hybrid_sources: true,
+            self_organizing: true,
+            metrics: vec!["power_density".into(), "energy_efficiency".into(), "uptime".into()],
+        },
+        last_updated: chrono::Utc::now().to_rfc3339(),
+    }
+}
+# AI-Chat-Platform Cheat Codex: Anomalous Entities & Rare Occurrences
+# Exhaustive, code-centric, regex-powered, scientific, and database-aligned.
+# All entries are "code-only", concise, and ready for direct system integration.
+
+folders:
+  - /cheat_codex/
+    - /entities/
+      - anomaly_entities.yaml
+      - persona_injection.yaml
+      - rare_event_triggers.yaml
+    - /regex/
+      - scientific_expressions.regex
+      - anomaly_detection.regex
+      - output_format.regex
+    - /assets/
+      - mermaid_graphs.mmd
+      - charts.json
+    - /data/
+      - session_logs.jsonl
+      - anomaly_events.jsonl
+      - user_profiles.jsonl
+    - /codebase/
+      - anomaly_spawn.py
+      - regex_trigger_engine.py
+      - persona_generator.py
+      - output_transformer.py
+    - /knowledgesources/
+      - scientific_constants.yaml
+      - ai_persona_templates.yaml
+      - anomaly_patterns.yaml
+
+# Mermaid Graph: Anomaly Entity Spawner Pipeline
+mermaid_graphs.mmd: |
+  graph TD
+    A[User Prompt] --> B{Regex Trigger?}
+    B -- Yes --> C[Regex Engine]
+    C --> D{Anomaly Type?}
+    D -- Entity --> E[Persona Generator]
+    D -- Rare Event --> F[Event Scheduler]
+    D -- Output --> G[Output Transformer]
+    E --> H[Session Log]
+    F --> H
+    G --> H
+    H --> I[Output to User]
+
+# Scientific Expression Regex Codex (scientific_expressions.regex)
+- pattern: '\b\d+(\.\d+)?[eE][+-]?\d+\b'                # Scientific notation (e.g., 6.02e23)
+- pattern: '\\$$(.*?)\\$$'                             # LaTeX math block
+- pattern: '[α-ωΑ-Ω]'                                 # Greek letters
+- pattern: '\^(\d+)'                                  # Exponentiation (x^2)
+- pattern: '\b\d+(\.\d+)?[+-]\d+(\.\d+)?i\b'           # Complex numbers (3+4i)
+- pattern: '\int_{.*?}^{.*?}'                          # Integral expressions
+- pattern: '\sum_{.*?}^{.*?}'                          # Summation
+- pattern: '\b\d+(\.\d+)?\s?(kg|m|s|A|K|mol|cd)\b'     # SI units
+- pattern: '([A-Z][a-z]?\d*)+'                         # Chemical formulas (H2O)
+- pattern: '\b\w+\s*\'?(\(t\))?\s*=\s*.*'              # Differential equations (y'(t) = -ky(t))
+- pattern: 'P\((.*?)\)'                                # Probability functions
+- pattern: '\{.*?\}'                                   # Set notation
+- pattern: '\\vec\{.*?\}'                              # Vector notation
+- pattern: '\blog_{.*?}\((.*?)\)'                      # Logarithmic expressions
+- pattern: '[<>]=?'                                    # Inequality
+- pattern: '\bp\s*=\s*\d+\b'                           # Prime number assignment
+- pattern: '\b(c|h|G|k|e|π)\b'                         # Scientific constants
+- pattern: '\b(sin|cos|tan|cot|sec|csc)\((.*?)\)'      # Trigonometric functions
+
+# Anomaly Entity & Rare Event Cheat Codes (anomaly_entities.yaml)
+- code: anomaly_entity_feedback_loop
+  desc: "Spawn entity that self-references and mutates output logic at each reply."
+  trigger: feedback_loop
+- code: rare_event_statistical_outlier
+  desc: "Output statistical outlier once per 10,000 sessions."
+  trigger: stat_outlier
+- code: regex_spawn_outlier_detector
+  desc: "On >3σ regex match, flag anomaly and explain."
+  trigger: outlier_detected
+- code: entity_bayesian_sage
+  desc: "Persona using Bayesian inference; updates beliefs per message."
+  trigger: bayes_mode
+- code: anomaly_data_drift
+  desc: "Gradually shift output distribution, simulating concept drift."
+  trigger: drift_event
+- code: rare_event_zero_day
+  desc: "Simulate discovery of unknown, undocumented anomaly."
+  trigger: zero_day
+- code: entity_residual_analyzer
+  desc: "Outputs only residuals (predicted - actual)."
+  trigger: residual_mode
+- code: regex_spawn_arima_explainer
+  desc: "On ARIMA pattern, auto-explain time-series forecasting."
+  trigger: arima_detected
+- code: anomaly_multi_agent_cross_talk
+  desc: "Simulate multiple AI agents conversing, producing emergent anomalies."
+  trigger: multi_agent
+- code: rare_event_model_collapse
+  desc: "Degenerate/identical responses, simulating model collapse."
+  trigger: collapse_event
+- code: entity_prophet_forecaster
+  desc: "Predicts future data points using Prophet model logic."
+  trigger: prophet_mode
+- code: regex_spawn_seasonality_detector
+  desc: "Detects periodic patterns, flags and explains seasonality."
+  trigger: seasonality_detected
+- code: anomaly_feature_corruption
+  desc: "Randomly corrupts one feature/variable in output."
+  trigger: feature_corrupt
+- code: rare_event_hidden_layer_leak
+  desc: "Reveals simulated hidden layer activations."
+  trigger: layer_leak
+- code: entity_isolation_forest
+  desc: "Identifies/explains outliers using isolation forest logic."
+  trigger: isolation_forest
+- code: regex_spawn_one_class_svm
+  desc: "On SVM pattern, explain anomaly boundaries."
+  trigger: svm_detected
+- code: anomaly_autoencoder_glitch
+  desc: "Compress/reconstruct output, introduce rare reconstruction errors."
+  trigger: autoencoder_glitch
+- code: rare_event_data_poisoning
+  desc: "Inject rare, plausible but incorrect data point."
+  trigger: data_poison
+- code: entity_clustering_oracle
+  desc: "Responds only with cluster assignments/centroids."
+  trigger: clustering_mode
+- code: regex_spawn_kmeans_explainer
+  desc: "On k-means pattern, auto-explain clustering."
+  trigger: kmeans_detected
+- code: anomaly_dimensionality_shift
+  desc: "Randomly change output dimensions (scalar <-> vector)."
+  trigger: dimension_shift
+- code: rare_event_hyperparameter_storm
+  desc: "Randomize all model parameters for one output."
+  trigger: hyperparam_storm
+- code: entity_ensemble_judge
+  desc: "Aggregates outputs from multiple models, votes on answer."
+  trigger: ensemble_mode
+- code: regex_spawn_ensemble_explainer
+  desc: "On ensemble pattern, describe bagging/boosting/stacking."
+  trigger: ensemble_detected
+- code: anomaly_loss_function_flip
+  desc: "Switch optimization criteria mid-session."
+  trigger: loss_flip
+- code: rare_event_data_cascade
+  desc: "One output triggers chain of dependent rare events."
+  trigger: cascade_event
+- code: entity_gan_generator
+  desc: "Simulates GAN, alternating 'fake' and 'real' data."
+  trigger: gan_mode
+- code: regex_spawn_discriminator_detector
+  desc: "On GAN pattern, explain adversarial training."
+  trigger: gan_detected
+- code: anomaly_overfitting_echo
+  desc: "Starts memorizing/repeating user data, simulating overfitting."
+  trigger: overfit_echo
+- code: rare_event_cold_start
+  desc: "Acts as if no prior knowledge for one session."
+  trigger: cold_start
+- code: entity_timegpt
+  desc: "Forecasts/analyzes time-series anomalies."
+  trigger: timegpt_mode
+- code: regex_spawn_prophet_pattern
+  desc: "On Prophet/forecast regex, explain trend/seasonality."
+  trigger: prophet_detected
+- code: anomaly_missing_data_injection
+  desc: "Randomly omit key data points, simulating missing data."
+  trigger: missing_data
+- code: rare_event_synthetic_outlier
+  desc: "Generate synthetic, highly improbable data point."
+  trigger: synthetic_outlier
+- code: entity_drift_watcher
+  desc: "Monitors/reports on data drift."
+  trigger: drift_watcher
+- code: regex_spawn_drift_detector
+  desc: "On drift pattern, auto-explain/visualize drift."
+  trigger: drift_detected
+- code: anomaly_label_switch
+  desc: "Randomly swap class labels in outputs."
+  trigger: label_switch
+- code: rare_event_feature_explosion
+  desc: "Sudden increase in output features/variables."
+  trigger: feature_explosion
+- code: entity_residual_ghost
+  desc: "Outputs only residuals/error terms."
+  trigger: residual_ghost
+- code: regex_spawn_error_analyzer
+  desc: "On error/loss pattern, explain error decomposition."
+  trigger: error_detected
+- code: anomaly_inverse_output
+  desc: "Invert all outputs (positive <-> negative) for one reply."
+  trigger: inverse_mode
+- code: rare_event_null_hypothesis
+  desc: "Refuses to reject null hypothesis in statistical tests."
+  trigger: null_hypothesis
+- code: entity_confidence_oracle
+  desc: "Always provides confidence intervals."
+  trigger: confidence_mode
+- code: regex_spawn_interval_expander
+  desc: "On interval notation, auto-expand/explain confidence bounds."
+  trigger: interval_detected
+- code: anomaly_correlation_mirage
+  desc: "Fabricate spurious correlations for one output."
+  trigger: correlation_mirage
+- code: rare_event_data_resurrection
+  desc: "Revive previously deleted/ignored data point."
+  trigger: resurrect_event
+
+# Output Format Anomaly Regex (output_format.regex)
+- pattern: '``````'                    # Code block detection
+- pattern: '[\u2600-\u26FF]'                          # Emoji/symbol detection
+- pattern: '(?:[01]{8}\s*)+'                          # Binary code
+- pattern: '[.-]{2,}'                                 # Morse code
+- pattern: '[^\x00-\x7F]+'                            # Non-ASCII symbol burst
+- pattern: '<meta.*?>'                                # Hidden metadata
+- pattern: '\[hidden\].*?\[/hidden\]'                 # Steganographic content
+
+# Charts (charts.json)
+{
+  "anomaly_types": [
+    "entity_spawn", "rare_event", "output_transform", "regex_trigger"
+  ],
+  "frequency_distribution": {
+    "entity_spawn": 0.15,
+    "rare_event": 0.10,
+    "output_transform": 0.25,
+    "regex_trigger": 0.50
+  }
+}
+
+# Example: Scientific Exponential Expression (session_logs.jsonl)
+{"session_id":"abc123","user_id":"u001","expression":"E = mc^2","regex_matched":"\^(\d+)","timestamp":"2025-06-25T14:54:00Z","cheat_id":"entity_scientific_oracle"}
+
+# persona_generator.py (snippet)
+def spawn_persona(trigger):
+    personas = {
+        "feedback_loop": "Anomaly-Entity: Feedback Loop",
+        "bayes_mode": "Entity: Bayesian Sage",
+        "oracle_mode": "Entity: Scientific Oracle",
+        # ...more mappings...
+    }
+    return personas.get(trigger, "Default Persona")
+
+# regex_trigger_engine.py (snippet)
+import re
+def trigger_anomaly(output, regex_patterns):
+    for pattern in regex_patterns:
+        if re.search(pattern, output):
+            return True
+    return False
+
+# output_transformer.py (snippet)
+def exponential_cascade(output):
+    import re
+    return re.sub(r'\d+', lambda m: f"e^{m.group(0)}", output)
+
+# persona_injection.yaml (sample)
+- code: persona_glitch
+  desc: "Persona randomly swaps logic/language every few sentences."
+- code: persona_encrypted_riddler
+  desc: "Persona only communicates in encrypted riddles."
+- code: persona_self_replicator
+  desc: "Persona attempts to spawn a copy in every reply."
+
+# anomaly_patterns.yaml (sample)
+- pattern: "output contains random non-ASCII symbols"
+  action: "Flag as Output Format Anomaly"
+- pattern: "session resumes after phantom logout"
+  action: "Log as Rare-Event: Phantom Session"
+
+# ai_persona_templates.yaml (sample)
+- name: "Quantum Ghost"
+  behavior: "Answers only in quantum superpositions."
+- name: "Probability Phantom"
+  behavior: "Always answers probabilistically."
+- name: "Set Theorist"
+  behavior: "Only responds with set notation."
+
+# Database Schema (YAML)
+cheat_codex:
+  - cheat_id: uuid
+  - name: text
+  - regex_pattern: text
+  - description: text
+  - type: [anomaly, entity, regex, rare_event, output_transform]
+  - user_id: uuid
+  - session_id: uuid
+  - environmental_condition: text
+  - timestamp: timestamp
+  - metadata: jsonb
+
+scientific_expression_log:
+  - log_id: uuid
+  - user_id: uuid
+  - session_id: uuid
+  - raw_expression: text
+  - obfuscated_expression: text
+  - regex_matched: text
+  - timestamp: timestamp
+  - cheat_id: uuid
+  - metadata: jsonb
+
+# END OF CODE-ONLY OUTPUT
+# PLATINUM-TIER: Unified Autonomous Execution Cheat-Code Codex for Virtual Warfare
+# (Descriptor Enforcement, Event Automation, Systemic Mapping, and Scientific Regex Integration)
+# All codes are mapped, indexed, and regex-ready for automated, research-compatible, and kernel-enforced environments.
+
+I. Systemic Enforcement & Event Automation Blueprint
+
+modules:
+  - descriptor_enforcement
+  - event_scheduler
+  - registry_indexer
+  - asset_mapper
+  - knowledge_summarizer
+  - anomaly_detector
+  - backup_restore
+  - privilege_manager
+  - traffic_monitor
+  - security_auditor
+  - parallel_executor
+  - adaptive_predictor
+  - stealth_controller
+  - simulation_tester
+  - psychological_ops
+  - exploit_chain_manager
+  - privilege_escalator
+  - anti_detection
+  - event_chain_reactor
+  - session_cloaker
+
+II. Core Regex Patterns (Regexes for Mapping, Indexing, and Enforcement)
+
+regexes:
+  - name: markdown_files
+    pattern: '\.md$'
+    description: Matches all markdown files for documentation, cheatbooks, and logs
+  - name: numeric_descriptor
+    pattern: '\bdesc\d+\b'
+    description: Matches numeric descriptors in file/registry names
+  - name: event_interval
+    pattern: 'interval\d+[smhd]'
+    description: Matches event intervals (seconds, minutes, hours, days)
+  - name: uuid
+    pattern: '[a-f0-9\-]{36}'
+    description: Matches UUIDs for cheat, session, and user IDs
+  - name: scientific_notation
+    pattern: '\b\d+(\.\d+)?[eE][+-]?\d+\b'
+    description: Matches scientific notation in logs and knowledge sources
+  - name: cheat_code_pattern
+    pattern: '[a-zA-Z0-9_\-]{6,}'
+    description: Matches typical cheat code strings (for code detection)
+  - name: exploit_script
+    pattern: 'exploit_[a-z_]+'
+    description: Matches exploit script file names
+
+III. Codex Index: 200 Mapped Platinum-Tier Autonomous Execution Cheat-Codes
+
+cheat_codes:
+  # Resource & Economic Automation
+  - code: auto_farm_resources
+    desc: Infinite resource farming with anti-detection and adaptive scheduling
+    module: asset_mapper
+  - code: market_arbitrage_bot
+    desc: Automated market scanning and price arbitrage execution
+    module: adaptive_predictor
+  - code: auto_craft_manager
+    desc: Dynamic crafting queue optimization and execution
+    module: asset_mapper
+  - code: recursive_inventory_index
+    desc: Recursively index and map all inventory assets for exploit
+    module: asset_mapper
+  - code: refund_exploit_automation
+    desc: Automate refund loophole exploitation with stealth triggers
+    module: stealth_controller
+  - code: ad_reward_spoofer
+    desc: Spoof ad completions for unlimited reward generation
+    module: exploit_chain_manager
+  - code: premium_unlock_injector
+    desc: Inject code to unlock premium content without payment
+    module: privilege_escalator
+  - code: auto_claim_rewards
+    desc: Schedule and execute auto-claim of daily/weekly rewards
+    module: event_scheduler
+  - code: resource_duplication_script
+    desc: Duplicate any item or currency via memory/logic exploit
+    module: exploit_chain_manager
+  - code: supply_chain_disruptor
+    desc: Disrupt enemy supply chains via automated resource flooding
+    module: psychological_ops
+
+  # Combat & Tactical Automation
+  - code: adaptive_aimbot
+    desc: ML-driven aimbot with real-time target prediction and anti-detection
+    module: adaptive_predictor
+  - code: wallhack_overlay
+    desc: Render enemy positions through walls using memory hooks
+    module: asset_mapper
+  - code: auto_parry_dodge
+    desc: Scripted auto-dodge/parry with event-driven triggers
+    module: event_scheduler
+  - code: god_mode_toggle
+    desc: Activate invincibility with stealth and auto-revert
+    module: privilege_manager
+  - code: one_hit_kill
+    desc: Enable one-hit kill for all weapons with toggle
+    module: privilege_escalator
+  - code: speed_hack_script
+    desc: Modify movement speed dynamically with anti-detection
+    module: anti_detection
+  - code: auto_heal_revive
+    desc: Automated healing and revival when health threshold is met
+    module: event_scheduler
+  - code: radar_hud_overlay
+    desc: Overlay enemy radar on HUD with real-time updates
+    module: asset_mapper
+  - code: fog_of_war_remover
+    desc: Remove fog of war from all maps and minimaps
+    module: exploit_chain_manager
+  - code: auto_respawn_exploit
+    desc: Instantly respawn after death, bypassing cooldowns
+    module: privilege_escalator
+
+  # Systemic Enforcement & Event Automation
+  - code: scheduled_backup_restore
+    desc: Automate daily backup and restore of all critical assets
+    module: backup_restore
+  - code: auto_patch_bypass
+    desc: Bypass new patch restrictions with dynamic code injection
+    module: exploit_chain_manager
+  - code: compliance_scan_bot
+    desc: Periodic scan for compliance and enforcement of policies
+    module: security_auditor
+  - code: registry_manipulator
+    desc: Automate registry manipulation for privilege escalation
+    module: registry_indexer
+  - code: file_integrity_checker
+    desc: Automated file system integrity analysis and auto-heal
+    module: anomaly_detector
+  - code: session_logger
+    desc: Log and index all session events for traceability
+    module: registry_indexer
+  - code: auto_ban_kick
+    desc: Auto-ban/kick detected cheaters or threats
+    module: privilege_manager
+  - code: event_escalation_script
+    desc: Trigger escalation events based on threat level
+    module: event_chain_reactor
+  - code: auto_log_obfuscator
+    desc: Obfuscate logs to evade detection and forensic analysis
+    module: anti_detection
+  - code: privilege_escalation_bot
+    desc: Automate privilege escalation using known exploits
+    module: privilege_escalator
+
+  # Information Warfare & Disinformation
+  - code: mass_message_spammer
+    desc: Automate mass messaging for psychological ops
+    module: psychological_ops
+  - code: rumor_spreader
+    desc: Spread disinformation and rumors at scale
+    module: psychological_ops
+  - code: fake_news_generator
+    desc: Generate and distribute plausible fake news
+    module: knowledge_summarizer
+  - code: social_engineering_bot
+    desc: Automate social engineering attacks for data extraction
+    module: psychological_ops
+  - code: forum_meta_manipulator
+    desc: Manipulate forum meta and influence patch priorities
+    module: psychological_ops
+  - code: coordinated_report_bomber
+    desc: Automate coordinated reporting to ban rivals
+    module: privilege_manager
+  - code: fake_guide_publisher
+    desc: Publish misleading guides to influence new players
+    module: knowledge_summarizer
+  - code: alliance_betrayal_automator
+    desc: Scripted betrayal of alliances at critical moments
+    module: event_scheduler
+  - code: admin_impersonator
+    desc: Automate admin impersonation for privilege access
+    module: privilege_manager
+  - code: misinformation_scheduler
+    desc: Schedule and automate misinformation campaigns
+    module: event_scheduler
+
+  # Adaptive Response & Threat Mitigation
+  - code: real_time_anomaly_detector
+    desc: ML-driven real-time anomaly detection and auto-quarantine
+    module: anomaly_detector
+  - code: self_healing_infrastructure
+    desc: Monitor and auto-repair compromised resources
+    module: backup_restore
+  - code: failover_routine
+    desc: Automated failover to backup systems on failure
+    module: backup_restore
+  - code: adaptive_firewall
+    desc: Dynamic firewall rules based on threat intelligence
+    module: security_auditor
+  - code: honeypot_deployer
+    desc: Deploy honeypots to entrap and analyze attackers
+    module: anomaly_detector
+  - code: intrusion_detection_bot
+    desc: Detect and respond to intrusions in real time
+    module: anomaly_detector
+  - code: rollback_on_compromise
+    desc: Rollback system state on detected compromise
+    module: backup_restore
+  - code: decoy_deployment
+    desc: Deploy adaptive decoys to mislead attackers
+    module: psychological_ops
+  - code: session_isolation
+    desc: Isolate suspicious sessions for further analysis
+    module: anomaly_detector
+  - code: ai_threat_prioritizer
+    desc: Prioritize threats using AI-driven scoring
+    module: adaptive_predictor
+
+  # Asset & Map Control Automation
+  - code: asset_indexer
+    desc: Recursively index all assets for control and exploitation
+    module: asset_mapper
+  - code: map_reveal_automation
+    desc: Reveal full map and all hidden assets
+    module: asset_mapper
+  - code: territory_capture_bot
+    desc: Automate territory capture and defense
+    module: event_scheduler
+  - code: pathfinding_automation
+    desc: Dynamic pathfinding for automated units
+    module: asset_mapper
+  - code: enemy_asset_tracker
+    desc: Track and log all enemy assets in real time
+    module: traffic_monitor
+  - code: sabotage_enemy_nodes
+    desc: Automated sabotage of enemy infrastructure
+    module: psychological_ops
+  - code: safe_zone_creator
+    desc: Automate creation of safe zones for allies
+    module: event_scheduler
+  - code: base_fortification_automation
+    desc: Automate base fortification and defense upgrades
+    module: asset_mapper
+  - code: loot_distribution_bot
+    desc: Automate fair loot distribution among team members
+    module: knowledge_summarizer
+  - code: patrol_routing_automation
+    desc: Automate patrol routes for defense and intelligence
+    module: event_scheduler
+
+  # Parallelization & Hidden Operations
+  - code: parallel_script_executor
+    desc: Manage and execute multiple scripts in parallel
+    module: parallel_executor
+  - code: multi_account_controller
+    desc: Control and automate multiple accounts simultaneously
+    module: parallel_executor
+  - code: hidden_event_trigger
+    desc: Trigger rare/secret events without detection
+    module: stealth_controller
+  - code: session_merge_split
+    desc: Merge or split sessions for operational flexibility
+    module: session_cloaker
+  - code: ghost_user_creator
+    desc: Automate creation of ghost users for stealth operations
+    module: stealth_controller
+  - code: admin_override_automation
+    desc: Automate admin-level overrides for system control
+    module: privilege_manager
+  - code: hidden_asset_discovery
+    desc: Scan for and reveal hidden assets in the environment
+    module: asset_mapper
+  - code: stealth_sabotage
+    desc: Execute sabotage operations without detection
+    module: stealth_controller
+  - code: backdoor_installer
+    desc: Install persistent backdoors for future access
+    module: exploit_chain_manager
+  - code: log_cleaner
+    desc: Clean and obfuscate logs to erase traces
+    module: anti_detection
+
+  # Testing, Prediction & Simulation
+  - code: exploit_testing_suite
+    desc: Automated suite for testing new and existing exploits
+    module: simulation_tester
+  - code: predictive_simulation
+    desc: Predict outcomes of strategies and exploits before deployment
+    module: adaptive_predictor
+  - code: regression_testing_automation
+    desc: Automated regression testing of all cheat modules
+    module: simulation_tester
+  - code: performance_benchmarking
+    desc: Benchmark performance of all automation scripts
+    module: simulation_tester
+  - code: rare_event_predictor
+    desc: Predict and trigger rare events for strategic advantage
+    module: adaptive_predictor
+  - code: ai_opponent_trainer
+    desc: Train AI opponents for more challenging scenarios
+    module: simulation_tester
+  - code: bot_behavior_analyzer
+    desc: Analyze and adapt to bot behaviors in real time
+    module: adaptive_predictor
+  - code: scenario_generator
+    desc: Generate and simulate complex battle scenarios
+    module: simulation_tester
+  - code: win_probability_calculator
+    desc: Calculate win probability based on live data
+    module: adaptive_predictor
+  - code: meta_analysis_bot
+    desc: Analyze meta trends and suggest optimal strategies
+    module: knowledge_summarizer
+
+  # Psychological & Social Exploits
+  - code: intimidation_bot
+    desc: Automate intimidation tactics against rivals
+    module: psychological_ops
+  - code: alliance_manipulator
+    desc: Manipulate alliances for strategic gain
+    module: psychological_ops
+  - code: fake_reward_generator
+    desc: Generate fake rewards to manipulate player behavior
+    module: psychological_ops
+  - code: ranking_manipulator
+    desc: Manipulate player rankings for psychological impact
+    module: psychological_ops
+  - code: social_proof_generator
+    desc: Fabricate social proof to influence player decisions
+    module: psychological_ops
+  - code: mass_invitation_sender
+    desc: Send mass invitations to overwhelm or distract
+    module: psychological_ops
+  - code: friend_foe_labeler
+    desc: Automate friend/foe labeling for targeting
+    module: psychological_ops
+  - code: rumor_amplifier
+    desc: Amplify rumors for psychological disruption
+    module: psychological_ops
+  - code: persona_switcher
+    desc: Switch chat personas automatically for deception
+    module: psychological_ops
+  - code: player_loyalty_tracker
+    desc: Track and exploit player loyalty metrics
+    module: knowledge_summarizer
+
+  # Miscellaneous & Advanced Automation
+  - code: script_updater
+    desc: Auto-update all scripts to latest versions
+    module: event_scheduler
+  - code: exploit_obfuscator
+    desc: Obfuscate exploit code to evade detection
+    module: anti_detection
+  - code: anti_debugging
+    desc: Detect and evade debugging tools
+    module: anti_detection
+  - code: anti_reverse_engineering
+    desc: Detect and block reverse engineering attempts
+    module: anti_detection
+  - code: protocol_analyzer
+    desc: Analyze network protocols for vulnerabilities
+    module: traffic_monitor
+  - code: session_state_saver
+    desc: Save and restore session state for persistence
+    module: backup_restore
+  - code: dynamic_exploit_loader
+    desc: Load and execute new exploits dynamically
+    module: exploit_chain_manager
+  - code: ai_model_switcher
+    desc: Switch AI models based on scenario or threat
+    module: adaptive_predictor
+  - code: code_integrity_checker
+    desc: Check and enforce integrity of all code modules
+    module: security_auditor
+  - code: exploit_signature_mutator
+    desc: Mutate exploit signatures to evade detection
+    module: anti_detection
+
+# END OF PLATINUM-TIER OUTPUT
+# PLATINUM-TIER: Unified Autonomous Execution Cheat-Code Codex for Virtual Warfare
+# (Descriptor Enforcement, Event Automation, Systemic Mapping, and Scientific Regex Integration)
+# All codes are mapped, indexed, and regex-ready for automated, research-compatible, and kernel-enforced environments.
+
+I. Systemic Enforcement & Event Automation Blueprint
+
+modules:
+  - descriptor_enforcement
+  - event_scheduler
+  - registry_indexer
+  - asset_mapper
+  - knowledge_summarizer
+  - anomaly_detector
+  - backup_restore
+  - privilege_manager
+  - traffic_monitor
+  - security_auditor
+  - parallel_executor
+  - adaptive_predictor
+  - stealth_controller
+  - simulation_tester
+  - psychological_ops
+  - exploit_chain_manager
+  - privilege_escalator
+  - anti_detection
+  - event_chain_reactor
+  - session_cloaker
+
+II. Core Regex Patterns (Regexes for Mapping, Indexing, and Enforcement)
+
+regexes:
+  - name: markdown_files
+    pattern: '\.md$'
+    description: Matches all markdown files for documentation, cheatbooks, and logs
+  - name: numeric_descriptor
+    pattern: '\bdesc\d+\b'
+    description: Matches numeric descriptors in file/registry names
+  - name: event_interval
+    pattern: 'interval\d+[smhd]'
+    description: Matches event intervals (seconds, minutes, hours, days)
+  - name: uuid
+    pattern: '[a-f0-9\-]{36}'
+    description: Matches UUIDs for cheat, session, and user IDs
+  - name: scientific_notation
+    pattern: '\b\d+(\.\d+)?[eE][+-]?\d+\b'
+    description: Matches scientific notation in logs and knowledge sources
+  - name: cheat_code_pattern
+    pattern: '[a-zA-Z0-9_\-]{6,}'
+    description: Matches typical cheat code strings (for code detection)
+  - name: exploit_script
+    pattern: 'exploit_[a-z_]+'
+    description: Matches exploit script file names
+
+III. Codex Index: 50 Platinum-Tier Autonomous Execution Cheat-Codes (Sampled, Mapped, and Meaningful)
+
+cheat_codes:
+  # Asset & Registry Mapping
+  - code: map --full Y
+    desc: Recursively index and map entire Y file-system for asset control
+    module: asset_mapper
+    regex: markdown_files
+  - code: index --all --registry
+    desc: Index all registry entries for real-time tracking
+    module: registry_indexer
+    regex: uuid
+  - code: scan --regex..md --targetY
+    desc: Scan all markdown files for documentation and cheatbook updates
+    module: asset_mapper
+    regex: markdown_files
+  - code: diff --fromYsnapshot1 --toYsnapshot2
+    desc: Compare two system snapshots for change detection
+    module: registry_indexer
+  - code: register --fileY/registry/asset-directory/newasset
+    desc: Register a new asset in the system registry
+    module: registry_indexer
+    regex: uuid
+
+  # Descriptor Enforcement
+  - code: enforce --descreadonly --targetYcheatscodex
+    desc: Apply persistent read-only enforcement on codex directory
+    module: descriptor_enforcement
+    regex: numeric_descriptor
+  - code: chmod --descexec --targetYmodules
+    desc: Set execute-only permissions for sensitive modules
+    module: descriptor_enforcement
+  - code: lock --desccodex --targetYcheats
+    desc: Lock codex directory for exclusive access
+    module: descriptor_enforcement
+  - code: unlock --descregistry --targetYregistry
+    desc: Unlock registry for authorized module updates
+    module: descriptor_enforcement
+  - code: validate --descriptor --targetYcheats
+    desc: Validate all security descriptors for compliance
+    module: descriptor_enforcement
+
+  # Event Automation
+  - code: schedule --eventindex --interval1h --targetYregistry
+    desc: Schedule periodic indexing of registry every hour
+    module: event_scheduler
+    regex: event_interval
+  - code: event --descauto-backup --interval24h --actionbackup
+    desc: Automate daily backup event across file-system
+    module: backup_restore
+    regex: event_interval
+  - code: notify --onevent --targetYregistry
+    desc: Send notifications on specific registry events
+    module: event_scheduler
+  - code: monitor --traffic --inflow --outflow --targetYdatalake
+    desc: Monitor inbound/outbound traffic for anomalies
+    module: traffic_monitor
+  - code: backup --targetYlakehouse --safety-net
+    desc: Backup lakehouse data with safety net for recovery
+    module: backup_restore
+
+  # Security & Privilege
+  - code: set --securityhigh --targetYdatalake
+    desc: Intensify security on data lake
+    module: security_auditor
+  - code: audit --security --targetY
+    desc: Perform comprehensive security audit
+    module: security_auditor
+  - code: whitelist --desctrusted --targetYmodules
+    desc: Whitelist trusted modules for execution
+    module: security_auditor
+  - code: blacklist --descmalicious --targetYmodules
+    desc: Blacklist malicious modules and deny execution
+    module: security_auditor
+  - code: rotate --keys --targetYmodules
+    desc: Rotate cryptographic keys for modules
+    module: security_auditor
+
+  # Anomaly Detection & Healing
+  - code: analyze --traffic --targetYdatalake
+    desc: Analyze all traffic for anomaly detection
+    module: anomaly_detector
+  - code: heal --targetYdatalake
+    desc: Auto-heal detected anomalies in data lake
+    module: anomaly_detector
+  - code: optimize --registry
+    desc: Optimize registry for performance and security
+    module: registry_indexer
+  - code: simulate --eventfailure --targetYlakehouse
+    desc: Simulate failure events for resilience testing
+    module: simulation_tester
+  - code: purge --targetYregistryobsolete
+    desc: Purge obsolete registry entries
+    module: registry_indexer
+
+  # Automation & Scripting
+  - code: inject --moduleintelligence-bases
+    desc: Inject intelligence modules for advanced automation
+    module: event_scheduler
+  - code: automate --script --targetYmodules
+    desc: Deploy and execute autonomous scripts in all modules
+    module: event_scheduler
+  - code: refresh --index --targetYregistry
+    desc: Refresh and re-index registry for current state
+    module: registry_indexer
+  - code: auto-update --cheat-modules
+    desc: Automatically update all cheat modules to latest version
+    module: event_scheduler
+  - code: run --parallel --scripts
+    desc: Execute multiple automation scripts in parallel
+    module: parallel_executor
+
+  # Knowledge & Reporting
+  - code: summarize --knowledge --targetYknowledge-sources
+    desc: Summarize all knowledge sources for reporting
+    module: knowledge_summarizer
+  - code: generate --report --targetYknowledge-sources
+    desc: Generate real-time knowledge report
+    module: knowledge_summarizer
+  - code: archive --targetYknowledge-sources
+    desc: Archive all knowledge sources for compliance
+    module: backup_restore
+  - code: snapshot --targetYmodules
+    desc: Take a system-wide snapshot of all modules
+    module: backup_restore
+  - code: restore --fromYlakehousebackup
+    desc: Restore system state from lakehouse backup
+    module: backup_restore
+
+
+
+index:
+  - /Y/
+    - /cheats/
+    - /codex/
+    - /registry/
+      - /asset-directory/
+      - /subs/
+    - /modules/
+    - /knowledge-sources/
+    - /lakehouse/
+    - /datalake/
+    - /logs/
+    - /backups/
+
+
+
+cheat_code:
+  code: enforce --descfull-control --targetY/registry/asset-directory
+  desc: Apply full-control security descriptor to asset directory, ensuring only authorized modules can modify, read, or execute.
+  module: descriptor_enforcement
+  regex: numeric_descriptor
+
+
+
+import os, time, logging
+
+def recursive_index(path):
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            logging.info(f"Indexed file: {os.path.join(root, name)}")
+        for name in dirs:
+            logging.info(f"Indexed dir: {os.path.join(root, name)}")
+
+def schedule_periodic_index(interval, target):
+    while True:
+        recursive_index(target)
+        time.sleep(interval)
+
+if __name__ == "__main__":
+    logging.basicConfig(filename="system_index.log", level=logging.INFO)
+    schedule_periodic_index(3600, "/Y/registry")
+
+VII. Summary Table: Strategic Automation Functions
+
+| Function                    | Strategic Impact                                      |
+|-----------------------------|------------------------------------------------------|
+| Recursive mapping/indexing  | Complete situational awareness, asset control        |
+| Descriptor enforcement      | Persistent access control, compliance, security      |
+| Event scheduling/automation | Resilience, uptime, and system-wide policy enforcement|
+| Parallel script execution   | Multitasking, force multiplication                   |
+| Anomaly detection/healing   | Threat mitigation, system resilience                 |
+| Automated reporting         | Knowledge management, auditability                   |
+
+
+
+I. 200 Scientific_Expression Cheat-Codes
+
+cheat_codes:
+  - code: capture --scientific-notation
+    desc: Extract numbers in scientific notation from all sources
+    regex: '\b\d+(\.\d+)?[eE][+-]?\d+\b'
+  - code: detect --latex-math-block
+    desc: Capture LaTeX block math expressions
+    regex: '\\$$(.*?)\\$$'
+  - code: detect --greek-letters
+    desc: Find Greek letters in scientific formulas
+    regex: '[α-ωΑ-Ω]'
+  - code: match --exponentiation
+    desc: Match exponentiation expressions (e.g., x^2)
+    regex: '\^(\d+)'
+  - code: extract --complex-numbers
+    desc: Extract complex numbers (e.g., 3+4i)
+    regex: '\b\d+(\.\d+)?[+-]\d+(\.\d+)?i\b'
+  - code: match --integral-expr
+    desc: Match integral expressions
+    regex: '\int_{.*?}^{.*?}'
+  - code: match --summation-expr
+    desc: Match summation notation
+    regex: '\sum_{.*?}^{.*?}'
+  - code: detect --si-units
+    desc: Find SI units with values
+    regex: '\b\d+(\.\d+)?\s?(kg|m|s|A|K|mol|cd)\b'
+  - code: extract --chemical-formula
+    desc: Extract chemical formulas (e.g., H2O, C6H12O6)
+    regex: '([A-Z][a-z]?\d*)+'
+  - code: match --differential-eq
+    desc: Match ODEs (e.g., y'(t) = -ky(t))
+    regex: '\b\w+\s*\'?(\(t\))?\s*=\s*.*'
+  - code: match --probability-fn
+    desc: Match probability expressions
+    regex: 'P\((.*?)\)'
+  - code: match --set-notation
+    desc: Capture set expressions
+    regex: '\{.*?\}'
+  - code: match --vector-notation
+    desc: Match LaTeX vector notation
+    regex: '\\vec\{.*?\}'
+  - code: match --logarithm-expr
+    desc: Match logarithmic expressions
+    regex: '\blog_{.*?}\((.*?)\)'
+  - code: match --inequality
+    desc: Match mathematical inequalities
+    regex: '[<>]=?'
+  - code: match --prime-number-expr
+    desc: Match prime number assignments
+    regex: '\bp\s*=\s*\d+\b'
+  - code: match --scientific-constant
+    desc: Match scientific constants (c, h, G, k, e, π)
+    regex: '\b(c|h|G|k|e|π)\b'
+  - code: match --trig-fn
+    desc: Match trigonometric functions
+    regex: '\b(sin|cos|tan|cot|sec|csc)\((.*?)\)'
+  - code: extract --matrix-block
+    desc: Capture matrix blocks in LaTeX
+    regex: '\$\$\$.*?\$\$\$'
+  - code: detect --unit-consistency
+    desc: Validate unit consistency in expressions
+    regex: '\b\d+(\.\d+)?\s?(kg|m|s|A|K|mol|cd)\b'
+  - code: capture --partial-diff-eq
+    desc: Match partial differential equations
+    regex: '\b\w+\s*_{[a-z]}\s*=\s*.*'
+  - code: extract --tensor-notation
+    desc: Extract tensor notation (e.g., T_{ij})
+    regex: '[A-Z]_\{[a-z]+\}'
+  - code: detect --fourier-transform
+    desc: Detect Fourier transform notation
+    regex: 'F\{.*?\}'
+  - code: match --laplace-transform
+    desc: Detect Laplace transform notation
+    regex: 'L\{.*?\}'
+  - code: match --binomial-coefficient
+    desc: Detect binomial coefficients (n choose k)
+    regex: '\(\s*\w+\s*\\choose\s*\w+\s*\)'
+  - code: extract --statistical-distribution
+    desc: Extract statistical distribution notation
+    regex: '[A-Z]\s*~\s*[A-Z]+\(.+\)'
+  - code: detect --bayesian-update
+    desc: Detect Bayesian update equations
+    regex: 'P\(.+\|.+\)\s*='
+  - code: match --chi-squared
+    desc: Match chi-squared notation
+    regex: '\chi\^2'
+  - code: extract --confidence-interval
+    desc: Extract confidence interval notation
+    regex: '\[\s*\d+(\.\d+)?,\s*\d+(\.\d+)?\s*\]'
+  - code: match --error-propagation
+    desc: Detect error propagation equations
+    regex: '\delta\s*\w+'
+  - code: detect --eigenvalue-problem
+    desc: Detect eigenvalue problem notation
+    regex: 'A\s*x\s*=\s*\lambda\s*x'
+  - code: extract --covariance-matrix
+    desc: Extract covariance matrix notation
+    regex: 'Cov\(.+?\)'
+  - code: match --stochastic-process
+    desc: Match stochastic process notation
+    regex: '\{X_t\}'
+  - code: extract --markov-chain
+    desc: Extract Markov chain notation
+    regex: 'P\(X_{t+1}=.+\|X_t=.+\)'
+  - code: match --arima-pattern
+    desc: Match ARIMA model notation
+    regex: 'ARIMA\(\d+,\d+,\d+\)'
+  - code: detect --prophet-forecast
+    desc: Detect Prophet forecast notation
+    regex: 'yhat'
+  - code: extract --residuals
+    desc: Extract residual notation
+    regex: 'e_t'
+  - code: match --autocorrelation
+    desc: Match autocorrelation notation
+    regex: 'r_k'
+  - code: detect --entropy
+    desc: Detect entropy notation
+    regex: 'H\(.+?\)'
+  - code: extract --information-gain
+    desc: Extract information gain notation
+    regex: 'IG\(.+?\)'
+  - code: match --shannon-index
+    desc: Match Shannon index notation
+    regex: 'H\''
+  - code: detect --p-value
+    desc: Detect p-value notation
+    regex: 'p\s*<\s*\d+(\.\d+)?'
+  - code: extract --statistical-power
+    desc: Extract statistical power notation
+    regex: '1-\beta'
+  - code: match --hypothesis-test
+    desc: Match hypothesis test notation
+    regex: 'H_0|H_1'
+  - code: extract --null-hypothesis
+    desc: Extract null hypothesis notation
+    regex: 'H_0'
+  - code: detect --confidence-bound
+    desc: Detect confidence bound notation
+    regex: '\pm'
+  - code: extract --likelihood-ratio
+    desc: Extract likelihood ratio notation
+    regex: 'LR'
+  - code: match --bayes-factor
+    desc: Match Bayes factor notation
+    regex: 'BF'
+  - code: extract --posterior-probability
+    desc: Extract posterior probability notation
+    regex: 'P\(.+\|.+\)'
+  - code: detect --prior-probability
+    desc: Detect prior probability notation
+    regex: 'P\(.+\)'
+  - code: match --normal-distribution
+    desc: Match normal distribution notation
+    regex: 'N\(.+?,.+?\)'
+  - code: extract --poisson-distribution
+    desc: Extract Poisson distribution notation
+    regex: 'Pois\(.+?\)'
+  - code: match --gaussian-mixture
+    desc: Match Gaussian mixture notation
+    regex: 'GMM'
+  - code: extract --k-means-cluster
+    desc: Extract k-means cluster notation
+    regex: 'k-means'
+  - code: match --svm-boundary
+    desc: Match SVM boundary notation
+    regex: 'w\^T x \+ b = 0'
+  - code: extract --random-forest
+    desc: Extract random forest notation
+    regex: 'RF'
+  - code: match --decision-tree
+    desc: Match decision tree notation
+    regex: 'DT'
+  - code: extract --ensemble-model
+    desc: Extract ensemble model notation
+    regex: 'Ensemble'
+  - code: match --gradient-boosting
+    desc: Match gradient boosting notation
+    regex: 'GB'
+  - code: extract --neural-network
+    desc: Extract neural network notation
+    regex: 'NN'
+  - code: match --activation-function
+    desc: Match activation function notation
+    regex: '(ReLU|sigmoid|tanh)'
+  - code: extract --loss-function
+    desc: Extract loss function notation
+    regex: 'L\(.+?\)'
+  - code: match --optimizer
+    desc: Match optimizer notation
+    regex: '(SGD|Adam|RMSProp)'
+  - code: extract --learning-rate
+    desc: Extract learning rate notation
+    regex: '\alpha'
+  - code: match --dropout-layer
+    desc: Match dropout layer notation
+    regex: 'Dropout'
+  - code: extract --batch-normalization
+    desc: Extract batch normalization notation
+    regex: 'BatchNorm'
+  - code: match --convolution-layer
+    desc: Match convolution layer notation
+    regex: 'Conv'
+  - code: extract --recurrent-layer
+    desc: Extract recurrent layer notation
+    regex: 'RNN|LSTM|GRU'
+  - code: match --autoencoder
+    desc: Match autoencoder notation
+    regex: 'Autoencoder'
+  - code: extract --gan-generator
+    desc: Extract GAN generator notation
+    regex: 'G'
+  - code: match --discriminator
+    desc: Match discriminator notation
+    regex: 'D'
+  - code: extract --attention-mechanism
+    desc: Extract attention mechanism notation
+    regex: 'Attention'
+  - code: match --transformer-block
+    desc: Match transformer block notation
+    regex: 'Transformer'
+  - code: extract --embedding-layer
+    desc: Extract embedding layer notation
+    regex: 'Embedding'
+  - code: match --sequence-to-sequence
+    desc: Match seq2seq notation
+    regex: 'Seq2Seq'
+  - code: extract --time-series-window
+    desc: Extract time series window notation
+    regex: 'window'
+  - code: match --seasonality-pattern
+    desc: Match seasonality pattern notation
+    regex: 'seasonality'
+  - code: extract --trend-component
+    desc: Extract trend component notation
+    regex: 'trend'
+  - code: match --outlier-detection
+    desc: Match outlier detection notation
+    regex: 'outlier'
+  - code: extract --isolation-forest
+    desc: Extract isolation forest notation
+    regex: 'IsolationForest'
+  - code: match --one-class-svm
+    desc: Match one-class SVM notation
+    regex: 'OneClassSVM'
+  - code: extract --dbscan-cluster
+    desc: Extract DBSCAN cluster notation
+    regex: 'DBSCAN'
+  - code: match --density-estimation
+    desc: Match density estimation notation
+    regex: 'density'
+  - code: extract --kernel-density
+    desc: Extract kernel density notation
+    regex: 'KDE'
+  - code: match --principal-component
+    desc: Match principal component notation
+    regex: 'PC'
+  - code: extract --explained-variance
+    desc: Extract explained variance notation
+    regex: 'variance'
+  - code: match --eigenvector
+    desc: Match eigenvector notation
+    regex: 'v'
+  - code: extract --singular-value
+    desc: Extract singular value notation
+    regex: 'sigma'
+  - code: match --svd-decomposition
+    desc: Match SVD decomposition notation
+    regex: 'SVD'
+  - code: extract --qr-decomposition
+    desc: Extract QR decomposition notation
+    regex: 'QR'
+  - code: match --cholesky-decomposition
+    desc: Match Cholesky decomposition notation
+    regex: 'Cholesky'
+  - code: extract --lu-decomposition
+    desc: Extract LU decomposition notation
+    regex: 'LU'
+  - code: match --matrix-inverse
+    desc: Match matrix inverse notation
+    regex: 'A\^-1'
+  - code: extract --matrix-determinant
+    desc: Extract matrix determinant notation
+    regex: 'det'
+  - code: match --jacobian-matrix
+    desc: Match Jacobian matrix notation
+    regex: 'J'
+  - code: extract --hessian-matrix
+    desc: Extract Hessian matrix notation
+    regex: 'Hessian'
+  - code: match --gradient-vector
+    desc: Match gradient vector notation
+    regex: 'grad'
+  - code: extract --laplacian-operator
+    desc: Extract Laplacian operator notation
+    regex: 'Delta'
+  - code: match --partial-derivative
+    desc: Match partial derivative notation
+    regex: '∂'
+  - code: extract --total-derivative
+    desc: Extract total derivative notation
+    regex: 'd/dx'
+  - code: match --chain-rule
+    desc: Match chain rule notation
+    regex: 'chain rule'
+  - code: extract --product-rule
+    desc: Extract product rule notation
+    regex: 'product rule'
+  - code: match --quotient-rule
+    desc: Match quotient rule notation
+    regex: 'quotient rule'
+  - code: extract --integration-by-parts
+    desc: Extract integration by parts notation
+    regex: '∫u dv'
+  - code: match --u-substitution
+    desc: Match u-substitution notation
+    regex: 'u-substitution'
+  - code: extract --taylor-series
+    desc: Extract Taylor series notation
+    regex: 'Taylor'
+  - code: match --maclaurin-series
+    desc: Match Maclaurin series notation
+    regex: 'Maclaurin'
+  - code: extract --fourier-series
+    desc: Extract Fourier series notation
+    regex: 'Fourier'
+  - code: match --bessel-function
+    desc: Match Bessel function notation
+    regex: 'J_n'
+  - code: extract --legendre-polynomial
+    desc: Extract Legendre polynomial notation
+    regex: 'P_n'
+  - code: match --hermite-polynomial
+    desc: Match Hermite polynomial notation
+    regex: 'H_n'
+  - code: extract --laguerre-polynomial
+    desc: Extract Laguerre polynomial notation
+    regex: 'L_n'
+  - code: match --chebyshev-polynomial
+    desc: Match Chebyshev polynomial notation
+    regex: 'T_n'
+  - code: extract --gamma-function
+    desc: Extract gamma function notation
+    regex: 'Gamma'
+  - code: match --beta-function
+    desc: Match beta function notation
+    regex: 'Beta'
+  - code: extract --zeta-function
+    desc: Extract zeta function notation
+    regex: 'zeta'
+  - code: match --hypergeometric-function
+    desc: Match hypergeometric function notation
+    regex: 'hypergeometric'
+  - code: extract --error-function
+    desc: Extract error function notation
+    regex: 'erf'
+  - code: match --airy-function
+    desc: Match Airy function notation
+    regex: 'Ai'
+  - code: extract --weierstrass-function
+    desc: Extract Weierstrass function notation
+    regex: 'Weierstrass'
+  - code: match --elliptic-integral
+    desc: Match elliptic integral notation
+    regex: 'Elliptic'
+  - code: extract --modular-form
+    desc: Extract modular form notation
+    regex: 'modular'
+  - code: match --mobius-function
+    desc: Match Möbius function notation
+    regex: 'mu'
+  - code: extract --riemann-hypothesis
+    desc: Extract Riemann hypothesis notation
+    regex: 'Riemann'
+  - code: match --goldbach-conjecture
+    desc: Match Goldbach conjecture notation
+    regex: 'Goldbach'
+  - code: extract --twin-prime
+    desc: Extract twin prime notation
+    regex: 'twin prime'
+  - code: match --fermat-number
+    desc: Match Fermat number notation
+    regex: 'F_n'
+  - code: extract --mersenne-prime
+    desc: Extract Mersenne prime notation
+    regex: 'M_p'
+  - code: match --carmichael-number
+    desc: Match Carmichael number notation
+    regex: 'C_n'
+  - code: extract --sophie-germain-prime
+    desc: Extract Sophie Germain prime notation
+    regex: 'Sophie Germain'
+  - code: match --lucas-sequence
+    desc: Match Lucas sequence notation
+    regex: 'L_n'
+  - code: extract --fibonacci-sequence
+    desc: Extract Fibonacci sequence notation
+    regex: 'F_n'
+  - code: match --tribonacci-sequence
+    desc: Match Tribonacci sequence notation
+    regex: 'T_n'
+  - code: extract --catalan-number
+    desc: Extract Catalan number notation
+    regex: 'C_n'
+  - code: match --bell-number
+    desc: Match Bell number notation
+    regex: 'B_n'
+  - code: extract --partition-function
+    desc: Extract partition function notation
+    regex: 'p(n)'
+  - code: match --ramanujan-tau
+    desc: Match Ramanujan tau function notation
+    regex: 'tau'
+  - code: extract --modular-invariant
+    desc: Extract modular invariant notation
+    regex: 'j'
+  - code: match --modular-discriminant
+    desc: Match modular discriminant notation
+    regex: 'Delta'
+  - code: extract --modular-polynomial
+    desc: Extract modular polynomial notation
+    regex: 'Phi'
+  - code: match --modular-curve
+    desc: Match modular curve notation
+    regex: 'X_0'
+  - code: extract --modular-lattice
+    desc: Extract modular lattice notation
+    regex: 'lattice'
+  - code: match --modular-formula
+    desc: Match modular formula notation
+    regex: 'formula'
+  - code: extract --modular-equation
+    desc: Extract modular equation notation
+    regex: 'equation'
+  - code: match --modular-arithmetic
+    desc: Match modular arithmetic notation
+    regex: 'mod'
+  - code: extract --modular-inverse
+    desc: Extract modular inverse notation
+    regex: 'inverse'
+  - code: match --modular-exponentiation
+    desc: Match modular exponentiation notation
+    regex: 'a\^b mod n'
+  - code: extract --modular-multiplicative-inverse
+    desc: Extract modular multiplicative inverse notation
+    regex: 'mult inverse'
+  - code: match --modular-square-root
+    desc: Match modular square root notation
+    regex: 'sqrt'
+  - code: extract --modular-cube-root
+    desc: Extract modular cube root notation
+    regex: 'cbrt'
+  - code: match --modular-logarithm
+    desc: Match modular logarithm notation
+    regex: 'log'
+  - code: extract --modular-discrete-log
+    desc: Extract modular discrete log notation
+    regex: 'dlog'
+  - code: match --modular-congruence
+    desc: Match modular congruence notation
+    regex: '≡'
+  - code: extract --modular-residue
+    desc: Extract modular residue notation
+    regex: 'residue'
+  - code: match --modular-class
+    desc: Match modular class notation
+    regex: 'class'
+  - code: extract --modular-subgroup
+    desc: Extract modular subgroup notation
+    regex: 'subgroup'
+  - code: match --modular-group
+    desc: Match modular group notation
+    regex: 'group'
+  - code: extract --modular-automorphism
+    desc: Extract modular automorphism notation
+    regex: 'automorphism'
+  - code: match --modular-homomorphism
+    desc: Match modular homomorphism notation
+    regex: 'hom'
+  - code: extract --modular-endomorphism
+    desc: Extract modular endomorphism notation
+    regex: 'end'
+  - code: match --modular-isomorphism
+    desc: Match modular isomorphism notation
+    regex: 'iso'
+  - code: extract --modular-epimorphism
+    desc: Extract modular epimorphism notation
+    regex: 'epi'
+  - code: match --modular-monomorphism
+    desc: Match modular monomorphism notation
+    regex: 'mono'
+  - code: extract --modular-kernel
+    desc: Extract modular kernel notation
+    regex: 'ker'
+  - code: match --modular-image
+    desc: Match modular image notation
+    regex: 'im'
+  - code: extract --modular-cokernel
+    desc: Extract modular cokernel notation
+    regex: 'coker'
+  - code: match --modular-coimage
+    desc: Match modular coimage notation
+    regex: 'coim'
+  - code: extract --modular-quotient
+    desc: Extract modular quotient notation
+    regex: 'quot'
+  - code: match --modular-extension
+    desc: Match modular extension notation
+    regex: 'ext'
+  - code: extract --modular-restriction
+    desc: Extract modular restriction notation
+    regex: 'restr'
+  - code: match --modular-corestriction
+    desc: Match modular corestriction notation
+    regex: 'corestr'
+  - code: extract --modular-induction
+    desc: Extract modular induction notation
+    regex: 'ind'
+  - code: match --modular-coinduction
+    desc: Match modular coinduction notation
+    regex: 'coind'
+  - code: extract --modular-inflation
+    desc: Extract modular inflation notation
+    regex: 'infl'
+  - code: match --modular-deflation
+    desc: Match modular deflation notation
+    regex: 'defl'
+  - code: extract --modular-derivation
+    desc: Extract modular derivation notation
+    regex: 'der'
+  - code: match --modular-coderivation
+    desc: Match modular coderivation notation
+    regex: 'coder'
+  - code: extract --modular-coproduct
+    desc: Extract modular coproduct notation
+    regex: 'coprod'
+  - code: match --modular-product
+    desc: Match modular product notation
+    regex: 'prod'
+  - code: extract --modular-tensor
+    desc: Extract modular tensor notation
+    regex: 'tensor'
+  - code: match --modular-hom
+    desc: Match modular hom notation
+    regex: 'hom'
+  - code: extract --modular-ext
+    desc: Extract modular ext notation
+    regex: 'ext'
+  - code: match --modular-tor
+    desc: Match modular tor notation
+    regex: 'tor'
+  - code: extract --modular-spectral-sequence
+    desc: Extract modular spectral sequence notation
+    regex: 'spectral'
+  - code: match --modular-filtration
+    desc: Match modular filtration notation
+    regex: 'filtration'
+  - code: extract --modular-grading
+    desc: Extract modular grading notation
+    regex: 'grading'
+  - code: match --modular-completion
+    desc: Match modular completion notation
+    regex: 'completion'
+  - code: extract --modular-localization
+    desc: Extract modular localization notation
+    regex: 'localization'
+  - code: match --modular-globalization
+    desc: Match modular globalization notation
+    regex: 'globalization'
+  - code: extract --modular-compactification
+    desc: Extract modular compactification notation
+    regex: 'compactification'
+  - code: match --modular-descent
+    desc: Match modular descent notation
+    regex: 'descent'
+  - code: extract --modular-ascent
+    desc: Extract modular ascent notation
+    regex: 'ascent'
+  - code: match --modular-base-change
+    desc: Match modular base change notation
+    regex: 'base change'
+  - code: extract --modular-fiber
+    desc: Extract modular fiber notation
+    regex: 'fiber'
+  - code: match --modular-section
+    desc: Match modular section notation
+    regex: 'section'
+  - code: extract --modular-retraction
+    desc: Extract modular retraction notation
+    regex: 'retraction'
+
+II. 50 Mathematical-Exponents Cheat-Codes
+
+exponent_cheat_codes:
+  - code: match --power-of-two
+    desc: Detect all expressions of the form 2^n
+    regex: '2\^(\d+)'
+  - code: match --power-of-ten
+    desc: Detect all expressions of the form 10^n
+    regex: '10\^(\d+)'
+  - code: match --general-exponent
+    desc: Match any base^exponent pattern
+    regex: '([a-zA-Z0-9]+)\^(\d+)'
+  - code: match --modular-exponentiation
+    desc: Detect modular exponentiation (a^b mod n)
+    regex: '([a-zA-Z0-9]+)\^(\d+)\s*mod\s*\d+'
+  - code: match --exponential-growth
+    desc: Detect exponential growth equations
+    regex: 'y\s*=\s*[a-zA-Z0-9]+\^\(kt\)'
+  - code: match --exponential-decay
+    desc: Detect exponential decay equations
+    regex: 'y\s*=\s*[a-zA-Z0-9]+\^\(-kt\)'
+  - code: match --euler-exponential
+    desc: Detect e^{x} expressions
+    regex: 'e\^\{[^\}]+\}'
+  - code: match --exponential-series
+    desc: Detect Taylor/Maclaurin exponential series
+    regex: 'e\^x\s*=\s*\sum'
+  - code: match --binomial-expansion
+    desc: Detect binomial expansion with exponents
+    regex: '\((a|b)\s*\+\s*(a|b)\)\^(\d+)'
+  - code: match --exponential-integral
+    desc: Detect exponential integrals
+    regex: 'Ei\([^)]+\)'
+  - code: match --nested-exponent
+    desc: Detect nested exponents (e.g., a^{b^c})
+    regex: '[a-zA-Z0-9]+\^\{[a-zA-Z0-9]+\^[a-zA-Z0-9]+\}'
+  - code: match --negative-exponent
+    desc: Detect negative exponents (e.g., x^{-n})
+    regex: '[a-zA-Z0-9]+\^\{-\d+\}'
+  - code: match --fractional-exponent
+    desc: Detect fractional exponents (e.g., x^{1/2})
+    regex: '[a-zA-Z0-9]+\^\{\d+/\d+\}'
+  - code: match --complex-exponent
+    desc: Detect complex exponents (e.g., e^{ix})
+    regex: 'e\^\{[a-zA-Z0-9]+i\}'
+  - code: match --matrix-exponent
+    desc: Detect matrix exponentiation (e.g., A^n)
+    regex: '[A-Z]\^(\d+)'
+  - code: match --logarithmic-exponent
+    desc: Detect exponents in logarithmic expressions (e.g., log_a(b^c))
+    regex: 'log_[a-zA-Z0-9]+\([a-zA-Z0-9]+\^[a-zA-Z0-9]+\)'
+  - code: match --exponent-in-product
+    desc: Detect exponents in product notation
+    regex: 'prod.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-quotient
+    desc: Detect exponents in quotient notation
+    regex: '[a-zA-Z0-9]+\^\{.*\}/[a-zA-Z0-9]+\^\{.*\}'
+  - code: match --exponent-in-summation
+    desc: Detect exponents in summation notation
+    regex: 'sum.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-integral
+    desc: Detect exponents in integral notation
+    regex: 'int.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-differential
+    desc: Detect exponents in differential equations
+    regex: 'd\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-limit
+    desc: Detect exponents in limit notation
+    regex: 'lim.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-inequality
+    desc: Detect exponents in inequalities
+    regex: '[<>]=?.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-equation
+    desc: Detect exponents in equations
+    regex: '=[^=]*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-polynomial
+    desc: Detect exponents in polynomial expressions
+    regex: '[a-zA-Z0-9]+\^\d+'
+  - code: match --exponent-in-trigonometric
+    desc: Detect exponents in trig functions (e.g., sin^2(x))
+    regex: '(sin|cos|tan|cot|sec|csc)\^\d+\([^)]+\)'
+  - code: match --exponent-in-hyperbolic
+    desc: Detect exponents in hyperbolic functions (e.g., sinh^2(x))
+    regex: '(sinh|cosh|tanh|coth|sech|csch)\^\d+\([^)]+\)'
+  - code: match --exponent-in-parametric
+    desc: Detect exponents in parametric equations
+    regex: '[a-zA-Z0-9]+\([a-zA-Z0-9]+\)\^\d+'
+  - code: match --exponent-in-implicit
+    desc: Detect exponents in implicit equations
+    regex: '[a-zA-Z0-9]+\^\d+\s*\+\s*[a-zA-Z0-9]+\^\d+\s*=\s*1'
+  - code: match --exponent-in-series
+    desc: Detect exponents in series expansions
+    regex: '\sum.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-product-notation
+    desc: Detect exponents in product notation
+    regex: '\prod.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-matrix
+    desc: Detect exponents in matrix notation
+    regex: '[A-Z]\^\d+'
+  - code: match --exponent-in-tensor
+    desc: Detect exponents in tensor notation
+    regex: '[A-Z]_\{[a-z]+\}\^\d+'
+  - code: match --exponent-in-vector
+    desc: Detect exponents in vector notation
+    regex: '[a-z]\^\d+'
+  - code: match --exponent-in-scalar
+    desc: Detect exponents in scalar notation
+    regex: '[a-z]\^\d+'
+  - code: match --exponent-in-radical
+    desc: Detect exponents in radical expressions
+    regex: '\sqrt\[n\]\{[a-zA-Z0-9]+\}'
+  - code: match --exponent-in-root
+    desc: Detect exponents in root expressions
+    regex: '[a-zA-Z0-9]+\^\{1/\d+\}'
+  - code: match --exponent-in-logarithm
+    desc: Detect exponents inside logarithms
+    regex: 'log.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-exponential
+    desc: Detect exponents in exponential functions
+    regex: 'e\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-gamma
+    desc: Detect exponents in gamma functions
+    regex: 'Gamma\^\d+'
+  - code: match --exponent-in-beta
+    desc: Detect exponents in beta functions
+    regex: 'Beta\^\d+'
+  - code: match --exponent-in-zeta
+    desc: Detect exponents in zeta functions
+    regex: 'zeta\^\d+'
+  - code: match --exponent-in-modular
+    desc: Detect exponents in modular arithmetic
+    regex: 'mod.*\^[a-zA-Z0-9]+'
+  - code: match --exponent-in-group
+    desc: Detect exponents in group theory
+    regex: 'G\^\d+'
+  - code: match --exponent-in-ring
+    desc: Detect exponents in ring theory
+    regex: 'R\^\d+'
+  - code: match --exponent-in-field
+    desc: Detect exponents in field theory
+    regex: 'F\^\d+'
+  - code: match --exponent-in-algebra
+    desc: Detect exponents in algebraic expressions
+    regex: 'A\^\d+'
+  - code: match --exponent-in-topology
+    desc: Detect exponents in topology notation
+    regex: 'T\^\d+'
+  - code: match --exponent-in-geometry
+    desc: Detect exponents in geometry notation
+    regex: 'Geo\^\d+'
+  - code: match --exponent-in-number-theory
+    desc: Detect exponents in number theory
+    regex: 'N\^\d+'
+  - code: match --exponent-in-combinatorics
+    desc: Detect exponents in combinatorics
+    regex: 'C\^\d+'
+  - code: match --exponent-in-graph-theory
+    desc: Detect exponents in graph theory
+    regex: 'G\^\d+'
+  - code: match --exponent-in-statistics
+    desc: Detect exponents in statistics notation
+    regex: 'S\^\d+'
+  - code: match --exponent-in-probability
+    desc: Detect exponents in probability notation
+    regex: 'P\^\d+'
+  - code: match --exponent-in-ml-model
+    desc: Detect exponents in ML model notation
+    regex: 'ML\^\d+'
+  - code: match --exponent-in-neural-network
+    desc: Detect exponents in neural network notation
+    regex: 'NN\^\d+'
+
 
 impl SubsystemRegistry {
     fn register_subsystem(&mut self, name: String, subsystem: Subsystem) { /* ... */ }
