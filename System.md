@@ -224,7 +224,202 @@ class Status {
   uint64_t Size;
   llvm::sys::fs::file_type Type = llvm::sys::fs::file_type::status_error;
   llvm::sys::fs::perms Perms;
+MASTER-CHEAT-SYSTEM INDEX: Neuromorphic Consensus, Directory, and Codex Control
+I. SYSTEMIC ARCHITECTURE & HIERARCHY
+enforce --cluster-hierarchies --policy strict
+Mandate node registration in clusters; restrict inter-cluster comms to authenticated reps.
 
+audit --cluster-membership --interval 10m
+Periodic verification of cluster memberships; log anomalies.
+
+resize --cluster --dynamic
+Split/merge clusters on load, topology, or policy triggers.
+
+register --node-id --universal
+Assign immutable, cryptographically signed global node IDs.
+
+containerize --platform-agnostic
+Deploy all nodes in containers (Docker, VMs, unikernels).
+
+bootstrap --cross-platform --signed
+Secure, signed OS/AI images for all environments.
+
+partition --directory --multi-layered
+Enforce strict /neuromesh/ structure: state, logs, codex, config, audit, quarantine.
+
+sync --time --universal
+Sync all nodes to trusted NTP/atomic clock sources.
+
+adapt --environment --auto
+Detect and adapt to cloud, edge, on-prem, IoT.
+
+expand --scalability --infinite
+Use sharding, erasure coding, dynamic quorum for unlimited scale.
+
+II. CONSENSUS & STATE CONTROL
+lockdown --state-mutation
+Only consensus primitives can mutate state; log/block direct changes.
+
+enforce --sample-quota --admin
+Admin-only control of neighbor sampling ratios.
+
+lockdown --weight-policy
+Consensus weights set by policy, immutable at runtime.
+
+govern --probabilistic-update
+Allow probabilistic consensus only if energy/entropy thresholds met.
+
+enforce --energy-aware-consensus
+Skip/throttle consensus based on energy reserves.
+
+pin --version --consensus
+Enforce identical consensus versions; force upgrades on mismatch.
+
+throttle --consensus-rounds
+Limit consensus frequency per node/cluster.
+
+enforce --quorum --inter-cluster
+Require quorum for inter-cluster consensus.
+
+quarantine --consensus-failure
+Isolate nodes failing consensus after N rounds.
+
+fallback --algorithm --auto
+Switch to backup consensus protocol on failure.
+
+III. SECURITY, AUDIT, & COMPLIANCE
+authenticate --node --crypto
+All comms signed; reject unsigned packets.
+
+audit --consensus-rounds --ledger
+Log every round (IDs, vectors, weights) to tamper-evident ledgers.
+
+log --kernel-level --mirror
+All ops logged at kernel, mirrored to secure enclave.
+
+whitelist --cli-cle-clf --registry
+Only registered, signed interfaces/commands allowed.
+
+audit --cli-session --crypto
+All sessions recorded, cryptographically signed.
+
+rate-limit --cli --access-control
+Rate limits, MFA, role-based access.
+
+sanitize --directory-traversal --regex
+Regex-based sanitization for all file/dir ops.
+
+enforce --directory-naming --regex
+Strict regex policies globally.
+
+integrity --state-vector --hash
+Hash-based checks before/after consensus.
+
+enforce --state-vector-size --fixed
+Fixed-length vectors per node type.
+
+IV. STORAGE, CODEX, & DATA CONTROL
+register --codex --central-registry
+All distributed storage units centrally registered, signed.
+
+access-control --codex --authenticated
+Only authenticated processes can read/write.
+
+identify --codex-volume --unique
+Unique, policy-compliant IDs for all volumes.
+
+enable --erasure-coding --codex
+All data erasure-coded and sharded.
+
+rollback --state --on-failure
+Rollback to previous vectors on consensus failure.
+
+snapshot --state --audit-ready
+Periodic, signed snapshots for compliance.
+
+snapshot --mesh-topology --versioned
+Regular, versioned topology archives.
+
+force-sync --state --emergency
+Cluster reps can force sync in emergencies.
+
+zk-proof --state --sensitive
+ZK-proofs required for sensitive ops.
+
+encrypt --state --at-rest-in-transit
+All vectors encrypted.
+
+V. HEALTH, EMERGENCY, & RECOVERY
+health-check --node --periodic
+Quarantine on failure.
+
+freeze --consensus --emergency
+Admins can freeze all consensus instantly.
+
+blacklist --node --id
+Instantly eject nodes by ID.
+
+bootstrap --secure --signed
+Only signed, verified images at boot.
+
+panic --kernel --policy-violation
+Core policy violations trigger panic/shutdown.
+
+recovery --inter-environment --cross-platform
+Recovery, failover, self-healing systems.
+
+verify --cluster-membership --signed
+Periodic, signed challenges for all members.
+
+schedule --event-driven-update
+Consensus rounds only on authorized events/timers.
+
+sync --mesh-node-time --trusted
+Trusted time source enforcement.
+
+dashboard --audit-control --universal
+Real-time, cross-system monitoring, audit, and command routing.
+
+VI. AUTONOMOUS EVENTS & DESCRIPTOR ENFORCEMENT
+enforce --desc --target /neuromesh/
+Use file/security descriptors for persistent access/event policies.
+
+schedule --eventindex --interval 1h --target /neuromesh/registry
+Periodic, autonomous registry indexing.
+
+monitor --traffic --inflow --outflow --target /neuromesh/codex
+Real-time monitoring of codex data flows.
+
+snapshot --target /neuromesh/codex
+Automated, periodic codex snapshots.
+
+backup --target /neuromesh/codex --safety-net
+Enable safety-net backup and restore.
+
+VII. ADVANCED OPERATIONS
+map --full /neuromesh/
+Recursively index and map entire neuromesh file-system.
+
+extract --regexcodex --target /neuromesh/codex
+Extract codex files matching regex.
+
+lock --desccodex --target /neuromesh/codex
+Lock codex directory.
+
+unlock --descregistry --target /neuromesh/registry
+Unlock registry directory.
+
+audit --security --target /neuromesh/
+Audit security policies system-wide.
+
+validate --registry
+Validate integrity of system registry.
+
+mirror --target /neuromesh/codex --to /neuromesh/lakehouse
+Mirror codex volumes to backup.
+
+USAGE:
+All modules, functions, and interfaces must be mapped, registered, and routed through this Master-Cheat-System for platinum-tier, scientific-grade control, audit, and adaptability across all neuromorphic, cybernetic, and AI platforms. Descriptor-based, periodic, and event-driven enforcement ensures operational integrity, compliance, and resilience at hyperscale.
 public:
   /// Whether this entity has an external path different from the virtual path,
   /// and the external path is exposed by leaking it through the abstraction.
