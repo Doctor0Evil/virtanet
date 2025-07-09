@@ -41,7 +41,130 @@ pub trait ConsensusState: Send + Sync + Clone {
     /// Update state vector in-place (e.g., after averaging)
     fn set_state_vector(&mut self, new_state: Vec<f32>);
 }
+use std::sync::{Arc, Mutex};
+use std::collections::{HashMap, HashSet};
+use rand::seq::IteratorRandom;
+use rand::thread_rng;
+use async_trait::async_trait;
 
+/// Trait for mesh node consensus state
+pub trait ConsensusState: Send + Sync + Clone {
+    /// Returns current state vector (e.g., model weights, routing metrics)
+    fn state_vector(&self) -> Vec<f32>;
+    /// Update state vector in-place (e.g., after averaging)
+    fn set_state_vector(&mut self, new_state: Vec<f32>);
+}
+
+/// Neuromorphic mesh node abstraction
+#[async_trait]
+pub trait MeshNode: Send + Sync {
+    async fn get_neighbors(&self) -> Vec<Arc<dyn MeshNode>>;
+    async fn get_state(&self) -> Arc<Mutex<dyn ConsensusState>>;
+    fn node_id(&self) -> String;
+}
+
+/// Gossip-based local consensus: weighted average with neighbors
+pub async fn local_consensus_round(
+    node: Arc<dyn MeshNode>,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    let neighbors = node.get_neighbors().await;
+    let mut rng = thread_rng();
+
+    // Randomly select a subset of neighbors (for energy efficiency)
+    let sample_size = (neighbors.len() as f32 * 0.5).ceil() as usize;
+    let sampled: Vec<_> = neighbors
+        .iter()
+        .choose_multiple(&mut rng, sample_size);
+
+    // Gather states
+    let self_state = node.get_state().await;
+    let self_vec = self_state.lock().unwrap().state_vector();
+
+    let mut sum = self_vec.iter().map(|v| v * weight_self).collect::<Vec<f32>>();
+    let mut total_weight = weight_self;
+
+    for neighbor in sampled {
+        let n_state = neighbor.get_state().await;
+        let n_vec = n_state.lock().unwrap().state_vector();
+        for (i, v) in n_vec.iter().enumerate() {
+            sum[i] += v * weight_neighbors;
+        }
+        total_weight += weight_neighbors;
+    }
+
+    // Normalize
+    let new_vec: Vec<f32> = sum.iter().map(|v| v / total_weight).collect();
+    self_state.lock().unwrap().set_state_vector(new_vec);
+}
+
+/// Asynchronous, event-driven consensus loop
+pub async fn run_mesh_consensus(
+    node: Arc<dyn MeshNode>,
+    interval_ms: u64,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    loop {
+        local_consensus_round(node.clone(), weight_self, weight_neighbors).await;
+        tokio::time::sleep(std::time::Duration::from_millis(interval_ms)).await;
+    }
+}
+
+/// Hierarchical consensus: cluster-level aggregation, then propagate upward
+pub async fn hierarchical_consensus(
+    clusters: Vec<Vec<Arc<dyn MeshNode>>>,
+    weight_self: f32,
+    weight_neighbors: f32,
+    rounds: usize,
+) {
+    // Intra-cluster consensus
+    for _ in 0..rounds {
+        for cluster in &clusters {
+            for node in cluster {
+                local_consensus_round(node.clone(), weight_self, weight_neighbors).await;
+            }
+        }
+    }
+    // Inter-cluster: aggregate cluster representatives
+    let reps: Vec<_> = clusters
+        .iter()
+        .map(|c| c[0].clone())
+        .collect();
+    for rep in &reps {
+        local_consensus_round(rep.clone(), weight_self, weight_neighbors).await;
+    }
+}
+
+/// Probabilistic update rule (for stochastic, neuromorphic meshes)
+pub async fn probabilistic_consensus_round(
+    node: Arc<dyn MeshNode>,
+    update_prob: f32,
+    weight_self: f32,
+    weight_neighbors: f32,
+) {
+    if rand::random::<f32>() < update_prob {
+        local_consensus_round(node, weight_self, weight_neighbors).await;
+    }
+}
+
+/// Example consensus state: single scalar (e.g., global parameter)
+#[derive(Clone)]
+pub struct ScalarState {
+    pub value: f32,
+}
+
+impl ConsensusState for ScalarState {
+    fn state_vector(&self) -> Vec<f32> {
+        vec![self.value]
+    }
+    fn set_state_vector(&mut self, new_state: Vec<f32>) {
+        if let Some(v) = new_state.get(0) {
+            self.value = *v;
+        }
+    }
+}
 /// Neuromorphic mesh node abstraction
 #[async_trait]
 pub trait MeshNode: Send + Sync {
