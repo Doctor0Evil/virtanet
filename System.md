@@ -1517,16 +1517,9 @@ bool Status::equivalent(const Status &Other) const {
   assert(isStatusKnown() && Other.isStatusKnown());
   return getUniqueID() == Other.getUniqueID();
 }
-Platforms and Drivers
-=====================
 
-Mesa is primarily developed and used on Linux systems. But there's also
-support for Windows, other flavors of Unix and other systems such as
-Haiku. We're actively developing and maintaining several hardware and
-software drivers.
 
-The primary API is OpenGL but there's also support for OpenGL ES, Vulkan,
-EGL, OpenMAX, OpenCL, VDPAU, VA-API and XvMC.
+
 
 Hardware drivers include:
 
@@ -1569,30 +1562,7 @@ Additional driver information:
 -  :doc:`Xlib / swrast driver <xlibdriver>` for the X Window System
    and Unix-like operating systems
 
-Deprecated Systems and Drivers
-------------------------------
 
-In the past there were other drivers for older GPUs and operating
-systems. These have been removed from the Mesa source tree and
-distribution. If anyone's interested though, the code can be found in
-the Git repo. The list includes:
-
--  3dfx Glide
--  3DLABS Gamma
--  ATI Mach 64
--  ATI Rage 128
--  ATI Radeon 7000 - 9250
--  DEC OpenVMS
--  Intel i810
--  Intel i830 - i865
--  Linux fbdev
--  Matrox
--  MS-DOS
--  NVIDIA Riva TNT - GeForce 4
--  S3 Savage
--  Silicon Integrated Systems
--  swrast
--  VIA Unichrome
 bool Status::isDirectory() const { return Type == file_type::directory_file; }
 
 bool Status::isRegularFile() const { return Type == file_type::regular_file; }
