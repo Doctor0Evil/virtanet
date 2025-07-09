@@ -22,7 +22,302 @@ struct SpikePacket {
 // CYBERNETIC ENERGY ECOSYSTEM - DIAMOND-TIER SELF-DEPENDENT NEUROMORPHIC SYSTEM
 // Exhaustive, modular, and fully virtualized with advanced energy harvesting, display adaptation, auto-component management, and security
 // NO hardware, device, or host mutation; all in-memory and virtual
+// Distributed Consensus in Neuromorphic Networks (Rust Module)
+// Implements a simplified swarm-inspired consensus protocol for neuromorphic mesh nodes.
+// Each node adapts to local state, energy, and feedback, achieving global agreement via event-driven updates.
 
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Node State & Consensus Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct ConsensusMsg {
+    pub sender_id: usize,
+    pub proposed_state: String,
+    pub energy_level: f32,
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct NeuromorphicNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, ConsensusMsg>>,
+}
+
+impl NeuromorphicNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        NeuromorphicNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Event-driven: receive consensus message from peer
+    pub fn receive(&self, msg: ConsensusMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Adaptive: propose new state based on local energy and feedback
+    pub fn propose_state(&mut self) -> ConsensusMsg {
+        let mut rng = rand::thread_rng();
+        // Example: if low energy, propose "idle"
+        if self.energy < 0.2 {
+            self.state = "idle".to_string();
+            self.status = NodeStatus::LowEnergy;
+        } else if self.status == NodeStatus::Overloaded {
+            self.state = "throttle".to_string();
+        } else {
+            // Randomly propose "active" or "sync"
+            self.state = if rng.gen_bool(0.7) { "active" } else { "sync" }.to_string();
+        }
+        ConsensusMsg {
+            sender_id: self.id,
+            proposed_state: self.state.clone(),
+            energy_level: self.energy,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Consensus step: aggregate peer proposals, adopt majority or weighted state
+    pub fn consensus_step(&mut self) {
+        let rec = self.received.lock().unwrap();
+        let mut state_counts = HashMap::new();
+        for msg in rec.values() {
+            *state_counts.entry(&msg.proposed_state).or_insert(0) += 1;
+        }
+        // Include own proposal
+        *state_counts.entry(&self.state).or_insert(0) += 1;
+
+        // Find most common state
+        if let Some((state, _)) = state_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = state.clone();
+        }
+    }
+}
+
+// --- Neuromorphic Network Mesh ---
+
+pub struct NeuromorphicMesh {
+    pub nodes: HashMap<usize, Arc<NeuromorphicNode>>,
+}
+
+impl NeuromorphicMesh {
+    pub fn new(size: usize) -> Self {
+        let mut nodes = HashMap::new();
+        for i in 0..size {
+            // Each node connected to all others (full mesh)
+            let peers = (0..size).filter(|&j| j != i).collect();
+            nodes.insert(i, Arc::new(NeuromorphicNode::new(i, peers, "init", 1.0)));
+        }
+        NeuromorphicMesh { nodes }
+    }
+
+    // Simulate one round of distributed consensus
+    pub fn consensus_round(&self) {
+        // Step 1: Each node proposes a state
+        let proposals: Vec<(usize, ConsensusMsg)> = self.nodes
+            .iter()
+            .map(|(&id, node)| (id, node.clone().propose_state()))
+            .collect();
+
+        // Step 2: Broadcast proposals to all peers
+        for (id, msg) in &proposals {
+            for peer_id in &self.nodes[id].peers {
+                if let Some(peer) = self.nodes.get(peer_id) {
+                    peer.receive(msg.clone());
+                }
+            }
+        }
+
+        // Step 3: Each node aggregates and updates state
+        for node in self.nodes.values() {
+            let mut n = Arc::get_mut(node).unwrap();
+            n.consensus_step();
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_distributed_consensus() {
+        let mesh = NeuromorphicMesh::new(5);
+        for _ in 0..10 {
+            mesh.consensus_round();
+        }
+        // Check all nodes reached the same state
+        let states: HashSet<_> = mesh.nodes.values().map(|n| n.state.clone()).collect();
+        assert_eq!(states.len(), 1);
+    }
+}
+// Distributed Consensus in Neuromorphic Networks (Rust Module)
+//
+// This module implements a simplified, swarm-inspired consensus protocol for neuromorphic mesh nodes.
+// Each node adapts to local state, energy, and feedback, achieving global agreement via event-driven updates.
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Node State & Consensus Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct ConsensusMsg {
+    pub sender_id: usize,
+    pub proposed_state: String,
+    pub energy_level: f32,
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct NeuromorphicNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, ConsensusMsg>>,
+}
+
+impl NeuromorphicNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        NeuromorphicNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Event-driven: receive consensus message from peer
+    pub fn receive(&self, msg: ConsensusMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Adaptive: propose new state based on local energy and feedback
+    pub fn propose_state(&mut self) -> ConsensusMsg {
+        let mut rng = rand::thread_rng();
+        if self.energy < 0.2 {
+            self.state = "idle".to_string();
+            self.status = NodeStatus::LowEnergy;
+        } else if self.status == NodeStatus::Overloaded {
+            self.state = "throttle".to_string();
+        } else {
+            self.state = if rng.gen_bool(0.7) { "active" } else { "sync" }.to_string();
+        }
+        ConsensusMsg {
+            sender_id: self.id,
+            proposed_state: self.state.clone(),
+            energy_level: self.energy,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Consensus step: aggregate peer proposals, adopt majority or weighted state
+    pub fn consensus_step(&mut self) {
+        let rec = self.received.lock().unwrap();
+        let mut state_counts = HashMap::new();
+        for msg in rec.values() {
+            *state_counts.entry(&msg.proposed_state).or_insert(0) += 1;
+        }
+        *state_counts.entry(&self.state).or_insert(0) += 1;
+
+        if let Some((state, _)) = state_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = state.clone();
+        }
+    }
+}
+
+// --- Neuromorphic Network Mesh ---
+
+pub struct NeuromorphicMesh {
+    pub nodes: HashMap<usize, Arc<NeuromorphicNode>>,
+}
+
+impl NeuromorphicMesh {
+    pub fn new(size: usize) -> Self {
+        let mut nodes = HashMap::new();
+        for i in 0..size {
+            let peers = (0..size).filter(|&j| j != i).collect();
+            nodes.insert(i, Arc::new(NeuromorphicNode::new(i, peers, "init", 1.0)));
+        }
+        NeuromorphicMesh { nodes }
+    }
+
+    // Simulate one round of distributed consensus
+    pub fn consensus_round(&self) {
+        let proposals: Vec<(usize, ConsensusMsg)> = self.nodes
+            .iter()
+            .map(|(&id, node)| (id, node.clone().propose_state()))
+            .collect();
+
+        for (id, msg) in &proposals {
+            for peer_id in &self.nodes[id].peers {
+                if let Some(peer) = self.nodes.get(peer_id) {
+                    peer.receive(msg.clone());
+                }
+            }
+        }
+
+        for node in self.nodes.values() {
+            let mut n = Arc::get_mut(node).unwrap();
+            n.consensus_step();
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_distributed_consensus() {
+        let mesh = NeuromorphicMesh::new(5);
+        for _ in 0..10 {
+            mesh.consensus_round();
+        }
+        let states: HashSet<_> = mesh.nodes.values().map(|n| n.state.clone()).collect();
+        assert_eq!(states.len(), 1);
+    }
+}
 #![feature(portable_simd)]
 use std::collections::{BTreeMap, HashMap, HashSet};
 use std::time::{Duration, Instant};
