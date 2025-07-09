@@ -35,6 +35,86 @@ use rand::thread_rng;
 use async_trait::async_trait;
 <?php
 // File: /opt/intima-ai/core/constants.php
+// CHEAT_CODES FOR HIGH-SECURITY NEUROMORPHIC NETWORK OPERATIONS
+
+// 1. Enforce Cluster Hierarchies for Security & Control
+enforce --cluster-hierarchies --policy strict
+// Mandates registration of all nodes within clusters; restricts inter-cluster traffic to authorized representatives, reducing attack surface and enabling granular policy enforcement[2][6].
+
+audit --cluster-membership --interval 10m
+// Periodically verifies cluster memberships to detect rogue nodes and unauthorized reassignments[6].
+
+// 2. Disable Dynamic Neighbor Discovery (Risks & Mitigation)
+disable --neighbor-discovery --dynamic
+// Disables unauthenticated neighbor discovery; prevents lateral movement by attackers but may reduce adaptability to topology changes[5][6].
+
+monitor --neighbor-table --anomaly-detection
+// Continuously monitors neighbor tables for unexpected changes, compensating for loss of dynamic adaptation[5].
+
+fallback --static-neighbor-list --policy on-failure
+// Uses a pre-approved static neighbor list to maintain minimum connectivity and resilience in case of topology changes or failures[6].
+
+// 3. Zero-Knowledge State Proofs for Privacy
+enable --zero-knowledge-proofs --consensus sensitive
+// Requires nodes to provide zero-knowledge proofs of state during sensitive consensus, ensuring state validity without revealing raw data[5][10].
+
+audit --zkp-operations --log /neuromesh/logs/zkp.log
+// Logs all zero-knowledge proof operations for compliance and forensic review[5].
+
+// 4. Kernel Panic on Policy Violation (Scenarios & False Positive Prevention)
+panic-on --policy-violation --scope consensus,directory
+// Triggers immediate kernel panic and node shutdown on detection of critical policy violations (e.g., unauthorized state mutation, directory traversal)[5].
+
+simulate --policy-violation --test-mode
+// Runs simulated violations to test panic triggers and refine detection thresholds, reducing risk of false positives.
+
+whitelist --benign-operations --panic-bypass
+// Maintains a whitelist of benign operations to prevent accidental kernel panics from non-malicious events.
+
+// 5. Enforce Strict Directory Structure (Scalability & Flexibility)
+enforce --directory-structure --regex '[a-zA-Z0-9-_.]+'
+// Applies strict regex-based naming and structure policies, blocking traversal exploits and unauthorized file placement[5].
+
+audit --directory-usage --scalability-check
+// Monitors directory growth and structure to identify bottlenecks or rigidity, allowing for controlled exceptions in large deployments[7].
+
+extend --directory-schema --on-demand
+// Dynamically extends directory schema under admin control to accommodate scaling needs without violating core security policies[7].
+
+// 6. Central Registry Enforcement for Codex Control
+register --codex --central-registry /neuromesh/registry/codexes.json
+// Registers all codexes in a signed, central registry; blocks unregistered or unauthorized codex additions[5].
+
+audit --codex-registry --interval 1h
+// Periodically audits registry for unauthorized changes or anomalies.
+
+// 7. Strict Directory Naming Policies (Scalability Implications)
+enforce --directory-naming --policy strict
+// Enforces globally unique, regex-compliant names; prevents collisions but requires robust naming conventions for large-scale systems[5][7].
+
+review --naming-collisions --alert
+// Alerts admins to potential naming collisions or exhaustion of namespace.
+
+// 8. Lock/Unlock Codes for Operational Resilience
+lock --directory /neuromesh/codex --policy breach
+// Locks critical directories during detected security breaches to prevent data tampering.
+
+unlock --directory /neuromesh/codex --policy restore
+// Unlocks directories post-incident, following admin review and system restore.
+
+// 9. Erasure Coding for Fault Tolerance
+enable --erasure-coding --codex /neuromesh/codex
+// Activates erasure coding for all codex data, ensuring data recovery and redundancy across distributed nodes[5].
+
+audit --erasure-coding --integrity-check
+// Regularly verifies integrity and recoverability of sharded data.
+
+// 10. Audit Trails for Compliance & Forensics
+enable --audit-trails --scope consensus,cli,codex
+// Logs all critical operations to immutable, tamper-evident ledgers for compliance and forensic analysis[5].
+
+export --audit-log --format forensic
+// Exports audit logs in standardized format for legal or investigative review.
 
 // System-wide operational constants (research mode)
 define('GODMODE_ENABLED', true);
