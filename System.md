@@ -205,6 +205,248 @@ fun execute(command: SystemCommand) {
 #include <system_error>
 #include <utility>
 #include <vector>
+// SPDX-License-Identifier: MIT
+// Diamond-Tier Neuromorphic File System for AI Systems
+// All modules: code-only, Rust, no external dependencies unless noted.
+// Scope: Virtual-only, sandboxed, operational continuity enforced.
+
+#![allow(dead_code)]
+#![allow(unused_imports)]
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use std::time::{SystemTime, UNIX_EPOCH};
+
+// --- Core Traits ---
+
+pub trait NeuromorphicNode {
+    fn id(&self) -> &str;
+    fn parent(&self) -> Option<&str>;
+    fn metadata(&self) -> &NeuromorphicMeta;
+    fn as_dir(&self) -> Option<&NeuromorphicDirectory> { None }
+    fn as_file(&self) -> Option<&NeuromorphicFile> { None }
+}
+
+#[derive(Clone, Debug)]
+pub struct NeuromorphicMeta {
+    pub created: u64,
+    pub modified: u64,
+    pub owner: String,
+    pub tags: HashSet<String>,
+    pub is_virtual: bool,
+}
+
+// --- Directory & File Structs ---
+
+#[derive(Clone, Debug)]
+pub struct NeuromorphicDirectory {
+    pub id: String,
+    pub parent: Option<String>,
+    pub meta: NeuromorphicMeta,
+    pub children: HashSet<String>,
+}
+
+#[derive(Clone, Debug)]
+pub struct NeuromorphicFile {
+    pub id: String,
+    pub parent: Option<String>,
+    pub meta: NeuromorphicMeta,
+    pub content: Vec<u8>,
+    pub ai_embedding: Option<Vec<f32>>, // For neuromorphic search/recall
+}
+
+// --- Implement NeuromorphicNode for Directory & File ---
+
+impl NeuromorphicNode for NeuromorphicDirectory {
+    fn id(&self) -> &str { &self.id }
+    fn parent(&self) -> Option<&str> { self.parent.as_deref() }
+    fn metadata(&self) -> &NeuromorphicMeta { &self.meta }
+    fn as_dir(&self) -> Option<&NeuromorphicDirectory> { Some(self) }
+}
+
+impl NeuromorphicNode for NeuromorphicFile {
+    fn id(&self) -> &str { &self.id }
+    fn parent(&self) -> Option<&str> { self.parent.as_deref() }
+    fn metadata(&self) -> &NeuromorphicMeta { &self.meta }
+    fn as_file(&self) -> Option<&NeuromorphicFile> { Some(self) }
+}
+
+// --- File System Repository ---
+
+pub struct NeuromorphicRepo {
+    pub nodes: HashMap<String, Arc<Mutex<Box<dyn NeuromorphicNode + Send + Sync>>>>,
+    pub root_id: String,
+}
+
+impl NeuromorphicRepo {
+    pub fn new(owner: &str) -> Self {
+        let root_meta = NeuromorphicMeta {
+            created: now(),
+            modified: now(),
+            owner: owner.to_string(),
+            tags: HashSet::new(),
+            is_virtual: true,
+        };
+        let root_dir = NeuromorphicDirectory {
+            id: "root".to_string(),
+            parent: None,
+            meta: root_meta,
+            children: HashSet::new(),
+        };
+        let mut nodes = HashMap::new();
+        nodes.insert(
+            "root".to_string(),
+            Arc::new(Mutex::new(Box::new(root_dir))),
+        );
+        Self {
+            nodes,
+            root_id: "root".to_string(),
+        }
+    }
+
+    // Create Directory
+    pub fn mkdir(&mut self, parent_id: &str, dir_id: &str, owner: &str) {
+        let meta = NeuromorphicMeta {
+            created: now(),
+            modified: now(),
+            owner: owner.to_string(),
+            tags: HashSet::new(),
+            is_virtual: true,
+        };
+        let dir = NeuromorphicDirectory {
+            id: dir_id.to_string(),
+            parent: Some(parent_id.to_string()),
+            meta,
+            children: HashSet::new(),
+        };
+        self.nodes.insert(
+            dir_id.to_string(),
+            Arc::new(Mutex::new(Box::new(dir))),
+        );
+        if let Some(parent) = self.nodes.get(parent_id) {
+            if let Ok(mut parent_node) = parent.lock() {
+                if let Some(parent_dir) = parent_node.as_dir() {
+                    let mut updated = parent_dir.clone();
+                    updated.children.insert(dir_id.to_string());
+                    *parent_node = Box::new(updated);
+                }
+            }
+        }
+    }
+
+    // Create File
+    pub fn mkfile(
+        &mut self,
+        parent_id: &str,
+        file_id: &str,
+        owner: &str,
+        content: Vec<u8>,
+        ai_embedding: Option<Vec<f32>>,
+    ) {
+        let meta = NeuromorphicMeta {
+            created: now(),
+            modified: now(),
+            owner: owner.to_string(),
+            tags: HashSet::new(),
+            is_virtual: true,
+        };
+        let file = NeuromorphicFile {
+            id: file_id.to_string(),
+            parent: Some(parent_id.to_string()),
+            meta,
+            content,
+            ai_embedding,
+        };
+        self.nodes.insert(
+            file_id.to_string(),
+            Arc::new(Mutex::new(Box::new(file))),
+        );
+        if let Some(parent) = self.nodes.get(parent_id) {
+            if let Ok(mut parent_node) = parent.lock() {
+                if let Some(parent_dir) = parent_node.as_dir() {
+                    let mut updated = parent_dir.clone();
+                    updated.children.insert(file_id.to_string());
+                    *parent_node = Box::new(updated);
+                }
+            }
+        }
+    }
+
+    // Read File Content
+    pub fn read_file(&self, file_id: &str) -> Option<Vec<u8>> {
+        self.nodes.get(file_id).and_then(|node| {
+            node.lock().ok().and_then(|n| n.as_file().map(|f| f.content.clone()))
+        })
+    }
+
+    // List Directory
+    pub fn list_dir(&self, dir_id: &str) -> Option<Vec<String>> {
+        self.nodes.get(dir_id).and_then(|node| {
+            node.lock().ok().and_then(|n| n.as_dir().map(|d| d.children.iter().cloned().collect()))
+        })
+    }
+
+    // Attach AI Embedding to File
+    pub fn attach_embedding(&mut self, file_id: &str, embedding: Vec<f32>) {
+        if let Some(node) = self.nodes.get(file_id) {
+            if let Ok(mut n) = node.lock() {
+                if let Some(mut file) = n.as_file().cloned() {
+                    file.ai_embedding = Some(embedding);
+                    *n = Box::new(file);
+                }
+            }
+        }
+    }
+}
+
+// --- Utility: Current Timestamp ---
+
+fn now() -> u64 {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_secs()
+}
+
+// --- Example: System Initialization ---
+
+pub fn initialize_neuromorphic_fs(owner: &str) -> NeuromorphicRepo {
+    let mut repo = NeuromorphicRepo::new(owner);
+    repo.mkdir("root", "ai_models", owner);
+    repo.mkdir("root", "logs", owner);
+    repo.mkfile("ai_models", "model_v1", owner, vec![1, 2, 3, 4], None);
+    repo
+}
+
+// --- Security & Sandbox Enforcement (Stub) ---
+
+pub fn enforce_virtual_only() {
+    // All file system operations must be routed through NeuromorphicRepo.
+    // No direct disk or OS calls permitted.
+    // All nodes are in-memory, can be serialized to virtual hardware only.
+}
+
+// --- AI Embedding Search (Stub) ---
+
+pub fn search_by_embedding(_repo: &NeuromorphicRepo, _query: &[f32]) -> Option<String> {
+    // Implement vector similarity search for neuromorphic recall.
+    None
+}
+
+// --- Operational Continuity (Example) ---
+
+pub fn checkpoint(repo: &NeuromorphicRepo) -> Vec<u8> {
+    // Serialize all nodes for backup in virtual hardware.
+    // Placeholder: implement using serde or custom logic.
+    vec![]
+}
+
+// --- End of Diamond-Tier Neuromorphic File System ---
+
+// Usage Example (not for production):
+// let mut fs = initialize_neuromorphic_fs("admin");
+// fs.mkfile("logs", "boot_log", "admin", b"System booted".to_vec(), None);
+// let files = fs.list_dir("logs");
 
 namespace llvm {
 
