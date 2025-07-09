@@ -39,6 +39,191 @@ pub enum NodeStatus {
     LowEnergy,
     Offline,
 }
+// --- Advanced Distributed Consensus for Neuromorphic Networks ---
+// This Rust module extends swarm-inspired consensus with neuromorphic-specific features:
+// - Energy-aware state proposals
+// - Dynamic feedback-driven adaptation
+// - Modular node status and event-driven updates
+// - Designed for hybrid and energy-harvesting neuromorphic mesh topologies
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Node State & Consensus Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Harvesting,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct ConsensusMsg {
+    pub sender_id: usize,
+    pub proposed_state: String,
+    pub energy_level: f32,
+    pub feedback: f32, // Network performance feedback (e.g., latency, error rate)
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct NeuromorphicNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub harvesting: f32, // Energy harvested since last round
+    pub feedback: f32,   // Local performance metric
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, ConsensusMsg>>,
+}
+
+impl NeuromorphicNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        NeuromorphicNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            harvesting: 0.0,
+            feedback: 0.0,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Event-driven: receive consensus message from peer
+    pub fn receive(&self, msg: ConsensusMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Simulate ambient energy harvesting (RF, thermal, etc.)
+    pub fn harvest_energy(&mut self) {
+        let mut rng = rand::thread_rng();
+        let harvested = rng.gen_range(0.0..0.1);
+        self.energy += harvested;
+        self.harvesting = harvested;
+    }
+
+    // Adaptive: propose new state based on energy, feedback, and harvesting
+    pub fn propose_state(&mut self) -> ConsensusMsg {
+        self.harvest_energy();
+        let mut rng = rand::thread_rng();
+
+        // Example: If low energy, enter harvesting or idle mode
+        if self.energy < 0.2 {
+            self.state = if self.harvesting > 0.05 { "harvesting" } else { "idle" }.to_string();
+            self.status = if self.harvesting > 0.05 { NodeStatus::Harvesting } else { NodeStatus::LowEnergy };
+        } else if self.status == NodeStatus::Overloaded {
+            self.state = "throttle".to_string();
+        } else if self.feedback > 0.5 {
+            self.state = "optimize".to_string(); // Feedback-driven adaptation
+        } else {
+            self.state = if rng.gen_bool(0.7) { "active" } else { "sync" }.to_string();
+        }
+
+        ConsensusMsg {
+            sender_id: self.id,
+            proposed_state: self.state.clone(),
+            energy_level: self.energy,
+            feedback: self.feedback,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Consensus step: aggregate proposals, adopt majority/weighted state, update feedback
+    pub fn consensus_step(&mut self) {
+        let rec = self.received.lock().unwrap();
+        let mut state_counts = HashMap::new();
+        let mut total_feedback = 0.0;
+        let mut total_energy = 0.0;
+
+        for msg in rec.values() {
+            *state_counts.entry(&msg.proposed_state).or_insert(0) += 1;
+            total_feedback += msg.feedback;
+            total_energy += msg.energy_level;
+        }
+        *state_counts.entry(&self.state).or_insert(0) += 1;
+        total_feedback += self.feedback;
+        total_energy += self.energy;
+
+        // Find most common state (swarm/majority rule)
+        if let Some((state, _)) = state_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = state.clone();
+        }
+
+        // Feedback-driven adaptation: update local feedback based on peer/network metrics
+        let count = rec.len() as f32 + 1.0;
+        self.feedback = total_feedback / count;
+
+        // Optionally, adjust energy based on network-wide average
+        let avg_energy = total_energy / count;
+        if avg_energy < 0.2 {
+            self.status = NodeStatus::LowEnergy;
+        }
+    }
+}
+
+// --- Neuromorphic Network Mesh ---
+
+pub struct NeuromorphicMesh {
+    pub nodes: HashMap<usize, Arc<NeuromorphicNode>>,
+}
+
+impl NeuromorphicMesh {
+    pub fn new(size: usize) -> Self {
+        let mut nodes = HashMap::new();
+        for i in 0..size {
+            let peers = (0..size).filter(|&j| j != i).collect();
+            nodes.insert(i, Arc::new(NeuromorphicNode::new(i, peers, "init", 1.0)));
+        }
+        NeuromorphicMesh { nodes }
+    }
+
+    // Simulate one round of distributed consensus with feedback adaptation
+    pub fn consensus_round(&self) {
+        let proposals: Vec<(usize, ConsensusMsg)> = self.nodes
+            .iter()
+            .map(|(&id, node)| (id, node.clone().propose_state()))
+            .collect();
+
+        for (id, msg) in &proposals {
+            for peer_id in &self.nodes[id].peers {
+                if let Some(peer) = self.nodes.get(peer_id) {
+                    peer.receive(msg.clone());
+                }
+            }
+        }
+
+        for node in self.nodes.values() {
+            let mut n = Arc::get_mut(node).unwrap();
+            n.consensus_step();
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_advanced_distributed_consensus() {
+        let mesh = NeuromorphicMesh::new(5);
+        for _ in 0..10 {
+            mesh.consensus_round();
+        }
+        let states: HashSet<_> = mesh.nodes.values().map(|n| n.state.clone()).collect();
+        assert_eq!(states.len(), 1);
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct ConsensusMsg {
