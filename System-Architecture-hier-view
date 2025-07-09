@@ -6,6 +6,107 @@ Certainly! Below is the complete, fully operational, kernel-protected, blockchai
 1. Unified Directory Structure & Asset Index 
 
 text 
+/VSC/
+├── core/
+│   ├── hypervisor/
+│   │   ├── orchestrator.bin
+│   │   ├── isolation.log
+│   │   └── audit/
+│   │       └── immutable.log
+│   ├── virtual-hardware/
+│   │   ├── vcpu/
+│   │   ├── vram/
+│   │   ├── vdisk/
+│   │   ├── vnic/
+│   │   ├── vgpu/
+│   │   └── paravirt-devices/
+│   │       ├── virtio-net/
+│   │       ├── virtio-blk/
+│   │       ├── virtio-scsi/
+│   │       ├── QXL/
+│   │       └── rng/
+│   ├── device-assignment/
+│   │   ├── vfio/
+│   │   ├── sriov/
+│   │   ├── npiv/
+│   │   └── passthrough/
+│   ├── partitioning/
+│   │   ├── root/
+│   │   ├── child/
+│   │   └── vmbus/
+│   └── resource-pools/
+│       ├── elastic-compute/
+│       ├── data-lake/
+│       └── network/
+├── modules/
+│   ├── EnergyBall/
+│   │   ├── ingest/
+│   │   ├── process/
+│   │   ├── transfer/
+│   │   └── blockchain/
+│   │       ├── smart-contracts/
+│   │       ├── oracles/
+│   │       └── zk-rollups/
+│   ├── Keygen/
+│   │   ├── core/
+│   │   │   ├── keygen.bin
+│   │   │   └── encryption/
+│   │   ├── activation-validation/
+│   │   ├── audit-monitoring/
+│   │   ├── device-lockdown/
+│   │   ├── automation/
+│   │   └── descriptors/
+│   ├── FCC_Compliance/
+│   │   ├── always-active/
+│   │   │   ├── protocol-analysis/
+│   │   │   │   ├── wireshark/
+│   │   │   │   ├── bluetooth/
+│   │   │   │   ├── sdr/
+│   │   │   │   └── rf-analysis/
+│   │   │   └── emission-control/
+│   │   ├── device-profiles/
+│   │   │   ├── UbertoothOne/
+│   │   │   ├── HackRFOne/
+│   │   │   ├── RTLSDR/
+│   │   │   ├── CrazyRadioPA/
+│   │   │   ├── nRF52840/
+│   │   │   ├── CC2540/
+│   │   │   ├── BluefruitLE/
+│   │   │   ├── RFExplorer/
+│   │   │   ├── APx500/
+│   │   │   ├── Shimmer3/
+│   │   │   ├── Waspmote/
+│   │   │   ├── RuuviTag/
+│   │   │   ├── USRPB200/
+│   │   │   ├── GreatFETOne/
+│   │   │   ├── FlipperZero/
+│   │   │   └── OpenBCI/
+│   │   └── scientific-apps/
+│   │       ├── brainwave-analysis/
+│   │       ├── environmental-monitoring/
+│   │       ├── biomedical-telemetry/
+│   │       └── protocol-dissectors/
+│   └── audit/
+│       ├── blockchain/
+│       └── arweave/
+├── compliance/
+│   ├── fcc/
+│   ├── gdpr/
+│   ├── ai-act-2025/
+│   └── internal/
+├── docs/
+│   ├── architecture/
+│   ├── keygen/
+│   ├── fcc-modules/
+│   ├── device-profiles/
+│   ├── workflows/
+│   └── audit/
+└── logs/
+    ├── system/
+    ├── keygen/
+    ├── energyball/
+    ├── fcc/
+    └── audit/
 
 Z://programs/dev_tools/master-dev-kits/ 
 ├── Applications/ 
