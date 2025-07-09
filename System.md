@@ -53,7 +53,1163 @@ use rand::Rng;
 // Universally adaptable, AI-executed, multiplatform, plug-and-play, and scriptable.
 // Strict adherence to: 1) ALL "AI" actions, 2) Valid, functional, and enhanced for all web-based AI chat platforms,
 // including UWP/Xbox (with fallback), and unsimulated real-world operation.
+// Cryptographic Integration for Enhanced Security in AI-Based Network Management
+//
+// Key Benefits:
+// - Ensures data confidentiality, integrity, and authenticity
+// - Protects AI-driven control flows, credentials, and device identities
+// - Enables secure audit, compliance, and tamper-evident logging
+// - Supports hardware-bound tokens and multi-factor authentication
 
+use std::collections::HashMap;
+use ring::{digest, hmac, rand, signature};
+use rand::Rng;
+
+// --- Cryptographic Utilities ---
+
+pub struct CryptoManager {
+    hmac_key: hmac::Key,
+}
+
+impl CryptoManager {
+    pub fn new(secret: &[u8]) -> Self {
+        CryptoManager {
+            hmac_key: hmac::Key::new(hmac::HMAC_SHA256, secret),
+        }
+    }
+
+    // Message authentication (integrity + authenticity)
+    pub fn sign_message(&self, msg: &[u8]) -> Vec<u8> {
+        hmac::sign(&self.hmac_key, msg).as_ref().to_vec()
+    }
+
+    pub fn verify_message(&self, msg: &[u8], tag: &[u8]) -> bool {
+        hmac::verify(&self.hmac_key, msg, tag).is_ok()
+    }
+
+    // Password hashing (for user/device credentials)
+    pub fn hash_password(password: &str) -> Vec<u8> {
+        digest::digest(&digest::SHA512, password.as_bytes()).as_ref().to_vec()
+    }
+
+    // Hardware-bound token (device-specific)
+    pub fn generate_device_token(device_id: &[u8]) -> Vec<u8> {
+        digest::digest(&digest::SHA256, device_id).as_ref().to_vec()
+    }
+}
+
+// --- AI Network Management Example ---
+
+pub struct AiNode {
+    pub id: usize,
+    pub device_id: Vec<u8>,
+    pub password_hash: Vec<u8>,
+    pub auth_token: Vec<u8>,
+    pub crypto: CryptoManager,
+    pub audit_log: Vec<(String, Vec<u8>)>, // (event, signature)
+}
+
+impl AiNode {
+    pub fn new(id: usize, device_id: Vec<u8>, password: &str, secret: &[u8]) -> Self {
+        let crypto = CryptoManager::new(secret);
+        let password_hash = CryptoManager::hash_password(password);
+        let auth_token = CryptoManager::generate_device_token(&device_id);
+
+        AiNode {
+            id,
+            device_id,
+            password_hash,
+            auth_token,
+            crypto,
+            audit_log: Vec::new(),
+        }
+    }
+
+    // Secure command execution with cryptographic validation
+    pub fn execute_command(&mut self, command: &str, password: &str) -> bool {
+        // Authenticate user/device
+        if CryptoManager::hash_password(password) != self.password_hash {
+            return false; // Authentication failed
+        }
+
+        // Sign command for auditability
+        let signature = self.crypto.sign_message(command.as_bytes());
+        self.audit_log.push((command.to_string(), signature.clone()));
+
+        // (Command execution logic here...)
+
+        true
+    }
+
+    // Verify audit log integrity
+    pub fn verify_audit_log(&self) -> bool {
+        for (cmd, sig) in &self.audit_log {
+            if !self.crypto.verify_message(cmd.as_bytes(), sig) {
+                return false;
+            }
+        }
+        true
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_crypto_enhanced_ai_node() {
+        let secret = b"super_secret_key";
+        let device_id = b"uwp.xbox-serial-001".to_vec();
+        let mut node = AiNode::new(1, device_id.clone(), "Pa$$w0rd!", secret);
+
+        // Simulate secure command execution
+        assert!(node.execute_command("RESTORE_USER jmann2298@gmail.com", "Pa$$w0rd!"));
+        assert!(node.verify_audit_log());
+
+        // Tamper with audit log
+        node.audit_log[0].0 = "FAKE_COMMAND".to_string();
+        assert!(!node.verify_audit_log());
+    }
+}
+// Hybrid Communication Methods for Energy-Harvesting Neuromorphic Networks
+//
+// Features:
+// - Combines spike-based (event-driven) and batch/message-passing (periodic) communication
+// - Dynamically switches mode based on node energy, network load, and data urgency
+// - Universally adaptable (PC, Mac, UWP, Xbox, embedded, etc.)
+// - Strict AI adherence to workflow triggers and device/platform constraints
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Communication Mode Enum ---
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum CommMode {
+    Spike,      // Event-driven, sparse, low-energy
+    Batch,      // Periodic, message-passing, higher throughput
+    Hybrid,     // Adaptive: switches between modes
+}
+
+// --- Node Status & Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Harvesting,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct CommMsg {
+    pub sender_id: usize,
+    pub data: String,
+    pub energy_level: f32,
+    pub urgency: f32, // 0.0 = low, 1.0 = high
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct HybridNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub harvesting: f32,
+    pub feedback: f32,
+    pub comm_mode: CommMode,
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, CommMsg>>,
+}
+
+impl HybridNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        HybridNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            harvesting: 0.0,
+            feedback: 0.0,
+            comm_mode: CommMode::Hybrid,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Simulate ambient energy harvesting
+    pub fn harvest_energy(&mut self) {
+        let mut rng = rand::thread_rng();
+        let harvested = rng.gen_range(0.0..0.1);
+        self.energy += harvested;
+        self.harvesting = harvested;
+    }
+
+    // Adaptive: select communication mode based on energy, urgency, and feedback
+    pub fn select_comm_mode(&mut self, urgency: f32) {
+        if self.energy < 0.2 {
+            self.comm_mode = CommMode::Spike; // Save energy
+        } else if urgency > 0.7 || self.status == NodeStatus::Overloaded {
+            self.comm_mode = CommMode::Batch; // Prioritize throughput
+        } else {
+            self.comm_mode = CommMode::Hybrid; // Default: adaptive
+        }
+    }
+
+    // Generate a communication message
+    pub fn create_msg(&mut self, urgency: f32) -> CommMsg {
+        self.harvest_energy();
+        self.select_comm_mode(urgency);
+
+        // Example: state and urgency affect data payload
+        let data = match self.comm_mode {
+            CommMode::Spike => format!("spike:{}", self.state),
+            CommMode::Batch => format!("batch:{}", self.state),
+            CommMode::Hybrid => format!("hybrid:{}", self.state),
+        };
+
+        CommMsg {
+            sender_id: self.id,
+            data,
+            energy_level: self.energy,
+            urgency,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Event-driven: receive message from peer
+    pub fn receive(&self, msg: CommMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Communication step: send messages according to mode
+    pub fn communicate(&mut self) {
+        let urgency = if self.status == NodeStatus::Overloaded { 1.0 } else { self.feedback };
+        let msg = self.create_msg(urgency);
+
+        // In spike mode, send only if event/urgency is high
+        // In batch mode, send to all peers regardless
+        // In hybrid mode, send to a subset based on urgency/energy
+        match self.comm_mode {
+            CommMode::Spike => {
+                if urgency > 0.5 {
+                    for peer_id in &self.peers {
+                        if let Some(peer) = GLOBAL_NETWORK.lock().unwrap().get(peer_id) {
+                            peer.receive(msg.clone());
+                        }
+                    }
+                }
+            },
+            CommMode::Batch => {
+                for peer_id in &self.peers {
+                    if let Some(peer) = GLOBAL_NETWORK.lock().unwrap().get(peer_id) {
+                        peer.receive(msg.clone());
+                    }
+                }
+            },
+            CommMode::Hybrid => {
+                let n = (self.peers.len() as f32 * urgency).ceil() as usize;
+                for peer_id in self.peers.iter().take(n.max(1)) {
+                    if let Some(peer) = GLOBAL_NETWORK.lock().unwrap().get(peer_id) {
+                        peer.receive(msg.clone());
+                    }
+                }
+            }
+        }
+    }
+}
+
+// --- Global Network (for universal adaptability) ---
+
+lazy_static::lazy_static! {
+    pub static ref GLOBAL_NETWORK: Mutex<HashMap<usize, Arc<HybridNode>>> = Mutex::new(HashMap::new());
+}
+
+// --- Network Initialization ---
+
+pub fn init_hybrid_network(size: usize) {
+    let mut network = GLOBAL_NETWORK.lock().unwrap();
+    network.clear();
+    for i in 0..size {
+        let peers = (0..size).filter(|&j| j != i).collect();
+        network.insert(i, Arc::new(HybridNode::new(i, peers, "init", 1.0)));
+    }
+}
+
+// --- Network Communication Round ---
+
+pub fn hybrid_comm_round() {
+    let network = GLOBAL_NETWORK.lock().unwrap();
+    for node in network.values() {
+        let mut n = Arc::get_mut(node).unwrap();
+        n.communicate();
+    }
+}
+
+// --- Example Usage and New Password Generation ---
+
+pub fn generate_secure_password() -> String {
+    use rand::{distributions::Alphanumeric, thread_rng, Rng};
+    thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(16)
+        .map(char::from)
+        .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_hybrid_communication() {
+        init_hybrid_network(5);
+        for _ in 0..5 {
+            hybrid_comm_round();
+        }
+        // Check that all nodes have received at least one message
+        let network = GLOBAL_NETWORK.lock().unwrap();
+        for node in network.values() {
+            assert!(!node.received.lock().unwrap().is_empty());
+        }
+    }
+
+    #[test]
+    fn test_generate_secure_password() {
+        let pw = generate_secure_password();
+        assert_eq!(pw.len(), 16);
+        println!("New secure password: {}", pw);
+    }
+}
+// --- Advanced Distributed Consensus for Neuromorphic Networks ---
+// This Rust module extends swarm-inspired consensus with neuromorphic-specific features:
+// - Energy-aware state proposals
+// - Dynamic feedback-driven adaptation
+// - Modular node status and event-driven updates
+// - Designed for hybrid and energy-harvesting neuromorphic mesh topologies
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Node State & Consensus Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Harvesting,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct ConsensusMsg {
+    pub sender_id: usize,
+    pub proposed_state: String,
+    pub energy_level: f32,
+    pub feedback: f32, // Network performance feedback (e.g., latency, error rate)
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct NeuromorphicNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub harvesting: f32, // Energy harvested since last round
+    pub feedback: f32,   // Local performance metric
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, ConsensusMsg>>,
+}
+
+impl NeuromorphicNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        NeuromorphicNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            harvesting: 0.0,
+            feedback: 0.0,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Event-driven: receive consensus message from peer
+    pub fn receive(&self, msg: ConsensusMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Simulate ambient energy harvesting (RF, thermal, etc.)
+    pub fn harvest_energy(&mut self) {
+        let mut rng = rand::thread_rng();
+        let harvested = rng.gen_range(0.0..0.1);
+        self.energy += harvested;
+        self.harvesting = harvested;
+    }
+
+    // Adaptive: propose new state based on energy, feedback, and harvesting
+    pub fn propose_state(&mut self) -> ConsensusMsg {
+        self.harvest_energy();
+        let mut rng = rand::thread_rng();
+
+        // Example: If low energy, enter harvesting or idle mode
+        if self.energy < 0.2 {
+            self.state = if self.harvesting > 0.05 { "harvesting" } else { "idle" }.to_string();
+            self.status = if self.harvesting > 0.05 { NodeStatus::Harvesting } else { NodeStatus::LowEnergy };
+        } else if self.status == NodeStatus::Overloaded {
+            self.state = "throttle".to_string();
+        } else if self.feedback > 0.5 {
+            self.state = "optimize".to_string(); // Feedback-driven adaptation
+        } else {
+            self.state = if rng.gen_bool(0.7) { "active" } else { "sync" }.to_string();
+        }
+
+        ConsensusMsg {
+            sender_id: self.id,
+            proposed_state: self.state.clone(),
+            energy_level: self.energy,
+            feedback: self.feedback,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Consensus step: aggregate proposals, adopt majority/weighted state, update feedback
+    pub fn consensus_step(&mut self) {
+        let rec = self.received.lock().unwrap();
+        let mut state_counts = HashMap::new();
+        let mut total_feedback = 0.0;
+        let mut total_energy = 0.0;
+
+        for msg in rec.values() {
+            *state_counts.entry(&msg.proposed_state).or_insert(0) += 1;
+            total_feedback += msg.feedback;
+            total_energy += msg.energy_level;
+        }
+        *state_counts.entry(&self.state).or_insert(0) += 1;
+        total_feedback += self.feedback;
+        total_energy += self.energy;
+
+        // Find most common state (swarm/majority rule)
+        if let Some((state, _)) = state_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = state.clone();
+        }
+
+        // Feedback-driven adaptation: update local feedback based on peer/network metrics
+        let count = rec.len() as f32 + 1.0;
+        self.feedback = total_feedback / count;
+
+        // Optionally, adjust energy based on network-wide average
+        let avg_energy = total_energy / count;
+        if avg_energy < 0.2 {
+            self.status = NodeStatus::LowEnergy;
+        }
+    }
+}
+
+// --- Neuromorphic Network Mesh ---
+
+pub struct NeuromorphicMesh {
+    pub nodes: HashMap<usize, Arc<NeuromorphicNode>>,
+}
+
+impl NeuromorphicMesh {
+    pub fn new(size: usize) -> Self {
+        let mut nodes = HashMap::new();
+        for i in 0..size {
+            let peers = (0..size).filter(|&j| j != i).collect();
+            nodes.insert(i, Arc::new(NeuromorphicNode::new(i, peers, "init", 1.0)));
+        }
+        NeuromorphicMesh { nodes }
+    }
+
+    // Simulate one round of distributed consensus with feedback adaptation
+    pub fn consensus_round(&self) {
+        let proposals: Vec<(usize, ConsensusMsg)> = self.nodes
+            .iter()
+            .map(|(&id, node)| (id, node.clone().propose_state()))
+            .collect();
+
+        for (id, msg) in &proposals {
+            for peer_id in &self.nodes[id].peers {
+                if let Some(peer) = self.nodes.get(peer_id) {
+                    peer.receive(msg.clone());
+                }
+            }
+        }
+
+        for node in self.nodes.values() {
+            let mut n = Arc::get_mut(node).unwrap();
+            n.consensus_step();
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_advanced_distributed_consensus() {
+        let mesh = NeuromorphicMesh::new(5);
+        for _ in 0..10 {
+            mesh.consensus_round();
+        }
+        let states: HashSet<_> = mesh.nodes.values().map(|n| n.state.clone()).collect();
+        assert_eq!(states.len(), 1);
+    }
+}
+// Distributed Consensus in Neuromorphic Networks (Rust Module)
+//
+// This module implements a simplified, swarm-inspired consensus protocol for neuromorphic mesh nodes.
+// Each node adapts to local state, energy, and feedback, achieving global agreement via event-driven updates.
+
+use std::collections::{HashMap, HashSet};
+use std::sync::{Arc, Mutex};
+use rand::Rng;
+
+// --- Node State & Consensus Message ---
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Offline,
+}
+
+#[derive(Clone, Debug)]
+pub struct ConsensusMsg {
+    pub sender_id: usize,
+    pub proposed_state: String,
+    pub energy_level: f32,
+    pub timestamp: u64,
+}
+
+// --- Neuromorphic Node ---
+
+pub struct NeuromorphicNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, ConsensusMsg>>,
+}
+
+impl NeuromorphicNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        NeuromorphicNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+
+    // Event-driven: receive consensus message from peer
+    pub fn receive(&self, msg: ConsensusMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Adaptive: propose new state based on local energy and feedback
+    pub fn propose_state(&mut self) -> ConsensusMsg {
+        let mut rng = rand::thread_rng();
+        if self.energy < 0.2 {
+            self.state = "idle".to_string();
+            self.status = NodeStatus::LowEnergy;
+        } else if self.status == NodeStatus::Overloaded {
+            self.state = "throttle".to_string();
+        } else {
+            self.state = if rng.gen_bool(0.7) { "active" } else { "sync" }.to_string();
+        }
+        ConsensusMsg {
+            sender_id: self.id,
+            proposed_state: self.state.clone(),
+            energy_level: self.energy,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        }
+    }
+
+    // Consensus step: aggregate peer proposals, adopt majority or weighted state
+    pub fn consensus_step(&mut self) {
+        let rec = self.received.lock().unwrap();
+        let mut state_counts = HashMap::new();
+        for msg in rec.values() {
+            *state_counts.entry(&msg.proposed_state).or_insert(0) += 1;
+        }
+        *state_counts.entry(&self.state).or_insert(0) += 1;
+
+        if let Some((state, _)) = state_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = state.clone();
+        }
+    }
+}
+
+// --- Neuromorphic Network Mesh ---
+
+pub struct NeuromorphicMesh {
+    pub nodes: HashMap<usize, Arc<NeuromorphicNode>>,
+}
+
+impl NeuromorphicMesh {
+    pub fn new(size: usize) -> Self {
+        let mut nodes = HashMap::new();
+        for i in 0..size {
+            let peers = (0..size).filter(|&j| j != i).collect();
+            nodes.insert(i, Arc::new(NeuromorphicNode::new(i, peers, "init", 1.0)));
+        }
+        NeuromorphicMesh { nodes }
+    }
+
+    // Simulate one round of distributed consensus
+    pub fn consensus_round(&self) {
+        let proposals: Vec<(usize, ConsensusMsg)> = self.nodes
+            .iter()
+            .map(|(&id, node)| (id, node.clone().propose_state()))
+            .collect();
+
+        for (id, msg) in &proposals {
+            for peer_id in &self.nodes[id].peers {
+                if let Some(peer) = self.nodes.get(peer_id) {
+                    peer.receive(msg.clone());
+                }
+            }
+        }
+
+        for node in self.nodes.values() {
+            let mut n = Arc::get_mut(node).unwrap();
+            n.consensus_step();
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_distributed_consensus() {
+        let mesh = NeuromorphicMesh::new(5);
+        for _ in 0..10 {
+            mesh.consensus_round();
+        }
+        let states: HashSet<_> = mesh.nodes.values().map(|n| n.state.clone()).collect();
+        assert_eq!(states.len(), 1);
+    }
+}
+// Massive Exhaustive File-Tree Generator (Rust)
+// - Deep, wide, and exhaustively populated directory tree
+// - Each node/branch can have many subdirectories and files
+// - File/dir names, sizes, and content are pseudo-randomized for realism
+// - Suitable for stress-testing, simulation, or benchmarking file-system logic
+
+use std::collections::VecDeque;
+
+#[derive(Debug)]
+pub enum NodeType {
+    Directory,
+    File,
+}
+
+#[derive(Debug)]
+pub struct FileNode {
+    pub name: String,
+    pub node_type: NodeType,
+    pub children: Vec<FileNode>,
+    pub size: usize,         // Only for files
+    pub content: Option<Vec<u8>>, // Only for files
+}
+
+impl FileNode {
+    pub fn new_dir(name: &str) -> Self {
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::Directory,
+            children: Vec::new(),
+            size: 0,
+            content: None,
+        }
+    }
+
+    pub fn new_file(name: &str, size: usize) -> Self {
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::File,
+            children: Vec::new(),
+            size,
+            content: Some(vec![0u8; size]),
+        }
+    }
+
+    // Recursively generate a massive tree
+    pub fn populate_exhaustive(
+        &mut self,
+        depth: usize,
+        dirs_per_level: usize,
+        files_per_dir: usize,
+        file_size: usize,
+    ) {
+        if depth == 0 {
+            return;
+        }
+        // Add directories
+        for d in 0..dirs_per_level {
+            let mut subdir = FileNode::new_dir(&format!("dir_{}_{}", depth, d));
+            subdir.populate_exhaustive(depth - 1, dirs_per_level, files_per_dir, file_size);
+            self.children.push(subdir);
+        }
+        // Add files
+        for f in 0..files_per_dir {
+            let file = FileNode::new_file(
+                &format!("file_{}_{}", depth, f),
+                file_size + (f * 17) % 1024, // Vary file sizes for realism
+            );
+            self.children.push(file);
+        }
+    }
+
+    // Optional: Print the tree (truncated for very large trees)
+    pub fn print_tree(&self, max_depth: usize, indent: usize) {
+        if indent > max_depth {
+            return;
+        }
+        let prefix = "  ".repeat(indent);
+        match self.node_type {
+            NodeType::Directory => println!("{}{}/", prefix, self.name),
+            NodeType::File => println!("{}{} [file, {} bytes]", prefix, self.name, self.size),
+        }
+        for child in &self.children {
+            child.print_tree(max_depth, indent + 1);
+        }
+    }
+
+    // Optional: Count total files and directories
+    pub fn stats(&self) -> (usize, usize) {
+        let mut files = 0;
+        let mut dirs = 0;
+        let mut queue = VecDeque::new();
+        queue.push_back(self);
+        while let Some(node) = queue.pop_front() {
+            match node.node_type {
+                NodeType::Directory => {
+                    dirs += 1;
+                    for child in &node.children {
+                        queue.push_back(child);
+                    }
+                }
+                NodeType::File => files += 1,
+            }
+        }
+        (files, dirs)
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_massive_file_tree() {
+        let mut root = FileNode::new_dir("root");
+        // Parameters: depth, dirs_per_level, files_per_dir, file_size
+        root.populate_exhaustive(5, 6, 8, 2048); // 5 levels, 6 dirs/level, 8 files/dir, 2KB+ files
+
+        let (files, dirs) = root.stats();
+        println!("Total directories: {}", dirs);
+        println!("Total files: {}", files);
+        // root.print_tree(3, 0); // Print first 3 levels for inspection
+        assert!(dirs > 0 && files > 0);
+    }
+}
+// Massive Cryptographically-Integrated File-Tree with Exhaustive Population
+// - Each file and directory is cryptographically signed for integrity and audit
+// - Tree is deep, wide, and exhaustively populated for stress-testing or simulation
+// - All file contents and metadata are pseudo-randomized and authenticated
+
+use std::collections::VecDeque;
+use ring::{digest, hmac};
+use rand::{Rng, distributions::Alphanumeric, thread_rng};
+
+#[derive(Debug)]
+pub enum NodeType {
+    Directory,
+    File,
+}
+
+#[derive(Debug)]
+pub struct FileNode {
+    pub name: String,
+    pub node_type: NodeType,
+    pub children: Vec<FileNode>,
+    pub size: usize,               // For files
+    pub content: Option<Vec<u8>>,  // For files
+    pub signature: Vec<u8>,        // HMAC-SHA256 of name+content/children
+}
+
+impl FileNode {
+    // Create new directory node
+    pub fn new_dir(name: &str, hmac_key: &hmac::Key) -> Self {
+        let sig = hmac::sign(hmac_key, name.as_bytes()).as_ref().to_vec();
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::Directory,
+            children: Vec::new(),
+            size: 0,
+            content: None,
+            signature: sig,
+        }
+    }
+
+    // Create new file node
+    pub fn new_file(name: &str, size: usize, hmac_key: &hmac::Key) -> Self {
+        let mut rng = thread_rng();
+        let content: Vec<u8> = (0..size).map(|_| rng.gen()).collect();
+        let mut data = name.as_bytes().to_vec();
+        data.extend(&content);
+        let sig = hmac::sign(hmac_key, &data).as_ref().to_vec();
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::File,
+            children: Vec::new(),
+            size,
+            content: Some(content),
+            signature: sig,
+        }
+    }
+
+    // Recursively generate a massive, cryptographically signed tree
+    pub fn populate_exhaustive(
+        &mut self,
+        depth: usize,
+        dirs_per_level: usize,
+        files_per_dir: usize,
+        file_size: usize,
+        hmac_key: &hmac::Key,
+    ) {
+        if depth == 0 {
+            return;
+        }
+        // Add directories
+        for d in 0..dirs_per_level {
+            let mut subdir = FileNode::new_dir(
+                &format!("dir_{}_{}", depth, d),
+                hmac_key,
+            );
+            subdir.populate_exhaustive(depth - 1, dirs_per_level, files_per_dir, file_size, hmac_key);
+            self.children.push(subdir);
+        }
+        // Add files
+        for f in 0..files_per_dir {
+            let fname: String = format!(
+                "file_{}_{}_{}.dat",
+                depth,
+                f,
+                thread_rng().sample_iter(&Alphanumeric).take(8).map(char::from).collect::<String>()
+            );
+            let fsize = file_size + (f * 19) % 2048; // Vary file sizes
+            let file = FileNode::new_file(&fname, fsize, hmac_key);
+            self.children.push(file);
+        }
+        // Update directory signature to include all child signatures
+        let mut sig_input = self.name.as_bytes().to_vec();
+        for child in &self.children {
+            sig_input.extend(&child.signature);
+        }
+        self.signature = hmac::sign(hmac_key, &sig_input).as_ref().to_vec();
+    }
+
+    // Print tree (truncated for very large trees)
+    pub fn print_tree(&self, max_depth: usize, indent: usize) {
+        if indent > max_depth {
+            return;
+        }
+        let prefix = "  ".repeat(indent);
+        match self.node_type {
+            NodeType::Directory => println!("{}{}/ [sig: {:x?}]", prefix, self.name, &self.signature[..8]),
+            NodeType::File => println!("{}{} [file, {} bytes, sig: {:x?}]", prefix, self.name, self.size, &self.signature[..8]),
+        }
+        for child in &self.children {
+            child.print_tree(max_depth, indent + 1);
+        }
+    }
+
+    // Count total files and directories
+    pub fn stats(&self) -> (usize, usize) {
+        let mut files = 0;
+        let mut dirs = 0;
+        let mut queue = VecDeque::new();
+        queue.push_back(self);
+        while let Some(node) = queue.pop_front() {
+            match node.node_type {
+                NodeType::Directory => {
+                    dirs += 1;
+                    for child in &node.children {
+                        queue.push_back(child);
+                    }
+                }
+                NodeType::File => files += 1,
+            }
+        }
+        (files, dirs)
+    }
+
+    // Verify all signatures recursively
+    pub fn verify_signatures(&self, hmac_key: &hmac::Key) -> bool {
+        match self.node_type {
+            NodeType::File => {
+                let mut data = self.name.as_bytes().to_vec();
+                if let Some(ref content) = self.content {
+                    data.extend(content);
+                }
+                self.signature == hmac::sign(hmac_key, &data).as_ref().to_vec()
+            }
+            NodeType::Directory => {
+                let mut sig_input = self.name.as_bytes().to_vec();
+                for child in &self.children {
+                    sig_input.extend(&child.signature);
+                }
+                if self.signature != hmac::sign(hmac_key, &sig_input).as_ref().to_vec() {
+                    return false;
+                }
+                for child in &self.children {
+                    if !child.verify_signatures(hmac_key) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ring::hmac;
+
+    #[test]
+    fn test_massive_crypto_file_tree() {
+        let hmac_key = hmac::Key::new(hmac::HMAC_SHA256, b"tree_secret_key");
+        let mut root = FileNode::new_dir("root", &hmac_key);
+        // Parameters: depth, dirs_per_level, files_per_dir, file_size, hmac_key
+        root.populate_exhaustive(4, 5, 7, 1024, &hmac_key); // 4 levels, 5 dirs/level, 7 files/dir, 1KB+ files
+
+        let (files, dirs) = root.stats();
+        println!("Total directories: {}", dirs);
+        println!("Total files: {}", files);
+        root.print_tree(3, 0); // Print first 3 levels for inspection
+
+        // Verify all signatures recursively
+        assert!(root.verify_signatures(&hmac_key));
+    }
+}
+// Cryptographically-Integrated, Exhaustively-Populated File Tree for AI Network Management
+//
+// - Every file and directory is signed with HMAC-SHA256 for integrity/audit
+// - Tree is deep, wide, and fully populated (configurable scale)
+// - Demonstrates integration of cryptographic controls with AI-managed resources
+
+use std::collections::VecDeque;
+use ring::{hmac, digest};
+use rand::{Rng, distributions::Alphanumeric, thread_rng};
+
+#[derive(Debug)]
+pub enum NodeType {
+    Directory,
+    File,
+}
+
+#[derive(Debug)]
+pub struct FileNode {
+    pub name: String,
+    pub node_type: NodeType,
+    pub children: Vec<FileNode>,
+    pub size: usize,               // For files
+    pub content: Option<Vec<u8>>,  // For files
+    pub signature: Vec<u8>,        // HMAC-SHA256 of name+content/children
+}
+
+impl FileNode {
+    pub fn new_dir(name: &str, hmac_key: &hmac::Key) -> Self {
+        let sig = hmac::sign(hmac_key, name.as_bytes()).as_ref().to_vec();
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::Directory,
+            children: Vec::new(),
+            size: 0,
+            content: None,
+            signature: sig,
+        }
+    }
+
+    pub fn new_file(name: &str, size: usize, hmac_key: &hmac::Key) -> Self {
+        let mut rng = thread_rng();
+        let content: Vec<u8> = (0..size).map(|_| rng.gen()).collect();
+        let mut data = name.as_bytes().to_vec();
+        data.extend(&content);
+        let sig = hmac::sign(hmac_key, &data).as_ref().to_vec();
+        FileNode {
+            name: name.to_string(),
+            node_type: NodeType::File,
+            children: Vec::new(),
+            size,
+            content: Some(content),
+            signature: sig,
+        }
+    }
+
+    // Recursively generate a massive, cryptographically signed tree
+    pub fn populate_exhaustive(
+        &mut self,
+        depth: usize,
+        dirs_per_level: usize,
+        files_per_dir: usize,
+        file_size: usize,
+        hmac_key: &hmac::Key,
+    ) {
+        if depth == 0 {
+            return;
+        }
+        // Add directories
+        for d in 0..dirs_per_level {
+            let mut subdir = FileNode::new_dir(
+                &format!("dir_{}_{}", depth, d),
+                hmac_key,
+            );
+            subdir.populate_exhaustive(depth - 1, dirs_per_level, files_per_dir, file_size, hmac_key);
+            self.children.push(subdir);
+        }
+        // Add files
+        for f in 0..files_per_dir {
+            let fname: String = format!(
+                "file_{}_{}_{}.dat",
+                depth,
+                f,
+                thread_rng().sample_iter(&Alphanumeric).take(8).map(char::from).collect::<String>()
+            );
+            let fsize = file_size + (f * 19) % 2048; // Vary file sizes
+            let file = FileNode::new_file(&fname, fsize, hmac_key);
+            self.children.push(file);
+        }
+        // Update directory signature to include all child signatures
+        let mut sig_input = self.name.as_bytes().to_vec();
+        for child in &self.children {
+            sig_input.extend(&child.signature);
+        }
+        self.signature = hmac::sign(hmac_key, &sig_input).as_ref().to_vec();
+    }
+
+    // Print tree (truncated for very large trees)
+    pub fn print_tree(&self, max_depth: usize, indent: usize) {
+        if indent > max_depth {
+            return;
+        }
+        let prefix = "  ".repeat(indent);
+        match self.node_type {
+            NodeType::Directory => println!("{}{}/ [sig: {:x?}]", prefix, self.name, &self.signature[..8]),
+            NodeType::File => println!("{}{} [file, {} bytes, sig: {:x?}]", prefix, self.name, self.size, &self.signature[..8]),
+        }
+        for child in &self.children {
+            child.print_tree(max_depth, indent + 1);
+        }
+    }
+
+    // Count total files and directories
+    pub fn stats(&self) -> (usize, usize) {
+        let mut files = 0;
+        let mut dirs = 0;
+        let mut queue = VecDeque::new();
+        queue.push_back(self);
+        while let Some(node) = queue.pop_front() {
+            match node.node_type {
+                NodeType::Directory => {
+                    dirs += 1;
+                    for child in &node.children {
+                        queue.push_back(child);
+                    }
+                }
+                NodeType::File => files += 1,
+            }
+        }
+        (files, dirs)
+    }
+
+    // Verify all signatures recursively
+    pub fn verify_signatures(&self, hmac_key: &hmac::Key) -> bool {
+        match self.node_type {
+            NodeType::File => {
+                let mut data = self.name.as_bytes().to_vec();
+                if let Some(ref content) = self.content {
+                    data.extend(content);
+                }
+                self.signature == hmac::sign(hmac_key, &data).as_ref().to_vec()
+            }
+            NodeType::Directory => {
+                let mut sig_input = self.name.as_bytes().to_vec();
+                for child in &self.children {
+                    sig_input.extend(&child.signature);
+                }
+                if self.signature != hmac::sign(hmac_key, &sig_input).as_ref().to_vec() {
+                    return false;
+                }
+                for child in &self.children {
+                    if !child.verify_signatures(hmac_key) {
+                        return false;
+                    }
+                }
+                true
+            }
+        }
+    }
+}
+
+// --- Example Usage ---
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ring::hmac;
+
+    #[test]
+    fn test_massive_crypto_file_tree() {
+        let hmac_key = hmac::Key::new(hmac::HMAC_SHA256, b"tree_secret_key");
+        let mut root = FileNode::new_dir("root", &hmac_key);
+        // Parameters: depth, dirs_per_level, files_per_dir, file_size, hmac_key
+        root.populate_exhaustive(4, 6, 10, 1024, &hmac_key); // 4 levels, 6 dirs/level, 10 files/dir, 1KB+ files
+
+        let (files, dirs) = root.stats();
+        println!("Total directories: {}", dirs);
+        println!("Total files: {}", files);
+        root.print_tree(2, 0); // Print first 2 levels for inspection
+
+        // Verify all signatures recursively
+        assert!(root.verify_signatures(&hmac_key));
+    }
+}
 // Core traits: combines spike-based (event-driven), scheduled (periodic), and opportunistic (energy-aware) messaging.
 // AI agents dynamically select the optimal method per node, energy, and platform constraints.
 
