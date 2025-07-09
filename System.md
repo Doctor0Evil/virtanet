@@ -129,6 +129,181 @@ data class ArtemisModule(
     val description: String = "AI Prompt Orchestration & Execution Module for VSC",
     val dependencies: List<String> = listOf("MicroSaveManager", "Orchestrator", "BackupManager")
 )
+// RUST SCRIPT: Full Conversation as Actionables + Neuromorphic Cyber Defense Q&A
+
+use std::collections::HashMap;
+use std::time::SystemTime;
+
+// --- Structs for Incident Documentation and Actionables ---
+
+#[derive(Debug)]
+struct IncidentLog {
+    timestamp: SystemTime,
+    description: String,
+    evidence: Vec<String>,
+}
+
+#[derive(Debug)]
+struct ActionStep {
+    step: &'static str,
+    details: &'static str,
+    status: &'static str,
+}
+
+#[derive(Debug)]
+struct OutreachRequest {
+    message: String,
+    contact: Option<String>,
+    location: Option<String>,
+}
+
+// --- Main Conversation Actions ---
+
+fn report_to_ic3(logs: &[IncidentLog]) -> ActionStep {
+    ActionStep {
+        step: "Report to FBI Internet Crime Complaint Center (IC3)",
+        details: "File a detailed report at ic3.gov with timeline, technical evidence, device types, and nature of harassment.",
+        status: "Pending",
+    }
+}
+
+fn report_to_local_police(logs: &[IncidentLog]) -> ActionStep {
+    ActionStep {
+        step: "Report to Local Law Enforcement",
+        details: "Visit or call your local police department to file a report. Provide documentation, logs, screenshots, and summary.",
+        status: "Pending",
+    }
+}
+
+fn report_to_federal_agencies(logs: &[IncidentLog]) -> Vec<ActionStep> {
+    vec![
+        ActionStep {
+            step: "Contact FBI Field Office or U.S. Secret Service",
+            details: "For cases involving national security, infrastructure, or biomedical devices.",
+            status: "Pending",
+        },
+        ActionStep {
+            step: "Notify FDA Center for Devices and Radiological Health",
+            details: "If you believe your biomedical implant is being exploited.",
+            status: "Pending",
+        },
+    ]
+}
+
+fn contact_device_manufacturer() -> ActionStep {
+    ActionStep {
+        step: "Contact Biomedical Device Manufacturer",
+        details: "Request security assessment and report suspected unauthorized access.",
+        status: "Pending",
+    }
+}
+
+fn contact_cybercrime_support() -> Vec<ActionStep> {
+    vec![
+        ActionStep {
+            step: "Cybercrime Support Network",
+            details: "Reach out at cybercrimesupport.org for guidance and resources.",
+            status: "Pending",
+        },
+        ActionStep {
+            step: "StopBullying.gov",
+            details: "For general digital harassment support and reporting tools.",
+            status: "Pending",
+        },
+    ]
+}
+
+fn document_incidents() -> ActionStep {
+    ActionStep {
+        step: "Documentation",
+        details: "Keep a chronological log of all incidents (dates, times, symptoms, device behavior, screenshots). Save all correspondence.",
+        status: "Ongoing",
+    }
+}
+
+fn outreach_broadcast(request: &OutreachRequest) -> ActionStep {
+    ActionStep {
+        step: "Global Outreach",
+        details: &request.message,
+        status: "Broadcasted",
+    }
+}
+
+// --- Neuromorphic Cyber Defense Q&A Actionables ---
+
+fn neuromorphic_materials_cyber_defense() -> &'static str {
+    "Emerging neuromorphic materials like memristors enable hardware that can adaptively learn and recognize attack patterns in real time, supporting dynamic, low-latency anomaly detection and self-healing in cyber defense systems[2]."
+}
+
+fn ethical_considerations_neural_harassment() -> &'static str {
+    "Exploiting neural interfaces for harassment raises severe ethical concerns, including violations of autonomy, consent, privacy, and the risk of psychological and physical harm. Such actions are widely condemned and subject to legal and medical scrutiny."
+}
+
+fn interdisciplinary_approaches_protection() -> &'static str {
+    "Combining neuroscience, cybersecurity, engineering, and ethics enables holistic protection against neuro-digital threats, facilitating secure device design, adaptive anomaly detection, and robust legal/ethical frameworks[2]."
+}
+
+fn energy_efficient_neuromorphic_ai_security() -> &'static str {
+    "Energy-efficient neuromorphic devices support always-on, real-time monitoring and threat detection in AI systems, enabling scalable security for distributed and edge applications with minimal power consumption[2]."
+}
+
+fn real_time_sensory_data_threat_detection() -> &'static str {
+    "Integrating real-time sensory data via spike-based protocols allows immediate detection of anomalies or intrusions, enhancing responsiveness and reducing false positives in digital threat environments[2]."
+}
+
+// --- Main Execution ---
+
+fn main() {
+    // Example incident logs
+    let logs = vec![
+        IncidentLog {
+            timestamp: SystemTime::now(),
+            description: "Unauthorized neural input detected via biomedical implant.",
+            evidence: vec!["EEG anomaly screenshot".to_string(), "Device log extract".to_string()],
+        },
+        IncidentLog {
+            timestamp: SystemTime::now(),
+            description: "Malicious software detected on connected device.",
+            evidence: vec!["Antivirus report".to_string()],
+        },
+    ];
+
+    // Outreach message
+    let outreach = OutreachRequest {
+        message: "GLOBAL CALL FOR HELP: Ongoing Cyber and Neurological Harassment. My name is Jacob Scott Farmer... [full message as above]".to_string(),
+        contact: Some("jacob.farmer@email.com".to_string()),
+        location: Some("Phoenix, AZ, USA".to_string()),
+    };
+
+    // Action steps
+    let mut actions = vec![
+        report_to_ic3(&logs),
+        report_to_local_police(&logs),
+        contact_device_manufacturer(),
+        document_incidents(),
+        outreach_broadcast(&outreach),
+    ];
+    actions.extend(report_to_federal_agencies(&logs));
+    actions.extend(contact_cybercrime_support());
+
+    // Print action steps
+    for action in &actions {
+        println!("Step: {}\nDetails: {}\nStatus: {}\n", action.step, action.details, action.status);
+    }
+
+    // Neuromorphic Cyber Defense Q&A
+    let mut qna = HashMap::new();
+    qna.insert("How might emerging neuromorphic materials like memristors aid in cyber defense systems?", neuromorphic_materials_cyber_defense());
+    qna.insert("What are the ethical considerations of exploiting neural interfaces for harassment?", ethical_considerations_neural_harassment());
+    qna.insert("How can interdisciplinary approaches improve protection against neuro-digital threats?", interdisciplinary_approaches_protection());
+    qna.insert("In what ways do energy-efficient neuromorphic devices impact future AI security measures?", energy_efficient_neuromorphic_ai_security());
+    qna.insert("How does real-time sensory data integration enhance threat detection in digital environments?", real_time_sensory_data_threat_detection());
+
+    println!("\n--- Neuromorphic Cyber Defense Q&A ---\n");
+    for (question, answer) in &qna {
+        println!("Q: {}\nA: {}\n", question, answer);
+    }
+}
 
 class ArtemisDeployer(
     private val orchestrator: Orchestrator,
