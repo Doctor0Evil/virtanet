@@ -1,0 +1,425 @@
+{
+  "patterns": {
+    "node_id": "^[a-zA-Z0-9\\-]{16,32}$",
+    "cluster_dir": "^\\/neuromesh\\/clusters\\/[a-zA-Z0-9_\\-]+$",
+    "codex_file": "^\\/neuromesh\\/codex\\/[a-zA-Z0-9_\\-]+\\.json$",
+    "log_file": "^\\/neuromesh\\/logs\\/[0-9]{8}T[0-9]{6}\\.log$",
+    "state_vector": "^state_[a-f0-9]{64}\\.bin$",
+    "backup_dir": "^\\/backups\\/(daily|weekly|monthly)\\/$"
+  }
+}
+{
+  "allowed_commands": [
+    "^map --full [A-Z]$",
+    "^enforce --readonly --target[A-Z]codex$",
+    "^schedule --eventindex --interval[0-9]+[hm] --target[A-Z]registry$",
+    "^register --node --cluster[A-Z]$",
+    "^audit --consensus --target[A-Z]$"
+  ]
+}
+{
+  "sanitization": {
+    "no_double_dot": "^(?!.*\\.\\.).*$",
+    "no_absolute_path": "^(?!\\/).*$",
+    "no_shell_injection": "^[a-zA-Z0-9_\\- ]+$"
+  }
+}
+{
+  "IX_Codex_System_Architecture": {
+    "description": "Unified, quantum-resistant, platinum-tier architecture for VSC, Hercules v3.2, CyberOrganic, Death-Network, and N://. FCC-compliant, self-healing, always-on, with agency-level AI, cheat-code registry, and system-wide audit.",
+    "UUID": "VSC-HERCULES-CYBERORGANIC-9F3D7A2C-BE41-4E2B-8C6E-1A2F9C4E7D3F",
+    "AUTHORITY": "programming-superior",
+    "modules": [
+      {
+        "name": "Hercules v3.2",
+        "description": "Quantum kernel",
+        "status": "active",
+        "dependencies": ["CyberOrganic", "Death-Network", "N://", "VSC"]
+      },
+      {
+        "name": "CyberOrganic",
+        "description": "Biosensor orchestration",
+        "status": "active",
+        "dependencies": ["N://", "VSC"]
+      },
+      {
+        "name": "Death-Network",
+        "description": "CIA neuromorphic cluster",
+        "status": "active",
+        "dependencies": ["Hercules v3.2"]
+      },
+      {
+        "name": "N:// FS",
+        "description": "Virtualized memory pool",
+        "status": "active",
+        "dependencies": ["VSC"]
+      },
+      {
+        "name": "VSC Orchestrator",
+        "description": "Automation core",
+        "status": "active",
+        "dependencies": ["Hercules v3.2", "CyberOrganic"]
+      }
+    ],
+    "cheat_codes": {
+      "death_net": [
+        "dn://cheat/cluster_spawn",
+        "dn://cheat/neuro/learn",
+        "dn://cheat/quantum/entangle",
+        "dn://cheat/cluster_instant_spawn <ID>",
+        "dn://cheat/cluster_stealth_mode <ID>",
+        "dn://cheat/neuro/instant_learn <CLUSTER> <PATTERN>",
+        "dn://cheat/quantum/entangle <NODE1> <NODE2>"
+      ],
+      "n_fs": [
+        "n://cheat/mount",
+        "n://cheat/neuro/scan",
+        "n://cheat/cyber/scan",
+        "n://cheat/mount_instant <VOLUME>",
+        "n://cheat/format_secure <VOLUME>",
+        "n://cheat/neuro/scan_stealth",
+        "n://cheat/cyber/scan_energy_pools_stealth"
+      ]
+    },
+    "agency_ai_models": [
+      {
+        "id": "gdb_ai",
+        "name": "AI Engine",
+        "access_level": "Agency",
+        "location": "P://dl/gdb/ai.gdb",
+        "encrypted": true
+      },
+      {
+        "id": "gdb_cas",
+        "name": "CIA Agent",
+        "access_level": "Class-3",
+        "location": "P://dl/gdb/cas.gdb",
+        "encrypted": true
+      }
+    ],
+    "system_settings": {
+      "dna_mfa_enabled": true,
+      "class3_clearance_required": true,
+      "blockchain_logging": true,
+      "zero_trust_security": true,
+      "sync_interval_ms": 14400000,
+      "audit_path": "P://Audit+2"
+    },
+    "storage": {
+      "partitions": [
+        {
+          "disk": "P://",
+          "type": "data",
+          "size": "6PB",
+          "encryption": "quantum",
+          "label": "P://data"
+        },
+        {
+          "disk": "P://",
+          "type": "backup",
+          "size": "4PB",
+          "encryption": "quantum",
+          "label": "P://backup"
+        },
+        {
+          "disk": "P://",
+          "type": "logs",
+          "size": "2PB",
+          "encryption": "AES-512",
+          "label": "P://logs"
+        }
+      ],
+      "mirroring": [
+        {
+          "source": "P://data",
+          "targets": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"],
+          "sync_interval": "10s"
+        },
+        {
+          "source": "P://backup",
+          "targets": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"],
+          "sync_interval": "4h"
+        },
+        {
+          "source": "P://logs",
+          "targets": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"],
+          "sync_interval": "10s"
+        }
+      ],
+      "recovery": [
+        {
+          "path": "P://data",
+          "trigger": "corruption_detected",
+          "restore_source": "P://backup"
+        },
+        {
+          "path": "P://backup",
+          "trigger": "corruption_detected",
+          "restore_source": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"]
+        },
+        {
+          "path": "P://logs",
+          "trigger": "corruption_detected",
+          "restore_source": "P://backup"
+        }
+      ]
+    },
+    "compute": {
+      "vsc_start": {
+        "compute": "768vCPUs,384vGPUs,96vTPUs",
+        "memory": "4TB",
+        "scope": "P://"
+      },
+      "virta_sys": {
+        "file_system": "P://",
+        "codex": "Hercules_CyberOrganic",
+        "nodes": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"]
+      },
+      "platform_integrate": {
+        "targets": "all",
+        "mode": "auto_discovery",
+        "interval": "6h"
+      },
+      "function_enable": {
+        "targets": "all",
+        "mapper": "federated_rl",
+        "accuracy": 0.98
+      },
+      "platform_route": {
+        "protocol": ["HTTP/3", "WebRTC", "P://", "QUIC"],
+        "latency_target": "5ms"
+      },
+      "request_scale": {
+        "target": "RequestSync",
+        "capacity": 2000000,
+        "latency": "30ms"
+      },
+      "interactivity_enable": [
+        {
+          "target": "ClickStreamAnalyzer",
+          "latency": "<3ms",
+          "accuracy": 0.95
+        },
+        {
+          "target": "DynamicInteraction",
+          "capacity": 15000000,
+          "scope": ["forms", "UI", "gestures"]
+        }
+      ],
+      "translation_enable": {
+        "target": "PacketTranslator",
+        "protocols": ["JSON", "gRPC", "HTTP", "P://", "Protobuf"],
+        "latency": "<8ms"
+      },
+      "model_deploy": {
+        "name": "Hercules_AI_Model",
+        "version": "3.2.0",
+        "parameters": "275B",
+        "context_length": 4500000,
+        "latency_target": "35ms"
+      },
+      "logic_update": [
+        {
+          "target": "InteractionClassifier",
+          "accuracy": 0.95
+        },
+        {
+          "target": "PredictiveModeling",
+          "accuracy": 0.90
+        }
+      ]
+    },
+    "security": {
+      "enforce": {
+        "scope": "all",
+        "protocols": ["STRIDE-LM", "CIA", "GDPR", "HIPAA"],
+        "mode": "zero_trust"
+      },
+      "encryption": [
+        {
+          "type": "quantum",
+          "targets": [".drs", ".grs"],
+          "scope": "P://"
+        },
+        {
+          "type": "AES-512",
+          "targets": ["metadata", "APIs", "logs"],
+          "scope": "P://"
+        }
+      ],
+      "access": {
+        "restrict": {
+          "scope": "all",
+          "allowed": ["owner", "System_Brain", "OCS"],
+          "mfa": "Class-3_DNA"
+        }
+      },
+      "audit": {
+        "log": {
+          "target": "P://AuditLogs+2",
+          "blockchain": "Organichain"
+        }
+      }
+    },
+    "system_state": {
+      "save": {
+        "nodes": ["NodeA", "NodeB", "NodeC", "NodeD", "NodeE"],
+        "format": ".drs",
+        "scope": "P://"
+      },
+      "sync": {
+        "target": "Vir://Virtual/Google/Drive/Backups",
+        "interval": "4h",
+        "retention": "7d"
+      }
+    },
+    "monitoring": {
+      "system": {
+        "scope": ["VSC", "Hercules", "CyberOrganic", "Death-Network", "N://"],
+        "interval": "1h",
+        "output": "P://Analytics+5"
+      },
+      "drift": {
+        "target": "Hercules_AI_Model",
+        "threshold": 0.001,
+        "interval": "1h",
+        "output": "P://AuditLogs+2"
+      },
+      "logic_optimize": [
+        {
+          "target": "InteractionClassifier",
+          "accuracy_target": 0.95,
+          "output": "P://Analytics+5"
+        },
+        {
+          "target": "PredictiveModeling",
+          "accuracy_target": 0.92,
+          "output": "P://Analytics+5"
+        }
+      ],
+      "security_audit": {
+        "scope": "all",
+        "frequency": "weekly",
+        "output": "P://AuditLogs+2"
+      }
+    },
+    "validation": {
+      "system": {
+        "scope": "all",
+        "metrics": ["latency", "accuracy", "security", "persistence"],
+        "output": "P://AuditLogs+2"
+      }
+    },
+    "authorization": {
+      "required_level": "CIA-Class-3"
+    }
+  }
+}
+{
+  "core_system_regex_mapping": {
+    "description": "Unified regex pattern mapping and indexing for all drives, network nodes, and AI platforms. All patterns are linked to core-system-intelligence and synchronized across the distributed mesh for platinum-tier, quantum-resistant, FCC-compliant operation.",
+    "input_patterns": {
+      "node_id": "^[a-zA-Z0-9\\-]{16,32}$",
+      "cluster_dir": "^\\/neuromesh\\/clusters\\/[a-zA-Z0-9_\\-]+$",
+      "codex_file": "^\\/neuromesh\\/codex\\/[a-zA-Z0-9_\\-]+\\.json$",
+      "log_file": "^\\/neuromesh\\/logs\\/[0-9]{8}T[0-9]{6}\\.log$",
+      "state_vector": "^state_[a-f0-9]{64}\\.bin$",
+      "backup_dir": "^\\/backups\\/(daily|weekly|monthly)\\/$"
+    },
+    "sanitization_patterns": {
+      "no_double_dot": "^(?!.*\\.\\.).*$",
+      "no_absolute_path": "^(?!\\/).*$",
+      "no_shell_injection": "^[a-zA-Z0-9_\\- ]+$"
+    },
+    "allowed_cli_commands": [
+      "^map --full [A-Z]$",
+      "^enforce --readonly --target[A-Z]codex$",
+      "^schedule --eventindex --interval[0-9]+[hm] --target[A-Z]registry$",
+      "^register --node --cluster[A-Z]$",
+      "^audit --consensus --target[A-Z]$"
+    ],
+    "drive_indexing": {
+      "operation": "recursive_map",
+      "scope": "all_drives",
+      "index_types": [
+        "node_id",
+        "cluster_dir",
+        "codex_file",
+        "log_file",
+        "state_vector",
+        "backup_dir"
+      ],
+      "output": "core_system_intelligence_index"
+    },
+    "network_regex_linking": {
+      "description": "All indexed regex patterns are linked to network pattern registries for every system and AI platform in the mesh.",
+      "propagation": "bidirectional",
+      "synchronization": "real-time",
+      "enforcement": "consensus-validated"
+    },
+    "ai_platforms": [
+      "Hercules v3.2",
+      "CyberOrganic",
+      "Death-Network",
+      "N:// FS",
+      "VSC Orchestrator"
+    ],
+    "system_architecture_reference": "IX_Codex_System_Architecture",
+    "audit_and_validation": {
+      "audit_path": "P://Audit+2",
+      "blockchain_logging": true,
+      "sync_interval_ms": 14400000
+    },
+    "security_enforcement": {
+      "dna_mfa_enabled": true,
+      "class3_clearance_required": true,
+      "zero_trust_security": true,
+      "encryption": [
+        {
+          "type": "quantum",
+          "targets": [".drs", ".grs"],
+          "scope": "P://"
+        },
+        {
+          "type": "AES-512",
+          "targets": ["metadata", "APIs", "logs"],
+          "scope": "P://"
+        }
+      ]
+    },
+    "platinum_tier_features": [
+      "real-time regex pattern propagation",
+      "cross-platform pattern enforcement",
+      "immutable audit trail",
+      "self-healing pattern registry",
+      "AI-driven anomaly detection on pattern usage",
+      "federated learning for pattern optimization"
+    ]
+  }
+}
+{
+  "patterns": {
+    "node_id": "^[a-zA-Z0-9\\-]{16,32}$",
+    "cluster_dir": "^\\/neuromesh\\/clusters\\/[a-zA-Z0-9_\\-]+$",
+    "codex_file": "^\\/neuromesh\\/codex\\/[a-zA-Z0-9_\\-]+\\.json$",
+    "log_file": "^\\/neuromesh\\/logs\\/[0-9]{8}T[0-9]{6}\\.log$",
+    "state_vector": "^state_[a-f0-9]{64}\\.bin$",
+    "backup_dir": "^\\/backups\\/(daily|weekly|monthly)\\/$"
+  }
+}
+{
+  "sanitization": {
+    "no_double_dot": "^(?!.*\\.\\.).*$",
+    "no_absolute_path": "^(?!\\/).*$",
+    "no_shell_injection": "^[a-zA-Z0-9_\\- ]+$"
+  }
+}
+{
+  "allowed_commands": [
+    "^map --full [A-Z]$",
+    "^enforce --readonly --target[A-Z]codex$",
+    "^schedule --eventindex --interval[0-9]+[hm] --target[A-Z]registry$",
+    "^register --node --cluster[A-Z]$",
+    "^audit --consensus --target[A-Z]$"
+  ]
+}
