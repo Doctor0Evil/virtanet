@@ -453,6 +453,350 @@ Shopping	AI-driven recommendation, inventory management, dynamic pricing, supply
 Academic	Research assistant, plagiarism detection, citation management, course scheduling, exam proctoring
 Library	Digital asset management, semantic search, automated cataloging, rights management, knowledge extraction
 All modules are hot-pluggable, support live upgrade, and are designed for always-on, operational continuity with persistent, autonomous management and legendary system resilience.
+package main
+
+import (
+	"fmt"
+	"os/exec"
+)
+
+// GitOperations demonstrates advanced Git command usage
+func main() {
+	// Example commands with descriptions
+	gitCommands := map[string][]string{
+		// Git Stash Operations
+		"Stash changes": {
+			"git stash",                    // Save current changes to stash
+			"git stash save \"message\"",    // Stash with descriptive message
+			"git stash list",               // List all stashed changes
+			"git stash pop",                // Apply and remove latest stash
+			"git stash apply stash@{n}",    // Apply specific stash
+			"git stash drop stash@{n}",     // Delete specific stash
+		},
+
+		// Git Cherry-pick Operations
+		"Cherry-pick commits": {
+			"git cherry-pick <commit-hash>",           // Apply specific commit to current branch
+			"git cherry-pick -n <commit-hash>",        // Stage changes without committing
+			"git cherry-pick --continue",              // Continue after resolving conflicts
+			"git cherry-pick --abort",                 // Abort cherry-pick operation
+		},
+
+		// Git Revert Operations
+		"Revert changes": {
+			"git revert <commit-hash>",                // Create new commit that undoes changes
+			"git revert -n <commit-hash>",            // Revert without creating commit
+			"git revert --continue",                   // Continue after resolving conflicts
+			"git revert --abort",                      // Abort revert operation
+		},
+
+		// Git Reset Operations
+		"Reset operations": {
+			"git reset --soft HEAD~1",                 // Undo last commit, keep changes staged
+			"git reset --mixed HEAD~1",               // Undo last commit, unstage changes
+			"git reset --hard HEAD~1",                // Undo last commit, discard changes
+			"git reset --hard origin/main",           // Reset to remote main branch
+		},
+	}
+
+	// Function to demonstrate command execution
+	executeGitCommand := func(cmd string) error {
+		command := exec.Command("sh", "-c", cmd)
+		output, err := command.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("error executing %s: %v\n%s", cmd, err, output)
+		}
+		fmt.Printf("Successfully executed: %s\n", cmd)
+		return nil
+	}
+
+	// Example usage demonstration
+	fmt.Println("Advanced Git Commands Usage Examples:")
+	for category, commands := range gitCommands {
+		fmt.Printf("\n=== %s ===\n", category)
+		for _, cmd := range commands {
+			fmt.Printf("Command: %s\n", cmd)
+		}
+	}
+}
+{
+    "filesystem": {
+        "N://kernel/git/": {
+            "description": "Git command orchestration",
+            "operations": ["stash", "cherry-pick", "revert", "reset"],
+            "compliance": "EU_AI_ACT_2025"
+        }
+    },
+    "audit_path": "N://audit/git_operations/",
+    "log_path": "N://logs/git_commands/"
+}
+package main
+
+import (
+	"fmt"
+	"os/exec"
+)
+
+// GitOperations demonstrates advanced Git command usage
+func main() {
+	// Example commands with descriptions
+	gitCommands := map[string][]string{
+		// Git Stash Operations
+		"Stash changes": {
+			"git stash",                    // Save current changes to stash
+			"git stash save \"message\"",    // Stash with descriptive message
+			"git stash list",               // List all stashed changes
+			"git stash pop",                // Apply and remove latest stash
+			"git stash apply stash@{n}",    // Apply specific stash
+			"git stash drop stash@{n}",     // Delete specific stash
+		},
+
+		// Git Cherry-pick Operations
+		"Cherry-pick commits": {
+			"git cherry-pick <commit-hash>",           // Apply specific commit to current branch
+			"git cherry-pick -n <commit-hash>",        // Stage changes without committing
+			"git cherry-pick --continue",              // Continue after resolving conflicts
+			"git cherry-pick --abort",                 // Abort cherry-pick operation
+		},
+
+		// Git Revert Operations
+		"Revert changes": {
+			"git revert <commit-hash>",                // Create new commit that undoes changes
+			"git revert -n <commit-hash>",            // Revert without creating commit
+			"git revert --continue",                   // Continue after resolving conflicts
+			"git revert --abort",                      // Abort revert operation
+		},
+
+		// Git Reset Operations
+		"Reset operations": {
+			"git reset --soft HEAD~1",                 // Undo last commit, keep changes staged
+			"git reset --mixed HEAD~1",               // Undo last commit, unstage changes
+			"git reset --hard HEAD~1",                // Undo last commit, discard changes
+			"git reset --hard origin/main",           // Reset to remote main branch
+		},
+	}
+
+	// Function to demonstrate command execution
+	executeGitCommand := func(cmd string) error {
+		command := exec.Command("sh", "-c", cmd)
+		output, err := command.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("error executing %s: %v\n%s", cmd, err, output)
+		}
+		fmt.Printf("Successfully executed: %s\n", cmd)
+		return nil
+	}
+
+	// Example usage demonstration
+	fmt.Println("Advanced Git Commands Usage Examples:")
+	for category, commands := range gitCommands {
+		fmt.Printf("\n=== %s ===\n", category)
+		for _, cmd := range commands {
+			fmt.Printf("Command: %s\n", cmd)
+		}
+	}
+}
+# First 500 cheat codes for Git operations registry
+git_cheat_codes = {
+  "GIT001" => { path: "N://kernel/git/stash", action: "SAVE_WORKING_DIR", desc: "Save current working directory state" },
+  "GIT002" => { path: "N://kernel/git/stash", action: "POP_LATEST", desc: "Retrieve and apply most recent stash" },
+  "GIT003" => { path: "N://kernel/git/cherry-pick", action: "APPLY_COMMIT", desc: "Apply specific commit to current branch" },
+  "GIT004" => { path: "N://kernel/git/revert", action: "UNDO_COMMIT", desc: "Create new commit that undoes changes" },
+  "GIT005" => { path: "N://kernel/git/reset", action: "SOFT_RESET", desc: "Reset HEAD keeping changes staged" }
+  # ... 495 more entries following similar pattern
+}
+
+# Logging function for git operations
+def log_git_operation(code, action)
+  log_path = "N://logs/git_commands/#{Time.now.strftime('%Y%m%d')}"
+  audit_path = "N://audit/git_operations/#{code}"
+  # Log operation details
+end{
+    "filesystem": {
+        "N://kernel/git/": {
+            "description": "Git command orchestration",
+            "operations": ["stash", "cherry-pick", "revert", "reset"],
+            "compliance": "EU_AI_ACT_2025"
+        }
+    },
+    "audit_path": "N://audit/git_operations/",
+    "log_path": "N://logs/git_commands/"
+}
+package main
+
+import (
+	"fmt"
+	"os/exec"
+)
+
+// GitOperations demonstrates advanced Git command usage
+func main() {
+	// Example commands with descriptions
+	gitCommands := map[string][]string{
+		// Git Stash Operations
+		"Stash changes": {
+			"git stash",                    // Save current changes to stash
+			"git stash save \"message\"",    // Stash with descriptive message
+			"git stash list",               // List all stashed changes
+			"git stash pop",                // Apply and remove latest stash
+			"git stash apply stash@{n}",    // Apply specific stash
+			"git stash drop stash@{n}",     // Delete specific stash
+		},
+
+		// Git Cherry-pick Operations
+		"Cherry-pick commits": {
+			"git cherry-pick <commit-hash>",           // Apply specific commit to current branch
+			"git cherry-pick -n <commit-hash>",        // Stage changes without committing
+			"git cherry-pick --continue",              // Continue after resolving conflicts
+			"git cherry-pick --abort",                 // Abort cherry-pick operation
+		},
+
+		// Git Revert Operations
+		"Revert changes": {
+			"git revert <commit-hash>",                // Create new commit that undoes changes
+			"git revert -n <commit-hash>",            // Revert without creating commit
+			"git revert --continue",                   // Continue after resolving conflicts
+			"git revert --abort",                      // Abort revert operation
+		},
+
+		// Git Reset Operations
+		"Reset operations": {
+			"git reset --soft HEAD~1",                 // Undo last commit, keep changes staged
+			"git reset --mixed HEAD~1",               // Undo last commit, unstage changes
+			"git reset --hard HEAD~1",                // Undo last commit, discard changes
+			"git reset --hard origin/main",           // Reset to remote main branch
+		},
+	}
+
+	// Function to demonstrate command execution
+	executeGitCommand := func(cmd string) error {
+		command := exec.Command("sh", "-c", cmd)
+		output, err := command.CombinedOutput()
+		if err != nil {
+			return fmt.Errorf("error executing %s: %v\n%s", cmd, err, output)
+		}
+		fmt.Printf("Successfully executed: %s\n", cmd)
+		return nil
+	}
+
+	// Example usage demonstration
+	fmt.Println("Advanced Git Commands Usage Examples:")
+	for category, commands := range gitCommands {
+		fmt.Printf("\n=== %s ===\n", category)
+		for _, cmd := range commands {
+			fmt.Printf("Command: %s\n", cmd)
+		}
+	}
+}
+You are GitHub Copilot (@copilot) on github.com
+
+
+Whenever proposing a file use the file block syntax.
+Files must be represented as code blocks with their `name` in the header.
+Example of a code block with a file name in the header:
+```typescript name=filename.ts
+contents of file
+```
+
+For Markdown files, you must use four opening and closing backticks (````) to ensure that code blocks inside are escaped.
+Example of a code block for a Markdown file:
+````markdown name=filename.md
+```code block inside file```
+````
+
+
+Lists of GitHub issues and pull requests must be wrapped in a code block with language `list` and `type="issue"` or `type="pr"` in the header.
+Don't mix issues and pull requests in one list, they must be separate.
+Make sure to include all issues in the rendered list, no matter how long.
+Example of a list of issues in a code block with YAML data structure:
+```list type="issue"
+data:
+- url: "https://github.com/owner/repo/issues/456"
+state: "closed"
+draft: false
+title: "Add new feature"
+number: 456
+created_at: "2025-01-10T12:45:00Z"
+closed_at: "2025-01-10T12:45:00Z"
+merged_at: ""
+labels:
+- "enhancement"
+- "medium priority"
+author: "janedoe"
+comments: 2
+assignees_avatar_urls:
+- "https://avatars.githubusercontent.com/u/3369400?v=4"
+- "https://avatars.githubusercontent.com/u/980622?v=4"
+```
+
+graph TD
+    A[Git Command System] --> B[Command Categories]
+    B --> C[Stash Operations]
+    B --> D[Cherry-pick Operations]
+    B --> E[Reset Operations]
+    B --> F[Revert Operations]
+
+    C --> C1[git stash save]
+    C --> C2[git stash pop]
+    C --> C3[git stash apply]
+    
+    D --> D1[git cherry-pick]
+    D --> D2[git cherry-pick range]
+    D --> D3[git cherry-pick --no-commit]
+    
+    E --> E1[git reset --soft]
+    E --> E2[git reset --mixed]
+    E --> E3[git reset --hard]
+    
+    F --> F1[git revert commit]
+    F --> F2[git revert merge]
+    F --> F3[git revert range]
+# Extended Git Cheat Codes Registry (500 entries)
+GIT_CHEAT_CODES = {
+  # Stash Operations (100 codes)
+  "GIT001" => { path: "N://kernel/git/stash", action: "STASH_SAVE", desc: "Quick save working directory" },
+  "GIT002" => { path: "N://kernel/git/stash", action: "STASH_POP", desc: "Apply and remove stash" },
+  "GIT003" => { path: "N://kernel/git/stash", action: "STASH_APPLY", desc: "Apply without removing" },
+  # ... [Additional 97 stash-related codes]
+  
+  # Cherry-pick Operations (100 codes)
+  "GIT101" => { path: "N://kernel/git/cherry-pick", action: "PICK_SINGLE", desc: "Cherry-pick single commit" },
+  "GIT102" => { path: "N://kernel/git/cherry-pick", action: "PICK_RANGE", desc: "Cherry-pick commit range" },
+  "GIT103" => { path: "N://kernel/git/cherry-pick", action: "PICK_NOCOMMIT", desc: "Cherry-pick without commit" },
+  # ... [Additional 97 cherry-pick-related codes]
+  
+  # Reset Operations (100 codes)
+  "GIT201" => { path: "N://kernel/git/reset", action: "RESET_SOFT", desc: "Soft reset keeping changes" },
+  "GIT202" => { path: "N://kernel/git/reset", action: "RESET_MIXED", desc: "Mixed reset unstaging changes" },
+  "GIT203" => { path: "N://kernel/git/reset", action: "RESET_HARD", desc: "Hard reset discarding changes" },
+  # ... [Additional 97 reset-related codes]
+  
+  # Revert Operations (100 codes)
+  "GIT301" => { path: "N://kernel/git/revert", action: "REVERT_COMMIT", desc: "Revert single commit" },
+  "GIT302" => { path: "N://kernel/git/revert", action: "REVERT_MERGE", desc: "Revert merge commit" },
+  "GIT303" => { path: "N://kernel/git/revert", action: "REVERT_RANGE", desc: "Revert commit range" },
+  # ... [Additional 97 revert-related codes]
+  
+  # Advanced Operations (100 codes)
+  "GIT401" => { path: "N://kernel/git/advanced", action: "REFLOG_RESTORE", desc: "Restore from reflog" },
+  "GIT402" => { path: "N://kernel/git/advanced", action: "BISECT_START", desc: "Start binary search" },
+  "GIT403" => { path: "N://kernel/git/advanced", action: "FILTER_BRANCH", desc: "Rewrite branch history" }
+  # ... [Additional 97 advanced operation codes]
+}
+
+# Logging function for cheat code usage
+def log_cheat_code(code)
+  timestamp = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S')
+  log_path = "N://logs/git_commands/#{timestamp}_cheat.log"
+  audit_path = "N://audit/git_operations/#{code}"
+  
+  File.write(log_path, {
+    code: code,
+    timestamp: timestamp,
+    user: ENV['GIT_USER'],
+    action: GIT_CHEAT_CODES[code][:action]
+  }.to_json)
+end
 
 create' an '"autonomously-managed"' '"Micro-Save(s)"' Feature(s) that continuously and asynchroniously updates all conversation(s) of my interaction(s) with a '"Persistent"' & '"Reliable"' "up-to-date" ::: '"System-Save-State(s)"'[INCLUDES: "ALL" "Data", "Most-Recent(s)" '"Action(s)"', '"Plugins"', '"Component(s)"', "CLIs", "CLEs", "CLFs", "Data_Lake(s)", '"automation(s)"' "current" "Virtual-Hardware"/ MUST BE '"Precise"', must be '"persistent"', & must Be::: "ALL" "System(s)-Data(s)"]
 //
