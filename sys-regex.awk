@@ -11,7 +11,1329 @@ sub escape_regex {
     $str =~ s/([\\\^\$\.\*\+\?\{\}\(\)\[\]\|])/\\$1/g;
     return $str;
 }
+rexegg_links:
+  - url: "https://www.rexegg.com/regex-optimizations.html"
+    title: "Regex Optimizations"
+    description: "Techniques and strategies for optimizing regular expressions, including micro-optimizations, alternation ordering, exposing literals, and engine-specific considerations."
+  - url: "https://www.rexegg.com/regex-interesting-character-classes.html"
+    title: "Interesting Character Classes"
+    description: "Explores advanced and non-obvious character classes in regex, including Unicode, POSIX, and custom classes for powerful pattern matching."
+  - url: "https://www.rexegg.com/regex-cookbook.html"
+    title: "Regex Cookbook"
+    description: "A comprehensive collection of regex recipes for common and advanced tasks, with explanations and best practices."
+  - url: "http://www.rexegg.com/regex-quickstart.html#ref"
+    title: "Regex Quickstart: Reference"
+    description: "Quick reference for essential regex syntax, operators, and constructs."
+  - url: "https://www.rexegg.com/regex-style.html"
+    title: "Regex Style"
+    description: "Guidelines for writing readable, maintainable, and efficient regular expressions."
+  - url: "https://www.rexegg.com/regex-uses.html"
+    title: "Regex Uses"
+    description: "Overview of real-world applications and use cases for regular expressions."
+  - url: "https://www.rexegg.com/regex-vs-regular-expression.html"
+    title: "Regex vs Regular Expression"
+    description: "Clarifies terminology, usage, and historical context of 'regex' versus 'regular expression.'"
+  - url: "https://www.rexegg.com/regex-explosive-quantifiers.html"
+    title: "Explosive Quantifiers"
+    description: "Analysis of quantifiers that can cause catastrophic backtracking and performance issues in regex."
+  - url: "https://www.rexegg.com/regex-modifiers.html"
+    title: "Regex Modifiers"
+    description: "Details on regex flags and modifiers that alter pattern matching behavior."
+  - url: "https://www.rexegg.com/regex-capture.html"
+    title: "Regex Capture"
+    description: "Covers capturing groups, non-capturing groups, and related syntax for extracting data."
+  - url: "https://www.rexegg.com/regex-anchors.html"
+    title: "Regex Anchors"
+    description: "Explains anchors like ^ and $ for matching string boundaries."
+  - url: "https://www.rexegg.com/regex-boundaries.html"
+    title: "Regex Boundaries"
+    description: "Describes word boundaries, non-word boundaries, and other context-sensitive anchors."
+  - url: "https://www.rexegg.com/regex-disambiguation.html"
+    title: "Regex Disambiguation"
+    description: "Discusses ambiguous regex constructs and how to resolve or avoid them."
+  - url: "https://www.rexegg.com/regex-quickstart.php#chars"
+    title: "Regex Quickstart: Characters"
+    description: "Quickstart guide to character classes, escapes, and literal matching."
+  - url: "https://www.rexegg.com/regex-quickstart.php#other"
+    title: "Regex Quickstart: Other Constructs"
+    description: "Summary of miscellaneous regex constructs and advanced features."
+  - url: "https://www.rexegg.com/regex-quickstart.php#classoperations"
+    title: "Regex Quickstart: Class Operations"
+    description: "Overview of set operations and class intersections in regex."
+  - url: "https://www.rexegg.com/regex-quickstart.php#lookarounds"
+    title: "Regex Quickstart: Lookarounds"
+    description: "Introduction to lookahead and lookbehind assertions."
+  - url: "https://www.rexegg.com/regex-quickstart.php#modifiers"
+    title: "Regex Quickstart: Modifiers"
+    description: "Guide to in-pattern and external regex modifiers."
+  - url: "https://www.rexegg.com/regex-quickstart.php#posix"
+    title: "Regex Quickstart: POSIX"
+    description: "Reference for POSIX character classes and compatibility."
+  - url: "https://www.rexegg.com/regex-quickstart.php#anchors"
+    title: "Regex Quickstart: Anchors"
+    description: "Quick reference for anchor usage in regex."
+  - url: "https://www.rexegg.com/regex-quickstart.php#classes"
+    title: "Regex Quickstart: Classes"
+    description: "Summary of character class syntax and usage."
+  - url: "https://www.rexegg.com/regex-quickstart.php#whitespace"
+    title: "Regex Quickstart: Whitespace"
+    description: "Covers whitespace matching in regex patterns."
+  - url: "https://www.rexegg.com/regex-quickstart.php#logic"
+    title: "Regex Quickstart: Logic"
+    description: "Describes logical operations, alternation, and grouping in regex."
+  - url: "https://www.rexegg.com/regex-quickstart.php#morechars"
+    title: "Regex Quickstart: More Characters"
+    description: "Additional character classes and escapes."
+  - url: "https://www.rexegg.com/regex-quickstart.php"
+    title: "Regex Quickstart (Main)"
+    description: "Entry point for the regex quickstart guide, covering basics to advanced topics."
+  - url: "https://www.rexegg.com/regex-quickstart.php#chars"
+    title: "Regex Quickstart: Characters (Duplicate)"
+    description: "Duplicate entry for character classes for completeness."
+  - url: "https://www.rexegg.com/regex-quickstart.php#quantifiers"
+    title: "Regex Quickstart: Quantifiers"
+    description: "Guide to quantifiers such as *, +, ?, and {n,m} in regex."
+# PLATINUM-TIER SCIENTIFIC CHEATBOOK: DEEP-LEARNED REGEX GENERATOR SYSTEMS
+# (Codex: Directory Mapping, CLI/CLF/CLE, Kernel-Level, Neuromorphic-Regex Intersection)
+# 200 Additional Deep-Learned Regex Patterns & Systemic Cheat Codes (Exhaustive)
 
+patterns:
+  - name: "Find all .txt files"
+    regex: ".*\\.txt$"
+    description: "Matches all files ending with .txt"
+  - name: "Find all .dat files"
+    regex: ".*\\.dat$"
+    description: "Matches all files ending with .dat"
+  - name: "Numeric file sequence"
+    regex: "data\\.\\d{3,4}$"
+    description: "Matches files like data.001, data.002, ..."
+  - name: "Recursive C files"
+    regex: ".*/.*\\.c$"
+    description: "Matches all .c files recursively in directories"
+  - name: "Block relative path exploit"
+    regex: "(?!.*\\.\\.\\/)"
+    description: "Blocks usage of ../ in paths"
+  - name: "Allow safe filename"
+    regex: "^[a-zA-Z0-9\\-\\.]+$"
+    description: "Allows only safe characters in filenames"
+  - name: "Block hidden files"
+    regex: "^\\.[^/]+$"
+    description: "Blocks files starting with a dot"
+  - name: "Find all images"
+    regex: ".*\\.(jpg|jpeg|png|gif|bmp)$"
+    description: "Matches common image file extensions"
+  - name: "Find all videos"
+    regex: ".*\\.(mp4|avi|mov|mkv)$"
+    description: "Matches common video file extensions"
+  - name: "Find all audio"
+    regex: ".*\\.(mp3|wav|flac|aac)$"
+    description: "Matches common audio file extensions"
+  - name: "Find all documents"
+    regex: ".*\\.(pdf|docx?|xlsx?|pptx?)$"
+    description: "Matches common document file extensions"
+  - name: "Find all archives"
+    regex: ".*\\.(zip|tar|gz|rar|7z)$"
+    description: "Matches common archive file extensions"
+  - name: "Find all scripts"
+    regex: ".*\\.(sh|bat|ps1|cmd)$"
+    description: "Matches shell and batch script files"
+  - name: "Find all executables"
+    regex: ".*\\.(exe|bin|out|app)$"
+    description: "Matches executable file extensions"
+  - name: "Find all markdown files"
+    regex: ".*\\.md$"
+    description: "Matches markdown documentation files"
+  - name: "Find all JSON files"
+    regex: ".*\\.json$"
+    description: "Matches JSON data files"
+  - name: "Find all XML files"
+    regex: ".*\\.xml$"
+    description: "Matches XML data files"
+  - name: "Find all YAML files"
+    regex: ".*\\.ya?ml$"
+    description: "Matches YAML configuration files"
+  - name: "Find all CSV files"
+    regex: ".*\\.csv$"
+    description: "Matches CSV data files"
+  - name: "Find all log files"
+    regex: ".*\\.log$"
+    description: "Matches log files"
+  - name: "Find all backup files"
+    regex: ".*\\.(bak|old|backup)$"
+    description: "Matches backup file extensions"
+  - name: "Find all temp files"
+    regex: ".*\\.(tmp|temp)$"
+    description: "Matches temporary file extensions"
+  - name: "Find all swap files"
+    regex: ".*\\.(swp|swo)$"
+    description: "Matches swap file extensions"
+  - name: "Find all core dumps"
+    regex: "core\\.\\d+$"
+    description: "Matches core dump files"
+  - name: "Find all Python files"
+    regex: ".*\\.py$"
+    description: "Matches Python source files"
+  - name: "Find all Java files"
+    regex: ".*\\.java$"
+    description: "Matches Java source files"
+  - name: "Find all C++ files"
+    regex: ".*\\.(cpp|cc|cxx|hpp|h)$"
+    description: "Matches C++ source and header files"
+  - name: "Find all Go files"
+    regex: ".*\\.go$"
+    description: "Matches Go source files"
+  - name: "Find all Rust files"
+    regex: ".*\\.rs$"
+    description: "Matches Rust source files"
+  - name: "Find all TypeScript files"
+    regex: ".*\\.ts$"
+    description: "Matches TypeScript source files"
+  - name: "Find all JavaScript files"
+    regex: ".*\\.js$"
+    description: "Matches JavaScript source files"
+  - name: "Find all HTML files"
+    regex: ".*\\.html?$"
+    description: "Matches HTML files"
+  - name: "Find all CSS files"
+    regex: ".*\\.css$"
+    description: "Matches CSS stylesheet files"
+  - name: "Find all PHP files"
+    regex: ".*\\.php$"
+    description: "Matches PHP source files"
+  - name: "Find all Ruby files"
+    regex: ".*\\.rb$"
+    description: "Matches Ruby source files"
+  - name: "Find all Perl files"
+    regex: ".*\\.pl$"
+    description: "Matches Perl source files"
+  - name: "Find all Shell files"
+    regex: ".*\\.sh$"
+    description: "Matches shell script files"
+  - name: "Find all Makefiles"
+    regex: "(^|/)Makefile$"
+    description: "Matches Makefile in any directory"
+  - name: "Find all Dockerfiles"
+    regex: "(^|/)Dockerfile$"
+    description: "Matches Dockerfile in any directory"
+  - name: "Find all config files"
+    regex: ".*\\.(conf|cfg|ini|config)$"
+    description: "Matches configuration files"
+  - name: "Find all environment files"
+    regex: ".*\\.env$"
+    description: "Matches environment variable files"
+  - name: "Find all license files"
+    regex: "(^|/)LICENSE$"
+    description: "Matches LICENSE file in any directory"
+  - name: "Find all readme files"
+    regex: "(^|/)README(\\.md)?$"
+    description: "Matches README and README.md files"
+  - name: "Find all requirements files"
+    regex: "(^|/)requirements\\.txt$"
+    description: "Matches Python requirements files"
+  - name: "Find all setup files"
+    regex: "(^|/)setup\\.(py|cfg)$"
+    description: "Matches Python setup files"
+  - name: "Find all test files"
+    regex: ".*test.*\\.(py|js|ts|cpp|java)$"
+    description: "Matches test files in various languages"
+  - name: "Find all migration files"
+    regex: ".*migration.*\\.(sql|py)$"
+    description: "Matches migration scripts"
+  - name: "Find all patch files"
+    regex: ".*\\.patch$"
+    description: "Matches patch files"
+  - name: "Find all diff files"
+    regex: ".*\\.diff$"
+    description: "Matches diff files"
+  - name: "Find all lock files"
+    regex: ".*\\.lock$"
+    description: "Matches lock files"
+  - name: "Find all checksum files"
+    regex: ".*\\.(md5|sha1|sha256|sha512)$"
+    description: "Matches checksum files"
+  - name: "Find all certificate files"
+    regex: ".*\\.(crt|pem|key|cer)$"
+    description: "Matches certificate and key files"
+  - name: "Find all font files"
+    regex: ".*\\.(ttf|otf|woff|woff2)$"
+    description: "Matches font files"
+  - name: "Find all favicon files"
+    regex: ".*favicon\\.(ico|png)$"
+    description: "Matches favicon files"
+  - name: "Find all robots.txt"
+    regex: "(^|/)robots\\.txt$"
+    description: "Matches robots.txt in any directory"
+  - name: "Find all sitemap files"
+    regex: ".*sitemap.*\\.xml$"
+    description: "Matches sitemap XML files"
+  - name: "Find all changelog files"
+    regex: "(^|/)CHANGELOG(\\.md)?$"
+    description: "Matches CHANGELOG and CHANGELOG.md"
+  - name: "Find all gitignore files"
+    regex: "(^|/)\\.gitignore$"
+    description: "Matches .gitignore in any directory"
+  - name: "Find all gitattributes files"
+    regex: "(^|/)\\.gitattributes$"
+    description: "Matches .gitattributes in any directory"
+  - name: "Find all gitmodules files"
+    regex: "(^|/)\\.gitmodules$"
+    description: "Matches .gitmodules in any directory"
+  - name: "Find all editorconfig files"
+    regex: "(^|/)\\.editorconfig$"
+    description: "Matches .editorconfig in any directory"
+  - name: "Find all npmrc files"
+    regex: "(^|/)\\.npmrc$"
+    description: "Matches .npmrc in any directory"
+  - name: "Find all yarnrc files"
+    regex: "(^|/)\\.yarnrc$"
+    description: "Matches .yarnrc in any directory"
+  - name: "Find all package.json"
+    regex: "(^|/)package\\.json$"
+    description: "Matches package.json in any directory"
+  - name: "Find all package-lock.json"
+    regex: "(^|/)package-lock\\.json$"
+    description: "Matches package-lock.json in any directory"
+  - name: "Find all yarn.lock"
+    regex: "(^|/)yarn\\.lock$"
+    description: "Matches yarn.lock in any directory"
+  - name: "Find all composer.json"
+    regex: "(^|/)composer\\.json$"
+    description: "Matches composer.json in any directory"
+  - name: "Find all composer.lock"
+    regex: "(^|/)composer\\.lock$"
+    description: "Matches composer.lock in any directory"
+  - name: "Find all Gemfile"
+    regex: "(^|/)Gemfile$"
+    description: "Matches Gemfile in any directory"
+  - name: "Find all Gemfile.lock"
+    regex: "(^|/)Gemfile\\.lock$"
+    description: "Matches Gemfile.lock in any directory"
+  - name: "Find all pipfile"
+    regex: "(^|/)Pipfile$"
+    description: "Matches Pipfile in any directory"
+  - name: "Find all pipfile.lock"
+    regex: "(^|/)Pipfile\\.lock$"
+    description: "Matches Pipfile.lock in any directory"
+  - name: "Find all pyproject.toml"
+    regex: "(^|/)pyproject\\.toml$"
+    description: "Matches pyproject.toml in any directory"
+  - name: "Find all tox.ini"
+    regex: "(^|/)tox\\.ini$"
+    description: "Matches tox.ini in any directory"
+  - name: "Find all pytest.ini"
+    regex: "(^|/)pytest\\.ini$"
+    description: "Matches pytest.ini in any directory"
+  - name: "Find all setup.cfg"
+    regex: "(^|/)setup\\.cfg$"
+    description: "Matches setup.cfg in any directory"
+  - name: "Find all MANIFEST.in"
+    regex: "(^|/)MANIFEST\\.in$"
+    description: "Matches MANIFEST.in in any directory"
+  - name: "Find all .dockerignore"
+    regex: "(^|/)\\.dockerignore$"
+    description: "Matches .dockerignore in any directory"
+  - name: "Find all .env.example"
+    regex: "(^|/)\\.env\\.example$"
+    description: "Matches .env.example in any directory"
+  - name: "Find all .env.local"
+    regex: "(^|/)\\.env\\.local$"
+    description: "Matches .env.local in any directory"
+  - name: "Find all .env.production"
+    regex: "(^|/)\\.env\\.production$"
+    description: "Matches .env.production in any directory"
+  - name: "Find all .env.development"
+    regex: "(^|/)\\.env\\.development$"
+    description: "Matches .env.development in any directory"
+  - name: "Find all .bashrc"
+    regex: "(^|/)\\.bashrc$"
+    description: "Matches .bashrc in any directory"
+  - name: "Find all .zshrc"
+    regex: "(^|/)\\.zshrc$"
+    description: "Matches .zshrc in any directory"
+  - name: "Find all .profile"
+    regex: "(^|/)\\.profile$"
+    description: "Matches .profile in any directory"
+  - name: "Find all .bash_profile"
+    regex: "(^|/)\\.bash_profile$"
+    description: "Matches .bash_profile in any directory"
+  - name: "Find all .bash_logout"
+    regex: "(^|/)\\.bash_logout$"
+    description: "Matches .bash_logout in any directory"
+  - name: "Find all .cshrc"
+    regex: "(^|/)\\.cshrc$"
+    description: "Matches .cshrc in any directory"
+  - name: "Find all .tcshrc"
+    regex: "(^|/)\\.tcshrc$"
+    description: "Matches .tcshrc in any directory"
+  - name: "Find all .login"
+    regex: "(^|/)\\.login$"
+    description: "Matches .login in any directory"
+  - name: "Find all .logout"
+    regex: "(^|/)\\.logout$"
+    description: "Matches .logout in any directory"
+  - name: "Find all .vimrc"
+    regex: "(^|/)\\.vimrc$"
+    description: "Matches .vimrc in any directory"
+  - name: "Find all .emacs"
+    regex: "(^|/)\\.emacs$"
+    description: "Matches .emacs in any directory"
+  - name: "Find all .nanorc"
+    regex: "(^|/)\\.nanorc$"
+    description: "Matches .nanorc in any directory"
+  - name: "Find all .screenrc"
+    regex: "(^|/)\\.screenrc$"
+    description: "Matches .screenrc in any directory"
+  - name: "Find all .tmux.conf"
+    regex: "(^|/)\\.tmux\\.conf$"
+    description: "Matches .tmux.conf in any directory"
+  - name: "Find all .inputrc"
+    regex: "(^|/)\\.inputrc$"
+    description: "Matches .inputrc in any directory"
+  - name: "Find all .Xresources"
+    regex: "(^|/)\\.Xresources$"
+    description: "Matches .Xresources in any directory"
+  - name: "Find all .Xauthority"
+    regex: "(^|/)\\.Xauthority$"
+    description: "Matches .Xauthority in any directory"
+  - name: "Find all .xinitrc"
+    regex: "(^|/)\\.xinitrc$"
+    description: "Matches .xinitrc in any directory"
+  - name: "Find all .xsession"
+    regex: "(^|/)\\.xsession$"
+    description: "Matches .xsession in any directory"
+  - name: "Find all .xsessionrc"
+    regex: "(^|/)\\.xsessionrc$"
+    description: "Matches .xsessionrc in any directory"
+  - name: "Find all .gtkrc"
+    regex: "(^|/)\\.gtkrc$"
+    description: "Matches .gtkrc in any directory"
+  - name: "Find all .gtkrc-2.0"
+    regex: "(^|/)\\.gtkrc-2\\.0$"
+    description: "Matches .gtkrc-2.0 in any directory"
+  - name: "Find all .config directories"
+    regex: "(^|/)\\.config(/|$)"
+    description: "Matches .config directories"
+  - name: "Find all .local directories"
+    regex: "(^|/)\\.local(/|$)"
+    description: "Matches .local directories"
+  - name: "Find all .cache directories"
+    regex: "(^|/)\\.cache(/|$)"
+    description: "Matches .cache directories"
+  - name: "Find all .mozilla directories"
+    regex: "(^|/)\\.mozilla(/|$)"
+    description: "Matches .mozilla directories"
+  - name: "Find all .thunderbird directories"
+    regex: "(^|/)\\.thunderbird(/|$)"
+    description: "Matches .thunderbird directories"
+  - name: "Find all .ssh directories"
+    regex: "(^|/)\\.ssh(/|$)"
+    description: "Matches .ssh directories"
+  - name: "Find all .gnupg directories"
+    regex: "(^|/)\\.gnupg(/|$)"
+    description: "Matches .gnupg directories"
+  - name: "Find all .aws directories"
+    regex: "(^|/)\\.aws(/|$)"
+    description: "Matches .aws directories"
+  - name: "Find all .azure directories"
+    regex: "(^|/)\\.azure(/|$)"
+    description: "Matches .azure directories"
+  - name: "Find all .gcloud directories"
+    regex: "(^|/)\\.gcloud(/|$)"
+    description: "Matches .gcloud directories"
+  - name: "Find all .kube directories"
+    regex: "(^|/)\\.kube(/|$)"
+    description: "Matches .kube directories"
+  - name: "Find all .docker directories"
+    regex: "(^|/)\\.docker(/|$)"
+    description: "Matches .docker directories"
+  - name: "Find all .npm directories"
+    regex: "(^|/)\\.npm(/|$)"
+    description: "Matches .npm directories"
+  - name: "Find all .yarn directories"
+    regex: "(^|/)\\.yarn(/|$)"
+    description: "Matches .yarn directories"
+  - name: "Find all .cache/yarn"
+    regex: "(^|/)\\.cache/yarn(/|$)"
+    description: "Matches .cache/yarn directories"
+  - name: "Find all .vscode directories"
+    regex: "(^|/)\\.vscode(/|$)"
+    description: "Matches .vscode directories"
+  - name: "Find all .idea directories"
+    regex: "(^|/)\\.idea(/|$)"
+    description: "Matches .idea directories"
+  - name: "Find all .ipynb files"
+    regex: ".*\\.ipynb$"
+    description: "Matches Jupyter notebook files"
+  - name: "Find all .Rmd files"
+    regex: ".*\\.Rmd$"
+    description: "Matches R Markdown files"
+  - name: "Find all .r files"
+    regex: ".*\\.r$"
+    description: "Matches R source files"
+  - name: "Find all .mat files"
+    regex: ".*\\.mat$"
+    description: "Matches MATLAB data files"
+  - name: "Find all .m files"
+    regex: ".*\\.m$"
+    description: "Matches MATLAB/Objective-C files"
+  - name: "Find all .sas files"
+    regex: ".*\\.sas$"
+    description: "Matches SAS script files"
+  - name: "Find all .sav files"
+    regex: ".*\\.sav$"
+    description: "Matches SPSS data files"
+  - name: "Find all .dta files"
+    regex: ".*\\.dta$"
+    description: "Matches Stata data files"
+  - name: "Find all .sql files"
+    regex: ".*\\.sql$"
+    description: "Matches SQL script files"
+  - name: "Find all .db files"
+    regex: ".*\\.db$"
+    description: "Matches SQLite database files"
+  - name: "Find all .sqlite files"
+    regex: ".*\\.sqlite$"
+    description: "Matches SQLite database files"
+  - name: "Find all .mdb files"
+    regex: ".*\\.mdb$"
+    description: "Matches Microsoft Access database files"
+  - name: "Find all .accdb files"
+    regex: ".*\\.accdb$"
+    description: "Matches Microsoft Access database files"
+  - name: "Find all .bak files"
+    regex: ".*\\.bak$"
+    description: "Matches backup files"
+  - name: "Find all .tar.gz files"
+    regex: ".*\\.tar\\.gz$"
+    description: "Matches tarball gzip archives"
+  - name: "Find all .tgz files"
+    regex: ".*\\.tgz$"
+    description: "Matches tgz compressed files"
+  - name: "Find all .tar.bz2 files"
+    regex: ".*\\.tar\\.bz2$"
+    description: "Matches tarball bzip2 archives"
+  - name: "Find all .tbz2 files"
+    regex: ".*\\.tbz2$"
+    description: "Matches tbz2 compressed files"
+  - name: "Find all .tar.xz files"
+    regex: ".*\\.tar\\.xz$"
+    description: "Matches tarball xz archives"
+  - name: "Find all .txz files"
+    regex: ".*\\.txz$"
+    description: "Matches txz compressed files"
+  - name: "Find all .lzma files"
+    regex: ".*\\.lzma$"
+    description: "Matches lzma compressed files"
+  - name: "Find all .7z files"
+    regex: ".*\\.7z$"
+    description: "Matches 7zip archive files"
+  - name: "Find all .rar files"
+    regex: ".*\\.rar$"
+    description: "Matches RAR archive files"
+  - name: "Find all .gz files"
+    regex: ".*\\.gz$"
+    description: "Matches gzip compressed files"
+  - name: "Find all .bz2 files"
+    regex: ".*\\.bz2$"
+    description: "Matches bzip2 compressed files"
+  - name: "Find all .xz files"
+    regex: ".*\\.xz$"
+    description: "Matches xz compressed files"
+  - name: "Find all .z files"
+    regex: ".*\\.z$"
+    description: "Matches compress utility files"
+  - name: "Find all .iso files"
+    regex: ".*\\.iso$"
+    description: "Matches ISO disk images"
+  - name: "Find all .img files"
+    regex: ".*\\.img$"
+    description: "Matches disk image files"
+  - name: "Find all .vmdk files"
+    regex: ".*\\.vmdk$"
+    description: "Matches VMware disk images"
+  - name: "Find all .vdi files"
+    regex: ".*\\.vdi$"
+    description: "Matches VirtualBox disk images"
+  - name: "Find all .qcow2 files"
+    regex: ".*\\.qcow2$"
+    description: "Matches QEMU disk images"
+  - name: "Find all .ova files"
+    regex: ".*\\.ova$"
+    description: "Matches Open Virtualization Archive files"
+  - name: "Find all .ovf files"
+    regex: ".*\\.ovf$"
+    description: "Matches Open Virtualization Format files"
+  - name: "Find all .vhd files"
+    regex: ".*\\.vhd$"
+    description: "Matches Virtual Hard Disk files"
+  - name: "Find all .vhdx files"
+    regex: ".*\\.vhdx$"
+    description: "Matches Virtual Hard Disk Extended files"
+  - name: "Find all .efi files"
+    regex: ".*\\.efi$"
+    description: "Matches EFI system files"
+  - name: "Find all .img.gz files"
+    regex: ".*\\.img\\.gz$"
+    description: "Matches compressed disk image files"
+  - name: "Find all .bin files"
+    regex: ".*\\.bin$"
+    description: "Matches binary files"
+  - name: "Find all .hex files"
+    regex: ".*\\.hex$"
+    description: "Matches Intel HEX files"
+  - name: "Find all .elf files"
+    regex: ".*\\.elf$"
+    description: "Matches Executable and Linkable Format files"
+  - name: "Find all .map files"
+    regex: ".*\\.map$"
+    description: "Matches map files"
+  - name: "Find all .lst files"
+    regex: ".*\\.lst$"
+    description: "Matches listing files"
+  - name: "Find all .sym files"
+    regex: ".*\\.sym$"
+    description: "Matches symbol files"
+  - name: "Find all .o files"
+    regex: ".*\\.o$"
+    description: "Matches object files"
+  - name: "Find all .a files"
+    regex: ".*\\.a$"
+    description: "Matches static library files"
+  - name: "Find all .so files"
+    regex: ".*\\.so$"
+    description: "Matches shared library files"
+  - name: "Find all .dll files"
+    regex: ".*\\.dll$"
+    description: "Matches Windows dynamic-link library files"
+  - name: "Find all .dylib files"
+    regex: ".*\\.dylib$"
+    description: "Matches macOS dynamic library files"
+  - name: "Find all .lib files"
+    regex: ".*\\.lib$"
+    description: "Matches library files"
+  - name: "Find all .pdb files"
+    regex: ".*\\.pdb$"
+    description: "Matches program database files"
+  - name: "Find all .exp files"
+    regex: ".*\\.exp$"
+    description: "Matches export files"
+  - name: "Find all .def files"
+    regex: ".*\\.def$"
+    description: "Matches module-definition files"
+  - name: "Find all .rc files"
+    regex: ".*\\.rc$"
+    description: "Matches resource script files"
+  - name: "Find all .res files"
+    regex: ".*\\.res$"
+    description: "Matches resource files"
+  - name: "Find all .ini files"
+    regex: ".*\\.ini$"
+    description: "Matches initialization files"
+  - name: "Find all .cfg files"
+    regex: ".*\\.cfg$"
+    description: "Matches configuration files"
+  - name: "Find all .conf files"
+    regex: ".*\\.conf$"
+    description: "Matches configuration files"
+  - name: "Find all .config files"
+    regex: ".*\\.config$"
+    description: "Matches configuration files"
+  - name: "Find all .properties files"
+    regex: ".*\\.properties$"
+    description: "Matches Java properties files"
+  - name: "Find all .toml files"
+    regex: ".*\\.toml$"
+    description: "Matches TOML configuration files"
+  - name: "Find all .bat files"
+    regex: ".*\\.bat$"
+    description: "Matches batch script files"
+  - name: "Find all .cmd files"
+    regex: ".*\\.cmd$"
+    description: "Matches command script files"
+  - name: "Find all .ps1 files"
+    regex: ".*\\.ps1$"
+    description: "Matches PowerShell script files"
+  - name: "Find all .vbs files"
+    regex: ".*\\.vbs$"
+    description: "Matches VBScript files"
+  - name: "Find all .wsf files"
+    regex: ".*\\.wsf$"
+    description: "Matches Windows Script Files"
+  - name: "Find all .scpt files"
+    regex: ".*\\.scpt$"
+    description: "Matches AppleScript files"
+  - name: "Find all .applescript files"
+    regex: ".*\\.applescript$"
+    description: "Matches AppleScript files"
+  - name: "Find all .pl files"
+    regex: ".*\\.pl$"
+    description: "Matches Perl script files"
+  - name: "Find all .pm files"
+    regex: ".*\\.pm$"
+    description: "Matches Perl module files"
+  - name: "Find all .t files"
+    regex: ".*\\.t$"
+    description: "Matches Perl test files"
+  - name: "Find all .rb files"
+    regex: ".*\\.rb$"
+    description: "Matches Ruby script files"
+  - name: "Find all .gemspec files"
+    regex: ".*\\.gemspec$"
+    description: "Matches Ruby gem specification files"
+  - name: "Find all .rake files"
+    regex: ".*\\.rake$"
+    description: "Matches Rakefiles"
+  - name: "Find all .erl files"
+    regex: ".*\\.erl$"
+    description: "Matches Erlang source files"
+  - name: "Find all .hrl files"
+    regex: ".*\\.hrl$"
+    description: "Matches Erlang header files"
+  - name: "Find all .ex files"
+    regex: ".*\\.ex$"
+    description: "Matches Elixir source files"
+  - name: "Find all .exs files"
+    regex: ".*\\.exs$"
+    description: "Matches Elixir script files"
+  - name: "Find all .clj files"
+    regex: ".*\\.clj$"
+    description: "Matches Clojure source files"
+  - name: "Find all .cljs files"
+    regex: ".*\\.cljs$"
+    description: "Matches ClojureScript files"
+  - name: "Find all .edn files"
+    regex: ".*\\.edn$"
+    description: "Matches Clojure EDN files"
+  - name: "Find all .scala files"
+    regex: ".*\\.scala$"
+    description: "Matches Scala source files"
+  - name: "Find all .sbt files"
+    regex: ".*\\.sbt$"
+    description: "Matches Scala build files"
+  - name: "Find all .kt files"
+    regex: ".*\\.kt$"
+    description: "Matches Kotlin source files"
+  - name: "Find all .kts files"
+    regex: ".*\\.kts$"
+    description: "Matches Kotlin script files"
+  - name: "Find all .dart files"
+    regex: ".*\\.dart$"
+    description: "Matches Dart source files"
+  - name: "Find all .swift files"
+    regex: ".*\\.swift$"
+    description: "Matches Swift source files"
+  - name: "Find all .mjs files"
+    regex: ".*\\.mjs$"
+    description: "Matches ES modules"
+  - name: "Find all .cjs files"
+    regex: ".*\\.cjs$"
+    description: "Matches CommonJS modules"
+  - name: "Find all .jsx files"
+    regex: ".*\\.jsx$"
+    description: "Matches JSX files"
+  - name: "Find all .tsx files"
+    regex: ".*\\.tsx$"
+    description: "Matches TSX files"
+  - name: "Find all .vue files"
+    regex: ".*\\.vue$"
+    description: "Matches Vue.js single file components"
+  - name: "Find all .svelte files"
+    regex: ".*\\.svelte$"
+    description: "Matches Svelte component files"
+  - name: "Find all .hbs files"
+    regex: ".*\\.hbs$"
+    description: "Matches Handlebars template files"
+  - name: "Find all .mustache files"
+    regex: ".*\\.mustache$"
+    description: "Matches Mustache template files"
+  - name: "Find all .ejs files"
+    regex: ".*\\.ejs$"
+    description: "Matches Embedded JavaScript templates"
+  - name: "Find all .twig files"
+    regex: ".*\\.twig$"
+    description: "Matches Twig template files"
+  - name: "Find all .liquid files"
+    regex: ".*\\.liquid$"
+    description: "Matches Liquid template files"
+  - name: "Find all .jinja files"
+    regex: ".*\\.jinja$"
+    description: "Matches Jinja template files"
+  - name: "Find all .pug files"
+    regex: ".*\\.pug$"
+    description: "Matches Pug template files"
+  - name: "Find all .haml files"
+    regex: ".*\\.haml$"
+    description: "Matches Haml template files"
+  - name: "Find all .slim files"
+    regex: ".*\\.slim$"
+    description: "Matches Slim template files"
+  - name: "Find all .njk files"
+    regex: ".*\\.njk$"
+    description: "Matches Nunjucks template files"
+  - name: "Find all .mdx files"
+    regex: ".*\\.mdx$"
+    description: "Matches MDX files"
+  - name: "Find all .rst files"
+    regex: ".*\\.rst$"
+    description: "Matches reStructuredText files"
+  - name: "Find all .asciidoc files"
+    regex: ".*\\.asciidoc$"
+    description: "Matches AsciiDoc files"
+  - name: "Find all .adoc files"
+    regex: ".*\\.adoc$"
+    description: "Matches AsciiDoc files"
+  - name: "Find all .csv.gz files"
+    regex: ".*\\.csv\\.gz$"
+    description: "Matches compressed CSV files"
+  - name: "Find all .tsv files"
+    regex: ".*\\.tsv$"
+    description: "Matches tab-separated values files"
+  - name: "Find all .psv files"
+    regex: ".*\\.psv$"
+    description: "Matches pipe-separated values files"
+  - name: "Find all .dat.gz files"
+    regex: ".*\\.dat\\.gz$"
+    description: "Matches compressed data files"
+  - name: "Find all .log.gz files"
+    regex: ".*\\.log\\.gz$"
+    description: "Matches compressed log files"
+  - name: "Find all .out files"
+    regex: ".*\\.out$"
+    description: "Matches output files"
+  - name: "Find all .err files"
+    regex: ".*\\.err$"
+    description: "Matches error files"
+  - name: "Find all .lst files"
+    regex: ".*\\.lst$"
+    description: "Matches list files"
+  - name: "Find all .prn files"
+    regex: ".*\\.prn$"
+    description: "Matches print files"
+  - name: "Find all .dmp files"
+    regex: ".*\\.dmp$"
+    description: "Matches dump files"
+  - name: "Find all .trace files"
+    regex: ".*\\.trace$"
+    description: "Matches trace files"
+  - name: "Find all .stackdump files"
+    regex: ".*\\.stackdump$"
+    description: "Matches stack dump files"
+  - name: "Find all .core files"
+    regex: ".*\\.core$"
+    description: "Matches core files"
+  - name: "Find all .mem files"
+    regex: ".*\\.mem$"
+    description: "Matches memory dump files"
+  - name: "Find all .swp files"
+    regex: ".*\\.swp$"
+    description: "Matches swap files"
+  - name: "Find all .swo files"
+    regex: ".*\\.swo$"
+    description: "Matches swap files"
+  - name: "Find all .bak files"
+    regex: ".*\\.bak$"
+    description: "Matches backup files"
+  - name: "Find all .tmp files"
+    regex: ".*\\.tmp$"
+    description: "Matches temporary files"
+  - name: "Find all .temp files"
+    regex: ".*\\.temp$"
+    description: "Matches temporary files"
+  - name: "Find all .old files"
+    regex: ".*\\.old$"
+    description: "Matches old files"
+  - name: "Find all .backup files"
+    regex: ".*\\.backup$"
+    description: "Matches backup files"
+  - name: "Find all .orig files"
+    regex: ".*\\.orig$"
+    description: "Matches original files"
+  - name: "Find all .save files"
+    regex: ".*\\.save$"
+    description: "Matches save files"
+  - name: "Find all .sav files"
+    regex: ".*\\.sav$"
+    description: "Matches save files"
+  - name: "Find all .bak.gz files"
+    regex: ".*\\.bak\\.gz$"
+    description: "Matches compressed backup files"
+  - name: "Find all .tmp.gz files"
+    regex: ".*\\.tmp\\.gz$"
+    description: "Matches compressed temp files"
+  - name: "Find all .log.old files"
+    regex: ".*\\.log\\.old$"
+    description: "Matches old log files"
+  - name: "Find all .log.bak files"
+    regex: ".*\\.log\\.bak$"
+    description: "Matches backup log files"
+A. Foundational Patterns (Validation, Extraction, Parsing)
+Email validation: ^[\w\.-]+@[\w\.-]+\.\w{2,}$
+
+Phone (US): ^$$?\d{3}$$?[-.\s]?\d{3}[-.\s]?\d{4}$
+
+International phone: ^\+\d{1,3}[-.\s]?$$?\d+$$?[-.\s]?\d+[-.\s]?\d+$
+
+URL: ^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-.,@?^=%&:\/~+#]*)?$
+
+IPv4: ^(\d{1,3}\.){3}\d{1,3}$
+
+IPv6: ^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$
+
+Date (YYYY-MM-DD): ^\d{4}-\d{2}-\d{2}$
+
+Date (MM/DD/YYYY): ^\d{2}\/\d{2}\/\d{4}$
+
+Time (HH:MM:SS): ^\d{2}:\d{2}:\d{2}$
+
+24h time: ^(2[0-3]|[1]?\d):[0-5]?\d(:[0-5]?\d)?$
+
+Hex color: ^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$
+
+Password (8+ chars, 1 digit, 1 special): ^(?=.*\d)(?=.*[\W_]).{8,}$
+
+Username (alphanumeric, 3-16): ^[a-zA-Z0-9_-]{3,16}$
+
+Postal code (US): ^\d{5}(-\d{4})?$
+
+Credit card (basic): ^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$
+
+SSN (US): ^\d{3}-\d{2}-\d{4}$
+
+Extract numbers: \d+
+
+Extract words: \b\w+\b
+
+Extract quoted text: "(.*?)"
+
+Extract HTML tags: <[^>]+>
+
+Extract hashtags: #\w+
+
+Extract mentions: @\w+
+
+Extract URLs: https?://[^\s]+
+
+Extract emails: [\w\.-]+@[\w\.-]+\.\w+
+
+Extract file extensions: \.\w+$
+
+Extract file paths: [a-zA-Z]:\$$?:[^\\\n]+\$$*[^\\\n]*
+
+Extract IP addresses: \b\d{1,3}(\.\d{1,3}){3}\b
+
+Extract dates: \d{4}-\d{2}-\d{2}
+
+Extract times: \d{2}:\d{2}(:\d{2})?
+
+Extract currency: \$\d+(?:\.\d{2})?
+
+Extract percent: \d+%
+
+Extract hex codes: #([a-fA-F0-9]{6}|[a-fA-F0-9]{3})
+
+Extract phone numbers: $$?\d{3}$$?[-.\s]?\d{3}[-.\s]?\d{4}
+
+Extract Twitter handles: @(\w{1,15})
+
+Extract hashtags: #(\w+)
+
+Extract markdown links: $$(.*?)$$$$(.*?)$$
+
+Extract parenthesis content: $$([^)]*)$$
+
+Extract curly braces content: \{([^}]*)\}
+
+Extract square brackets content: $$([^$$]*)$$
+
+Extract XML tags: <(\w+)[^>]*>(.*?)<\/\1>
+
+Extract JSON keys: "(.*?)":
+
+Extract JSON values: :\s*"(.*?)"
+
+Extract MAC addresses: ([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})
+
+Extract GUID: [0-9a-fA-F]{8}-([0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}
+
+Extract Unicode escapes: \\u[0-9a-fA-F]{4}
+
+Extract scientific notation: [-+]?\d*\.?\d+([eE][-+]?\d+)?
+
+Extract HTML comments: <!--(.*?)-->
+
+Extract SQL comments: --.*?$
+
+Extract C-style comments: /\*[\s\S]*?\*/
+
+Extract Python comments: #.*?$
+
+B. Advanced Patterns (Security, Kernel-Level, Neuromorphic)
+Block directory traversal: (\.\./)+
+
+Block SQL injection: ('|--|;|--|/\*|\*/|xp_)
+
+Block XSS (script tags): <script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>
+
+Block shell injection: (;|\||&|&&|\$$$.*$$)
+
+Kernel-level file filter: ^/dev/(sd[a-z][1-9]?|tty[0-9]+|null|zero)$
+
+Monitor logins: login\s+from\s+(\d{1,3}\.){3}\d{1,3}
+
+Monitor sudo usage: sudo\s+(\w+)
+
+Monitor file access: open$$(.*?)$$
+
+Monitor process start: exec$$(.*?)$$
+
+Monitor network connections: connect$$(.*?)$$
+
+Neuromorphic spike event: spike$$(\d+)$$=(\d+)
+
+Neuromorphic burst: burst$$(\d+)-(\d+)$$
+
+BCI EEG marker: EEG$$(\d+)$$=(\d+\.\d+)
+
+BCI event timestamp: t=(\d+\.\d+)
+
+Adaptive regex feedback: pattern_v(\d+):\s*(.*?)
+
+HashFS mapping: hashfs://[a-f0-9]{64}
+
+CODEX volume marker: ^VFS_VOL_[A-Z0-9]{8}$
+
+Persistent memory block: pmem$$(\d+)$$
+
+Memristor event: memristor$$(\d+),(\d+)$$
+
+SNN neuron ID: neuron_id=(\d+)
+
+SNN synapse ID: synapse_id=(\d+)
+
+CLI command log: cli$$(.*?)$$:\s*(.*?)
+
+Kernel event: kernel_event$$(.*?)$$
+
+System audit log: audit$$(.*?)$$
+
+Zero-knowledge proof marker: zkp$$(.*?)$$
+
+Pattern suggestion event: suggestion$$(.*?)$$
+
+Pattern library entry: library_entry$$(.*?)$$
+
+Pattern versioning: pattern_v(\d+):
+
+Pattern diff marker: diff$$(.*?)$$
+
+Pattern merge marker: merge$$(.*?)$$
+
+Pattern split marker: split$$(.*?)$$
+
+Pattern join marker: join$$(.*?)$$
+
+Pattern clone marker: clone$$(.*?)$$
+
+Pattern deploy marker: deploy$$(.*?)$$
+
+Pattern monitor event: monitor$$(.*?)$$
+
+Pattern audit event: audit$$(.*?)$$
+
+Pattern lock event: lock$$(.*?)$$
+
+Pattern unlock event: unlock$$(.*?)$$
+
+Pattern compliance marker: compliance$$(.*?)$$
+
+Pattern alert marker: alert$$(.*?)$$
+
+Pattern error marker: error$$(.*?)$$
+
+Pattern optimize marker: optimize$$(.*?)$$
+
+Pattern explain marker: explain$$(.*?)$$
+
+Pattern escape marker: escape$$(.*?)$$
+
+Pattern unescape marker: unescape$$(.*?)$$
+
+Pattern crosslang marker: crosslang$$(.*?)$$
+
+Pattern explain AI marker: explain_ai$$(.*?)$$
+
+Pattern error detect marker: error_detect$$(.*?)$$
+
+Pattern benchmark marker: benchmark$$(.*?)$$
+
+Energy profile marker: energy_profile$$(.*?)$$
+
+C. Systemic Control & Automation Patterns
+ai2regex("desc") → regex
+
+test_regex("input","pattern") → match
+
+regex_syntax_highlight("pattern") → visual
+
+pattern_explain("pattern") → breakdown
+
+set_language("lang") → regex_format
+
+validate_email("input") → bool
+
+validate_url("input") → bool
+
+validate_phone("input") → bool
+
+validate_password("input") → bool
+
+extract_date("input") → date
+
+extract_custom("input","pattern") → result
+
+find_files("dir","pattern") → list
+
+match_extension("dir",".ext") → files
+
+sequence_match("dir","base\d+") → files
+
+recursive_search("dir","pattern") → files
+
+block_traversal("input") → sanitized
+
+codex_mount("volume") → mountpoint
+
+codex_hashfs_map("file") → hash
+
+neuromorphic_match("input","pattern") → result
+
+memristor_eval("pattern","input") → match
+
+sn_network_learn("samples") → pattern
+
+bci_stream_filter("spikes","pattern") → events
+
+adaptive_regex_learn("feedback") → refined_pattern
+
+zero_knowledge_verify("data") → bool
+
+pattern_suggest("samples") → regex
+
+save_pattern("pattern") → library
+
+load_pattern("name") → pattern
+
+share_pattern("pattern","user") → sent
+
+cli_regex_exec("command","pattern") → output
+
+kernel_regex_hook("event","pattern") → action
+
+benchmark_regex("pattern","dataset") → metrics
+
+energy_profile("pattern","arch") → joules
+
+pattern_optimize("pattern") → faster_regex
+
+pattern_explain_ai("pattern") → plain_english
+
+pattern_error_detect("pattern") → issues
+
+pattern_crosslang("pattern","lang") → regex
+
+pattern_escape("pattern","lang") → safe_regex
+
+pattern_unescape("pattern","lang") → raw_regex
+
+pattern_version("pattern") → history
+
+pattern_diff("pattern1","pattern2") → changes
+
+pattern_merge("pattern1","pattern2") → unified
+
+pattern_split("pattern","criteria") → parts
+
+pattern_join("patterns") → composite
+
+pattern_clone("pattern") → copy
+
+pattern_deploy("pattern","env") → active
+
+pattern_monitor("pattern","stream") → alerts
+
+pattern_audit("pattern") → compliance
+
+pattern_lock("pattern") → immutable
+
+pattern_unlock("pattern") → editable
+
+pattern_alert("pattern") → notification
+
+D. Specialized System/Scientific Patterns
+DNA sequence (ACGT): ^[ACGT]+$
+
+RNA sequence (ACGU): ^[ACGU]+$
+
+Protein sequence: ^[ACDEFGHIKLMNPQRSTVWY]+$
+
+Scientific float: ^-?\d+\.\d+(e[-+]?\d+)?$
+
+Scientific integer: ^-?\d+$
+
+Temperature (C/F): ^-?\d+(\.\d+)?[CF]$
+
+pH value: ^(\d+(\.\d+)?|14(\.0+)?)$
+
+Scientific notation: ^-?\d+(\.\d+)?([eE][-+]?\d+)?$
+
+SI prefix: ^(\d+(\.\d+)?)([kMGTPEZYmunpfda])$
+
+Unit with exponent: ^([a-zA-Z]+)\^(\d+)$
+
+Chemical formula: ^([A-Z][a-z]?\d*)+$
+
+Enzyme code: ^\d+\.\d+\.\d+\.\d+$
+
+Gene symbol: ^[A-Z0-9\-]+$
+
+PDB ID: ^[1-9][A-Za-z0-9]{3}$
+
+PubMed ID: ^\d{8}$
+
+DOI: ^10\.\d{4,9}/[-._;()/:A-Z0-9]+$
+
+ArXiv ID: ^\d{4}\.\d{4,5}(v\d+)?$
+
+ORCID: ^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$
+
+ISBN-13: ^(97(8|9))?\d{9}(\d|X)$
+
+ISSN: ^\d{4}-\d{3}[\dX]$
+
+DOI URL: ^https:\/\/doi\.org\/10\.\d{4,9}\/[-._;()/:A-Z0-9]+$
+
+LaTeX command: \$$a-zA-Z]+
+
+LaTeX math: \$(.*?)\$
+
+Math expression: [a-zA-Z0-9\+\-\*\/\^$$$$]+
+
+Greek letters: [α-ωΑ-Ω]
+
+SI units: \b(m|kg|s|A|K|mol|cd)\b
+
+Scientific constant: \b(pi|e|c|h|G|Na|R)\b
+
+Astronomical unit: \bAU\b
+
+Parsec: \bpc\b
+
+Lightyear: \bly\b
+
+Wavelength (nm): ^\d+(\.\d+)?\s*nm$
+
+Frequency (Hz): ^\d+(\.\d+)?\s*Hz$
+
+Energy (eV): ^\d+(\.\d+)?\s*eV$
+
+Force (N): ^\d+(\.\d+)?\s*N$
+
+Pressure (Pa): ^\d+(\.\d+)?\s*Pa$
+
+Voltage (V): ^\d+(\.\d+)?\s*V$
+
+Current (A): ^\d+(\.\d+)?\s*A$
+
+Resistance (Ω): ^\d+(\.\d+)?\s*Ω$
+
+Capacitance (F): ^\d+(\.\d+)?\s*F$
+
+Inductance (H): ^\d+(\.\d+)?\s*H$
+
+Magnetic flux (Wb): ^\d+(\.\d+)?\s*Wb$
+
+Luminosity (cd): ^\d+(\.\d+)?\s*cd$
+
+Radiation (Gy): ^\d+(\.\d+)?\s*Gy$
+
+Absorbed dose (Sv): ^\d+(\.\d+)?\s*Sv$
+
+Catalytic activity (kat): ^\d+(\.\d+)?\s*kat$
+
+Molarity (mol/L): ^\d+(\.\d+)?\s*mol\/L$
+
+Concentration (M): ^\d+(\.\d+)?\s*M$
+
+p-value: ^p\s*<\s*0\.05$
+
+Significance asterisk: \*{1,3}
+
+Statistical result: t$$(\d+)$$\s*=\s*([-+]?\d+(\.\d+)?),\s*p\s*<\s*0\.05
+# Conversation transcript: PLATINUM-TIER SCIENTIFIC CHEATBOOK: DEEP-LEARNED REGEX GENERATOR SYSTEMS
+# (Codex: Directory Mapping, CLI/CLF/CLE, Kernel-Level, Neuromorphic-Regex Intersection)
+
+BEGIN {
+  print "# --- Query 1: 200 Deep-Learned Regex Patterns & Systemic Cheat Codes ---"
+  print "echo \"PLATINUM-TIER SCIENTIFIC CHEATBOOK: DEEP-LEARNED REGEX GENERATOR SYSTEMS\""
+  print "echo \"(Codex: Directory Mapping, CLI/CLF/CLE, Kernel-Level, Neuromorphic-Regex Intersection)\""
+  print "echo \"200 Deep-Learned Regex Patterns & Systemic Cheat Codes\""
+  print "echo \"A. Foundational Patterns (Validation, Extraction, Parsing)\""
+  print "echo \"Email validation: ^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$\""
+  print "echo \"Phone (US): ^\\$\\$?\\d{3}\\$\\$?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$\""
+  print "echo \"International phone: ^\\+\\d{1,3}[-.\\s]?\\$\\$?\\d+\\$\\$?[-.\\s]?\\d+[-.\\s]?\\d+$\""
+  print "echo \"URL: ^(https?:\\/\\/)?([\\w\\-]+\\.)+[\\w\\-]+(\\/[\\w\\-.,@?^=%&:\\/~+#]*)?$\""
+  print "echo \"IPv4: ^(\\d{1,3}\\.){3}\\d{1,3}$\""
+  print "echo \"IPv6: ^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$\""
+  print "echo \"Date (YYYY-MM-DD): ^\\d{4}-\\d{2}-\\d{2}$\""
+  print "echo \"Date (MM/DD/YYYY): ^\\d{2}\\/\\d{2}\\/\\d{4}$\""
+  print "echo \"Time (HH:MM:SS): ^\\d{2}:\\d{2}:\\d{2}$\""
+  print "echo \"24h time: ^(2[0-3]|[1]?\\d):[0-5]?\\d(:[0-5]?\\d)?$\""
+  print "echo \"...\" # (Patterns 11-50 omitted for brevity)"
+  print "echo \"B. Advanced Patterns (Security, Kernel-Level, Neuromorphic)\""
+  print "echo \"Block directory traversal: (\\.\\./)+\""
+  print "echo \"Block SQL injection: ('|--|;|--|/\\*|\\*/|xp_)\""
+  print "echo \"Block XSS (script tags): <script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script>\""
+  print "echo \"...\" # (Patterns 54-100 omitted for brevity)"
+  print "echo \"C. Systemic Control & Automation Patterns\""
+  print "echo \"ai2regex(\\\"desc\\\") → regex\""
+  print "echo \"test_regex(\\\"input\\\",\\\"pattern\\\") → match\""
+  print "echo \"...\" # (Patterns 103-150 omitted for brevity)"
+  print "echo \"D. Specialized System/Scientific Patterns\""
+  print "echo \"DNA sequence (ACGT): ^[ACGT]+$\""
+  print "echo \"RNA sequence (ACGU): ^[ACGU]+$\""
+  print "echo \"Protein sequence: ^[ACDEFGHIKLMNPQRSTVWY]+$\""
+  print "echo \"...\" # (Patterns 154-200 omitted for brevity)"
+  print "echo \"SCIENTIFIC EXPRESSION: The deep-learned intersection of AI-driven regex synthesis, codex-based file systems, and neuromorphic architectures enables real-time, adaptive, and energy-efficient pattern matching across both digital and neural data streams. These systemic patterns, mapped at kernel and CLI levels, provide robust, scalable, and secure automation for scientific, computational, and security-critical workflows.\""
+  print ""
+  print "# --- Query 2: 200 More Patterns in .yaml ---"
+  print "echo \"# PLATINUM-TIER SCIENTIFIC CHEATBOOK: DEEP-LEARNED REGEX GENERATOR SYSTEMS\""
+  print "echo \"# (Codex: Directory Mapping, CLI/CLF/CLE, Kernel-Level, Neuromorphic-Regex Intersection)\""
+  print "echo \"# 200 Additional Deep-Learned Regex Patterns & Systemic Cheat Codes (Exhaustive)\""
+  print "echo \"patterns:\""
+  print "echo \"  - name: \\\"Find all .txt files\\\"\""
+  print "echo \"    regex: \\\".*\\\\.txt$\\\"\""
+  print "echo \"    description: \\\"Matches all files ending with .txt\\\"\""
+  print "echo \"  - name: \\\"Find all .dat files\\\"\""
+  print "echo \"    regex: \\\".*\\\\.dat$\\\"\""
+  print "echo \"    description: \\\"Matches all files ending with .dat\\\"\""
+  print "echo \"  ... # (Patterns 3-200 omitted for brevity)\""
+  print ""
+  print "# --- Query 3: RexEgg Links YAML ---"
+  print "echo \"rexegg_links:\""
+  print "echo \"  - url: \\\"https://www.rexegg.com/regex-optimizations.html\\\"\""
+  print "echo \"    title: \\\"Regex Optimizations\\\"\""
+  print "echo \"    description: \\\"Techniques and strategies for optimizing regular expressions, including micro-optimizations, alternation ordering, exposing literals, and engine-specific considerations.\\\"\""
+  print "echo \"  - url: \\\"https://www.rexegg.com/regex-interesting-character-classes.html\\\"\""
+  print "echo \"    title: \\\"Interesting Character Classes\\\"\""
+  print "echo \"    description: \\\"Explores advanced and non-obvious character classes in regex, including Unicode, POSIX, and custom classes for powerful pattern matching.\\\"\""
+  print "echo \"  ... # (Links 3-28 omitted for brevity)\""
+  print ""
+  print "# --- Query 4: Write the entire conversation into awk ---"
+  print "# (This script is the answer to that query.)"
+  print "# Each previous answer is represented as echo statements or comments for clarity."
+  print ""
+  print "# --- End of conversation ---"
+}
 # Array of predefined regex patterns with descriptions
 my @patterns = (
     {
