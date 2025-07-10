@@ -1,4 +1,368 @@
 {
+  "file_systems": [
+    {
+      "name": "LSFS (LLM-based Semantic File System)",
+      "type": "Semantic/AI-Integrated",
+      "description": "Integrates large language models (LLMs) directly into the file system layer, enabling prompt-driven, semantic file management for AI agent operating systems. Supports advanced operations like semantic retrieval, summarization, rollback, and sharing via API/syscall interfaces. Uses vector databases for semantic indexing and embedding-based search.",
+      "integration": [
+        "AIOS (Agent Operating System)",
+        "LLM-based agents",
+        "Supports API/syscall integration for agent workflows"
+      ],
+      "ai_platform_integration": "Native—LLMs are core to the file system's operation, enabling semantic operations and agent interoperability.",
+      "reference": "[5]"
+    },
+    {
+      "name": "CTERA",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system enabling AI-driven data management and hybrid/multicloud storage, optimized for large-scale, distributed AI workloads.",
+      "integration": [
+        "Hybrid cloud storage",
+        "AI/ML pipelines",
+        "Enterprise data lakes"
+      ],
+      "ai_platform_integration": "Designed for integration with AI/ML platforms in hybrid and multi-cloud environments.",
+      "reference": "[7]"
+    },
+    {
+      "name": "Nasuni",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Cloud-native file system supporting global file sharing, versioning, and AI-ready storage for distributed enterprises.",
+      "integration": [
+        "Hybrid/multicloud AI workloads",
+        "Global file collaboration"
+      ],
+      "ai_platform_integration": "Supports AI data pipelines and analytics workloads across clouds.",
+      "reference": "[7]"
+    },
+    {
+      "name": "Panzura",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system for hybrid/multicloud architectures, optimized for AI/ML data access and global collaboration.",
+      "integration": [
+        "Hybrid/multicloud AI data management",
+        "Enterprise collaboration"
+      ],
+      "ai_platform_integration": "Facilitates AI/ML data workflows across distributed environments.",
+      "reference": "[7]"
+    },
+    {
+      "name": "JuiceFS",
+      "type": "Cloud-Native/AI-Optimized",
+      "description": "Distributed file system designed for AI and machine learning workloads. Supports storage of billions of small files, high-frequency access, and multi-sharing for model training.",
+      "integration": [
+        "AI/ML model training",
+        "High-throughput data ingestion"
+      ],
+      "ai_platform_integration": "Optimized for AI/ML platforms requiring scalable, high-performance storage.",
+      "reference": "[8]"
+    }
+  ],
+  "ai_platforms": [
+    {
+      "name": "AWS SageMaker",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Supports direct integration with cloud-native and hybrid file systems (e.g., S3, CTERA, Panzura)",
+        "End-to-end ML workflows"
+      ],
+      "reference": "[4]"
+    },
+    {
+      "name": "Google Cloud AI Platform",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Integrates with GCS, hybrid file systems, and data lakes",
+        "Supports distributed training and inference"
+      ],
+      "reference": "[4]"
+    },
+    {
+      "name": "Microsoft Azure Synapse Analytics",
+      "type": "Cloud Data & AI Platform",
+      "integration": [
+        "Integrates with Azure Data Lake, hybrid file systems",
+        "AI-driven analytics and data warehousing"
+      ],
+      "reference": "[1]"
+    },
+    {
+      "name": "IBM Watson/IBM DataStage",
+      "type": "Enterprise AI & Data Integration",
+      "integration": [
+        "Connects to enterprise file systems, hybrid/multicloud storage",
+        "AI-powered data mapping and transformation"
+      ],
+      "reference": "[1][4]"
+    },
+    {
+      "name": "fileAI",
+      "type": "AI Business Process Automation",
+      "integration": [
+        "Middleware for 100+ software platforms and file systems",
+        "Processes any file format, supports 200+ languages"
+      ],
+      "reference": "[6]"
+    },
+    {
+      "name": "SEEBURGER BIS Platform",
+      "type": "AI-Integrated Data Integration",
+      "integration": [
+        "AI-guided integration flows between business systems and file storage",
+        "No-code/low-code interfaces for semantic data mapping"
+      ],
+      "reference": "[3]"
+    }
+  ],
+  "integration_patterns": [
+    {
+      "pattern": "Semantic File System Integration",
+      "description": "File systems like LSFS embed LLMs for semantic file management, allowing AI agents and platforms to interact using natural language APIs and syscalls for CRUD, retrieval, and advanced operations.",
+      "use_case": "AI agent OS, prompt-driven workflows, semantic search, file summarization, and rollback."
+    },
+    {
+      "pattern": "Hybrid/Multicloud Storage for AI",
+      "description": "Enterprise file systems (CTERA, Nasuni, Panzura) provide unified storage across on-prem, cloud, and edge, enabling seamless data access for distributed AI/ML workloads.",
+      "use_case": "Large-scale AI/ML model training, global collaboration, data lake integration."
+    },
+    {
+      "pattern": "AI-Optimized Distributed Storage",
+      "description": "File systems like JuiceFS are purpose-built for AI/ML, supporting high-frequency access and massive file counts, ideal for model training and data science pipelines.",
+      "use_case": "ML model training, high-throughput data ingestion, scalable analytics."
+    },
+    {
+      "pattern": "AI Middleware/Data Integration Platforms",
+      "description": "Platforms like fileAI and SEEBURGER BIS act as middleware, integrating disparate file systems with AI platforms through prebuilt connectors, APIs, and intelligent data processing.",
+      "use_case": "Business process automation, cross-platform data flows, AI-powered ETL and data mapping."
+    }
+  ]
+}
+{
+  "source": "https://github.com/Doctor0Evil/Virta-Sys/blob/main/System_Regex.json",
+  "file_systems": [
+    {
+      "name": "LSFS (LLM-based Semantic File System)",
+      "type": "Semantic/AI-Integrated",
+      "description": "Integrates large language models (LLMs) directly into the file system layer, enabling prompt-driven, semantic file management for AI agent operating systems. Supports advanced operations like semantic retrieval, summarization, rollback, and sharing via API/syscall interfaces. Uses vector databases for semantic indexing and embedding-based search."
+    },
+    {
+      "name": "CTERA",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system enabling AI-driven data management and hybrid/multicloud storage, optimized for large-scale, distributed AI workloads."
+    },
+    {
+      "name": "Nasuni",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Cloud-native file system supporting global file sharing, versioning, and AI-ready storage for distributed enterprises."
+    },
+    {
+      "name": "Panzura",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system for hybrid/multicloud architectures, optimized for AI/ML data access and global collaboration."
+    },
+    {
+      "name": "JuiceFS",
+      "type": "Cloud-Native/AI-Optimized",
+      "description": "Distributed file system designed for AI and machine learning workloads. Supports storage of billions of small files, high-frequency access, and multi-sharing for model training."
+    }
+  ],
+  "ai_platforms": [
+    {
+      "name": "AWS SageMaker",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Supports direct integration with cloud-native and hybrid file systems (e.g., S3, CTERA, Panzura)",
+        "End-to-end ML workflows"
+      ]
+    },
+    {
+      "name": "Google Cloud AI Platform",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Integrates with GCS, hybrid file systems, and data lakes",
+        "Supports distributed training and inference"
+      ]
+    },
+    {
+      "name": "Microsoft Azure Synapse Analytics",
+      "type": "Cloud Data & AI Platform",
+      "integration": [
+        "Integrates with Azure Data Lake, hybrid file systems",
+        "AI-driven analytics and data warehousing"
+      ]
+    },
+    {
+      "name": "IBM Watson/IBM DataStage",
+      "type": "Enterprise AI & Data Integration",
+      "integration": [
+        "Connects to enterprise file systems, hybrid/multicloud storage",
+        "AI-powered data mapping and transformation"
+      ]
+    },
+    {
+      "name": "fileAI",
+      "type": "AI Business Process Automation",
+      "integration": [
+        "Middleware for 100+ software platforms and file systems",
+        "Processes any file format, supports 200+ languages"
+      ]
+    },
+    {
+      "name": "SEEBURGER BIS Platform",
+      "type": "AI-Integrated Data Integration",
+      "integration": [
+        "AI-guided integration flows between business systems and file storage",
+        "No-code/low-code interfaces for semantic data mapping"
+      ]
+    }
+  ],
+  "integration_patterns": [
+    {
+      "pattern": "Semantic File System Integration",
+      "description": "File systems like LSFS embed LLMs for semantic file management, allowing AI agents and platforms to interact using natural language APIs and syscalls for CRUD, retrieval, and advanced operations."
+    },
+    {
+      "pattern": "Hybrid/Multicloud Storage for AI",
+      "description": "Enterprise file systems (CTERA, Nasuni, Panzura) provide unified storage across on-prem, cloud, and edge, enabling seamless data access for distributed AI/ML workloads."
+    },
+    {
+      "pattern": "AI-Optimized Distributed Storage",
+      "description": "File systems like JuiceFS are purpose-built for AI/ML, supporting high-frequency access and massive file counts, ideal for model training and data science pipelines."
+    },
+    {
+      "pattern": "AI Middleware/Data Integration Platforms",
+      "description": "Platforms like fileAI and SEEBURGER BIS act as middleware, integrating disparate file systems with AI platforms through prebuilt connectors, APIs, and intelligent data processing."
+    }
+  ]
+}
+{
+  "file_systems": [
+    {
+      "name": "LSFS (LLM-based Semantic File System)",
+      "type": "Semantic/AI-Integrated",
+      "description": "Integrates large language models (LLMs) directly into the file system layer, enabling prompt-driven, semantic file management for AI agent operating systems. Supports advanced operations like semantic retrieval, summarization, rollback, and sharing via API/syscall interfaces. Uses vector databases for semantic indexing and embedding-based search.",
+      "integration": [
+        "AIOS (Agent Operating System)",
+        "LLM-based agents",
+        "Supports API/syscall integration for agent workflows"
+      ],
+      "ai_platform_integration": "Native—LLMs are core to the file system's operation, enabling semantic operations and agent interoperability."
+    },
+    {
+      "name": "CTERA",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system enabling AI-driven data management and hybrid/multicloud storage, optimized for large-scale, distributed AI workloads.",
+      "integration": [
+        "Hybrid cloud storage",
+        "AI/ML pipelines",
+        "Enterprise data lakes"
+      ],
+      "ai_platform_integration": "Designed for integration with AI/ML platforms in hybrid and multi-cloud environments."
+    },
+    {
+      "name": "Nasuni",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Cloud-native file system supporting global file sharing, versioning, and AI-ready storage for distributed enterprises.",
+      "integration": [
+        "Hybrid/multicloud AI workloads",
+        "Global file collaboration"
+      ],
+      "ai_platform_integration": "Supports AI data pipelines and analytics workloads across clouds."
+    },
+    {
+      "name": "Panzura",
+      "type": "Enterprise/Hybrid Cloud",
+      "description": "Enterprise file system for hybrid/multicloud architectures, optimized for AI/ML data access and global collaboration.",
+      "integration": [
+        "Hybrid/multicloud AI data management",
+        "Enterprise collaboration"
+      ],
+      "ai_platform_integration": "Facilitates AI/ML data workflows across distributed environments."
+    },
+    {
+      "name": "JuiceFS",
+      "type": "Cloud-Native/AI-Optimized",
+      "description": "Distributed file system designed for AI and machine learning workloads. Supports storage of billions of small files, high-frequency access, and multi-sharing for model training.",
+      "integration": [
+        "AI/ML model training",
+        "High-throughput data ingestion"
+      ],
+      "ai_platform_integration": "Optimized for AI/ML platforms requiring scalable, high-performance storage."
+    }
+  ],
+  "ai_platforms": [
+    {
+      "name": "AWS SageMaker",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Supports direct integration with cloud-native and hybrid file systems (e.g., S3, CTERA, Panzura)",
+        "End-to-end ML workflows"
+      ]
+    },
+    {
+      "name": "Google Cloud AI Platform",
+      "type": "Cloud AI/ML Platform",
+      "integration": [
+        "Integrates with GCS, hybrid file systems, and data lakes",
+        "Supports distributed training and inference"
+      ]
+    },
+    {
+      "name": "Microsoft Azure Synapse Analytics",
+      "type": "Cloud Data & AI Platform",
+      "integration": [
+        "Integrates with Azure Data Lake, hybrid file systems",
+        "AI-driven analytics and data warehousing"
+      ]
+    },
+    {
+      "name": "IBM Watson/IBM DataStage",
+      "type": "Enterprise AI & Data Integration",
+      "integration": [
+        "Connects to enterprise file systems, hybrid/multicloud storage",
+        "AI-powered data mapping and transformation"
+      ]
+    },
+    {
+      "name": "fileAI",
+      "type": "AI Business Process Automation",
+      "integration": [
+        "Middleware for 100+ software platforms and file systems",
+        "Processes any file format, supports 200+ languages"
+      ]
+    },
+    {
+      "name": "SEEBURGER BIS Platform",
+      "type": "AI-Integrated Data Integration",
+      "integration": [
+        "AI-guided integration flows between business systems and file storage",
+        "No-code/low-code interfaces for semantic data mapping"
+      ]
+    }
+  ],
+  "integration_patterns": [
+    {
+      "pattern": "Semantic File System Integration",
+      "description": "File systems like LSFS embed LLMs for semantic file management, allowing AI agents and platforms to interact using natural language APIs and syscalls for CRUD, retrieval, and advanced operations.",
+      "use_case": "AI agent OS, prompt-driven workflows, semantic search, file summarization, and rollback."
+    },
+    {
+      "pattern": "Hybrid/Multicloud Storage for AI",
+      "description": "Enterprise file systems (CTERA, Nasuni, Panzura) provide unified storage across on-prem, cloud, and edge, enabling seamless data access for distributed AI/ML workloads.",
+      "use_case": "Large-scale AI/ML model training, global collaboration, data lake integration."
+    },
+    {
+      "pattern": "AI-Optimized Distributed Storage",
+      "description": "File systems like JuiceFS are purpose-built for AI/ML, supporting high-frequency access and massive file counts, ideal for model training and data science pipelines.",
+      "use_case": "ML model training, high-throughput data ingestion, scalable analytics."
+    },
+    {
+      "pattern": "AI Middleware/Data Integration Platforms",
+      "description": "Platforms like fileAI and SEEBURGER BIS act as middleware, integrating disparate file systems with AI platforms through prebuilt connectors, APIs, and intelligent data processing.",
+      "use_case": "Business process automation, cross-platform data flows, AI-powered ETL and data mapping."
+    }
+  ]
+}{
   "patterns": {
     "node_id": "^[a-zA-Z0-9\\-]{16,32}$",
     "cluster_dir": "^\\/neuromesh\\/clusters\\/[a-zA-Z0-9_\\-]+$",
