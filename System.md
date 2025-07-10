@@ -25,7 +25,328 @@ struct SpikePacket {
 // Distributed Consensus in Neuromorphic Networks (Rust Module)
 // Implements a simplified swarm-inspired consensus protocol for neuromorphic mesh nodes.
 // Each node adapts to local state, energy, and feedback, achieving global agreement via event-driven updates.
+```markdown
+# 🧠 Mermaid Cheat-Book for Markdown: The Exhaustive Reference
 
+Mermaid is a powerful, JavaScript-based diagramming tool that brings flowcharts, system architecture, and technical documentation to life in Markdown. This cheat-book covers **all major Mermaid diagram types, syntax, advanced tips, and best practices** for use in technical, operational, and security documentation.
+
+---
+
+## 📚 Table of Contents
+
+1. [Basic Syntax & Embedding](#basic-syntax--embedding)
+2. [Flowcharts](#flowcharts)
+3. [Sequence Diagrams](#sequence-diagrams)
+4. [Class Diagrams](#class-diagrams)
+5. [State Diagrams](#state-diagrams)
+6. [Entity Relationship (ER) Diagrams](#entity-relationship-er-diagrams)
+7. [Gantt Charts](#gantt-charts)
+8. [Pie Charts](#pie-charts)
+9. [User Journey Diagrams](#user-journey-diagrams)
+10. [Requirement Diagrams](#requirement-diagrams)
+11. [Mindmaps](#mindmaps)
+12. [Git Graphs](#git-graphs)
+13. [Advanced: Subgraphs, Styling, Links, and Comments](#advanced-subgraphs-styling-links-and-comments)
+14. [Best Practices](#best-practices)
+15. [References & Resources](#references--resources)
+
+---
+
+## Basic Syntax & Embedding
+
+
+Show/Hide Example
+
+
+```
+graph TD
+  A[Start] --> B{Is it working?}
+```
+
+
+- Place your diagram code between triple backticks and the `mermaid` keyword.
+- Supported in GitHub, GitLab, VS Code (with extensions), and many static site generators.
+
+
+---
+
+## Flowcharts
+
+### Example
+
+```
+graph TD
+    A[Start] --> B{Is it working?}
+    B -->|Yes| C[Keep doing that]
+    B -->|No| D[Fix it]
+    D --> E[Does it work now?]
+    E -->|Yes| F[Great!]
+    E -->|No| G[Try again]
+```
+
+### Node Types
+
+- Square/Rectangle: `A[Text]`
+- Round Edges: `B(Text)`
+- Stadium: `C([Text])`
+- Circular: `D((Text))`
+- Diamond: `E{Text}`
+
+### Arrows & Links
+
+- Basic: `A --> B`
+- Dashed: `A --- B`
+- Text on Link: `A -->|Text| B`
+- Open Link: `A -.-> B`
+
+---
+
+## Sequence Diagrams
+
+### Example
+
+```
+sequenceDiagram
+    participant Alice
+    participant Bob
+    Alice->>Bob: Hello Bob, how are you?
+    Bob-->>Alice: I am good thanks!
+    Alice->>Bob: Great to hear!
+```
+
+### Syntax
+
+- Participant: `participant Name`
+- Message: `A->>B: Message`
+- Return: `B-->>A: Message`
+- Activate/Deactivate: `activate A` / `deactivate A`
+- Note: `Note right of A: Note text`
+
+---
+
+## Class Diagrams
+
+### Example
+
+```
+classDiagram
+    Animal  S1
+    S1 --> S2 : Event
+    S2 --> [*]
+    S1 : Entry/exit actions
+```
+
+- States: `stateName`
+- Transitions: `A --> B : Event`
+- Start/End: `[*]`
+
+---
+
+## Entity Relationship (ER) Diagrams
+
+### Example
+
+```
+erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    ORDER ||--|{ LINE_ITEM : contains
+    CUSTOMER {
+      string name
+      string address
+    }
+```
+
+- Entities: `ENTITY`
+- Relationships: `||--o{`, `|o--o|`, etc.
+- Attributes: `{ type name }`
+
+---
+
+## Gantt Charts
+
+### Example
+
+```
+gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Planning
+    Spec out requirements :a1, 2025-07-01, 10d
+    section Implementation
+    Develop core engine :a2, after a1, 20d
+    Test & QA :a3, after a2, 7d
+```
+
+- Title: `title`
+- Date Format: `dateFormat`
+- Section: `section Name`
+- Task: `Task Name :id, start, duration`
+
+---
+
+## Pie Charts
+
+### Example
+
+```
+pie
+    title Resource Allocation
+    "Development" : 40
+    "Testing" : 25
+    "Documentation" : 20
+    "Other" : 15
+```
+
+- Each slice: `"Label" : value`
+
+---
+
+## User Journey Diagrams
+
+### Example
+
+```
+journey
+    title Developer Onboarding
+    section Start
+      Download code: 5: User
+      Install dependencies: 3: User
+    section Setup
+      Configure environment: 2: User
+      Run tests: 4: User
+```
+
+- Steps: `Step: rating: Actor`
+
+---
+
+## Requirement Diagrams
+
+### Example
+
+```
+requirementDiagram
+    requirement req1 {
+      id: 1
+      text: The system shall be secure
+    }
+    testCase test1 {
+      id: 1
+      text: Penetration test
+    }
+    req1 - test1
+```
+
+---
+
+## Mindmaps
+
+### Example
+
+```
+mindmap
+  root((Mermaid Cheat-Book))
+    Syntax
+      Flowcharts
+      Sequence Diagrams
+      Class Diagrams
+    Advanced
+      Styling
+      Links
+      Comments
+```
+
+---
+
+## Git Graphs
+
+### Example
+
+```
+gitGraph
+    commit
+    branch develop
+    commit
+    checkout main
+    merge develop
+    commit
+```
+
+---
+
+## Advanced: Subgraphs, Styling, Links, and Comments
+
+### Subgraphs
+
+```
+graph TD
+    subgraph Cluster1
+      A
+      B
+    end
+    subgraph Cluster2
+      C
+      D
+    end
+    A --> C
+```
+
+### Styling
+
+- Node style: `style A fill:#f9f,stroke:#333,stroke-width:2px`
+- Class style: `classDef green fill:#9f6,stroke:#333,stroke-width:2px;`
+- Assign class: `class A green`
+
+### Links
+
+- Clickable: `click A "https://example.com" "Tooltip"`
+
+### Comments
+
+- `%% This is a comment`
+
+---
+
+## Best Practices
+
+- **Preview:** Use VS Code extensions or online tools to preview diagrams.
+- **Version:** Add diagram version/timestamp in captions or footers.
+- **Accessibility:** Use alt text for images and provide text summaries for complex diagrams.
+- **Security:** Never expose sensitive data or credentials in diagrams.
+- **Documentation:** Keep diagrams close to relevant content, and combine with tables for clarity.
+- **Source Control:** Store diagram source files (`.mmd`, `.drawio`) with your documentation for easy updates.
+
+---
+
+## References & Resources
+
+- [Mermaid Official Docs](https://mermaid-js.github.io/mermaid/)
+- [Mermaid Live Editor](https://mermaid.live/)
+- [GitHub: Diagrams in Markdown](https://github.blog/2022-02-14-include-diagrams-markdown-files-mermaid/)
+- [VS Code Mermaid Preview Extension](https://marketplace.visualstudio.com/items?itemName=vstirbu.vscode-mermaid-preview)
+
+---
+
+*This cheat-book is designed for exhaustive, production-grade technical documentation. For classified or privileged diagrams, follow your agency’s security protocols and reference internal docs as needed[1].*
+
+[1]: use-agency-resources-to-obtain-TtkyQO6tTJqCNri.xQQq4w.md
+```
+
+[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_e0217bbc-b895-4128-9ee7-876e87e68e4f/78448573-6392-4e7d-9274-abf417c04883/i-need-this-correctly-configur-PlTX_dwsQ_yd_44eRnwSdw.md
+[2] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_e0217bbc-b895-4128-9ee7-876e87e68e4f/17ccf97a-ea5a-454d-b588-9dc8e4b28900/i-need-full-operation-s-and-wo-dCDO5_iQRCydTznZO28vsg.md
+[3] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_e0217bbc-b895-4128-9ee7-876e87e68e4f/f7303bb3-bd53-4485-b1bf-8c73948b05a5/lets-access-my-virtual-google-z8wFHawKQ2ihxyqRq46PoA.md
+[4] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_e0217bbc-b895-4128-9ee7-876e87e68e4f/076193a1-96fd-404f-9340-964f929521e8/use-agency-resources-to-obtain-TtkyQO6tTJqCNri.xQQq4w.md
+[5] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_e0217bbc-b895-4128-9ee7-876e87e68e4f/11fddbe0-b5ac-48f5-b854-65c4b00e9e25/lets-build-some-upgrade-module-OXmaKSLYSZeFHMPVCJWiPg.md
+[6] https://github.com/JakeSteam/Mermaid
+[7] https://jojozhuang.github.io/tutorial/mermaid-cheat-sheet/
+[8] https://news.ycombinator.com/item?id=34906378
+[9] https://mermaid.js.org/intro/syntax-reference.html
+[10] https://dev.to/sh20raj/mermaid-cheat-sheet-for-markdown-3o6f
+[11] https://github.com/maty7253/mermaid-cheatsheet
+[12] https://dev.to/nagasuresh_dondapati_d5df/mastering-mermaid-a-comprehensive-cheat-sheet-45mi
+[13] https://stackoverflow.com/questions/50762662/how-to-install-mermaid-to-render-flowcharts-in-markdown
+[14] https://gist.github.com/mbaron/1d79fd3cc4de4070f6895264f01b19a1
+[15] https://docs.mermaidchart.com/mermaid-oss/syntax/flowchart.html
 use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Mutex};
 use rand::Rng;
