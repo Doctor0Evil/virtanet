@@ -1,0 +1,153 @@
+Authoritarian Codex: 50 Cheats for Neuromorphic Consensus, Directory, and Codex Control
+Enforce Cluster Hierarchies
+Mandate all mesh nodes to register within a cluster; clusters are the only units permitted to participate in inter-cluster consensus.
+
+Lockdown State Mutation
+Only consensus primitives (e.g., local_consensus_round) may alter node state; direct state mutation is forbidden.
+
+Sample Quotas
+Set a strict upper bound on neighbor sampling (sample_ratio), tunable only by system administrators.
+
+Node Authentication
+Require cryptographic signatures for all node-to-node communications.
+
+Consensus Audit Trails
+Log every consensus round, including participant IDs, state vectors, and weights, to a tamper-evident ledger.
+
+Immutable Node IDs
+Node identifiers (node_id()) are immutable post-creation; any attempt to alter triggers a security alert.
+
+Cluster Representative Election
+Only nodes with the highest uptime and lowest error rate may serve as cluster representatives.
+
+Probabilistic Update Policy
+Permit probabilistic consensus only if system energy reserves exceed a defined threshold.
+
+State Vector Integrity
+All state vectors must pass hash-based integrity checks before and after consensus rounds.
+
+Forced State Synchronization
+Allow forced state synchronization from cluster representatives to all cluster members during emergencies.
+
+Secure Neighbor Discovery
+Neighbors are discovered via a signed registry; dynamic, unauthenticated neighbor discovery is disabled.
+
+CLI Command Whitelisting
+Only approved consensus and diagnostic commands are executable at the CLI; all others are blocked.
+
+Consensus Weight Lockdown
+Weights (weight_self, weight_neighbors) are set by policy and cannot be overridden at runtime.
+
+Consensus Failure Quarantine
+Nodes failing to reach consensus after N rounds are isolated for inspection.
+
+Directory Structure Enforcement
+All mesh-related files must reside in /neuromesh/ with strict subdirectory partitioning (e.g., /neuromesh/state/, /neuromesh/logs/).
+
+Codex Registry Enforcement
+All codexes (distributed storage units) must be registered in a central, signed directory.
+
+Kernel-Level Logging
+All consensus operations are logged at the kernel level and mirrored to a secure enclave.
+
+Memory Access Control
+Only consensus routines may access or modify neuromorphic memory regions.
+
+Containerization Mandate
+All mesh nodes must run within containerized environments for isolation and reproducibility.
+
+Event-Driven Update Scheduling
+Consensus rounds are triggered only by authorized events or system timers.
+
+CLI Session Auditing
+All CLI sessions are recorded and cryptographically signed for later review.
+
+State Vector Size Policy
+Enforce fixed-length state vectors per node type; variable-length vectors are rejected.
+
+Cluster Membership Verification
+Nodes must periodically verify their cluster membership via signed challenges.
+
+Energy-Aware Consensus
+Consensus rounds are skipped if node energy falls below a critical threshold.
+
+Consensus Version Pinning
+All nodes must run the same consensus protocol version; mismatches trigger forced updates.
+
+Mesh Topology Snapshots
+Regularly snapshot mesh topology and store in a secure, versioned archive.
+
+Directory Traversal Prevention
+All file and directory operations must pass regex-based sanitization to block traversal exploits.
+
+Codex Access Control
+Only authenticated processes may read or write to codex storage.
+
+State Rollback Capability
+Enable rollback to previous state vectors in case of consensus failure.
+
+Inter-Cluster Quorum Enforcement
+Require a quorum of cluster representatives for inter-cluster consensus.
+
+CLI Rate Limiting
+Impose rate limits on CLI commands to prevent abuse.
+
+Consensus Round Throttling
+Limit the maximum frequency of consensus rounds per node.
+
+Secure Bootstrapping
+Nodes must bootstrap from a signed, verified image.
+
+Mesh Node Blacklisting
+Administrators may blacklist nodes by ID, instantly ejecting them from all consensus activities.
+
+Codex Erasure Coding
+All codex data is stored with erasure coding for durability.
+
+Zero-Knowledge State Proofs
+Nodes must provide zero-knowledge proofs of state for sensitive operations.
+
+CLI Command Logging
+All CLI commands and arguments are logged to an immutable journal.
+
+Hierarchical Consensus Policy
+Only after intra-cluster consensus may inter-cluster aggregation occur; this order is enforced.
+
+Emergency Consensus Freeze
+Administrators may freeze all consensus activity system-wide in emergencies.
+
+Mesh Node Health Checks
+Nodes must pass periodic health checks or be quarantined.
+
+Directory Naming Conventions
+All directories and files must conform to strict regex-based naming policies.
+
+Codex Volume Identification
+Codex storage volumes must use unique, policy-compliant identifiers.
+
+Consensus State Encryption
+All state vectors are encrypted at rest and in transit.
+
+Mesh Node Time Synchronization
+All nodes must synchronize clocks to a trusted time source.
+
+CLI Access Control
+CLI access is restricted to authorized personnel with multi-factor authentication.
+
+Consensus Algorithm Fallback
+If the primary algorithm fails, nodes must switch to a backup consensus protocol.
+
+Audit-Ready State Snapshots
+Periodic, signed snapshots of all node states are archived for compliance.
+
+Kernel Panic on Policy Violation
+Any violation of core consensus or directory policies triggers a kernel panic and node shutdown.
+
+Codex Data Sharding
+Codex storage is sharded for scalability and resilience.
+
+CLI/CLE/CLF Registry
+All command-line interfaces, files, and environments must be registered in a central, signed registry for audit and control.
+
+Purpose and Rationale:
+This codex is modeled after real-world digital authoritarian practices, emphasizing centralized control, auditability, and strict policy enforcement at every layer of the system. It leverages hierarchical structuring, cryptographic authentication, immutable logging, and strict access controls—tools that, in the context of digital authoritarianism, are used to maintain regime stability, suppress dissent, and ensure operational compliance. The codex’s focus on directory and codex enforcement, kernel-level controls, and audit trails reflects the institutional and technological mechanisms observed in advanced digital authoritarian systems.
