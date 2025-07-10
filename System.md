@@ -127,7 +127,217 @@ impl GODSystem {
         let snapshot = self.factory_snapshot.clone(); // From FactorySettings
         self.current_state = snapshot;
         self.neurosys.lock().unwrap().reset_to(snapshot); // Reset neuromorphic VM
+   # neuromorphic_access_control.yaml (ENRICHED, PLATINUM-TIER, SCIENTIFIC EXPRESSION)
+
+access_control:
+  description: >
+    Implement regex-based access control for neuromorphic security systems.
+    Use pattern matching to define, enforce, and verify file, directory, and resource access policies.
+    Leverage advanced regex rules for granular, dynamic, and formally verifiable enforcement.
+    Integrate pattern matching to optimize cybernetic file management.
+    Apply advanced regex rules to strengthen system access enforcement.
+  mechanisms:
+    - match_type: allow
+      regex_patterns:
+        - "^N/neuralinterfaces/virtual/.*$"         # Only neural controllers access neuromorphic interfaces
+      roles:
+        - NeuralController
+    - match_type: deny
+      regex_patterns:
+        - "^dea/audit/immutable/.*$"                # Block all access to immutable audit logs except AuditLogger
+      roles:
+        - "*"
+      exceptions:
+        - AuditLogger
+    - match_type: deny
+      regex_patterns:
+        - "^TMP/.*\\.(exe|sh|bat)$"                 # Block suspicious temp executables
+      roles:
+        - "*"
+    - match_type: allow
+      regex_patterns:
+        - "^Z/integrators/virtual/.*\\.vint$"       # Allow only virtual integrator modules
+      roles:
+        - VirtualIntegrator
+    - match_type: allow
+      regex_patterns:
+        - "^sys/ai/agents/.*\\.ai$"                 # Allow AI agents to access .ai files
+      roles:
+        - AIAgent
+    - match_type: deny
+      regex_patterns:
+        - ".*\\.bak$"                               # Deny all .bak backup files
+      roles:
+        - "*"
+  dynamic_policy:
+    context_aware: true
+    update_on:
+      - threat_detected
+      - operational_phase_change
+      - anomaly_detection
+      - policy_update_event
+    audit_log: true
+    formal_verification: true
+    adaptive_response: true
+  compliance:
+    - enforce_naming_conventions: true
+    - audit_log_scrubbing: true
+    - least_privilege: true
+    - continuous_monitoring: true
+    - regulatory_alignment: true
+  threat_detection:
+    - behavioral_pattern_analysis: true
+    - payload_inspection: true
+    - anomaly_detection: true
+    - directory_traversal_protection: true
+    - url_filtering: true
+    - pattern_recognition: true
+// neuromorphic_access_control.rs (ENRICHED, PLATINUM-TIER, SCIENTIFIC EXPRESSION)
+
+use regex::Regex;
+use std::collections::HashMap;
+
+struct AccessPolicy {
+    allow_patterns: Vec<Regex>,
+    deny_patterns: Vec<Regex>,
+    exceptions: HashMap<String, Vec<String>>, // pattern -> allowed roles
+}
+
+impl AccessPolicy {
+    fn is_allowed(&self, role: &str, path: &str) -> bool {
+        for pat in &self.deny_patterns {
+            if pat.is_match(path) {
+                if let Some(allowed_roles) = self.exceptions.get(pat.as_str()) {
+                    if allowed_roles.contains(&role.to_string()) {
+                        continue;
+                    }
+                }
+                return false;
+            }
+        }
+        for pat in &self.allow_patterns {
+            if pat.is_match(path) {
+                return true;
+            }
+        }
+        false
     }
+}
+
+fn main() {
+    let allow_patterns = vec![
+        Regex::new(r"^N/neuralinterfaces/virtual/.*$").unwrap(),           // Only neural controllers
+        Regex::new(r"^Z/integrators/virtual/.*\.vint$").unwrap(),          // Virtual integrator modules
+        Regex::new(r"^sys/ai/agents/.*\.ai$").unwrap(),                    // AI agent files
+    ];
+    let deny_patterns = vec![
+        Regex::new(r"^dea/audit/immutable/.*$").unwrap(),                  // Immutable audit logs
+        Regex::new(r"^TMP/.*\.(exe|sh|bat)$").unwrap(),                    // Suspicious temp executables
+        Regex::new(r".*\.bak$").unwrap(),                                  // Backup files
+    ];
+    let mut exceptions = HashMap::new();
+    exceptions.insert(r"^dea/audit/immutable/.*$".to_string(), vec!["AuditLogger".to_string()]);
+
+    let policy = AccessPolicy {
+        allow_patterns,
+        deny_patterns,
+        exceptions,
+    };
+
+    let test_cases = vec![
+        ("NeuralController", "N/neuralinterfaces/virtual/alpha"),
+        ("User", "dea/audit/immutable/log1"),
+        ("AuditLogger", "dea/audit/immutable/log2"),
+        ("User", "TMP/malware.exe"),
+        ("VirtualIntegrator", "Z/integrators/virtual/core.vint"),
+        ("AIAgent", "sys/ai/agents/brain.ai"),
+        ("User", "backup/settings.bak"),
+    ];
+
+    for (role, path) in test_cases {
+        println!(
+            "Role: {}, Path: {}, Allowed: {}",
+            role,
+            path,
+            policy.is_allowed(role, path)
+        );
+    }
+}
+// neuromorphic_access_control.go (ENRICHED, PLATINUM-TIER, SCIENTIFIC EXPRESSION)
+
+package main
+
+import (
+	"fmt"
+	"regexp"
+)
+
+type AccessPolicy struct {
+	AllowPatterns []*regexp.Regexp
+	DenyPatterns  []*regexp.Regexp
+	Exceptions    map[string][]string // pattern -> allowed roles
+}
+
+func (ap *AccessPolicy) IsAllowed(role, path string) bool {
+	for _, pat := range ap.DenyPatterns {
+		if pat.MatchString(path) {
+			if roles, ok := ap.Exceptions[pat.String()]; ok {
+				for _, r := range roles {
+					if r == role {
+						goto ALLOW
+					}
+				}
+			}
+			return false
+		}
+	}
+ALLOW:
+	for _, pat := range ap.AllowPatterns {
+		if pat.MatchString(path) {
+			return true
+		}
+	}
+	return false
+}
+
+func main() {
+	allowPatterns := []*regexp.Regexp{
+		regexp.MustCompile(`^N/neuralinterfaces/virtual/.*$`),           // Only neural controllers
+		regexp.MustCompile(`^Z/integrators/virtual/.*\.vint$`),          // Virtual integrator modules
+		regexp.MustCompile(`^sys/ai/agents/.*\.ai$`),                    // AI agent files
+	}
+	denyPatterns := []*regexp.Regexp{
+		regexp.MustCompile(`^dea/audit/immutable/.*$`),                  // Immutable audit logs
+		regexp.MustCompile(`^TMP/.*\.(exe|sh|bat)$`),                    // Suspicious temp executables
+		regexp.MustCompile(`.*\.bak$`),                                  // Backup files
+	}
+	exceptions := map[string][]string{
+		`^dea/audit/immutable/.*$`: {"AuditLogger"},
+	}
+
+	policy := AccessPolicy{
+		AllowPatterns: allowPatterns,
+		DenyPatterns:  denyPatterns,
+		Exceptions:    exceptions,
+	}
+
+	testCases := []struct {
+		role string
+		path string
+	}{
+		{"NeuralController", "N/neuralinterfaces/virtual/alpha"},
+		{"User", "dea/audit/immutable/log1"},
+		{"AuditLogger", "dea/audit/immutable/log2"},
+		{"User", "TMP/malware.exe"},
+		{"VirtualIntegrator", "Z/integrators/virtual/core.vint"},
+		{"AIAgent", "sys/ai/agents/brain.ai"},
+		{"User", "backup/settings.bak"},
+	}
+
+	for _, tc := range testCases {
+		fmt.Printf("Role: %s, Path: %s, Allowed: %v\n", tc.role, tc.path, policy.IsAllowed(tc.role, tc.path))
+	}
+} }
 }
 // From the file's `AccessControl` struct:
 fn activate_lockout(&mut self) {
