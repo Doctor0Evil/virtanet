@@ -232,3 +232,87 @@
     "https://www.codecademy.com/learn/paths/data-science-nlp"
   ]
 }
+{
+  "arm_developer_resources": [
+    {
+      "title": "MOBST-PRO0",
+      "url": "https://developer.arm.com/downloads/view/MOBST-PRO0"
+    },
+    {
+      "title": "KEMDK-PRO0",
+      "url": "https://developer.arm.com/downloads/view/KEMDK-PRO0"
+    },
+    {
+      "title": "AN521",
+      "url": "https://developer.arm.com/downloads/view/AN521"
+    },
+    {
+      "title": "BP062",
+      "url": "https://developer.arm.com/downloads/view/BP062"
+    },
+    {
+      "title": "KEILAR166",
+      "url": "https://developer.arm.com/downloads/view/KEILAR166"
+    },
+    {
+      "title": "KEILPK166",
+      "url": "https://developer.arm.com/downloads/view/KEILPK166"
+    },
+    {
+      "title": "AN524",
+      "url": "https://developer.arm.com/downloads/view/AN524"
+    },
+    {
+      "title": "KEMDK-STM0",
+      "url": "https://developer.arm.com/downloads/view/KEMDK-STM0"
+    },
+    {
+      "title": "AT472",
+      "url": "https://developer.arm.com/downloads/view/AT472"
+    },
+    {
+      "title": "NS99AS000",
+      "url": "https://developer.arm.com/downloads/view/NS99AS000"
+    },
+    {
+      "title": "VEJ30",
+      "url": "https://developer.arm.com/downloads/view/VEJ30"
+    },
+    {
+      "title": "IV009FD",
+      "url": "https://developer.arm.com/downloads/view/IV009FD"
+    },
+    {
+      "title": "DS000B",
+      "url": "https://developer.arm.com/downloads/view/DS000B"
+    },
+    {
+      "title": "KEMDK-NUV1",
+      "url": "https://developer.arm.com/downloads/view/KEMDK-NUV1"
+    },
+    {
+      "title": "AN545",
+      "url": "https://developer.arm.com/downloads/view/AN545"
+    },
+    {
+      "title": "KEMDK-HOL0",
+      "url": "https://developer.arm.com/downloads/view/KEMDK-HOL0"
+    },
+    {
+      "title": "AT426",
+      "url": "https://developer.arm.com/downloads/view/AT426"
+    },
+    {
+      "title": "VERSA",
+      "url": "https://developer.arm.com/downloads/view/VERSA"
+    },
+    {
+      "title": "Arm Downloads Search",
+      "url": "https://developer.arm.com/downloads/search?"
+    },
+    {
+      "title": "HWSKT-EAC0 (sorted by availability)",
+      "url": "https://developer.arm.com/downloads/view/HWSKT-EAC0?sortBy=availableBy"
+    }
+  ]
+}
