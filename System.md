@@ -26,6 +26,12 @@ struct SpikePacket {
 // Implements a simplified swarm-inspired consensus protocol for neuromorphic mesh nodes.
 // Each node adapts to local state, energy, and feedback, achieving global agreement via event-driven updates.
 # reality.os.md
+Topic	Key Points
+Thread Management	Controls performance, prevents blowup, enables linear-time matching
+Non-Recursive VMs	Avoid stack overflow, explicit resource control, easier debugging
+Backtracking Limits	Prevent DoS, may cause false negatives if a match is missed due to limits
+Split Instructions	Enable alternation, quantifiers, lookaround, and complex regex features
+VM Instruction Set Evolution	Adds submatch registers, save/restore, hierarchical/named groups, optimized backreferences
 
 ## Overview
 **reality.os** is a modular, autonomous, and secure operating system engine for persistent, self-healing operation across distributed, virtual, and hardware environments. It powers the Virtual Super Computer (VSC) ecosystem, enabling advanced orchestration, auditability, and compliance for all mission-critical workflows.
