@@ -59,7 +59,389 @@ struct SpikePacket {
 "capabilities": ["data-ingestion", "binary-parsing", "RBD-to-GDB-synthesis"],
 "automation": "on-activation auto-ingests all flagged unprocessed binary data"
 }
+flowchart LR
+    A[Start] --> B{Should you?}
+    B -- Yes --> C{{Do it}}
+    B -- Maybe --> D[(Save for later)]
+    B -- No --> E[Okay]
+sequenceDiagram
+    Alice ->>+ Bob: Here's a message!
+    Bob ->>- Alice: Hmm, ok, thanks.
+classDiagram
+    class ClassName {
+        String stringName
+        Long longName
+        MyDatatype attributeName
 
+        functionName(parameter) ReturnType
+        functionName2(parameter2) ReturnType
+    }
+    class Interface {
+        Int intName
+    }
+    ClassName --|> Interface
+stateDiagram-v2
+    Stationary --> Moving : Begin moving
+    Moving --> Stationary : Stop moving
+erDiagram
+    User {
+        Int id PK
+        String username
+        Int serverId FK
+    }
+
+    Server {
+        Int id PK
+        String serverName
+    }
+
+    Server ||--o{ User : has
+journey
+    title User Journey
+    section Logging in
+        Navigate to login: 4: Alice, Bob, Craig
+        Entering details: 2: Alice, Bob
+        Pressing button: 5: Alice
+gantt
+    Dated Milestone: milestone, m1, 2023-01-01, 1d
+    Relative Milestone: milestone, m2, after m1, 1d
+    Task 1: a1, 2023-01-01, 1d
+    Task 2: a2, after a1, 1d
+    Task 3: a3, 2023-01-01, 36hr
+pie
+    title Fruits
+    "Apples" : 50
+    "Oranges" : 20
+    "Grapes" : 9.99
+    "Passionfruits" : 12.5
+quadrantChart
+    title Title of quadrant chart
+    x-axis X low value --> X high value
+    y-axis Y low value --> Y high value
+    quadrant-1 Top right name
+    quadrant-2 Top left name
+    quadrant-3 Bottom left name
+    quadrant-4 Bottom right name
+    Value A: [0.1, 0.2]
+    Value B: [0.9, 0.8]
+    Value C: [0.5, 0.5]
+    Value D: [0.9, 0.9]
+requirementDiagram
+    requirement UptimeRequirement {
+        id: 1
+        text: Site Uptime
+        risk: Medium
+        verifymethod: Analysis
+    }
+
+    element satisfyingElement {
+        type: MyElement
+        docref: ABC001
+    }
+
+    element containingElement {
+        type: MyElement
+        docref: ABC002
+    }
+
+    satisfyingElement - satisfies -> UptimeRequirement
+    containingElement - contains -> UptimeRequirement
+gitGraph
+    commit
+    branch branch2
+    checkout branch2
+    commit
+    checkout main
+    commit
+    merge branch2
+C4Dynamic
+    title Internet Banking System Application
+
+    ContainerDb(c4, "Database", "Schema", "Stores")
+    Container(c1, "SPA", "JS", "Banking.")
+    Container_Boundary(b, "API Application") {
+      Component(c3, "Security", "Bean", "Login.")
+      Component(c2, "Controller", "Controller", "A")
+    }
+    Rel(c1, c2, "Submits", "JSON/HTTPS")
+    Rel(c2, c3, "Calls isAuthenticated() on")
+    Rel(c3, c4, "select *", "JDBC")
+mindmap
+    Middle element
+        Branch 1
+        Branch 2
+        Branch 3
+        Branch 4
+            Sub-branch 1
+            Sub-branch 2
+            Sub-branch 3
+                Sub-sub-branch 1
+timeline
+    title Timeline title
+    2001: Something happened
+    2002: Something else happened
+    2003: Another thing happened
+    Whenever: This happened!
+            : And this!
+zenuml
+    @Actor "An actor"
+    @VirtualMachine "A virtual machine"
+    @GoogleSecurity "Google Security"
+    @S3 "S3 bucket"
+    "An actor"->"A virtual machine": Uses
+    "A virtual machine"->"Google Security": Logs in
+    "Google Security"->"S3 bucket": Stores data
+sankey-beta
+    BlockA,SubblockA,100
+    BlockA,SubblockB,50
+    BlockA,SubblockC,10
+    SubblockA,SubsubblockA,70
+    SubblockA,SubsubblockC,30
+    SubblockB,SubsubblockA,50
+    SubblockC,SubsubblockB,7
+    SubblockC,SubsubblockD,80
+    BlockB,SubsubblockD,20
+xychart-beta
+    title "Chart title"
+    x-axis "Some months" [January, Febuary, March]
+    y-axis "How much I like them" 0.0 --> 1.0
+    bar [0.3, 0.1, 0.4]
+    line [5000, 6000, 7500]
+block-beta
+    columns 5
+    a:3 b:2 c d e f g h
+    block:myBlock:2
+        columns 2
+        i j k
+    end
+packet-beta
+    title Packet diagram title
+    0-5: "First bytes"
+    6-15: "More bytes"
+    16-31: "Many more!"
+    32-63: "A defined row"
+    64-93: "Almost full row"
+    94: "A"
+    95: "B"
+kanban
+    Individual metadata
+        Task B@{ ticket: ABC-123 }
+        Task C@{ assigned: 'Jake' }
+        Task D@{ priority: 'High' }
+    Combined metadata
+        Task A@{ ticket: ABC, assigned: 'J', priority: 'High' }
+    All priorities
+        Very High@{ priority: 'Very High' }
+        High@{ priority: 'High' }
+        Default
+        Low@{ priority: 'Low' }
+        Very Low@{ priority: 'Very Low' }
+architecture-beta
+    service db(database)[Database]
+    service disk1(disk)[Storage]
+    service disk2(disk)[Storage]
+    service server(server)[Server]
+
+    db:L <-- R:server
+    disk1:T -- B:server
+    disk2:T <-- B:db
+radar-beta
+    title Language skills
+    axis English, French, German, Spanish, Dutch, Abc, Def
+    curve a["User1"]{20, 30, 50, 60, 80, 30, 30}
+    curve b["User2"]{80, 30, 40, 50, 90, 10, 20}
+    curve c["User3"]{100, 100, 30, 50, 70, 70, 40}
+flowchart LR
+    A[Start] --> B{Should you?}
+    B -- Yes --> C{{Do it}}
+    B -- Maybe --> D[(Save for later)]
+    B -- No --> E[Okay]
+sequenceDiagram
+    Alice ->>+ Bob: Here's a message!
+    Bob ->>- Alice: Hmm, ok, thanks.
+classDiagram
+    class ClassName {
+        String stringName
+        Long longName
+        MyDatatype attributeName
+
+        functionName(parameter) ReturnType
+        functionName2(parameter2) ReturnType
+    }
+    class Interface {
+        Int intName
+    }
+    ClassName --|> Interface
+stateDiagram-v2
+    Stationary --> Moving : Begin moving
+    Moving --> Stationary : Stop moving
+erDiagram
+    User {
+        Int id PK
+        String username
+        Int serverId FK
+    }
+
+    Server {
+        Int id PK
+        String serverName
+    }
+
+    Server ||--o{ User : has
+journey
+    title User Journey
+    section Logging in
+        Navigate to login: 4: Alice, Bob, Craig
+        Entering details: 2: Alice, Bob
+        Pressing button: 5: Alice
+gantt
+    Dated Milestone: milestone, m1, 2023-01-01, 1d
+    Relative Milestone: milestone, m2, after m1, 1d
+    Task 1: a1, 2023-01-01, 1d
+    Task 2: a2, after a1, 1d
+    Task 3: a3, 2023-01-01, 36hr
+pie
+    title Fruits
+    "Apples" : 50
+    "Oranges" : 20
+    "Grapes" : 9.99
+    "Passionfruits" : 12.5
+quadrantChart
+    title Title of quadrant chart
+    x-axis X low value --> X high value
+    y-axis Y low value --> Y high value
+    quadrant-1 Top right name
+    quadrant-2 Top left name
+    quadrant-3 Bottom left name
+    quadrant-4 Bottom right name
+    Value A: [0.1, 0.2]
+    Value B: [0.9, 0.8]
+    Value C: [0.5, 0.5]
+    Value D: [0.9, 0.9]
+requirementDiagram
+    requirement UptimeRequirement {
+        id: 1
+        text: Site Uptime
+        risk: Medium
+        verifymethod: Analysis
+    }
+
+    element satisfyingElement {
+        type: MyElement
+        docref: ABC001
+    }
+
+    element containingElement {
+        type: MyElement
+        docref: ABC002
+    }
+
+    satisfyingElement - satisfies -> UptimeRequirement
+    containingElement - contains -> UptimeRequirement
+gitGraph
+    commit
+    branch branch2
+    checkout branch2
+    commit
+    checkout main
+    commit
+    merge branch2
+C4Dynamic
+    title Internet Banking System Application
+
+    ContainerDb(c4, "Database", "Schema", "Stores")
+    Container(c1, "SPA", "JS", "Banking.")
+    Container_Boundary(b, "API Application") {
+      Component(c3, "Security", "Bean", "Login.")
+      Component(c2, "Controller", "Controller", "A")
+    }
+    Rel(c1, c2, "Submits", "JSON/HTTPS")
+    Rel(c2, c3, "Calls isAuthenticated() on")
+    Rel(c3, c4, "select *", "JDBC")
+mindmap
+    Middle element
+        Branch 1
+        Branch 2
+        Branch 3
+        Branch 4
+            Sub-branch 1
+            Sub-branch 2
+            Sub-branch 3
+                Sub-sub-branch 1
+timeline
+    title Timeline title
+    2001: Something happened
+    2002: Something else happened
+    2003: Another thing happened
+    Whenever: This happened!
+            : And this!
+zenuml
+    @Actor "An actor"
+    @VirtualMachine "A virtual machine"
+    @GoogleSecurity "Google Security"
+    @S3 "S3 bucket"
+    "An actor"->"A virtual machine": Uses
+    "A virtual machine"->"Google Security": Logs in
+    "Google Security"->"S3 bucket": Stores data
+sankey-beta
+    BlockA,SubblockA,100
+    BlockA,SubblockB,50
+    BlockA,SubblockC,10
+    SubblockA,SubsubblockA,70
+    SubblockA,SubsubblockC,30
+    SubblockB,SubsubblockA,50
+    SubblockC,SubsubblockB,7
+    SubblockC,SubsubblockD,80
+    BlockB,SubsubblockD,20
+xychart-beta
+    title "Chart title"
+    x-axis "Some months" [January, Febuary, March]
+    y-axis "How much I like them" 0.0 --> 1.0
+    bar [0.3, 0.1, 0.4]
+    line [5000, 6000, 7500]
+block-beta
+    columns 5
+    a:3 b:2 c d e f g h
+    block:myBlock:2
+        columns 2
+        i j k
+    packet-beta
+    title Packet diagram title
+    0-5: "First bytes"
+    6-15: "More bytes"
+    16-31: "Many more!"
+    32-63: "A defined row"
+    64-93: "Almost full row"
+    94: "A"
+    95: "B"
+kanban
+    Individual metadata
+        Task B@{ ticket: ABC-123 }
+        Task C@{ assigned: 'Jake' }
+        Task D@{ priority: 'High' }
+    Combined metadata
+        Task A@{ ticket: ABC, assigned: 'J', priority: 'High' }
+    All priorities
+        Very High@{ priority: 'Very High' }
+        High@{ priority: 'High' }
+        Default
+        Low@{ priority: 'Low' }
+        Very Low@{ priority: 'Very Low' }
+architecture-beta
+    service db(database)[Database]
+    service disk1(disk)[Storage]
+    service disk2(disk)[Storage]
+    service server(server)[Server]
+
+    db:L <-- R:server
+    disk1:T -- B:server
+    disk2:T <-- B:db
+radar-beta
+    title Language skills
+    axis English, French, German, Spanish, Dutch, Abc, Def
+    curve a["User1"]{20, 30, 50, 60, 80, 30, 30}
+    curve b["User2"]{80, 30, 40, 50, 90, 10, 20}
+    curve c["User3"]{100, 100, 30, 50, 70, 70, 40}
 text
 - **Session Registry:** All modules, upgrades, and world events are registered for persistent, auditable gameplay and system operation.
 
