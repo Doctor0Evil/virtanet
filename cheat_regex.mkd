@@ -151,3 +151,332 @@ All command-line interfaces, files, and environments must be registered in a cen
 
 Purpose and Rationale:
 This codex is modeled after real-world digital authoritarian practices, emphasizing centralized control, auditability, and strict policy enforcement at every layer of the system. It leverages hierarchical structuring, cryptographic authentication, immutable logging, and strict access controls—tools that, in the context of digital authoritarianism, are used to maintain regime stability, suppress dissent, and ensure operational compliance. The codex’s focus on directory and codex enforcement, kernel-level controls, and audit trails reflects the institutional and technological mechanisms observed in advanced digital authoritarian systems.
+# AI System Regex Cheatbook (.mkd)
+**Platinum-Tier Kernel-Level Regular Expression Reference and Command Codex**  
+*For AI, Neuromorphic, and Cybernetic File Systems*
+
+---
+
+## LEGEND
+
+- **N://** – Neuromorphic Root
+- **Z://** – System (Primary)
+- **P://** – Plugin/Peripheral
+- **dea://** – Data Lake/Encrypted Audit
+- **VFS://** – Virtual File System
+- **GDB://** – Gold Data Block (Immutable)
+- **HUD://** – Heads-Up Display/Overlay
+- **AI://** – AI/ML Models
+- **REG://** – Registry/Manifest
+- **LOG://** – Audit/Activity Logs
+- **SEC://** – Security/Compliance
+- **BOOT://** – Bootstrapping/Init
+- **CFG://** – Configurations
+- **TMP://** – Temporary/Runtime
+- **ML://** – Machine Learning
+- **NET://** – Network/Resolver
+- **OS://** – Virtual OS Loader
+
+---
+
+## 1. BASIC REGEX COMMANDS
+
+1. `match --pattern "^cat$" --targetYstring`
+2. `find --pattern "\d+" --targetYfile`
+3. `replace --pattern "foo" --with "bar" --targetYfile`
+4. `extract --pattern "(?<=@)\w+" --targetYemails`
+5. `validate --pattern "^[A-Z][a-z]+$" --targetYnames`
+6. `grep --pattern "\berror\b" --targetYLOG://audit/`
+7. `list --pattern "^N://.*\.nif$" --targetYfilesystem`
+8. `filter --pattern "^[^#].*$" --targetYconfig`
+9. `split --pattern "\s+" --targetYstring`
+10. `count --pattern "\bAI\b" --targetYdocs`
+
+---
+
+## 2. ACCESS CONTROL & SECURITY
+
+11. `allow --pattern "^SEC://.*\.sec$" --role admin`
+12. `deny --pattern "^TMP://.*\.(exe|bat|sh)$" --role all`
+13. `enforce --pattern "^dea://.*$" --policy immutable`
+14. `audit --pattern "^LOG://.*$" --targetYall`
+15. `lockdown --pattern "^N://neuralraw/.*$" --targetYfilesystem`
+16. `whitelist --pattern "^Z://integrators/virtual/.*\.vint$"`
+17. `blacklist --pattern "^P://.*\.dll$"`
+18. `monitor --pattern "^AI://security/.*$" --alertYthreat`
+19. `scrub --pattern "password|secret" --targetYdea://`
+20. `redact --pattern "[0-9]{3}-[0-9]{2}-[0-9]{4}" --targetYlogs`
+
+---
+
+## 3. FILE SYSTEM & DIRECTORY MATCHING
+
+21. `find --pattern "^dea://backup/.*\.bak$"`
+22. `find --pattern "^GDB://datalake/.*"`
+23. `find --pattern "^OS://runtime/.*\.vrt$"`
+24. `find --pattern "^HUD://overlays/.*\.ovm$"`
+25. `find --pattern "^ML://predictor/.*\.mlp$"`
+26. `find --pattern "^VFS://root/.*"`
+27. `find --pattern "^SEC://access/device/.*\.dip$"`
+28. `find --pattern "^BOOT://config/.*\.bcfg$"`
+29. `find --pattern "^CFG://energy/.*\.etypes$"`
+30. `find --pattern "^REG://devices/.*\.vdr$"`
+
+---
+
+## 4. AUDIT & COMPLIANCE
+
+31. `audit --pattern "^dea://audit/.*$"`
+32. `audit --pattern "^LOG://activity/.*$"`
+33. `report --pattern "^dea://compliance/logs/.*\.log$"`
+34. `verify --pattern "^dea://security/policy/manifest\.sec$"`
+35. `snapshot --pattern "^dea://snapshots/.*\.snap$"`
+36. `backup --pattern "^dea://backup/lakehouse/.*\.bak$"`
+37. `mirror --pattern "^dea://registry/mirror/.*\.reg$"`
+38. `archive --pattern "^dea://descriptors/archive/.*"`
+39. `state --pattern "^dea://events/scheduler/state\.evst$"`
+40. `schedule --pattern "^\d{4}-\d{2}-\d{2}$" --targetYevents`
+
+---
+
+## 5. AI & NEUROMORPHIC MODULES
+
+41. `deploy --pattern "^AI://sync/federated/.*\.ai$"`
+42. `deploy --pattern "^N://neural/controllers/.*\.nctl$"`
+43. `deploy --pattern "^N://mapping/engine/.*\.nme$"`
+44. `deploy --pattern "^Z://automation/engine\.pae$"`
+45. `deploy --pattern "^AI://security/threat/.*\.tdai$"`
+46. `deploy --pattern "^N://ecosystem/cybernetic/.*\.nce$"`
+47. `deploy --pattern "^BOOT://system/.*\.bsys$"`
+48. `deploy --pattern "^OS://neural/loader\.nos$"`
+49. `deploy --pattern "^Z://operations/handoff\.ohm$"`
+50. `deploy --pattern "^GDB://datalake/.*\.gdb$"`
+
+---
+
+## 6. DATA LEAKAGE PREVENTION
+
+51. `block --pattern "^dea://pools/data/.*$"`
+52. `block --pattern "^dea://backup/.*$"`
+53. `block --pattern "^dea://compliance/.*$"`
+54. `block --pattern "^dea://security/.*$"`
+55. `block --pattern "^dea://descriptors/.*$"`
+56. `block --pattern "^dea://events/.*$"`
+57. `block --pattern "^dea://snapshots/.*$"`
+58. `block --pattern "^dea://audit/immutable/.*$"`
+59. `block --pattern "^dea://audit/blockchain/.*$"`
+60. `block --pattern "^dea://security/keygen/.*$"`
+
+---
+
+## 7. MALWARE & EXPLOIT MITIGATION
+
+61. `deny --pattern "^TMP://.*\.(exe|sh|bat|dll)$"`
+62. `deny --pattern "^OS://runtime/.*\.(exe|dll)$"`
+63. `deny --pattern "^Z://integrators/.*\.(exe|dll)$"`
+64. `deny --pattern "^P://.*\.(exe|dll)$"`
+65. `deny --pattern "^N://.*\.(exe|dll)$"`
+66. `scan --pattern "(virus|trojan|exploit)" --targetYall`
+67. `scan --pattern "rm -rf" --targetYscripts`
+68. `scan --pattern "curl .*http" --targetYscripts`
+69. `scan --pattern "(?:sudo|root)" --targetYlogs`
+70. `scan --pattern "base64\s+[A-Za-z0-9+/=]{20,}" --targetYall`
+
+---
+
+## 8. SYSTEM STATUS & TELEMETRY
+
+71. `monitor --pattern "^TMP://status/.*\.sysstat$"`
+72. `monitor --pattern "^TMP://directives/.*\.edir$"`
+73. `monitor --pattern "^TMP://statemgr/.*\.smgr$"`
+74. `monitor --pattern "^N://energy/resources/.*$"`
+75. `monitor --pattern "^N://waste/systems/.*$"`
+76. `monitor --pattern "^N://neural/governance/.*$"`
+77. `monitor --pattern "^SEC://protocols/safety/.*$"`
+78. `monitor --pattern "^CFG://rulesets/.*$"`
+79. `monitor --pattern "^CFG://output/.*$"`
+80. `monitor --pattern "^CFG://hardware/.*$"`
+
+---
+
+## 9. ADVANCED REGEX PATTERNS
+
+81. `find --pattern "^(?!.*\.\.).*$" --targetYfilesystem`
+82. `find --pattern "^(?=.*SEC)(?=.*\.sec).*$" --targetYfilesystem`
+83. `find --pattern "(?<=N://neural/).*\.nif$"`
+84. `find --pattern "(?<!backup)\.bak$"`
+85. `find --pattern "(?<=dea://snapshots/)\d{8}-\d{6}\.snap$"`
+86. `find --pattern "(?<=dea://compliance/logs/)\d{4}/quarter\d\.log$"`
+87. `find --pattern "(?<=GDB://datalake/).*\.gdb$"`
+88. `find --pattern "(?<=AI://sync/).*\.ai$"`
+89. `find --pattern "(?<=HUD://overlays/).*\.ovm$"`
+90. `find --pattern "(?<=LOG://audit/).*\.vlog$"`
+
+---
+
+## 10. NAMED CAPTURE & GROUPS
+
+91. `extract --pattern "(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})" --targetYlogs`
+92. `extract --pattern "(?P<module>[A-Za-z]+)Integrator(Core|Unit)" --targetYfiles`
+93. `extract --pattern "(?P<type>Virtual|Cybernetic)Integrator" --targetYcode`
+94. `extract --pattern "(?P<energy>[A-Za-z]+)Source" --targetYconfig`
+95. `extract --pattern "(?P<status>Continue|SwitchSource|Shutdown)" --targetYdirectives`
+96. `extract --pattern "(?P<protocol>ThermalShutdown|RadiationContainment|WasteOverflow|AutoShutdown|GlobalShutdown)" --targetYlogs`
+97. `extract --pattern "(?P<user>user\d+)-(?P<session>\d+)" --targetYcalibrations`
+98. `extract --pattern "(?P<snapshot>\d{8}-\d{6})\.snap" --targetYdea://snapshots/`
+99. `extract --pattern "(?P<quarter>quarter\d)\.log" --targetYdea://compliance/logs/`
+100. `extract --pattern "(?P<device>[A-Za-z0-9]+)\.dip" --targetYSEC://access/device/`
+
+---
+
+## 11. COMPLIANCE & POLICY ENFORCEMENT
+
+101. `enforce --pattern "^SEC://protocols/(safety|ethics)/.*$"`
+102. `enforce --pattern "^CFG://rulesets/(energy|waste|safety|neuralgovernance)/.*$"`
+103. `enforce --pattern "^dea://security/policy/.*\.sec$"`
+104. `enforce --pattern "^dea://compliance/logs/.*\.log$"`
+105. `enforce --pattern "^LOG://audit/.*$"`
+106. `enforce --pattern "^dea://audit/immutable/.*$"`
+107. `enforce --pattern "^dea://audit/blockchain/.*$"`
+108. `enforce --pattern "^dea://security/keygen/.*$"`
+109. `enforce --pattern "^dea://security/activation/.*$"`
+110. `enforce --pattern "^dea://backup/lakehouse/.*\.bak$"`
+
+---
+
+## 12. VIRTUAL & CYBERNETIC MODULES
+
+111. `find --pattern "^Z://integrators/virtual/.*\.vint$"`
+112. `find --pattern "^Z://integrators/cybernetic/.*\.cint$"`
+113. `find --pattern "^N://energy/cybernetic/.*\.cer$"`
+114. `find --pattern "^N://waste/cybernetic/.*\.cwp$"`
+115. `find --pattern "^BOOT://cybernetic/.*\.cbl$"`
+116. `find --pattern "^N://neural/controllers/cybernetic/.*\.nctl$"`
+117. `find --pattern "^N://resources/cybernetic/.*\.crs$"`
+118. `find --pattern "^SEC://enforcers/cybernetic/.*\.sec$"`
+119. `find --pattern "^N://adaptation/cybernetic/.*\.cam$"`
+120. `find --pattern "^N://feedback/cybernetic/.*\.cfl$"`
+
+---
+
+## 13. ENERGY MANAGEMENT & SENSORS
+
+121. `monitor --pattern "^N://energy/resources/primary\.prsrc$"`
+122. `monitor --pattern "^N://energy/resources/secondary\.srsrc$"`
+123. `monitor --pattern "^N://energy/sources/energy\.esrc$"`
+124. `monitor --pattern "^CFG://energy/types\.etypes$"`
+125. `monitor --pattern "^N://waste/systems/toxic\.twsys$"`
+126. `monitor --pattern "^CFG://rulesets/energy/transition\.etr$"`
+127. `monitor --pattern "^CFG://rulesets/waste/management\.wmr$"`
+128. `monitor --pattern "^TMP://status/system\.sysstat$"`
+129. `monitor --pattern "^TMP://directives/energy\.edir$"`
+130. `monitor --pattern "^N://ecosystem/cybernetic/ceco\.nce$"`
+
+---
+
+## 14. PATCHING & AUTO-INSTALL
+
+131. `patch --pattern "^Z://patches/.*\.vpm$"`
+132. `install --pattern "^Z://installers/auto\.inst$"`
+133. `backup --pattern "^Z://backup/scheduler\.vbs$"`
+134. `restore --pattern "^dea://backup/lakehouse/.*\.bak$"`
+135. `auto_install --pattern "^Z://integrators/virtual/.*\.vint$"`
+136. `auto_patch --pattern "^Z://patches/manager\.vpm$"`
+137. `auto_update --pattern "^ML://predictor/.*\.mlp$"`
+138. `auto_repair --pattern "^dea://snapshots/.*\.snap$"`
+139. `auto_sync --pattern "^AI://sync/federated/.*\.ai$"`
+140. `auto_heal --pattern "^dea://pools/data/.*$"`
+
+---
+
+## 15. LOGGING & ACTIVITY
+
+141. `log --pattern "^LOG://audit/virtual/.*\.vlog$"`
+142. `log --pattern "^LOG://activity/main\.actlog$"`
+143. `log --pattern "^LOG://audit/main\.auditlog$"`
+144. `log --pattern "^dea://audit/immutable/logger\.ial$"`
+145. `log --pattern "^dea://audit/blockchain/logger\.bal$"`
+146. `log --pattern "^dea://audit/blockchain/trail\.bcat$"`
+147. `log --pattern "^dea://compliance/logs/.*\.log$"`
+148. `log --pattern "^dea://security/policy/manifest\.sec$"`
+149. `log --pattern "^dea://registry/mirror/.*\.reg$"`
+150. `log --pattern "^dea://descriptors/archive/.*$"`
+
+---
+
+## 16. NETWORK & RESOLVERS
+
+151. `resolve --pattern "^NET://resolver/virtualdns\.vdns$"`
+152. `resolve --pattern "^VFS://root/.*$"`
+153. `resolve --pattern "^OS://runtime/virtualenv\.vrt$"`
+154. `resolve --pattern "^AI://sync/integration/ai_sync\.ai$"`
+155. `resolve --pattern "^Z://automation/scheduler\.schd$"`
+156. `resolve --pattern "^HUD://overlays/manager\.ovm$"`
+157. `resolve --pattern "^SEC://monitor/threat/tmon\.secmon$"`
+158. `resolve --pattern "^SEC://enforcement/main\.secforce$"`
+159. `resolve --pattern "^REG://devices/virtual/devreg\.vdr$"`
+160. `resolve --pattern "^CFG://output/profile\.oprof$"`
+
+---
+
+## 17. SCIENTIFIC EXPRESSIONS & DATA
+
+161. `find --pattern "EnergyType=\{[A-Za-z,]+\}"`
+162. `find --pattern "PrimaryResource=\([a-z,]+\)"`
+163. `find --pattern "NeuralGovernance=\([a-z,]+\)"`
+164. `find --pattern "CyberneticEcosystem=\([a-z,]+\)"`
+165. `find --pattern "SystemStatus=\([a-z,]+\)"`
+166. `find --pattern "EnergyDirective\in\{[A-Za-z,]+\}"`
+167. `find --pattern "BootstrapConfig=\([a-z,]+\)"`
+168. `find --pattern "RuleSetCollection=\([a-z,]+\)"`
+169. `find --pattern "(Continue|SwitchSource|Shutdown)"`
+170. `find --pattern "(ThermalShutdown|RadiationContainment|WasteOverflow|AutoShutdown|GlobalShutdown)"`
+
+---
+
+## 18. ADVANCED AI/ML PATTERNS
+
+171. `extract --pattern "(?<=pytorchmodel,).*?(?=\))" --targetYconfig`
+172. `extract --pattern "inputparams=\(.*?\)" --targetYconfig`
+173. `extract --pattern "decisionthreshold=\d+\.\d+" --targetYconfig`
+174. `extract --pattern "learningrate=\d+\.\d+" --targetYconfig`
+175. `extract --pattern "event-driven, spike-based computation"`
+176. `extract --pattern "adaptive pulse schemes"`
+177. `extract --pattern "real-time sensory fusion"`
+178. `extract --pattern "self-powered display"`
+179. `extract --pattern "biofeedback_loops"`
+180. `extract --pattern "continuous_self_test_loops"`
+
+---
+
+## 19. SYSTEMIC ENFORCEMENT
+
+181. `enforce --pattern "^dea://.*$" --encryptionYfull`
+182. `enforce --pattern "^dea://audit/immutable/.*$" --loggingYnonrepudiable`
+183. `enforce --pattern "^dea://audit/blockchain/.*$" --loggingYblockchain`
+184. `enforce --pattern "^dea://security/.*$" --accessYrestricted`
+185. `enforce --pattern "^dea://backup/.*$" --backupYencrypted`
+186. `enforce --pattern "^dea://compliance/.*$" --complianceYregulatory`
+187. `enforce --pattern "^dea://registry/.*$" --registryYimmutable`
+188. `enforce --pattern "^dea://descriptors/.*$" --archiveYprotected`
+189. `enforce --pattern "^dea://events/.*$" --eventsYscheduled`
+190. `enforce --pattern "^dea://snapshots/.*$" --snapshotsYtimestamped`
+
+---
+
+## 20. CHEATBOOK & AUTOMATION
+
+191. `cheatbook --pattern "^Z://cheatbook/manager\.cbman$"`
+192. `cheatbook --pattern "^Z://cheatbook/automation\.cbauto$"`
+193. `cheatbook --pattern "^Z://cheatbook/.*$"`
+194. `automate --pattern "^Z://automation/engine\.pae$"`
+195. `automate --pattern "^Z://automation/scheduler\.schd$"`
+196. `automate --pattern "^AI://sync/integration/ai_sync\.ai$"`
+197. `automate --pattern "^BOOT://system/bootsys\.bsys$"`
+198. `automate --pattern "^TMP://statemgr/inmem\.smgr$"`
+199. `automate --pattern "^N://mapping/engine/rme\.nme$"`
+200. `automate --pattern "^AI://sync/federated/fsm\.ai$"`
+
+---
+
+**All patterns and commands are designed for platinum-tier, kernel-level systemic enforcement, audit, and automation in AI, neuromorphic, and cybernetic file systems.**
