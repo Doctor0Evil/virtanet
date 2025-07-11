@@ -1,3 +1,13 @@
+https://www.rexegg.com/regex-disambiguation.html,
+https://www.rexegg.com/regex-style.php#design_to_fail,
+https://www.rexegg.com/regex-style.php#atomic,
+https://www.rexegg.com/regex-style.php#delimiters,
+https://www.rexegg.com/regex-style.php#lazy_warning,
+https://www.rexegg.com/regex-style.php#contrast,
+https://www.rexegg.com/regex-style.php#what_you_want,
+https://www.rexegg.com/regex-style.php,
+https://www.rexegg.com/regex-style.php#regexstyle,
+https://www.rexegg.com/regex-style.php#anchor
 {
   "websites": [
     {
