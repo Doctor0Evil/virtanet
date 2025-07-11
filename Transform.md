@@ -1,3 +1,572 @@
+cargo add tch --features cuda
+cargo add ndarray
+cargo add rand
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+regex = "1.10"
+tch = { version = "0.17.0", features = ["cuda"] } # PyTorch bindings, CUDA support if available
+ndarray = "0.15"                                 # N-dimensional arrays for scientific/numerical computing
+rand = "0.8"                                     # Random number generation for simulations
+use tch::{Tensor, nn, Device};
+let tensor = Tensor::randn(&[10, 10], (tch::Kind::Float, Device::Cpu));
+use ndarray::Array2;
+let a = Array2::<f64>::zeros((3, 4));
+use rand::Rng;
+let mut rng = rand::thread_rng();
+let x: f32 = rng.gen();
+use ndarray::Array1;
+use rand::Rng;
+cp my-linux.efi /boot/uki/$(date +%Y%m%d)-my-linux.efi
+
+// Simulate a noisy sine wave (e.g., EEG alpha rhythm)
+fn simulate_eeg_signal(length: usize, freq: f32, noise_level: f32) -> Array1<f32> {
+    let mut rng = rand::thread_rng();
+    Array1::from_iter((0..length).map(|i| {
+        let t = i as f32 / length as f32;
+        (2.0 * std::f32::consts::PI * freq * t).sin() + rng.gen_range(-noise_level..noise_level)
+    }))
+}
+cargo add tch --features cuda
+cargo add ndarray
+cargo add rand
+[package]
+name = "genetic_ackley"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+rand = "0.8"
+rayon = "1.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
+clap = { version = "4.0", features = ["derive"] }
+log = "0.4"
+env_logger = "0.10"
+mod ga;
+mod config;
+mod logger;
+mod audit;
+mod compliance;
+mod cli;
+
+use crate::ga::GeneticAlgorithm;
+use crate::config::{GAConfig, load_config};
+use crate::logger::init_logging;
+use crate::audit::{AuditTrail, AuditEvent};
+use crate::cli::CliArgs;
+use clap::Parser;
+use chrono::Local;
+use std::sync::{Arc, Mutex};
+
+fn main() {
+    // Parse CLI arguments
+    let args = CliArgs::parse();
+
+    // Initialize logging
+    init_logging(&args.log_level);
+
+    // Load configuration
+    let config = load_config(&args.config_path).unwrap_or_else(|e| {
+        log::error!("Failed to load config: {}", e);
+        std::process::exit(1);
+    });
+
+    // Initialize audit trail
+    let audit_trail = Arc::new(Mutex::new(AuditTrail::new()));
+
+    // Compliance check
+    if !compliance::check_compliance(&config) {
+        log::error!("Compliance check failed. Aborting.");
+        std::process::exit(1);
+    }
+
+    // Start genetic algorithm
+    let mut ga = GeneticAlgorithm::new(config.clone(), audit_trail.clone());
+    let (best_solution, best_fitness) = ga.run();
+
+    // Output results
+    println!("Best solution: {:?}", best_solution);
+    println!("Fitness: {}", best_fitness);
+
+    // Save audit log
+    let timestamp = Local::now().format("%Y%m%d_%H%M%S");
+    let audit_path = format!("audit_{}.json", timestamp);
+    audit_trail.lock().unwrap().save(&audit_path).unwrap();
+    println!("Audit trail saved to {}", audit_path);
+}
+use serde::{Serialize, Deserialize};
+use std::fs::File;
+use std::io::Read;
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct GAConfig {
+    pub population_size: usize,
+    pub chromosome_length: usize,
+    pub generations: usize,
+    pub search_bounds: (f32, f32),
+    pub mutation_rate: f32,
+    pub crossover_rate: f32,
+    pub selection_strategy: String,
+    pub crossover_strategy: String,
+    pub mutation_strategy: String,
+    pub elitism: bool,
+    pub audit_enabled: bool,
+}
+
+impl Default for GAConfig {
+    fn default() -> Self {
+        GAConfig {
+            population_size: 100,
+            chromosome_length: 10,
+            generations: 100,
+            search_bounds: (-5.0, 5.0),
+            mutation_rate: 0.1,
+            crossover_rate: 0.5,
+            selection_strategy: "tournament".to_string(),
+            crossover_strategy: "single_point".to_string(),
+            mutation_strategy: "gaussian".to_string(),
+            elitism: true,
+            audit_enabled: true,
+        }
+    }
+}
+
+pub fn load_config(path: &str) -> Result<GAConfig, String> {
+    let mut file = File::open(path).map_err(|e| e.to_string())?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).map_err(|e| e.to_string())?;
+    serde_json::from_str(&contents).map_err(|e| e.to_string())
+}
+pub fn init_logging(level: &str) {
+    std::env::set_var("RUST_LOG", level);
+    env_logger::init();
+}
+use serde::{Serialize, Deserialize};
+use chrono::{DateTime, Utc};
+use std::fs::File;
+use std::io::Write;
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct AuditEvent {
+    pub timestamp: DateTime<Utc>,
+    pub event: String,
+    pub details: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AuditTrail {
+    pub events: Vec<AuditEvent>,
+}
+
+impl AuditTrail {
+    pub fn new() -> Self {
+        AuditTrail { events: Vec::new() }
+    }
+
+    pub fn log(&mut self, event: &str, details: &str) {
+        self.events.push(AuditEvent {
+            timestamp: Utc::now(),
+            event: event.to_string(),
+            details: details.to_string(),
+        });
+    }
+
+    pub fn save(&self, path: &str) -> Result<(), String> {
+        let json = serde_json::to_string_pretty(self).map_err(|e| e.to_string())?;
+        let mut file = File::create(path).map_err(|e| e.to_string())?;
+        file.write_all(json.as_bytes()).map_err(|e| e.to_string())
+    }
+}
+use crate::config::GAConfig;
+
+pub fn check_compliance(config: &GAConfig) -> bool {
+    // Simulate compliance checks
+    if config.population_size > 1000 {
+        log::warn!("Population size exceeds recommended compliance threshold.");
+        return false;
+    }
+    if config.mutation_rate > 0.5 {
+        log::warn!("Mutation rate too high for stable convergence.");
+        return false;
+    }
+    true
+}
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct CliArgs {
+    #[arg(short, long, default_value = "config.json")]
+    pub config_path: String,
+    #[arg(short, long, default_value = "info")]
+    pub log_level: String,
+}
+use rand::prelude::*;
+use rayon::prelude::*;
+use crate::config::GAConfig;
+use crate::audit::{AuditTrail, AuditEvent};
+use std::sync::{Arc, Mutex};
+
+pub fn ackley(x: &[f32]) -> f32 {
+    let a = 20.0;
+    let b = 0.2;
+    let c = 2.0 * std::f32::consts::PI;
+    let n = x.len() as f32;
+
+    let sum_sqrt = x.iter().map(|xi| xi.powi(2)).sum::<f32>() / n;
+    let sqrt_sum = sum_sqrt.sqrt();
+    let cos_sum = x.iter().map(|xi| xi.cos()).sum::<f32>() / n;
+
+    -a * (-b * sqrt_sum).exp() - (-c * cos_sum).exp() + a + std::f32::consts::E
+}
+
+pub struct GeneticAlgorithm {
+    config: GAConfig,
+    audit: Arc<Mutex<AuditTrail>>,
+    rng: ThreadRng,
+}
+
+impl GeneticAlgorithm {
+    pub fn new(config: GAConfig, audit: Arc<Mutex<AuditTrail>>) -> Self {
+        GeneticAlgorithm {
+            config,
+            audit,
+            rng: thread_rng(),
+        }
+    }
+
+    pub fn run(&mut self) -> (Vec<f32>, f32) {
+        let mut population = self.initialize_population();
+        let mut best_fitness = f32::INFINITY;
+        let mut best_solution = vec![0.0; self.config.chromosome_length];
+
+        for gen in 0..self.config.generations {
+            let fitness = self.evaluate_fitness(&population);
+
+            // Elitism
+            let (elite_idx, &elite_fitness) = fitness
+                .iter()
+                .enumerate()
+                .min_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+                .unwrap();
+            if elite_fitness < best_fitness {
+                best_fitness = elite_fitness;
+                best_solution = population[elite_idx].clone();
+            }
+
+            // Audit log
+            if self.config.audit_enabled {
+                self.audit.lock().unwrap().log(
+                    "generation",
+                    &format!("Generation {}: Best fitness {}", gen, best_fitness),
+                );
+            }
+
+            // Selection
+            let selected = self.selection(&population, &fitness);
+
+            // Create new population
+            let mut new_population = Vec::with_capacity(self.config.population_size);
+            if self.config.elitism {
+                new_population.push(best_solution.clone());
+            }
+
+            while new_population.len() < self.config.population_size {
+                let parent1 = &selected[self.rng.gen_range(0..selected.len())];
+                let parent2 = &selected[self.rng.gen_range(0..selected.len())];
+
+                let mut child = self.crossover(parent1, parent2);
+                child = self.mutation(&child);
+                new_population.push(child);
+            }
+
+            population = new_population;
+            log::info!("Generation {}: Best Fitness = {}", gen, best_fitness);
+        }
+
+        (best_solution, best_fitness)
+    }
+
+    fn initialize_population(&mut self) -> Vec<Vec<f32>> {
+        let (min, max) = self.config.search_bounds;
+        (0..self.config.population_size)
+            .map(|_| {
+                (0..self.config.chromosome_length)
+                    .map(|_| self.rng.gen_range(min..max))
+                    .collect()
+            })
+            .collect()
+    }
+
+    fn evaluate_fitness(&self, population: &[Vec<f32>]) -> Vec<f32> {
+        population
+            .par_iter()
+            .map(|ind| ackley(ind))
+            .collect()
+    }
+
+    fn selection(&mut self, population: &[Vec<f32>], fitness: &[f32]) -> Vec<Vec<f32>> {
+        match self.config.selection_strategy.as_str() {
+            "tournament" => self.tournament_selection(population, fitness),
+            "roulette" => self.roulette_selection(population, fitness),
+            _ => self.tournament_selection(population, fitness),
+        }
+    }
+
+    fn tournament_selection(&mut self, population: &[Vec<f32>], fitness: &[f32]) -> Vec<Vec<f32>> {
+        let mut selected = Vec::with_capacity(self.config.population_size);
+        for _ in 0..self.config.population_size {
+            let idxs: Vec<_> = (0..3)
+                .map(|_| self.rng.gen_range(0..population.len()))
+                .collect();
+            let best_idx = idxs
+                .iter()
+                .min_by(|&&i, &&j| fitness[i].partial_cmp(&fitness[j]).unwrap())
+                .unwrap();
+            selected.push(population[**best_idx].clone());
+        }
+        selected
+    }
+
+    fn roulette_selection(&mut self, population: &[Vec<f32>], fitness: &[f32]) -> Vec<Vec<f32>> {
+        let max_fit = fitness.iter().cloned().fold(f32::NEG_INFINITY, f32::max);
+        let fitness_adj: Vec<f32> = fitness.iter().map(|&f| max_fit - f + 1.0).collect();
+        let sum: f32 = fitness_adj.iter().sum();
+        let mut selected = Vec::with_capacity(self.config.population_size);
+
+        for _ in 0..self.config.population_size {
+            let mut pick = self.rng.gen::<f32>() * sum;
+            for (i, &fit) in fitness_adj.iter().enumerate() {
+                if pick < fit {
+                    selected.push(population[i].clone());
+                    break;
+                }
+                pick -= fit;
+            }
+        }
+        selected
+    }
+
+    fn crossover(&mut self, p1: &[f32], p2: &[f32]) -> Vec<f32> {
+        match self.config.crossover_strategy.as_str() {
+            "single_point" => self.single_point_crossover(p1, p2),
+            "uniform" => self.uniform_crossover(p1, p2),
+            _ => self.single_point_crossover(p1, p2),
+        }
+    }
+
+    fn single_point_crossover(&mut self, p1: &[f32], p2: &[f32]) -> Vec<f32> {
+        let point = self.rng.gen_range(1..p1.len());
+        p1[..point].iter().chain(&p2[point..]).cloned().collect()
+    }
+
+    fn uniform_crossover(&mut self, p1: &[f32], p2: &[f32]) -> Vec<f32> {
+        p1.iter()
+            .zip(p2)
+            .map(|(&a, &b)| if self.rng.gen_bool(0.5) { a } else { b })
+            .collect()
+    }
+
+    fn mutation(&mut self, ind: &[f32]) -> Vec<f32> {
+        match self.config.mutation_strategy.as_str() {
+            "gaussian" => self.gaussian_mutation(ind),
+            "random_reset" => self.random_reset_mutation(ind),
+            _ => self.gaussian_mutation(ind),
+        }
+    }
+
+    fn gaussian_mutation(&mut self, ind: &[f32]) -> Vec<f32> {
+        let (min, max) = self.config.search_bounds;
+        ind.iter()
+            .map(|&x| {
+                if self.rng.gen::<f32>() < self.config.mutation_rate {
+                    let perturb = self.rng.sample(rand_distr::Normal::new(0.0, 0.5).unwrap());
+                    (x + perturb).clamp(min, max)
+                } else {
+                    x
+                }
+            })
+            .collect()
+    }
+
+    fn random_reset_mutation(&mut self, ind: &[f32]) -> Vec<f32> {
+        let (min, max) = self.config.search_bounds;
+        ind.iter()
+            .map(|&x| {
+                if self.rng.gen::<f32>() < self.config.mutation_rate {
+                    self.rng.gen_range(min..max)
+                } else {
+                    x
+                }
+            })
+            .collect()
+    }
+}
+7. Summary Table: UKI vs. Traditional Boot
+Feature	Traditional Boot	Unified Kernel Image (UKI)
+Verification Points	Multiple (kernel, initramfs, etc.)	Single (entire image)
+Chain of Trust	Fragmented	Unified, atomic
+Directory Management	Scattered, complex	Centralized, regex-enforced
+Policy Enforcement	Harder, multi-step	Easier, single artifact
+Auditability	Fragmented logs	Single, immutable log per boot
+Terminal Integration	Ad hoc, less controlled	Policy-driven, logged, and signed
+1. Unified Kernel Image: What Is It?
+A Unified Kernel Image (UKI) is a single binary (often in EFI format) containing:
+
+The kernel
+
+Initramfs
+
+Kernel command line
+
+OS release metadata
+
+Embedded cryptographic signature
+
+References:
+
+systemd UKI documentation
+
+Linux UKI boot flow
+
+2. Influence on Firmware Verification Strategies
+A. Centralized Signature Verification
+Traditional Model:
+
+Firmware, kernel, initramfs, and modules are separate files.
+
+Each must be individually verified, often by different tools (e.g., UEFI Secure Boot, kernel module signing).
+
+Chain of trust is fragmented; vulnerabilities can arise at handoff points.
+
+UKI Model:
+
+All components are bundled and signed together.
+
+Verification is atomic: UEFI or the bootloader verifies a single signature before executing.
+
+Attack surface is reduced: No opportunity to swap unsigned components post-verification.
+
+B. Simplified Chain of Trust
+Bootloader only needs to verify the UKI—no need to parse or verify multiple files.
+
+Easier policy enforcement:
+
+Policies such as "only signed images may boot" are easier to implement and audit.
+
+Key rotation and revocation are simplified: update the UKI signing key in the firmware or UEFI db, rather than managing multiple keys for kernel, initramfs, etc.
+
+C. Improved Auditability and Compliance
+Immutable audit trail:
+
+Each UKI can be logged as a single artifact, with cryptographic hash and signature.
+
+This aligns with the Authoritarian Codex principles: kernel-level logging, immutable state, and audit-ready snapshots.
+
+D. Support for Hybrid and Modular Systems
+UKI is portable:
+
+Can be deployed across embedded, desktop, cloud, and containerized environments.
+
+Enables consistent verification across heterogeneous nodes (see Virta-Sys mesh, codex, and neuromorphic components).
+
+Directory and subdirectory population:
+
+UKIs can be placed in strict, policy-enforced directories (e.g., /boot/uki/, /neuromesh/state/).
+
+Regex-based naming and placement policies (see System_Regex.json) can be enforced at the file system level.
+
+3. Populating System Placeholders and Subdirectories
+A. Systematic Directory Structure
+Populate UKIs into dedicated subdirectories:
+
+/boot/uki/ for kernel images
+
+/boot/uki/verified/ for images that have passed verification
+
+/neuromesh/state/ for signed node state vectors (see Authoritarian Codex)
+
+/neuromesh/logs/ for kernel-level logs and audit trails
+
+Regex-based enforcement:
+
+Use strict regex patterns (see Regex_patterns.yaml) to validate file and directory names.
+
+Prevent directory traversal and naming exploits.
+
+B. System Placeholder Population
+Automate population via scripts or systemd services:
+
+Example:
+
+bash
+cp my-linux.efi /boot/uki/$(date +%Y%m%d)-my-linux.efi
+Use regex to validate and categorize images before moving to production directories.
+
+4. Programming a Functional Terminal INTO the System
+A. Terminal Integration (e.g., Termux, PowerShell)
+Embed terminal environments as system components:
+
+Place terminal binaries/scripts in /usr/local/bin/ or dedicated /system/terminal/ subdirectory.
+
+Enforce execution policies: only signed terminals may be invoked (see CLI Command Whitelisting in the Codex).
+
+Audit and control terminal access:
+
+All terminal sessions are logged and cryptographically signed.
+
+Access is restricted via multi-factor authentication and user policy.
+
+Example: Termux-like terminal in Virta-Sys
+
+Place Termux binary in /system/terminal/termux
+
+Enforce access via regex-matched user IDs and session logs.
+
+5. Super-Exhaustive Research: Deep Dives from Provided Links
+A. System Architecture and Codex Enforcement
+UKI aligns with Codex policies:
+
+Secure bootstrapping from signed images
+
+Directory structure enforcement (e.g., /neuromesh/, /boot/uki/)
+
+Kernel-level logging and audit trails for every boot event
+
+B. Regex and Naming Policies
+Regex patterns for validation:
+
+Anchor patterns to prevent partial matches (see rexegg.com)
+
+Use mutually exclusive tokens for efficiency (see cheat_regex.mkd)
+
+Enforce naming conventions for all system artifacts
+
+C. Neuromorphic and Network Components
+UKI can bundle drivers and network stack:
+
+Ensures all hardware initialization is signed and verified before execution
+
+Supports secure mesh node bootstrapping as per Codex
+
+6. Actionable Steps for Implementation
+Build your UKI (using dracut, systemd-stub, or custom tools)
+
+Sign the UKI with your platform key
+
+Populate /boot/uki/ or equivalent, enforcing regex-based naming
+
+Configure bootloader/firmware to verify and launch only signed UKIs
+
+Integrate terminal binaries in controlled subdirectories, with access logging
+
+Enforce all directory and naming policies via regex at the kernel or initramfs level
+
+Log, audit, and snapshot every boot and system event for compliance
+
+7. Summary Table: UKI vs. Traditional Boot
 // user_interface.rs
 use std::io;
 
