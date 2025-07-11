@@ -1,3 +1,9 @@
+https://windowsforum.com/threads/farewell-wsa-3-best-alternatives-for-running-android-apks-on-windows.353507/,
+https://github.com/jiegec/awesome-stars/blob/master/README.md?LPSv3M=Atmzb7K,%20https://download.cnet.com/apk-installer-and-launcher/alternatives/windows/,
+https://astra1dev.github.io/posts/Best-Android-Modding-Tools/,
+https://www.3ptechies.com/safest-apk-download-sites.html,%20https://openapkfile.bitbucket.io/blog/safe-apk-download-sites.html,
+https://filehippo.com/,
+https://www.bing.com/search?q=best+.dll%2c+.json%2c+.apk+files+for+ble+secure+devices+and+arm+x64+chips+filehippo&qs=NWU&pq=best+.dll%2c+.json%2c+.apk+files+for+ble+secure+devices+and+arm+x64+chips+file&sk=NWU2&sc=8-74&cvid=50113A9D1FA4496FADC98E4EC0F2081C&FORM=QBRE&sp=3&ghc=1&lq=0
 https://www.rexegg.com/regex-disambiguation.html,
 https://www.rexegg.com/regex-style.php#design_to_fail,
 https://www.rexegg.com/regex-style.php#atomic,
