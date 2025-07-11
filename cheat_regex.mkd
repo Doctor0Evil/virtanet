@@ -1,3 +1,13 @@
+https://www.rexegg.com/regex-disambiguation.html,
+https://www.rexegg.com/regex-style.php#design_to_fail,
+https://www.rexegg.com/regex-style.php#atomic,
+https://www.rexegg.com/regex-style.php#delimiters,
+https://www.rexegg.com/regex-style.php#lazy_warning,
+https://www.rexegg.com/regex-style.php#contrast,
+https://www.rexegg.com/regex-style.php#what_you_want,
+https://www.rexegg.com/regex-style.php,
+https://www.rexegg.com/regex-style.php#regexstyle,
+https://www.rexegg.com/regex-style.php#anchor
 (direct link)
 ✽ Whenever Possible, Anchor.
 Anchors, such as the caret ^ for the beginning of a line and the dollar sign $ for the end of a line often provide the needed clue that ensures the engine finds a match in the right place. For instance, when we validate a string, they ensure that the engine matches the whole string, rather than a substring embedded in the string being examined. And anchors often save the engine a lot of backtracking. Be aware that anchors are not limited to ^ and $. Most engines have other useful built-in anchors, such as \A and \G (see the cheat sheet).
