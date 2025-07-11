@@ -43,7 +43,116 @@ for dir in logs reports archives state firmware vault/binds bin scripts; do
     chmod 755 "${BASE_DIR}/$dir"
     chown www-data:www-data "${BASE_DIR}/$dir"
 done
+# Directory Structure
+project/
+├── backend/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── com/
+│   │   │   │   │   ├── example/
+│   │   │   │   │   │   ├── SpringBootApp.java
+│   │   │   │   │   │   ├── controller/
+│   │   │   │   │   │   │   ├── UserController.java
+│   │   │   │   │   │   ├── service/
+│   │   │   │   │   │   │   ├── UserService.java
+│   │   ├── resources/
+│   │   │   ├── application.properties
+│   ├── target/
+├── frontend/
+│   ├── public/
+│   │   ├── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── UserComponent.js
+│   │   ├── App.js
+│   │   ├── index.js
+├── machine-learning/
+│   ├── tensorflow/
+│   │   ├── model.py
+│   ├── opencv/
+│   │   ├── image_processing.py
+├── kubernetes/
+│   ├── deployment.yaml
+│   ├── service.yaml
+// UserController.java
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
 
+    @GetMapping
+    public List<User> getUsers() {
+        return userService.getUsers();
+    }
+}
+
+// UserService.java
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+}
+// UserComponent.js
+import React, { useState, useEffect } from 'react';
+
+function UserComponent() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        fetch('/users')
+            .then(response => response.json())
+            .then(data => setUsers(data));
+    }, []);
+
+    return (
+        <div>
+            <h1>Users</h1>
+            <ul>
+                {users.map(user => (
+                    <li key={user.id}>{user.name}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default UserComponent;
+# model.py
+import tensorflow as tf
+
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Dense(64, activation='relu', input_shape=(784,)),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: backend-image
+        ports:
+        - containerPort: 8080
 # Create placeholder executables if missing
 for cmd in infrastructure_manager treasure_hunter install_activate integration_manager system_snapshot blockchain_connector vondy_ai crawler_manager sync_state vr_inject hypervisor_hook spawn_core_ai; do
     if [ ! -f "${BIN_DIR}/${cmd}" ]; then
