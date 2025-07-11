@@ -263,3 +263,15 @@ https://github.com/Doctor0Evil/Virta-Sys/blob/main/CheatCodes.dll // regex_engin
     "https://www.codecademy.com/learn/paths/data-science-nlp"
   ]
 }
+https://www.nightfall.ai/ai-security-101/prompt-injection, 
+https://www.ibm.com/think/topics/prompt-injection,
+https://genai.owasp.org/llmrisk/llm01-prompt-injection/,
+https://www.paloaltonetworks.com/cyberpedia/what-is-a-prompt-injection-attack,
+https://www.wiz.io/academy/prompt-injection-attack,
+https://www.ibm.com/think/topics/prompt-injection,
+https://www.paloaltonetworks.com/cyberpedia/what-is-a-prompt-injection-attack,
+https://cetas.turing.ac.uk/publications/indirect-prompt-injection-generative-ais-greatest-security-flaw,
+https://www.perplexity.ai/collections/https-raw-githubusercontent-co-QJqK2vyBTwCb05Yfa8FhYQ,
+https://www.perplexity.ai/search/q-summary-source-https-www-per-otS2ZjYFSOqjjLk6phSw4w,
+https://www.perplexity.ai/search/investigate-government-policie-syGSsTvxR2a,
+https://www.perplexity.ai/hub/blog/introducing-perplexity-deep-research
