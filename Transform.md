@@ -7,7 +7,276 @@ rand = "0.8"
 ndarray = { version = "0.15", features = ["serde"] }
 ndarray = { version = "0.15", features = ["rayon"] }
 use tch::{Tensor, Device};
+use ndarray::{Array2, ArrayView2, ArrayViewMut2};
+use rayon::prelude::*;
 
+/// Adaptive, cache- and workload-aware parallel matrix multiplication.
+fn adaptive_blocked_matmul(
+    a: ArrayView2<f64>,
+    b: ArrayView2<f64>,
+    mut c: ArrayViewMut2<f64>,
+    block_size: usize,
+    parallel_threshold: usize,
+) {
+    let n = a.nrows();
+    let m = b.ncols();
+    let k = a.ncols();
+
+    assert_eq!(k, b.nrows());
+    assert_eq!(n, c.nrows());
+    assert_eq!(m, c.ncols());
+
+    // For small matrices, avoid parallelism to reduce thread overhead.
+    if n < parallel_threshold || m < parallel_threshold || k < parallel_threshold {
+        for i in 0..n {
+            for j in 0..m {
+                let mut sum = 0.0;
+                for l in 0..k {
+                    sum += a[[i, l]] * b[[l, j]];
+                }
+                c[[i, j]] = sum;
+            }
+        }
+        return;
+    }
+
+    // Parallel block partitioning for large matrices.
+    (0..n).step_by(block_size).into_par_iter().for_each(|ii| {
+        let i_max = (ii + block_size).min(n);
+        for jj in (0..m).step_by(block_size) {
+            let j_max = (jj + block_size).min(m);
+            for kk in (0..k).step_by(block_size) {
+                let k_max = (kk + block_size).min(k);
+                for i in ii..i_max {
+                    for j in jj..j_max {
+                        let mut sum = 0.0;
+                        for l in kk..k_max {
+                            sum += a[[i, l]] * b[[l, j]];
+                        }
+                        // No synchronization needed: unique output block per thread.
+                        c[[i, j]] += sum;
+                    }
+                }
+            }
+        }
+    });
+}
+
+fn main() {
+    // Hardware-aware: tune block size for your L1/L2 cache (e.g., 32, 64, or 128).
+    let n = 1000;
+    let block_size = 64;
+    let parallel_threshold = 128; // Below this, use sequential code.
+
+    let a = Array2::<f64>::ones((n, n));
+    let b = Array2::<f64>::ones((n, n));
+    let mut c = Array2::<f64>::zeros((n, n));
+
+    adaptive_blocked_matmul(a.view(), b.view(), c.view_mut(), block_size, parallel_threshold);
+    println!("Result[0][0]: {}", c[[0, 0]]);
+}
+use ndarray::{Array2, ArrayView2, ArrayViewMut2};
+use rayon::prelude::*;
+
+fn blocked_parallel_matmul(
+    a: ArrayView2<f64>,
+    b: ArrayView2<f64>,
+    mut c: ArrayViewMut2<f64>,
+    block_size: usize,
+) {
+    let n = a.nrows();
+    let m = b.ncols();
+    let k = a.ncols();
+
+    assert_eq!(k, b.nrows());
+    assert_eq!(n, c.nrows());
+    assert_eq!(m, c.ncols());
+
+    (0..n).step_by(block_size).into_par_iter().for_each(|ii| {
+        let i_max = (ii + block_size).min(n);
+        for jj in (0..m).step_by(block_size) {
+            let j_max = (jj + block_size).min(m);
+            for kk in (0..k).step_by(block_size) {
+                let k_max = (kk + block_size).min(k);
+                for i in ii..i_max {
+                    for j in jj..j_max {
+                        let mut sum = 0.0;
+                        for l in kk..k_max {
+                            sum += a[[i, l]] * b[[l, j]];
+                        }
+                        c[[i, j]] += sum;
+                    }
+                }
+            }
+        }
+    });
+}
+
+fn main() {
+    let n = 1000;
+    let block_size = 64;
+    let a = Array2::<f64>::ones((n, n));
+    let b = Array2::<f64>::ones((n, n));
+    let mut c = Array2::<f64>::zeros((n, n));
+
+    blocked_parallel_matmul(a.view(), b.view(), c.view_mut(), block_size);
+    println!("Result[0][0]: {}", c[[0, 0]]);
+}
+use ndarray::{Array2, ArrayView2, ArrayViewMut2, s};
+use rayon::prelude::*;
+
+/// Blocked parallel matrix multiplication: C = A x B
+fn blocked_parallel_matmul(
+    a: ArrayView2<f64>,
+    b: ArrayView2<f64>,
+    mut c: ArrayViewMut2<f64>,
+    block_size: usize,
+) {
+    let n = a.nrows();
+    let m = b.ncols();
+    let k = a.ncols();
+
+    assert_eq!(k, b.nrows());
+    assert_eq!(n, c.nrows());
+    assert_eq!(m, c.ncols());
+
+    // Parallelize over block rows of the result matrix
+    (0..n).step_by(block_size).into_par_iter().for_each(|ii| {
+        let i_max = (ii + block_size).min(n);
+        for jj in (0..m).step_by(block_size) {
+            let j_max = (jj + block_size).min(m);
+            for kk in (0..k).step_by(block_size) {
+                let k_max = (kk + block_size).min(k);
+                for i in ii..i_max {
+                    for j in jj..j_max {
+                        let mut sum = 0.0;
+                        for l in kk..k_max {
+                            sum += a[[i, l]] * b[[l, j]];
+                        }
+                        c[[i, j]] += sum;
+                    }
+                }
+            }
+        }
+    });
+}
+
+fn main() {
+    let n = 1000;
+    let block_size = 64; // Tune this for your CPU cache size
+    let a = Array2::<f64>::ones((n, n));
+    let b = Array2::<f64>::ones((n, n));
+    let mut c = Array2::<f64>::zeros((n, n));
+
+    blocked_parallel_matmul(a.view(), b.view(), c.view_mut(), block_size);
+    println!("Result[0][0]: {}", c[[0, 0]]);
+}
+Strategy	Pros	Cons
+Shared memory	Simple, fast for small/medium sizes	Synchronization overhead, cache contention
+Distributed memory	Scales to large clusters, less contention	Communication overhead, complex code
+Hybrid	Best of both worlds	Most complex to implement
+Question	Underlying Concern	Why It Matters
+How might thread spawning overhead outweigh benefits for small matrices?	Thread management overhead vs. computational workload	For small matrices, the cost of creating and managing threads can exceed the computation time, resulting in slower performance than a sequential approach.
+What impact does cache size have on the efficiency of your blocking strategy?	Data locality and cache misses	If blocks are too large for cache, frequent cache evictions and reloads occur, reducing speed. Proper block size maximizes cache reuse and minimizes memory latency.
+How could dynamic load balancing improve parallel performance in your code?	Work distribution and idle cores	Static partitioning can leave some threads idle if work is uneven. Dynamic load balancing assigns new work to idle threads, improving CPU utilization and throughput.
+In what ways can synchronization costs affect overall speedup in parallel matrix multiplication?	Contention and locking overhead	Excessive synchronization (e.g., locks for shared data) serializes computation, negating parallel speedup and limiting scalability.
+How does hardware architecture influence thread spawning overhead effects?	OS and hardware thread management	Thread creation and context switching costs vary by CPU, OS, and core count. Some architectures have lightweight threads, others have significant overhead, affecting when parallelism is worthwhile.
+In what ways can cache size variations alter your blocking strategy choices?	Adaptability to hardware	Different CPUs have different cache sizes; an optimal block size for one may be suboptimal for another. Tuning block size to the specific cache hierarchy is essential for best performance.
+How might dynamic load balancing address workload disparities in different matrix sizes?	Handling irregular workloads	For matrices with non-uniform block sizes or sparsity, dynamic scheduling helps distribute work evenly, preventing bottlenecks from uneven partitioning.
+What are the scalability implications of synchronization costs in multi-core systems?	Limits to parallel speedup	As core count increases, synchronization overhead can dominate, leading to diminishing returns or even slowdowns if not carefully managed.
+Could alternative task scheduling approaches better mitigate overhead for small matrices?	Task granularity and scheduling strategy	Using thread pools, work-stealing, or adaptive scheduling can reduce overhead for small tasks, ensuring parallelism only when beneficial.
+Could alternative threading models or task scheduling reduce execution time?	Choosing the right concurrency model	Models like thread pools, lightweight threads, or task-based runtimes can minimize overhead and improve performance, especially for workloads with varying sizes.
+How does thread spawning overhead influence small matrix computation efficiency?	Same as first question	For small problems, thread overhead can dominate, making sequential execution preferable.
+In what ways can cache size limitations alter your blocking strategy effectiveness?	Same as cache size and blocking	Cache-aware blocking is critical for efficiency; suboptimal block size can degrade performance.
+How might dynamic load balancing mitigate idle core issues during parallel execution?	Same as dynamic load balancing	Dynamic scheduling keeps all cores busy, improving throughput.
+What are the implications of synchronization costs on scalability in matrix algorithms?	Same as synchronization costs	Excessive synchronization limits scalability; minimizing locks and shared state is essential.
+Could alternative task scheduling models better address overhead for small matrices?	Same as alternative scheduling	Smarter scheduling can avoid parallelism when not worthwhile.
+Concern/Question	System Code Mechanism
+Thread spawn overhead for small matrices	Sequential fallback for small sizes (parallel_threshold)
+Cache hierarchy/blocking	Tunable block_size for cache fit
+Task granularity & load balancing	Rayon’s block-based dynamic scheduling
+Data sharing & synchronization	Block partitioning; each thread writes to unique region (no locks)
+Hybrid/Adaptive strategies	Switch between sequential and parallel based on problem size
+Cache locality	Blocking ensures submatrices fit in cache
+Dynamic load balancing	Rayon’s work-stealing keeps all cores busy
+Scalability	Minimal synchronization; parallel only when beneficial
+use ndarray::{Array2, ArrayView2, ArrayViewMut2};
+use rayon::prelude::*;
+
+/// System-level, adaptive, cache-aware, load-balanced matrix multiplication.
+fn system_matmul(
+    a: ArrayView2<f64>,
+    b: ArrayView2<f64>,
+    mut c: ArrayViewMut2<f64>,
+    block_size: usize,
+    parallel_threshold: usize,
+) {
+    let n = a.nrows();
+    let m = b.ncols();
+    let k = a.ncols();
+
+    assert_eq!(k, b.nrows());
+    assert_eq!(n, c.nrows());
+    assert_eq!(m, c.ncols());
+
+    // Hybrid strategy: For small matrices, avoid parallelism to eliminate thread overhead.
+    if n < parallel_threshold || m < parallel_threshold || k < parallel_threshold {
+        for i in 0..n {
+            for j in 0..m {
+                let mut sum = 0.0;
+                for l in 0..k {
+                    sum += a[[i, l]] * b[[l, j]];
+                }
+                c[[i, j]] = sum;
+            }
+        }
+        return;
+    }
+
+    // Parallel, cache-aware blocking with dynamic load balancing (Rayon).
+    (0..n).step_by(block_size).into_par_iter().for_each(|ii| {
+        let i_max = (ii + block_size).min(n);
+        for jj in (0..m).step_by(block_size) {
+            let j_max = (jj + block_size).min(m);
+            for kk in (0..k).step_by(block_size) {
+                let k_max = (kk + block_size).min(k);
+                for i in ii..i_max {
+                    for j in jj..j_max {
+                        let mut sum = 0.0;
+                        for l in kk..k_max {
+                            sum += a[[i, l]] * b[[l, j]];
+                        }
+                        // Each thread writes to a unique region: no locks, no contention.
+                        c[[i, j]] += sum;
+                    }
+                }
+            }
+        }
+    });
+}
+
+fn main() {
+    // Tune block_size for your CPU's cache (e.g., 32, 64, 128).
+    let n = 1000;
+    let block_size = 64;
+    let parallel_threshold = 128; // Below this, use sequential code.
+
+    let a = Array2::<f64>::ones((n, n));
+    let b = Array2::<f64>::ones((n, n));
+    let mut c = Array2::<f64>::zeros((n, n));
+
+    system_matmul(a.view(), b.view(), c.view_mut(), block_size, parallel_threshold);
+    println!("Result[0][0]: {}", c[[0, 0]]);
+}
+Technical Concern	System Code Mechanism
+Thread spawn overhead for small matrices	Sequential fallback for small sizes (parallel_threshold)
+Cache hierarchy/blocking	Tunable block_size for cache fit; blocking ensures submatrices fit in cache
+Task granularity & load balancing	Rayon’s block-based dynamic scheduling; blocks are sized for cache and workload balance
+Data sharing & synchronization	Each thread writes to a unique block, eliminating locks and minimizing synchronization costs
+Hybrid/Adaptive strategies	Switches between sequential and parallel code based on matrix size
+Cache locality	Blocking maximizes data reuse and minimizes cache misses
+Dynamic load balancing	Rayon’s work-stealing keeps all cores busy, reducing idle time
+Scalability	Minimal synchronization; parallelism only when beneficial, scalable to many cores
 let tensor = Tensor::randn(&[10, 10], (tch::Kind::Float, Device::Cpu));
 println!("{:?}", tensor);
 use ndarray::{Array1, Array2};
