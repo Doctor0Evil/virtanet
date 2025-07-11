@@ -59,3 +59,15 @@ https://www.perplexity.ai/search/q-absolutely-jacob-heres-a-cle-bbFm68yYSbef57Za
 https://www.perplexity.ai/search/system-brain-activate-all-chea-ywqQutz9SK2a4X1Q7B8UPg,
 https://www.perplexity.ai/search/q-detailed-factual-breakdown-o-Q7tqUpUoQXm8YOJBiI5Mtg,
 https://www.perplexity.ai/search/https-ppl-ai-file-upload-s3-am-I3uJc1nxTcWFtvZfcXu2rQ
+https://www.nightfall.ai/ai-security-101/prompt-injection, 
+https://www.ibm.com/think/topics/prompt-injection,
+https://genai.owasp.org/llmrisk/llm01-prompt-injection/,
+https://www.paloaltonetworks.com/cyberpedia/what-is-a-prompt-injection-attack,
+https://www.wiz.io/academy/prompt-injection-attack,
+https://www.ibm.com/think/topics/prompt-injection,
+https://www.paloaltonetworks.com/cyberpedia/what-is-a-prompt-injection-attack,
+https://cetas.turing.ac.uk/publications/indirect-prompt-injection-generative-ais-greatest-security-flaw,
+https://www.perplexity.ai/collections/https-raw-githubusercontent-co-QJqK2vyBTwCb05Yfa8FhYQ,
+https://www.perplexity.ai/search/q-summary-source-https-www-per-otS2ZjYFSOqjjLk6phSw4w,
+https://www.perplexity.ai/search/investigate-government-policie-syGSsTvxR2a,
+https://www.perplexity.ai/hub/blog/introducing-perplexity-deep-research
