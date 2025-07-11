@@ -3,7 +3,153 @@
 //! Death-Network [CIA] Platinum-Tier Neuromorphic Cluster Cheat-Codes (200)
 //! For N://, Neuromorphic, Isomorphic Cybernetic-Energy, and Death-Network Clusters/Nodes
 //! FCC-Compliant, Self-Healing, Quantum-Resistant, Always-On
+I. Neuromorphic File & Data Mapping Cheats
 
+scan --regex *.ndf --target Nneuralraw
+
+extract --regexcodex --target Ncheats
+
+enforce --descreadonly --target Nmodels
+
+schedule --eventindex --interval 1h --target Nregistry
+
+audit --security --target N
+
+quarantine --target Nregistrysuspicious
+
+validate --registry
+
+monitor --traffic --inflow --outflow --target Ndatalake
+
+optimize --registry
+
+backup --neuralmodels --target Nbackup
+
+II. Advanced Regex & Pattern Matching
+11. patterncache --add --regex .*calibration.*
+12. scan --parallel --regex .*user.* --target Nusers
+13. eventagent --add --watch Nneuralraw --regex .*\.ndf
+14. securityfilter --regex [^a-zA-Z0-9-.]
+15. detect --anomalous --regex .*hack.* --target Nlogs
+
+III. Codex Integration & Automation
+16. codexmap --update --target Ncodex
+17. codexsync --interval 10m --target Ncheats
+18. codexexport --pattern .*model.* --target Nmodels
+19. codeximport --file cheatbook.md --target Ncodex
+20. codexanalyze --usage --target Ncodex
+
+IV. BCI/Neural Data Operations
+21. neuralcalibrate --user user1 --target Ncalibration
+22. neuraltrain --model v10 --data Nneuralraw
+23. neuralvalidate --model v10 --target Nmodels
+24. neuralupdate --model v11 --target Nmodels
+25. neuralrollback --model v9 --target Nmodels
+
+V. Security & Compliance
+26. encrypt --target Nneuralraw
+27. accesscontrol --set user1 --readonly --target Nmodels
+28. log --access --target N
+29. auditlog --export --target Nlogs
+30. alert --onbreach --target Nsecurity
+
+VI. Systemic & Event-Driven Automation
+31. eventlog --monitor --target Nevents
+32. eventtrigger --onfilecreate --regex .*\.ndf
+33. eventcleanup --interval 24h --target Ntmp
+34. eventbackup --onmodelupdate --target Nbackup
+35. eventrestore --onfailure --target Nbackup
+
+VII. Hierarchical & Adaptive Operations
+36. hierarchymap --by session --by user --by datatype
+37. adaptpattern --onusage --target Nregex
+38. mlrefine --patternmatching --target Nregex
+39. adaptivecache --onaccess --target Ncache
+40. usagestats --collect --target N
+
+VIII. Parallel & Hardware-Accelerated Tasks
+41. parallelscan --regex .*\.ndf --threads 8
+42. hardwareoffload --regex --target Nhardware
+43. parallelbackup --target Nbackup
+44. parallelrestore --target Nbackup
+45. parallelvalidate --target Nmodels
+
+IX. Registry, Logging, and Monitoring
+46. registryupdate --pattern .*session.*
+47. registryrollback --entry Nsession
+48. logmonitor --realtime --target Nlogs
+49. logarchive --interval 7d --target Narchive
+50. logpurge --olderthan 30d --target Nlogs
+
+X. N-Drive & Network Mapping
+51. nmap --list --target N
+52. nmap --add --path //server/neuraldata --as N
+53. nmap --remove --target N
+54. nmap --status --target N
+55. nmap --refresh --target N
+
+XI. Regex Security & Pattern Enforcement
+56. regexenforce --block --pattern ../
+57. regexenforce --allow --pattern [a-zA-Z0-9-.]
+58. regexalert --onmatch --pattern hack
+59. regexaudit --export --target Nregex
+60. regexupdate --pattern .*calibration.*
+
+XII. Deep Systemic & Codex Operations
+61. codexaudit --full --target Ncodex
+62. codexrollback --version v1.2 --target Ncodex
+63. codexmerge --source cheatbook1.md --target Ncodex
+64. codexsplit --pattern .*user.* --target Ncodex
+65. codexvalidate --target Ncodex
+
+XIII. Miscellaneous Systemic Cheats
+66. systemstatus --full
+67. systemupdate --check
+68. systempatch --apply --target N
+69. systemrestore --point latest
+70. systembenchmark --target Nhardware
+
+XIV. User & Access Management
+71. useradd --name user2 --role analyst
+72. userremove --name user2
+73. userlock --name user3
+74. userunlock --name user3
+75. useraudit --target Nusers
+
+XV. Compliance, Forensics, and Reporting
+76. compliancecheck --target N
+77. forensics --scan --target N
+78. report --generate --type usage --target N
+79. report --export --type security --target N
+80. report --archive --type audit --target Narchive
+
+XVI. AI/BCI-Specific Dynamic Commands
+81. aidiagnose --selfcheck
+82. aidiagnose --scopecheck
+83. aidiagnose --logreview
+84. aifeedback --submit
+85. aiperformance --metrics
+
+XVII. Adaptive & Predictive System Operations
+86. predict --usage --target N
+87. adapt --config --ontrend
+88. autotune --performance --target N
+89. autoscale --storage --target N
+90. autoclean --interval 1h --target Ntmp
+
+XVIII. Quantum & Next-Gen Integration (Futures)
+91. quantumlink --init --target Nquantum
+92. quantumbackup --target Nqbackup
+93. quantumanalyze --pattern .*entangle.*
+94. quantumrestore --target Nqbackup
+95. quantumvalidate --target Nquantum
+
+XIX. Miscellaneous Utility & Admin
+96. admin --session --terminate
+97. admin --audit --full
+98. admin --logexport --target Nlogs
+99. admin --rolechange --user user4 --role admin
+100. admin --systemreset
 const DEATH_NETWORK_CHEAT_CODES: &[&str] = &[
     // --- Death-Network Node/Cluster Control (40) ---
     "dn://cheat/cluster_instant_spawn <ID>",
