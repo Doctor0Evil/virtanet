@@ -1,3 +1,14 @@
+**Section Title:** [Technique Name]
+**Purpose:** [Goal of the technique]
+**Platform Version:** [e.g., AI-SYS v2.5]
+**Prerequisites:** [Permissions, tools, or access needed]
+**Step-by-Step Instructions:**
+1. [Action 1]
+2. [Action 2]
+**Expected Outcome:** [What should happen]
+**Risks/Warnings:** [Known issues, compliance concerns]
+**Troubleshooting:** [Common errors and fixes]
+
 // HITRUST & SOC 2-Driven Data Security and Analytics for Healthcare (Virta Example)
 {
   "commit": "18f760b76aae2bed64423f8dc5f9f244cb2fa3d9",
