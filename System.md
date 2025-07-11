@@ -1,3 +1,152 @@
+// Go program to deeply integrate & implement exhaustive GitHub repo doc merging,
+// generating curl commands for raw files with specific extensions,
+// cloning repos, copying docs locally, and logging operations.
+
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+)
+
+type Repo struct {
+	CloneURL      string `json:"clone_url"`
+	Name          string `json:"name"`
+	DefaultBranch string `json:"default_branch"`
+}
+
+func main() {
+	username := "Doctor0Evil"
+	apiURL := fmt.Sprintf("https://api.github.com/users/%s/repos", username)
+
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", apiURL, nil)
+	if err != nil {
+		log.Fatalf("Error creating request: %v", err)
+	}
+	req.Header.Set("User-Agent", "go-script")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatalf("Error making request: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Error reading response body: %v", err)
+	}
+
+	var repos []Repo
+	err = json.Unmarshal(body, &repos)
+	if err != nil {
+		log.Fatalf("Error unmarshaling JSON: %v", err)
+	}
+
+	targetDir := "merged_docs"
+	err = os.MkdirAll(targetDir, os.ModePerm)
+	if err != nil {
+		log.Fatalf("Error creating target directory: %v", err)
+	}
+
+	// Extensions to include as documentation files
+	docExtMap := map[string]bool{
+		".md":   true,
+		".rst":  true,
+		".roff": true,
+		".txt":  true,
+		".html": true,
+	}
+
+	var curlCommands []string
+
+	for _, repo := range repos {
+		processRepo(repo, targetDir, docExtMap, &curlCommands)
+	}
+
+	// Write all curl commands to file for batch fetching
+	cmdFilePath := filepath.Join(targetDir, "curl_commands.txt")
+	cmdFile, err := os.Create(cmdFilePath)
+	if err != nil {
+		log.Fatalf("Error creating curl_commands.txt: %v", err)
+	}
+	defer cmdFile.Close()
+
+	for _, cmd := range curlCommands {
+		_, err := cmdFile.WriteString(cmd + "\n")
+		if err != nil {
+			log.Printf("Error writing to curl_commands.txt: %v", err)
+		}
+	}
+
+	log.Printf("Curl commands generated in %s", cmdFilePath)
+}
+
+func processRepo(repo Repo, targetDir string, docExtMap map[string]bool, curlCommands *[]string) {
+	cloneDir := filepath.Join("temp_repos", repo.Name)
+	cmd := exec.Command("git", "clone", repo.CloneURL, cloneDir)
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("Error cloning %s: %v", repo.Name, err)
+		return
+	}
+	defer os.RemoveAll(cloneDir)
+
+	err = filepath.Walk(cloneDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		ext := strings.ToLower(filepath.Ext(path))
+		if docExtMap[ext] {
+			relPath, err := filepath.Rel(cloneDir, path)
+			if err != nil {
+				return err
+			}
+			targetPath := filepath.Join(targetDir, repo.Name, relPath)
+			targetDirPath := filepath.Dir(targetPath)
+			err = os.MkdirAll(targetDirPath, os.ModePerm)
+			if err != nil {
+				return err
+			}
+			srcFile, err := os.Open(path)
+			if err != nil {
+				return err
+			}
+			defer srcFile.Close()
+			destFile, err := os.Create(targetPath)
+			if err != nil {
+				return err
+			}
+			defer destFile.Close()
+			_, err = io.Copy(destFile, srcFile)
+			if err != nil {
+				return err
+			}
+			log.Printf("Copied %s to %s", path, targetPath)
+
+			// Generate curl command for raw fetching
+			rawURL := fmt.Sprintf("https://raw.githubusercontent.com/Doctor0Evil/%s/%s/%s",
+				repo.Name, repo.DefaultBranch, filepath.ToSlash(relPath))
+			curlCmd := fmt.Sprintf("curl -o %s %s", targetPath, rawURL)
+			*curlCommands = append(*curlCommands, curlCmd)
+		}
+		return nil
+	})
+	if err != nil {
+		log.Printf("Error walking %s: %v", repo.Name, err)
+	}
+}
+
 //! Hercules Systemv3.2 + CyberOrganic.md
 //! Unified Death-Network [CIA] Platinum-Tier Neuromorphic Cluster Cheat-Codes (200)
 //! Neuromorphic, Quantum, Isomorphic, FCC-Compliant, Self-Healing, Always-On, Quantum-Resistant
