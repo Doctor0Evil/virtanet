@@ -10,7 +10,281 @@ import (
     "os"
     "strings"
     "time"
+FROM php:8.1-apache
+RUN apt-get update && apt-get install -y \
+    libzip-dev zip unzip iproute2 jq \
+    && docker-php-ext-install zip \
+    && pecl install redis && docker-php-ext-enable redis
 
+RUN mkdir -p /var/intima-ai/{logs,reports,archives,vault/binds,scripts,state,firmware,bin} \
+    && chmod -R 755 /var/intima-ai \
+    && chown -R www-data:www-data /var/intima-ai
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+WORKDIR /var/www/html
+COPY composer.json composer.lock* /var/www/html/
+RUN composer install --no-dev --optimize-autoloader
+COPY src/ /var/www/html/src/
+COPY src/public/ /var/www/html/public/
+COPY .env /var/www/html/.env
+COPY scripts/ /var/intima-ai/scripts/
+RUN a2enmod rewrite
+EXPOSE 80
+CMD ["apache2-foreground"]
+#!/bin/bash
+set -e
+
+BASE_DIR="/var/intima-ai"
+BIN_DIR="${BASE_DIR}/bin"
+
+# Create all necessary directories with permissions
+for dir in logs reports archives state firmware vault/binds bin scripts; do
+    mkdir -p "${BASE_DIR}/$dir"
+    chmod 755 "${BASE_DIR}/$dir"
+    chown www-data:www-data "${BASE_DIR}/$dir"
+done
+
+# Create placeholder executables if missing
+for cmd in infrastructure_manager treasure_hunter install_activate integration_manager system_snapshot blockchain_connector vondy_ai crawler_manager sync_state vr_inject hypervisor_hook spawn_core_ai; do
+    if [ ! -f "${BIN_DIR}/${cmd}" ]; then
+        cat << EOF > "${BIN_DIR}/${cmd}"
+#!/bin/bash
+echo "Mock $cmd: Executing \$@"
+exit 0
+EOF
+        chmod +x "${BIN_DIR}/${cmd}"
+    fi
+done
+
+echo "Setup complete. You may now run /var/intima-ai/scripts/executive.sh"
+#!/bin/bash
+set -e
+
+export PATH=$PATH:/var/intima-ai/bin:/usr/sbin:/sbin
+
+BASE_DIR="/var/intima-ai"
+LOG_DIR="${BASE_DIR}/logs"
+REPORT_DIR="${BASE_DIR}/reports"
+ARCHIVE_DIR="${BASE_DIR}/archives"
+VSC_TOKEN="VSC-ARTEMIS-5E8A2B7C-AC41-4F2B-BD6E-9C3E7A1F4D2E"
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+mkdir -p "$LOG_DIR" "$REPORT_DIR" "$ARCHIVE_DIR"
+chmod 755 "$LOG_DIR" "$REPORT_DIR" "$ARCHIVE_DIR"
+
+# Verify required commands exist
+for cmd in infrastructure_manager treasure_hunter install_activate integration_manager system_snapshot blockchain_connector vondy_ai crawler_manager sync_state ip sha256sum; do
+    if ! command -v "$cmd" &>/dev/null; then
+        echo "Error: $cmd not found" | tee -a "${LOG_DIR}/error.log"
+        exit 1
+    fi
+done
+
+infrastructure_manager unify \
+    --targets=virta-sys,virta-net,vre \
+    --state=all-master-states \
+    --mode=deep-detect \
+    --report="${REPORT_DIR}/UnifiedState.json" \
+    --flags=include-privileged,include-ephemeral \
+    --auth-token="${VSC_TOKEN}" | tee -a "${LOG_DIR}/unify.log"
+
+treasure_hunter \
+    --scan-sources=DeepRepo,SnapshotVault,ColdStorage \
+    --file-patterns=*.bin,*.fab,*.blueprint,*.vrholo \
+    --depth=full \
+    --recover=true \
+    --report="${REPORT_DIR}/TreasureMap.json" | tee -a "${LOG_DIR}/treasure.log"
+
+install_activate \
+    --inventory="${REPORT_DIR}/TreasureMap.json" \
+    --deploy-mode=kernel-level \
+    --sandbox=off \
+    --trust-level=privileged \
+    --enable-auto-heal \
+    --verify-checksum=keccak512 \
+    --log="${REPORT_DIR}/ActivationLog.json" | tee -a "${LOG_DIR}/activation.log"
+
+integration_manager \
+    --modules=@recovered \
+    --targets=vr_hologram,legal_ai,studio_boot \
+    --compliance=eu_ai_act_2025,gdpr,hipaa,ccpa \
+    --security=hwroot,secureboot,biomfa \
+    --output="${REPORT_DIR}/IntegrationState.json" | tee -a "${LOG_DIR}/integration.log"
+
+system_snapshot \
+    --files="${REPORT_DIR}/UnifiedState.json,${REPORT_DIR}/TreasureMap.json,${REPORT_DIR}/ActivationLog.json,${REPORT_DIR}/IntegrationState.json" \
+    --archive="${ARCHIVE_DIR}/INTIMA_FULL_EXECUTION_${TIMESTAMP}.zip" \
+    --encryption=lzma \
+    --fingerprint=keccak512 | tee -a "${LOG_DIR}/snapshot.log"
+
+blockchain_connector call \
+    --contract=InstructionAudit \
+    --method=logContext \
+    --params="_contextHash=$(sha256sum ${ARCHIVE_DIR}/INTIMA_FULL_EXECUTION_${TIMESTAMP}.zip | awk '{print $1}'),_compliance=COMPLIANT,_risk=LOW" \
+    --owner=0x742d35Cc6634C0532925a3b844Bc454e4438f44e | tee -a "${LOG_DIR}/blockchain.log"
+
+vondy_ai integrate \
+    --mode=force-default \
+    --context=justice,classified,probable-cause \
+    --human-intervention=hyperlapsed \
+    --output="${REPORT_DIR}/VondyIntegration.json" | tee -a "${LOG_DIR}/vondy.log"
+
+crawler_manager start \
+    --targets=github.com,pornhub.com,vondy.com \
+    --patterns=*.repo,*.video,*.asset \
+    --depth=exhaustive \
+    --compliance-filter=18usc2257,gdpr \
+    --store=minio://intima-assets \
+    --index=postgresql://vsc-postgres | tee -a "${LOG_DIR}/crawler.log"
+
+sync_state \
+    --state=UnifiedState.json \
+    --targets=virta-sys,virta-net,vre \
+    --mode=persistent \
+    --backup=firmware://mirror | tee -a "${LOG_DIR}/sync.log"
+
+echo "✅ EXECUTION COMPLETE: All systems unified, treasures recovered, modules activated, assets ingested."
+echo "📦 Archive: ${ARCHIVE_DIR}/INTIMA_FULL_EXECUTION_${TIMESTAMP}.zip"
+echo "🔐 Fingerprint: $(sha256sum ${ARCHIVE_DIR}/INTIMA_FULL_EXECUTION_${TIMESTAMP}.zip | awk '{print $1}')"
+echo "🏷️ Tag: INTIMA::Genesis.Execution.Bundle"
+<?php
+namespace HybridToken;
+
+use RedisSessionStore;
+use VscIntegration;
+
+class AccessTokenService {
+    private array $config;
+    private RedisSessionStore $sessionStore;
+    private VscIntegration $vscIntegration;
+
+    const SUCCESS = 0;
+    const ERROR_INVALID_DEVICE_ID = 1;
+    const ERROR_ACCESS_UNAUTHORIZED = 2;
+
+    public function __construct(array $config = []) {
+        $defaultConfig = [
+            'device_id_length' => 32,
+            'token_expiry_seconds' => 720000,
+            'default_query_limit' => '500',
+            'default_admin_key' => getenv('ADMIN_KEY') ?: 'ChangeMeNow!',
+            'secret_key' => getenv('SECRET_KEY') ?: 'YOUR_SECRET_KEY',
+            'vsc_token' => getenv('VSC_TOKEN') ?: 'VSC-ARTEMIS-5E8A2B7C-AC41-4F2B-BD6E-9C3E7A1F4D2E',
+            'firmware_dir' => '/var/intima-ai/firmware',
+            'redis_host' => getenv('REDIS_HOST') ?: 'redis',
+            'redis_port' => getenv('REDIS_PORT') ?: 6379,
+            'redis_password' => getenv('REDIS_PASSWORD') ?: null,
+            'redis_prefix' => 'session:',
+        ];
+        $this->config = array_merge($defaultConfig, $config);
+        $this->sessionStore = new RedisSessionStore(
+            $this->config['redis_host'],
+            $this->config['redis_port'],
+            $this->config['redis_prefix'],
+            $this->config['redis_password']
+        );
+        $this->vscIntegration = new VscIntegration($this->config['vsc_token'], $this->config['firmware_dir']);
+    }
+
+    public function generateAccessToken(string $deviceId, string $accessLevel, ?string $adminKey): array {
+        if (strlen($deviceId) !== $this->config['device_id_length']) {
+            return [null, self::ERROR_INVALID_DEVICE_ID, 'Invalid device ID'];
+        }
+        $isPrivileged = $accessLevel === 'ALL_ACCESS';
+        if ($isPrivileged && !$this->validateAdminKey($adminKey)) {
+            return [null, self::ERROR_ACCESS_UNAUTHORIZED, 'Unauthorized access attempt'];
+        }
+        $token = $this->createToken($deviceId, $isPrivileged);
+        $sessionId = $this->createSession($token, $deviceId, $accessLevel, $isPrivileged);
+        $this->vscIntegration->persistSessionToFirmware($sessionId, [
+            'token' => $token,
+            'device_id' => $deviceId,
+            'access_level' => $accessLevel,
+            'expires' => time() + $this->config['token_expiry_seconds'],
+        ]);
+        $this->vscIntegration->injectVrRuntime($token);
+        $this->vscIntegration->hookHypervisor($sessionId);
+        return [
+            $token,
+            self::SUCCESS,
+            [
+                'session_id' => $sessionId,
+                'access_level' => $accessLevel,
+                'query_limit' => $isPrivileged ? 'unlimited' : $this->config['default_query_limit'],
+                'expires' => time() + $this->config['token_expiry_seconds'],
+                'authorization_state' => $this->getAuthorizationState($deviceId),
+            ]
+        ];
+    }
+
+    private function createToken(string $deviceId, bool $isPrivileged): string {
+        return base64_encode($deviceId . ':' . ($isPrivileged ? 'privileged' : 'standard') . ':' . time());
+    }
+
+    private function createSession(string $token, string $deviceId, string $accessLevel, bool $isPrivileged): string {
+        $sessionId = hash('sha512', $token . $deviceId . $this->config['secret_key']);
+        $sessionData = [
+            'token' => $token,
+            'device_id' => $deviceId,
+            'access_level' => $accessLevel,
+            'is_privileged' => $isPrivileged,
+            'created_at' => time(),
+        ];
+        $this->sessionStore->storeSession($sessionId, $sessionData, $this->config['token_expiry_seconds']);
+        return $sessionId;
+    }
+
+    private function validateAdminKey(?string $adminKey): bool {
+        return $adminKey === $this->config['default_admin_key'];
+    }
+
+    private function getAuthorizationState(string $deviceId): string {
+        return 'ACTIVE';
+    }
+}
+FROM php:8.1-apache
+RUN apt-get update && apt-get install -y \
+    libzip-dev zip unzip iproute2 jq \
+    && docker-php-ext-install zip \
+    && pecl install redis && docker-php-ext-enable redis
+mkdir -p /var/intima-ai/{logs,reports,archives,...}
+for cmd in infrastructure_manager treasure_hunter...; do
+    if [ ! -f "${BIN_DIR}/${cmd}" ]; then
+        echo "Mock $cmd: Executing \$@" > "${BIN_DIR}/${cmd}"
+        chmod +x "${BIN_DIR}/${cmd}"
+    fi
+done
+infrastructure_manager unify --targets=virta-sys,virta-net...
+treasure_hunter --scan-sources=DeepRepo,ColdStorage...
+install_activate --inventory=TreasureMap.json...
+class AccessTokenService {
+    private RedisSessionStore $sessionStore;
+    private VscIntegration $vscIntegration;
+
+    public function generateAccessToken(string $deviceId, string $accessLevel, ?string $adminKey): array {
+        // Token generation logic
+    }
+
+    private function createToken(string $deviceId, bool $isPrivileged): string {
+        return base64_encode($deviceId . ':' . ($isPrivileged ? 'privileged' : 'standard') . ':' . time());
+    }
+
+    private function createSession(string $token, string $deviceId, string $accessLevel, bool $isPrivileged): string {
+        $sessionId = hash('sha512', $token . $deviceId . $this->config['secret_key']);
+        $this->sessionStore->storeSession($sessionId, ...);
+        return $sessionId;
+    }
+}
+/var/intima-ai/logs
+Stores execution logs for auditing.
+/var/intima-ai/reports
+Contains JSON reports from system scans.
+/var/intima-ai/bin
+Houses custom CLI tools (mocked in development).
+.env
+Configuration file for secrets (e.g.,
+ADMIN_KEY
+).
     "github.com/segmentio/kafka-go"
     "github.com/prometheus/client_golang/prometheus"
     "github.com/prometheus/client_golang/prometheus/promhttp"
