@@ -200,7 +200,22 @@ https://www.rexegg.com/regex-style.php#anchor
       "description": "Guide to quantifiers such as *, +, ?, and {n,m} in regex."
     }
   ],
-  "codecademy_categories": [
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/links.json, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/fixme.md, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/cheat_regex.mkd,
+ https://github.com/Doctor0Evil/Virta-Sys/blob/main/arm_chip_technical_diagrams.json,
+ https://github.com/Doctor0Evil/Virta-Sys/blob/main/Transform.me, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/System_Regex.json, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/System.md, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/System-Manifest,
+ https://github.com/Doctor0Evil/Virta-Sys/blob/main/System-Architecture-hier-view, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Regex_patterns.yaml,
+ https://github.com/Doctor0Evil/Virta-Sys/blob/main/Ownership.json, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/NanobotsHardware.dll, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Game-Dev-env.shell, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Death_network_cheat_system.rs, 
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/CheatCodes.dll // regex_engine.rs use regex::Regex;  
+"codecademy_categories": [
     "https://www.codecademy.com/catalog/subject/web-design",
     "https://www.codecademy.com/catalog/subject/mobile-development",
     "https://www.codecademy.com/catalog/subject/math",
