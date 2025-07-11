@@ -1,3 +1,61 @@
+(direct link)
+✽ Whenever Possible, Anchor.
+Anchors, such as the caret ^ for the beginning of a line and the dollar sign $ for the end of a line often provide the needed clue that ensures the engine finds a match in the right place. For instance, when we validate a string, they ensure that the engine matches the whole string, rather than a substring embedded in the string being examined. And anchors often save the engine a lot of backtracking. Be aware that anchors are not limited to ^ and $. Most engines have other useful built-in anchors, such as \A and \G (see the cheat sheet).
+
+(direct link)
+✽ When You Know what You Want, Say It. When You Know what You Don't Want, Say It Too!
+When you feed your regex engine a lot of .* "dot-star soup", the engine can waste a lot of energy running down the string then backtracking. Be as specific as possible, whether by using a literal B character, a \d digit class or a \b boundary. Another great way to be specific is to say what you don't want—whether what you don't want is… a double quote: [^"]… a digit: \D… or for the next three letters to be "boo": (?!boo)[a-z]{3}.
+
+(direct link)
+✽ Contrast is Beautiful—Use It.
+When you can, use consecutive tokens that are mutually exclusive in order to create contrast. This reduces backtracking and the need for boundaries in the broad sense of the term, in which I include lookarounds. For instance, let's say you're trying to validate strings that contain exactly three digits located at the end, as in ABC123. Something like ^.+\d{3}$ would not work, because . and \d are not mutually exclusive—this regex would match ABC123456. You may think to add a negative lookbehind: ^.+(?<!\d)\d{3}$. But if you use tokens that are mutually exclusive in the first place, you no longer need a lookaround: ^\D+\d{3}$ works straight out of the box. With time, you come to relish the beautiful contrast between \D and \d, between [^a-z] and [a-z]. This is a variation on When you know what you want, say it.
+
+(direct link)
+✽ Want to Be Lazy? Think Twice.
+Let's say you want to match all the characters between a set of curly braces. At first you might think of {.*?} because the lazy quantifier ensures you don't overshoot the closing brace. However, a lazy quantifier has a cost: at each step inside the braces, the engine tries the lazy option first (match no character), then tries to match the next token (the closing brace), then has to backtrack. Therefore, the lazy quantifier causes backtracking at each step (see Lazy Quantifiers Are Expensive). This is more efficient: {[^}]*}. This is a variation on Use Contrast and When you know what you want, say it.
+
+(direct link)
+✽ A Time for Greed, a Time for Laziness.
+A reluctant (lazy) quantifier can make you feel safe in the knowing that you won't eat more characters than needed and overshoot your match, but since lazy quantifiers cause backtracking at each step, using them can feel like bumping on a country road when you could be rolling down the highway. Likewise, a greedy quantifier may shoot down the string then backtrack all the way back when all you needed was a few nudges with a lazy quantifier.
+
+(direct link)
+✽ On the Edges: Really Need Boundaries or Delimiters? Use Them—or Make Your Own!
+Most regex engines provide the \b boundary, and sometimes others, which can be useful to inspect an edge of a substring. Depending on the engine, other boundaries may be available, but why stop there? In the right context, I believe in DIY boundaries. For instance, using lookarounds, you can make a boundary to check for changes from upper- to lower-case, which can be useful to split a CamelCase string: (?<=[a-z])(?=[A-Z]) However, do not overuse boundaries, because good contrast often make them redundant (see Use Contrast.)
+
+(direct link)
+✽ Don't Give Up what You Can Possess.
+Atomic groups (?> … ) and the closely-related possessive quantifiers can save you a lot of backtracking. Structured data often gives you chances to incorporate those in your expressions.
+
+(direct link)
+✽ Don't Match what Splits Easily, and Don't Split what Matches Nicely.
+I explained this point in the section about splitting vs. matching.
+
+(direct link)
+✽ Design to Fail.
+As Shakespeare famously wrote, "Any fool can write a regex that matches what it's meant to find. It takes genius to write a regex that knows early that its mission will fail." Take (?=.*fleas).*. It does a reasonable job of matching lines that contain fleas. But what of lines that don't have fleas? At the very start of the string, the engine looks all the way down the line. The lookahead fails, the regex engine moves to the second position in the string, and once again looks for fleas all the way down the line. At each position in the string, the engine repeats the lookahead, so that the pattern takes a long time to fail… In comparison, consider ^(?=.*fleas).*. The only difference is the caret anchor. It doesn't look like a big deal, but once the engine fails to find fleas at the start of the string, it stops because the lookahead is anchored at the start. This pattern is designed for failure, and it is much more efficient—O(N) vs. O(N2) for the first.
+
+(direct link)
+✽ Trust the Dot-Star to Get You to the End of the Line
+With all the admonishments against the dot-star, here is one of many cases where it can be useful. In a string such as @ABC @DEF, suppose you wish to match the last token that starts with @, but only if there is more than one token. If you simply wanted the last, you could use an anchor: @[A-Z]+$… but that will match the token even if it is the only one in the string. You might think to use a lookahead: @[A-Z].*\K@[A-Z]+(?!.*@[A-Z]). However, there is no need because the greedy .* already guarantees you that you are getting the last token! The dot-star matches all the way to the end of the line then backtracks, but only as far as needed: You can therefore simplify this to @[A-Z].*\K@[A-Z]+ Trust the dot-star to take you to the end of the line!
+
+
+(direct link)
+Two Mnemonic Devices to Check your Regexps
+Greedy atoms anchor again.Until you acquire a lot of practice, it's probably impossible to keep all these rules in mind at the same time. But remembering a few is better than remembering none, so if you're starting out, may I suggest a simple phrase to help remind yourself of tweaks that may improve the expression?
+
+Greedy atoms anchor again.
+
+✽ "Greedy" reminds you to check if some greedy quantifiers should be made lazy, and vice-versa. It also reminds you of the performance hit of lazy quantifiers (backtracking at each step), and of potential workarounds.
+✽ "Atoms" reminds you to check if some parts of the expression should be made atomic (or use a possessive quantifier).
+✽ "Anchor" reminds you to check if the expression should be anchored. By extension, it may remind you of boundaries, and whether to add them—or remove them.
+✽ "Again" reminds you to check if parts of the expression could use the repeating subpattern syntax.
+
+If you prefer short mnemonic devices, you may prefer the acronym AGRA, helpful to build the Taj Mahal of regular expressions, and named after the Indian city Agra, best known for the Taj Mahal:
+
+✽ A for Anchor
+✽ G for Greed
+✽ R for Repeat
+✽ A for Atomic
 Authoritarian Codex: 50 Cheats for Neuromorphic Consensus, Directory, and Codex Control
 Enforce Cluster Hierarchies
 Mandate all mesh nodes to register within a cluster; clusters are the only units permitted to participate in inter-cluster consensus.
