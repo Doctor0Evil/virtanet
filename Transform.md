@@ -1,3 +1,16 @@
+root = true
+
+[*]
+indent_style = tab
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+* text=auto eol=lf
+*.ai binary
+readme.md merge=union
+.github/workflows/repo_linter.sh -linguist-detectable
+
 // PLATINUM/DIAMOND-TIER SYSTEMIC CODEX: ENERGY HARVESTING IMPACT ON NEUROMORPHIC SYSTEM SUSTAINABILITY
 // Scientific Expressions, Exhaustive Section/Module Descriptions
 // Author: Jacob Scott Farmer (CIA-ID:0047)
