@@ -1,3 +1,35 @@
+ndarray-rand = "0.14"
+rand = "0.8"
+tch = { version = "0.17.0", features = ["cuda"] }
+ndarray = "0.15"
+cargo add ndarray
+rand = "0.8"
+ndarray = { version = "0.15", features = ["serde"] }
+ndarray = { version = "0.15", features = ["rayon"] }
+use tch::{Tensor, Device};
+
+let tensor = Tensor::randn(&[10, 10], (tch::Kind::Float, Device::Cpu));
+println!("{:?}", tensor);
+use ndarray::{Array1, Array2};
+
+let a = Array2::<f64>::zeros((3, 4)); // 3x4 matrix of zeros
+let b = Array1::from(vec![1., 2., 3., 4.]);
+println!("Matrix a:\n{:?}", a);
+println!("Vector b: {:?}", b);
+use rand::Rng;
+
+let mut rng = rand::thread_rng();
+let x: f32 = rng.gen();
+fn simulate_eeg_signal(length: usize, freq: f32, noise_level: f32) -> Array1<f32> {
+    let mut rng = rand::thread_rng();
+    Array1::from_iter((0..length).map(|i| {
+        let t = i as f32 / length as f32;
+        (2.0 * std::f32::consts::PI * freq * t).sin() + rng.gen_range(-noise_level..noise_level)
+    }))
+}
+
+let eeg = simulate_eeg_signal(512, 10.0, 0.2);
+println!("Simulated EEG: {:?}", eeg);
 cargo add tch --features cuda
 cargo add ndarray
 cargo add rand
