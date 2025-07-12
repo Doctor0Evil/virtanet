@@ -1,0 +1,23 @@
+{
+"cpu": {
+"cores": 4,
+"threads": 8,
+"usage_percent": 100.0,
+"vendor": "AuthenticAMD",
+"model": "AMD EPYC 7R13 Processor"
+},
+"memory": {
+"total_gb": 61.91,
+"available_gb": 33.15,
+"used_percent": 46.5
+},
+"storage": {
+"total_gb": 127.94,
+"used_gb": 73.08,
+"free_gb": 54.85,
+"percent_used": 57.1
+},
+"os": {
+"name": "Linux",
+"version": "6.1.141"
+}
