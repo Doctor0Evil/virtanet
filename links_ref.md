@@ -1,3 +1,4 @@
+https://chat.qwen.ai/s/deploy/c6b59daa-122b-4e13-b682-2ed2993f72e4
 https://windowsforum.com/threads/farewell-wsa-3-best-alternatives-for-running-android-apks-on-windows.353507/,
 https://github.com/jiegec/awesome-stars/blob/master/README.md?LPSv3M=Atmzb7K,%20https://download.cnet.com/apk-installer-and-launcher/alternatives/windows/,
 https://astra1dev.github.io/posts/Best-Android-Modding-Tools/,
