@@ -1,0 +1,53 @@
+{
+"title": "Main Menu",
+"command_type": "root",
+"children": [
+{
+"title": "System",
+"command_type": "system",
+"children": [
+{
+"title": "Info",
+"command_type": "system_info",
+"children": []
+},
+{
+"title": "Settings",
+"command_type": "system_settings",
+"children": []
+}
+]
+},
+{
+"title": "Sample Plugin",
+"command_type": "plugin",
+"children": [
+{
+"title": "Run Test",
+"command_type": "test_command",
+"children": []
+},
+{
+"title": "Configure",
+"command_type": "config_command",
+"children": []
+}
+]
+},
+{
+"title": "Diagnostics",
+"command_type": "plugin",
+"children": [
+{
+"title": "System Check",
+"command_type": "diagnostic",
+"children": []
+},
+{
+"title": "Network Test",
+"command_type": "diagnostic",
+"children": []
+}
+]
+}
+]
