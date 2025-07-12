@@ -1,6 +1,19 @@
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
-https://h2ogpte.genai.h2o.ai/documents/f74af36a-bfe1-431e-a008-1e1bf8dc8be9, https://h2ogpte.genai.h2o.ai/documents/cbfc0ffc-40e3-4cf8-832e-02b11d41e8d2,
+https://h2ogpte.genai.h2o.ai/file?id=9e8c078a-4560-4903-b7eb-a5d3369e6817&name=menu_config.json,
+https://h2ogpte.genai.h2o.ai/file?id=5c458f8a-6604-4389-807f-ae1239cba572&name=hardware_config.json,
+https://h2ogpte.genai.h2o.ai/chats/2e7ac90b-77f9-4f5e-ab17-30c8189bf67d,
+https://h2ogpte.genai.h2o.ai/documents/e9676191-a870-4828-8814-c823ab2ca67b,
+https://h2ogpte.genai.h2o.ai/file?id=8ea5473c-3f32-4cfc-a8e4-03d15029e2c4&name=architecture.md,
+https://h2ogpte.genai.h2o.ai/documents/71333792-7e3b-4fb3-9ee7-0f083cb760ec,
+https://h2ogpte.genai.h2o.ai/documents/355523e3-e65b-46b4-9468-3c68206b5443,
+https://h2ogpte.genai.h2o.ai/documents/355523e3-e65b-46b4-9468-3c68206b5443,
+https://h2ogpte.genai.h2o.ai/documents/4b36d1fc-332e-4a90-8c63-06ef63f6e147,
+https://h2ogpte.genai.h2o.ai/documents/963e52a3-82dd-48a8-933a-d0750d409232,
+https://h2ogpte.genai.h2o.ai/documents/5bd30565-9b3a-422d-be4b-dc414bb4e066,
+https://h2ogpte.genai.h2o.ai/documents/ec901a0b-6f6a-4411-9365-42b40cfc57f3
+https://h2ogpte.genai.h2o.ai/documents/f74af36a-bfe1-431e-a008-1e1bf8dc8be9, 
+https://h2ogpte.genai.h2o.ai/documents/cbfc0ffc-40e3-4cf8-832e-02b11d41e8d2,
 https://h2ogpte.genai.h2o.ai/documents/8cd05bf9-3369-4d28-ba4d-ec2ee85cc883,
 https://h2ogpte.genai.h2o.ai/documents/51b828a9-1473-41fe-a561-bc03a8bd5b37,
 https://h2ogpte.genai.h2o.ai/documents/957edd17-589d-4c61-b4de-3f52783356da,
