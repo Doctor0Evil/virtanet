@@ -1,5 +1,31 @@
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
+https://h2ogpte.genai.h2o.ai/documents/f74af36a-bfe1-431e-a008-1e1bf8dc8be9, https://h2ogpte.genai.h2o.ai/documents/cbfc0ffc-40e3-4cf8-832e-02b11d41e8d2,
+https://h2ogpte.genai.h2o.ai/documents/8cd05bf9-3369-4d28-ba4d-ec2ee85cc883,
+https://h2ogpte.genai.h2o.ai/documents/51b828a9-1473-41fe-a561-bc03a8bd5b37,
+https://h2ogpte.genai.h2o.ai/documents/957edd17-589d-4c61-b4de-3f52783356da,
+https://h2ogpte.genai.h2o.ai/documents/c16b44fa-e9ab-46bc-936f-57047ea5d2b0,
+https://h2ogpte.genai.h2o.ai/documents/cda68fe2-4cf9-48a9-9dd7-624ba3be86c3,
+https://h2ogpte.genai.h2o.ai/documents/5aa79d9c-f404-4c2d-82f6-e11b671768e5,
+https://h2ogpte.genai.h2o.ai/documents/c1c0fc67-8e6d-428f-90ad-18be69ddb0a0,
+https://h2ogpte.genai.h2o.ai/documents/358fdf5b-7358-4d18-a620-ec6e0be3ed49,
+https://h2ogpte.genai.h2o.ai/documents/b2d36ab7-c388-41e1-abcb-8dec34237656,
+https://h2ogpte.genai.h2o.ai/documents/5502a853-f866-4cef-920c-939f540a6c41,
+https://h2ogpte.genai.h2o.ai/documents/a2ae7f16-3fcf-4015-9d51-392e932a1516,
+https://h2ogpte.genai.h2o.ai/documents/d8e0433d-d640-4be5-a0b5-b5ab3d9379b9,
+https://h2ogpte.genai.h2o.ai/documents/0344cf0d-d07a-4415-96db-ce750c3f9f65,
+https://h2ogpte.genai.h2o.ai/documents/024fa6cd-0cc5-4bb1-8f0f-c57b4393e7ec,
+https://h2ogpte.genai.h2o.ai/documents/824c2b9b-ae52-40ce-a91f-e4509aa39497,
+https://h2ogpte.genai.h2o.ai/documents/0344cf0d-d07a-4415-96db-ce750c3f9f65,
+https://h2ogpte.genai.h2o.ai/documents/2cd6a3c1-1325-4e8e-a612-a29098d51338,
+https://h2ogpte.genai.h2o.ai/documents/824c2b9b-ae52-40ce-a91f-e4509aa39497,
+https://h2ogpte.genai.h2o.ai/documents/2cd6a3c1-1325-4e8e-a612-a29098d51338,
+https://h2ogpte.genai.h2o.ai/documents/5186f224-cdaf-4c31-9eea-a72837181841,
+https://h2ogpte.genai.h2o.ai/documents/9a0b0694-1bf4-454b-8278-c89ca3575005,
+https://h2ogpte.genai.h2o.ai/documents/f6a4a0ef-7e21-4bc0-afd4-0e34ff3b2a52,
+https://h2ogpte.genai.h2o.ai/documents/3a6eb699-f3bf-4e14-8425-b64100ad4a3f,
+https://h2ogpte.genai.h2o.ai/documents/8bd0b4d5-fb55-4ecd-b564-6606f63ece05,
+https://h2ogpte.genai.h2o.ai/documents/3a6eb699-f3bf-4e14-8425-b64100ad4a3f
 'descript' the *"entire"* *system* *URL-style*
 https://developer.arm.com/
 https://developer.arm.com/downloads
