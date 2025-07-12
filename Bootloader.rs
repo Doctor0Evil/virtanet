@@ -645,3 +645,218 @@ fn main() {
     // Launch boot loop with enforced AI and reproduction controls
     bootloader.boot_loop();
 }
+// ENUM: CommandType
+public enum CommandType
+{
+    OpenSubMenu,
+    SystemInfo,
+    Settings,
+    Diagnostics,
+    Help,
+    Accessibility,
+    Network,
+    User,
+    Admin,
+    Developer,
+    Integrations,
+    Tools,
+    Data,
+    MLLogics,
+    AgenticPatterns,
+    BootstrapSequence,
+    Reboot,
+    Shutdown
+}
+
+// STRUCT: Bootloader
+public struct Bootloader
+{
+    public string BootId;
+    public bool Authenticated;
+
+    // Constructor
+    public static Bootloader New(string bootId)
+    {
+        return new Bootloader { BootId = bootId, Authenticated = false };
+    }
+
+    // Authenticate Bootloader (e.g., signature, credentials)
+    public bool Authenticate(string password)
+    {
+        Authenticated = StrongPasswordCheck(password);
+        return Authenticated;
+    }
+
+    // Strong password check (stub for demo)
+    private bool StrongPasswordCheck(string password)
+    {
+        // Require min 12 chars, at least 1 digit, 1 upper, 1 lower, 1 special
+        if (password.Length < 12) return false;
+        bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
+        foreach (char c in password)
+        {
+            if (char.IsUpper(c)) hasUpper = true;
+            else if (char.IsLower(c)) hasLower = true;
+            else if (char.IsDigit(c)) hasDigit = true;
+            else hasSpecial = true;
+        }
+        return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+
+    // Main boot loop
+    public void BootLoop(SystemShell shell)
+    {
+        if (!Authenticated)
+        {
+            Console.WriteLine("Bootloader not authenticated. Halting.");
+            return;
+        }
+        shell.Main();
+    }
+}
+
+// STRUCT: SystemShell
+public struct SystemShell
+{
+    private MenuNode RootMenu;
+
+    // Constructor
+    public static SystemShell New(MenuNode menu)
+    {
+        return new SystemShell { RootMenu = menu };
+    }
+
+    // Interactive menu navigation
+    public void InteractiveMenu()
+    {
+        NavigateMenus(RootMenu);
+    }
+
+    // Open command shell (restricted to menu commands)
+    public void OpenCommandShell()
+    {
+        Console.WriteLine("Command shell opened. Only menu commands allowed.");
+        InteractiveMenu();
+    }
+
+    // Detect code reproduction attempts (AI security)
+    public bool DetectCodeReproduction(string input)
+    {
+        // Block suspicious input patterns
+        string[] forbidden = { "exec", "eval", "System.Reflection", "unsafe", "Process.Start" };
+        foreach (var word in forbidden)
+            if (input.Contains(word)) return true;
+        return false;
+    }
+
+    // Execute a system command (from enum)
+    public void ExecuteSystemCommand(CommandType command)
+    {
+        if (ReproductionBlockTrigger(command))
+        {
+            Console.WriteLine("Blocked: Attempted code reproduction or unauthorized command.");
+            return;
+        }
+        switch (command)
+        {
+            case CommandType.SystemInfo: Console.WriteLine("System Info..."); break;
+            case CommandType.Settings: Console.WriteLine("Settings..."); break;
+            case CommandType.Diagnostics: Console.WriteLine("Diagnostics..."); break;
+            case CommandType.Help: Console.WriteLine("Help..."); break;
+            case CommandType.Accessibility: Console.WriteLine("Accessibility..."); break;
+            case CommandType.Network: Console.WriteLine("Network..."); break;
+            case CommandType.User: Console.WriteLine("User..."); break;
+            case CommandType.Admin: Console.WriteLine("Admin..."); break;
+            case CommandType.Developer: Console.WriteLine("Developer..."); break;
+            case CommandType.Integrations: Console.WriteLine("Integrations..."); break;
+            case CommandType.Tools: Console.WriteLine("Tools..."); break;
+            case CommandType.Data: Console.WriteLine("Data..."); break;
+            case CommandType.MLLogics: Console.WriteLine("ML Logics..."); break;
+            case CommandType.AgenticPatterns: Console.WriteLine("Agentic Patterns..."); break;
+            case CommandType.BootstrapSequence: Console.WriteLine("Bootstrap Sequence..."); break;
+            case CommandType.Reboot: Console.WriteLine("Rebooting..."); break;
+            case CommandType.Shutdown: Console.WriteLine("Shutting down..."); break;
+            default: Console.WriteLine("Unknown or unimplemented command."); break;
+        }
+    }
+
+    // Menu navigation logic
+    public void NavigateMenus(MenuNode current)
+    {
+        Stack<MenuNode> history = new Stack<MenuNode>();
+        while (true)
+        {
+            Console.WriteLine($"Menu: {current.Title}");
+            foreach (var child in current.Children)
+                Console.WriteLine($"- {child.Title}");
+            Console.Write("Select menu item (or type EXIT): ");
+            string input = Console.ReadLine();
+            if (input.ToUpper() == "EXIT" && history.Count > 0)
+            {
+                current = history.Pop();
+                continue;
+            }
+            var selected = current.GetChild(input);
+            if (selected == null)
+            {
+                Console.WriteLine("Invalid selection.");
+                continue;
+            }
+            if (selected.IsLeaf)
+                ExecuteSystemCommand(selected.Command.Type);
+            else
+            {
+                history.Push(current);
+                current = selected;
+            }
+        }
+    }
+
+    // Block trigger for reproduction or forbidden commands
+    public bool ReproductionBlockTrigger(CommandType cmd)
+    {
+        // Example: block Developer/Admin commands for non-admin users
+        return cmd == CommandType.Developer || cmd == CommandType.Admin;
+    }
+
+    // Main entry
+    public void Main()
+    {
+        OpenCommandShell();
+    }
+}
+
+// Example MenuNode for demonstration
+public class MenuNode
+{
+    public string Title { get; }
+    public MenuCommand Command { get; }
+    private Dictionary<string, MenuNode> children = new Dictionary<string, MenuNode>();
+
+    public MenuNode(string title, MenuCommand command = null)
+    {
+        Title = title;
+        Command = command;
+    }
+
+    public bool IsLeaf => children.Count == 0 && Command != null && Command.Type != CommandType.OpenSubMenu;
+
+    public void AddChild(MenuNode child)
+    {
+        children[child.Title.ToUpper()] = child;
+    }
+
+    public MenuNode GetChild(string input)
+    {
+        children.TryGetValue(input.ToUpper(), out var node);
+        return node;
+    }
+
+    public IEnumerable<MenuNode> Children => children.Values;
+}
+
+public class MenuCommand
+{
+    public CommandType Type { get; }
+    public MenuCommand(CommandType type) { Type = type; }
+}
