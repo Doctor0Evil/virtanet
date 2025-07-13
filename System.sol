@@ -1,5 +1,3 @@
-// Legendary-tiered RUST System: Reverse Engineering, Cheat Code Analysis, and System Mapping
-// Exhaustive, filled, complete, and parallelized using all requested crates and tokens
 
 // --- Imports ---
 use std::collections::{HashMap, HashSet, BTreeMap, VecDeque};
