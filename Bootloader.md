@@ -24,7 +24,7 @@ UniversalBoot/
         {
             try
             {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) 
                     File.Exists("/proc/device-tree/model"))
                 {
                     var model = File.ReadAllText("/proc/device-tree/model");
@@ -133,7 +133,7 @@ UniversalBoot/
         {
             var plugin = _boot.GetPlugin(pluginName);
             return plugin != null &&
-                   plugin.Actions.Any(a => a.Name.Equals(actionName, StringComparison.OrdinalIgnoreCase)) &&
+                   plugin.Actions.Any(a => a.Name.Equals(actionName, StringComparison.OrdinalIgnoreCase)) 
                    plugin.Platforms.Contains(_boot.CurrentPlatform);
         }
 
