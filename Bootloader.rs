@@ -1,4 +1,2983 @@
 *'Complete' the *bootstrap/bootloader-hybbrid*;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using System.Runtime.InteropServices;
+
+namespace UniversalBoot.Core
+{
+    public enum PlatformType { Universal, Cloud, Edge, Mobile, Desktop, Browser, IoT, Embedded, AISystem }
+UniversalBoot/
+├── UniversalBoot.Core/            # Shared logic (bootloader, policy, models)
+├── UniversalBoot.TUI/             # Terminal.Gui TUI
+├── UniversalBoot.Blazor/         # Blazor Hybrid/Web/Desktop/Mobile UI
+└── UniversalBoot.sln
+
+
+    public static class Compatibility
+    {
+        public static PlatformType DetectPlatform()
+        {
+            try
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+                    File.Exists("/proc/device-tree/model"))
+                {
+                    var model = File.ReadAllText("/proc/device-tree/model");
+                    if (model.Contains("arm", StringComparison.OrdinalIgnoreCase))
+                        return PlatformType.Embedded;
+                }
+
+                var env = Environment.GetEnvironmentVariables().Keys.Cast<string>();
+                if (env.Any(k => k.Contains("AI_SYSTEM", StringComparison.OrdinalIgnoreCase)))
+                    return PlatformType.AISystem;
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ||
+                    RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                    return PlatformType.Desktop;
+
+                return PlatformType.Cloud;
+            }
+            catch { return PlatformType.Universal; }
+        }
+    }
+
+    public class PluginAction
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool RequiresAuth { get; set; } = false;
+        public List<PlatformType> AllowedPlatforms { get; set; } = new() { PlatformType.Universal };
+    }
+
+    public class PluginManifest
+    {
+        public string Name { get; set; }
+        public string Version { get; set; } = "1.0.0";
+        public List<PlatformType> Platforms { get; set; } = new() { PlatformType.Universal };
+        public List<PluginAction> Actions { get; set; } = new();
+        public List<string> Dependencies { get; set; } = new();
+        public string Checksum { get; set; }
+
+        public string CalculateChecksum()
+        {
+            using var sha = SHA256.Create();
+            var data = string.Join("|", Name, Version,
+                string.Join(",", Platforms), string.Join(",", Dependencies));
+            return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(data)));
+        }
+    }
+
+    public class AIBootloader
+    {
+        private readonly string _pluginDir;
+        private readonly List<PluginManifest> _plugins = new();
+        public PlatformType CurrentPlatform { get; }
+
+        public AIBootloader(string pluginDirectory = null)
+        {
+            _pluginDir = pluginDirectory ?? Path.Combine(AppContext.BaseDirectory, "ai_plugins");
+            Directory.CreateDirectory(_pluginDir);
+            CurrentPlatform = Compatibility.DetectPlatform();
+            LoadPlugins();
+            InitializeCorePlugin();
+        }
+
+        private void LoadPlugins()
+        {
+            foreach (var file in Directory.EnumerateFiles(_pluginDir, "*.json"))
+            {
+                try
+                {
+                    var json = File.ReadAllText(file);
+                    var pm = JsonSerializer.Deserialize<PluginManifest>(json);
+                    if (pm != null && pm.Checksum == pm.CalculateChecksum())
+                        _plugins.Add(pm);
+                }
+                catch { /* skip invalid manifests */ }
+            }
+        }
+
+        private void InitializeCorePlugin()
+        {
+            var core = new PluginManifest
+            {
+                Name = "ai_core",
+                Actions = new List<PluginAction>
+                {
+                    new() { Name = "init", Description = "Initialize AI core" },
+                    new() { Name = "execute", Description = "Execute AI logic" },
+                    new() { Name = "status", Description = "Report system status", RequiresAuth = false }
+                },
+                Platforms = new() { PlatformType.Universal }
+            };
+            core.Checksum = core.CalculateChecksum();
+            _plugins.Add(core);
+        }
+
+        public IEnumerable<PluginManifest> ListPlugins() => _plugins;
+        public PluginManifest GetPlugin(string name) =>
+            _plugins.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+    }
+
+    public class ForceTriggerPolicy
+    {
+        private readonly AIBootloader _boot;
+        public ForceTriggerPolicy(AIBootloader bootloader) => _boot = bootloader;
+
+        public bool IsAllowed(string pluginName, string actionName)
+        {
+            var plugin = _boot.GetPlugin(pluginName);
+            return plugin != null &&
+                   plugin.Actions.Any(a => a.Name.Equals(actionName, StringComparison.OrdinalIgnoreCase)) &&
+                   plugin.Platforms.Contains(_boot.CurrentPlatform);
+        }
+
+        public string Execute(string pluginName, string actionName)
+        {
+            if (!IsAllowed(pluginName, actionName))
+                return $"⛔ Action `{actionName}` on `{pluginName}` is not allowed.";
+
+            return actionName.ToLower() switch
+            {
+                "init" => "🟢 Core initialized.",
+                "execute" => "🧠 AI logic executed.",
+                "status" => $"📊 Platform: {_boot.CurrentPlatform}, Plugins loaded: {_boot.ListPlugins().Count()}",
+                _ => "ℹ️ Action simulated (no-op)."
+            };
+        }
+
+        public void BlockSource() =>
+            throw new InvalidOperationException("🚫 Bootloader source reproduction is forbidden.");
+    }
+
+    public interface ILogService
+    {
+        void Log(string user, string plugin, string action, DateTime ts, string result);
+        IEnumerable<string> ReadLogs(string user = null);
+    }
+
+    public class FileLogService : ILogService
+    {
+        private readonly string _file = Path.Combine(AppContext.BaseDirectory, "system.log");
+
+        public void Log(string user, string plugin, string action, DateTime ts, string result)
+        {
+            var entry = $"{ts:O} | {user} | {plugin}:{action} => {result}";
+            File.AppendAllText(_file, entry + Environment.NewLine);
+        }
+
+        public IEnumerable<string> ReadLogs(string user = null)
+        {
+            if (!File.Exists(_file)) yield break;
+            foreach (var line in File.ReadLines(_file))
+            {
+                if (user == null || line.Contains($"| {user} |"))
+                    yield return line;
+            }
+        }
+    }
+
+    public interface IUserService
+    {
+        string CurrentUser { get; }
+        bool Authenticate(string user, string password);
+    }
+
+    public class InMemoryUserService : IUserService
+    {
+        private string _user;
+        public string CurrentUser => _user ?? "guest";
+        public bool Authenticate(string user, string pw)
+        {
+            _user = user; // Real app would validate
+            return true;
+        }
+    }
+}
+// Bootloader.cs (in Core)
+public class AIBootloader {
+    // ... platform detection, plugin loading, checksum, actions
+}
+public class ForceTriggerPolicy {
+    // ... enforce sandboxed plugin invocation
+}
+public interface ILogService { /* Log() & ReadLogs() */ }
+public class FileLogService : ILogService { /* writes to system.log */ }
+public interface IUserService { /* Authenticate, CurrentUser */ }
+public class InMemoryUserService : IUserService { /* stub user identity */ }
+
+// Program.cs (in TUI)
+Application.Init();
+var top = Application.Top;
+// Add MenuBar for Themes, Plugins, Exit
+// Use Shared AIBootloader & ForceTriggerPolicy
+// Use FileLogService, InMemoryUserService for logging & user context
+Application.Run(top);
+Application.Shutdown();
+// SharedService.cs (in Blazor project)
+public class BootloaderService { /* wraps Core logic + logging */ }
+public class ForceTriggerService { /* enforces policy */ }
+// UniversalBoot.BlazorApp/Program.cs
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using System.Security.Claims;
+using UniversalBoot.Core; // Add reference to Core via ProjectReference
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add Blazor & services
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddSingleton<AIBootloader>();
+builder.Services.AddSingleton<ForceTriggerPolicy>();
+builder.Services.AddSingleton<ILogService, FileLogService>();
+builder.Services.AddScoped<IUserService, InMemoryUserService>();
+
+var app = builder.Build();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+app.Run();
+
+// Pages/Index.razor:
+/*
+@inject AIBootloader Bootloader
+@inject ForceTriggerPolicy Policy
+@inject ILogService Logger
+@inject IUserService Users
+
+<select @bind="selectedPlugin"> ... plugin list ... </select>
+<button @onclick="InvokeAction">Execute</button>
+
+<select @bind="selectedAction"> ... actions ... </select>
+<button @onclick="InvokeAction">▶️ Run</button>
+
+<div>@LogText</div>
+<div>
+  <button @onclick="ToggleTheme">Toggle Theme</button>
+</div>
+*/
+
+@code {
+    // load plugins, selected indices, on InvokeAction:
+    if (Policy.IsActionAllowed(...)) {
+        var res = Policy.PerformAction(...);
+        Logger.Log(Users.CurrentUser, plugin, action, DateTime.Now, res);
+        LogText += $"{DateTime.Now:u} | {res}\n";
+    }
+}
+git clone https://github.com/your-org/UniversalBoot.git
+cd UniversalBoot
+dotnet build
+dotnet run --project UniversalBoot.TUI       # Terminal app
+dotnet run --project UniversalBoot.Blazor     # Blazor app on http://localhost:5000
+
+// Program.cs
+using Terminal.Gui;
+using UniversalBoot.Core;
+using System;
+using System.Linq;
+
+namespace UniversalBoot.TUI
+{
+    class Program
+    {
+        static void Main()
+        {
+            Application.Init();
+            var top = Application.Top;
+
+            // Shared core services
+            var boot = new AIBootloader();
+            var policy = new ForceTriggerPolicy(boot);
+            var logsvc = new FileLogService();
+            var users = new InMemoryUserService();
+
+            // Login dialog
+            var login = new Dialog("👤 Login", 60, 8);
+            var userField = new TextField(2, 1, 40, "");
+            login.Add(new Label(2, 0, "Username:"), userField);
+            login.Add(new Button("Login", is_default: true) {
+                X = 2, Y = 3, Clicked = () => {
+                    users.Authenticate(userField.Text.ToString(), "");
+                    Application.RequestStop();
+                }
+            });
+            Application.Run(login);
+
+            // Build menu bar (themes + exit)
+            var menu = new MenuBar(new[]{
+                new MenuBarItem("_Options", new[]{
+                    new MenuItem("_Light Theme", "", () => Application.Top.ColorScheme = Colors.Base),
+                    new MenuItem("_Dark Theme", "", () => Application.Top.ColorScheme = Colors.Dialog),
+                    new MenuItem("_High Contrast", "", () => Application.Top.ColorScheme = Colors.Error)
+                }),
+                new MenuBarItem("_Exit", new[]{
+                    new MenuItem("_Quit", "", () => { Application.RequestStop(); })
+                })
+            });
+            top.Add(menu);
+
+            // Main window
+            var win = new Window($"Universal AI Bootloader - User: {users.CurrentUser}")
+            {
+                X = 0, Y = 1,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
+
+            // UI controls: plugin list, action list, log view
+            var plugins = boot.ListPlugins().ToList();
+            var pluginView = new ListView(plugins.Select(p => $"{p.Name} ({p.Version})").ToList())
+            { X = 0, Y = 0, Width = 30, Height = Dim.Fill(2) };
+            var actionView = new ListView() { X = 31, Y = 0, Width = 30, Height = Dim.Fill(2) };
+            var logView = new TextView()
+            { X = 0, Y = Pos.Bottom(pluginView), Width = Dim.Fill(), Height = 5, ReadOnly = true };
+
+            pluginView.SelectedItemChanged += e =>
+            {
+                var plugin = plugins[e.Item];
+                actionView.SetSource(plugin.Actions.Select(a => $"{a.Name} - {a.Description}").ToList());
+            };
+            if (plugins.Any())
+                pluginView.SelectedItem = 0;
+
+            actionView.OpenSelectedItem += e =>
+            {
+                var plugin = plugins[pluginView.SelectedItem];
+                var action = plugin.Actions[actionView.SelectedItem].Name;
+                var result = policy.Execute(plugin.Name, action);
+
+                // Log and display
+                logsvc.Log(users.CurrentUser, plugin.Name, action, DateTime.Now, result);
+                logView.Text += $"{DateTime.Now:HH:mm:ss} | {plugin.Name}:{action} -> {result}\n";
+            };
+
+            win.Add(new Label("Plugins") { X = 0, Y =  -1 });
+            win.Add(new Label("Actions") { X = 31, Y = -1 });
+            win.Add(pluginView, actionView, logView);
+            top.Add(win);
+
+            Application.Run();
+            Application.Shutdown();
+        }
+    }
+}
+mkdir UniversalBoot.TUI
+cd UniversalBoot.TUI
+dotnet new console
+dotnet add package Terminal.Gui
+dotnet add reference ../UniversalBoot.Core/UniversalBoot.Core.csproj
+dotnet run
+// File: UniversalBoot.Blazor/Program.cs
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using UniversalBoot.Core;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+
+// Inject core shared services
+builder.Services.AddSingleton<AIBootloader>();
+builder.Services.AddSingleton<ForceTriggerPolicy>();
+builder.Services.AddSingleton<ILogService, FileLogService>();
+builder.Services.AddScoped<IUserService, InMemoryUserService>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+app.UseRouting();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+
+app.Run();
+@page "/"
+@inject AIBootloader Bootloader
+@inject ForceTriggerPolicy Policy
+@inject ILogService Logger
+@inject IUserService Users
+
+<h3>👤 Welcome, @Users.CurrentUser</h3>
+
+@if (!isLoggedIn)
+{
+    <input placeholder="Enter username" @bind="username" />
+    <button @onclick="Login">Login</button>
+}
+else
+{
+    <select @bind="selectedPlugin">
+        @foreach (var p in plugins)
+        {
+            <option value="@p.Name">@p.Name (@p.Version)</option>
+        }
+    </select>
+
+    @if (selectedPlugin != null)
+    {
+        var actions = Bootloader.GetPlugin(selectedPlugin)?.Actions;
+        <select @bind="selectedAction">
+            @foreach (var act in actions)
+            {
+                <option>@act.Name</option>
+            }
+        </select>
+
+        <button @onclick="RunAction">▶️ Run</button>
+    }
+
+    <br/><br/>
+    <textarea rows="10" cols="80" readonly>@logText</textarea>
+    <br/>
+    <button @onclick="ToggleTheme">🌓 Toggle Theme</button>
+}
+
+@code {
+    string username = "";
+    bool isLoggedIn = false;
+    string selectedPlugin;
+    string selectedAction;
+    string logText = "";
+    List<PluginManifest> plugins;
+
+    protected override void OnInitialized()
+    {
+        plugins = Bootloader.ListPlugins().ToList();
+        selectedPlugin = plugins.FirstOrDefault()?.Name;
+        selectedAction = Bootloader.GetPlugin(selectedPlugin)?.Actions?.FirstOrDefault()?.Name;
+    }
+
+    void Login()
+    {
+        Users.Authenticate(username, "");
+        isLoggedIn = true;
+    }
+
+    void RunAction()
+    {
+        var result = Policy.Execute(selectedPlugin, selectedAction);
+        Logger.Log(Users.CurrentUser, selectedPlugin, selectedAction, DateTime.Now, result);
+        logText = $"{DateTime.Now:HH:mm:ss} | {selectedPlugin}:{selectedAction} => {result}\n" + logText;
+    }
+
+    void ToggleTheme()
+    {
+        var isDark = document.body.classList.contains("dark");
+        var newClass = isDark ? "light" : "dark";
+        document.body.className = newClass;
+    }
+}
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8" />
+    <title>UniversalBoot UI</title>
+    <base href="~/" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="UniversalBoot.Blazor.styles.css" rel="stylesheet" />
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>
+body.light {
+    background-color: #fff;
+    color: #000;
+}
+body.dark {
+    background-color: #222;
+    color: #eee;
+}
+textarea {
+    width: 100%;
+    background-color: inherit;
+    color: inherit;
+}
+body.light {
+    background-color: #fff;
+    color: #000;
+}
+body.dark {
+    background-color: #222;
+    color: #eee;
+}
+textarea {
+    width: 100%;
+    background-color: inherit;
+    color: inherit;
+}
+mkdir UniversalBoot.Blazor
+cd UniversalBoot.Blazor
+dotnet new blazorserver
+dotnet add reference ../UniversalBoot.Core/UniversalBoot.Core.csproj
+dotnet run
+public class User
+{
+    public string Username { get; set; }
+    public string PasswordHash { get; set; }
+    public string Salt { get; set; }
+    public string Role { get; set; } = "User"; // or "Admin"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+public interface IUserService
+{
+    User CurrentUser { get; }
+    bool Authenticate(string username, string password);
+    bool Register(string username, string password, string role = "User");
+    void Logout();
+    bool IsInRole(string role);
+}
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Data.Sqlite;
+
+public class UserServiceSQLite : IUserService
+{
+    private readonly string _connString;
+    private User _currentUser;
+
+    public User CurrentUser => _currentUser;
+
+    public UserServiceSQLite(string dbFile = "universalboot.db")
+    {
+        _connString = $"Data Source={dbFile}";
+        InitializeDatabase();
+    }
+
+    private void InitializeDatabase()
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Users (
+                Username TEXT PRIMARY KEY,
+                PasswordHash TEXT NOT NULL,
+                Salt TEXT NOT NULL,
+                Role TEXT NOT NULL
+            );";
+        cmd.ExecuteNonQuery();
+        conn.Close();
+    }
+
+    public bool Register(string username, string password, string role = "User")
+    {
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            return false;
+
+        if (UserExists(username))
+            return false;
+
+        var salt = GenerateSalt();
+        var hash = HashPassword(password, salt);
+
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "INSERT INTO Users (Username, PasswordHash, Salt, Role) VALUES ($u, $h, $s, $r);";
+        cmd.Parameters.AddWithValue("$u", username);
+        cmd.Parameters.AddWithValue("$h", hash);
+        cmd.Parameters.AddWithValue("$s", salt);
+        cmd.Parameters.AddWithValue("$r", role);
+        var res = cmd.ExecuteNonQuery();
+        conn.Close();
+
+        return res > 0;
+    }
+
+    public bool Authenticate(string username, string password)
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT PasswordHash, Salt, Role FROM Users WHERE Username = $u;";
+        cmd.Parameters.AddWithValue("$u", username);
+        using var rdr = cmd.ExecuteReader();
+
+        if (!rdr.Read())
+            return false;
+
+        var storedHash = rdr.GetString(0);
+        var salt = rdr.GetString(1);
+        var role = rdr.GetString(2);
+
+        var inputHash = HashPassword(password, salt);
+
+        if (inputHash == storedHash)
+        {
+            _currentUser = new User { Username = username, Role = role };
+            return true;
+        }
+        return false;
+    }
+
+    public void Logout()
+    {
+        _currentUser = null;
+    }
+
+    public bool IsInRole(string role)
+    {
+        return _currentUser != null && string.Equals(_currentUser.Role, role, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private bool UserExists(string username)
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT 1 FROM Users WHERE Username = $u;";
+        cmd.Parameters.AddWithValue("$u", username);
+        var res = cmd.ExecuteScalar();
+        return res != null;
+    }
+
+    private static string GenerateSalt()
+    {
+        var buf = new byte[16];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(buf);
+        return Convert.ToBase64String(buf);
+    }
+
+    private static string HashPassword(string password, string salt)
+    {
+        var pbkdf2 = new Rfc2898DeriveBytes(password, Convert.FromBase64String(salt), 100_000, HashAlgorithmName.SHA256);
+        var hash = pbkdf2.GetBytes(32);
+        return Convert.ToBase64String(hash);
+    }
+}
+public interface IPluginRepository
+{
+    IEnumerable<PluginManifest> GetAll();
+    PluginManifest Get(string name);
+    bool Save(PluginManifest plugin);
+    bool Delete(string name);
+    bool ImportFromJson(string json);
+    string ExportToJson(string name);
+}
+using Microsoft.Data.Sqlite;
+using System.Text.Json;
+
+public class PluginRepositorySQLite : IPluginRepository
+{
+    private readonly string _connString;
+
+    public PluginRepositorySQLite(string dbFile = "universalboot.db")
+    {
+        _connString = $"Data Source={dbFile}";
+        InitializeDatabase();
+    }
+
+    private void InitializeDatabase()
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Plugins (
+                Name TEXT PRIMARY KEY,
+                Version TEXT NOT NULL,
+                Platforms TEXT NOT NULL,
+                Actions TEXT NOT NULL,
+                Dependencies TEXT NOT NULL,
+                Checksum TEXT NOT NULL
+            );";
+        cmd.ExecuteNonQuery();
+    }
+
+    public IEnumerable<PluginManifest> GetAll()
+    {
+        var list = new List<PluginManifest>();
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT Name, Version, Platforms, Actions, Dependencies, Checksum FROM Plugins;";
+        using var rdr = cmd.ExecuteReader();
+        while (rdr.Read())
+        {
+            var p = new PluginManifest
+            {
+                Name = rdr.GetString(0),
+                Version = rdr.GetString(1),
+                Checksum = rdr.GetString(5),
+                Platforms = rdr.GetString(2).Split(',').Select(Enum.Parse<PlatformType>).ToList(),
+                Dependencies = rdr.GetString(4).Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
+            };
+            var actionsJson = rdr.GetString(3);
+            p.Actions = JsonSerializer.Deserialize<List<PluginAction>>(actionsJson);
+            list.Add(p);
+        }
+        return list;
+    }
+
+    public PluginManifest Get(string name)
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "SELECT Name, Version, Platforms, Actions, Dependencies, Checksum FROM Plugins WHERE Name = $n;";
+        cmd.Parameters.AddWithValue("$n", name);
+        using var rdr = cmd.ExecuteReader();
+        if (rdr.Read())
+        {
+            var p = new PluginManifest
+            {
+                Name = rdr.GetString(0),
+                Version = rdr.GetString(1),
+                Checksum = rdr.GetString(5),
+                Platforms = rdr.GetString(2).Split(',').Select(Enum.Parse<PlatformType>).ToList(),
+                Dependencies = rdr.GetString(4).Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
+            };
+            var actionsJson = rdr.GetString(3);
+            p.Actions = JsonSerializer.Deserialize<List<PluginAction>>(actionsJson);
+            return p;
+        }
+        return null;
+    }
+
+    public bool Save(PluginManifest plugin)
+    {
+        plugin.Checksum = plugin.CalculateChecksum();
+        var actionsJson = JsonSerializer.Serialize(plugin.Actions);
+        var platformsCsv = string.Join(',', plugin.Platforms);
+        var dependenciesCsv = string.Join(',', plugin.Dependencies);
+
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+            INSERT INTO Plugins (Name, Version, Platforms, Actions, Dependencies, Checksum)
+            VALUES ($n, $v, $p, $a, $d, $c)
+            ON CONFLICT(Name) DO UPDATE SET
+                Version=excluded.Version,
+                Platforms=excluded.Platforms,
+                Actions=excluded.Actions,
+                Dependencies=excluded.Dependencies,
+                Checksum=excluded.Checksum;";
+        cmd.Parameters.AddWithValue("$n", plugin.Name);
+        cmd.Parameters.AddWithValue("$v", plugin.Version);
+        cmd.Parameters.AddWithValue("$p", platformsCsv);
+        cmd.Parameters.AddWithValue("$a", actionsJson);
+        cmd.Parameters.AddWithValue("$d", dependenciesCsv);
+        cmd.Parameters.AddWithValue("$c", plugin.Checksum);
+
+        var rows = cmd.ExecuteNonQuery();
+        return rows > 0;
+    }
+
+    public bool Delete(string name)
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "DELETE FROM Plugins WHERE Name = $n;";
+        cmd.Parameters.AddWithValue("$n", name);
+        var rows = cmd.ExecuteNonQuery();
+        return rows > 0;
+    }
+
+    public bool ImportFromJson(string json)
+    {
+        try
+        {
+            var plugin = JsonSerializer.Deserialize<PluginManifest>(json);
+            if (plugin == null) return false;
+            plugin.Checksum = plugin.CalculateChecksum();
+            return Save(plugin);
+        }
+        catch { return false; }
+    }
+
+    public string ExportToJson(string name)
+    {
+        var plugin = Get(name);
+        if (plugin == null) return null;
+        return JsonSerializer.Serialize(plugin, new JsonSerializerOptions { WriteIndented = true });
+    }
+}
+public interface ILogService
+{
+    void Log(string user, string plugin, string action, DateTime timestamp, string result);
+    IEnumerable<string> GetLogs(int limit = 100);
+}
+using Microsoft.Data.Sqlite;
+
+public class LogServiceSQLite : ILogService
+{
+    private readonly string _connString;
+
+    public LogServiceSQLite(string dbFile = "universalboot.db")
+    {
+        _connString = $"Data Source={dbFile}";
+        InitializeDatabase();
+    }
+
+    private void InitializeDatabase()
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Logs (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                User TEXT,
+                Plugin TEXT,
+                Action TEXT,
+                Timestamp TEXT,
+                Result TEXT
+            );";
+        cmd.ExecuteNonQuery();
+    }
+
+    public void Log(string user, string plugin, string action, DateTime timestamp, string result)
+    {
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = "INSERT INTO Logs (User, Plugin, Action, Timestamp, Result) VALUES ($u, $p, $a, $t, $r);";
+        cmd.Parameters.AddWithValue("$u", user);
+        cmd.Parameters.AddWithValue("$p", plugin);
+        cmd.Parameters.AddWithValue("$a", action);
+        cmd.Parameters.AddWithValue("$t", timestamp.ToString("o"));
+        cmd.Parameters.AddWithValue("$r", result);
+        cmd.ExecuteNonQuery();
+    }
+
+    public IEnumerable<string> GetLogs(int limit = 100)
+    {
+        var logs = new List<string>();
+        using var conn = new SqliteConnection(_connString);
+        conn.Open();
+        var cmd = conn.CreateCommand();
+        cmd.CommandText = $"SELECT Timestamp, User, Plugin, Action, Result FROM Logs ORDER BY Id DESC LIMIT {limit};";
+        using var rdr = cmd.ExecuteReader();
+        while (rdr.Read())
+        {
+            var ts = rdr.GetString(0);
+            var user = rdr.GetString(1);
+            var plugin = rdr.GetString(2);
+            var action = rdr.GetString(3);
+            var res = rdr.GetString(4);
+            logs.Add($"{ts} | {user} | {plugin}:{action} => {res}");
+        }
+        return logs;
+    }
+}
+public class ForceTriggerPolicy
+{
+    private readonly IUserService _users;
+
+    public ForceTriggerPolicy(IUserService users)
+    {
+        _users = users;
+    }
+
+    public string Execute(string plugin, string action)
+    {
+        if (!_users.IsInRole("Admin"))
+            return "❌ Access denied: Admin role required to execute commands.";
+
+        // For demo, simply simulate execution.
+        return $"✅ Executed '{action}' on plugin '{plugin}' (enforced mode)";
+    }
+}
+@inject IUserService Users
+@inject NavigationManager Nav
+
+<h3>Login</h3>
+
+@if (loginFailed)
+{
+    <p style="color:red">Invalid username or password.</p>
+}
+
+<input placeholder="Username" @bind="username" />
+<br/>
+<input type="password" placeholder="Password" @bind="password" />
+<br/>
+<button @onclick="DoLogin">Login</button>
+<button @onclick="DoRegister">Register</button>
+
+@code {
+    string username = "";
+    string password = "";
+    bool loginFailed = false;
+
+    void DoLogin()
+    {
+        if (Users.Authenticate(username, password))
+        {
+            Nav.NavigateTo("/");
+        }
+        else
+        {
+            loginFailed = true;
+        }
+    }
+
+    void DoRegister()
+    {
+        if (Users.Register(username, password))
+        {
+            loginFailed = false;
+            Nav.NavigateTo("/");
+        }
+        else
+        {
+            loginFailed = true;
+        }
+    }
+}
+@page "/"
+@inject IUserService Users
+@inject IPluginRepository Plugins
+@inject ILogService Logger
+@inject ForceTriggerPolicy Policy
+
+@if (Users.CurrentUser == null)
+{
+    <p>Please <a href="login">login</a> to continue.</p>
+}
+else
+{
+    <h3>Welcome @Users.CurrentUser.Username (@Users.CurrentUser.Role)</h3>
+    <button @onclick="Logout">Logout</button>
+
+    <hr />
+
+    <h4>Plugins</h4>
+    <select @bind="selectedPlugin">
+        @foreach (var p in plugins)
+        {
+            <option value="@p.Name">@p.Name</option>
+        }
+    </select>
+
+    @if (selectedPlugin != null)
+    {
+        <h5>Actions</h5>
+        <select @bind="selectedAction">
+            @foreach (var a in Plugins.Get(selectedPlugin).Actions)
+            {
+                <option>@a.Name</option>
+            }
+        </select>
+        <button @onclick="RunAction">Run Action</button>
+    }
+
+    <hr />
+
+    @if (Users.IsInRole("Admin"))
+    {
+        <h4>Plugin Editor</h4>
+        <textarea rows="10" cols="60" @bind="editPluginJson"></textarea>
+        <br/>
+        <button @onclick="SavePlugin">Save Plugin</button>
+        <button @onclick="ImportPlugin">Import JSON</button>
+        <button @onclick="ExportPlugin">Export JSON</button>
+        <p>@pluginMessage</p>
+    }
+
+    <hr />
+    <h4>Logs</h4>
+    <textarea rows="15" cols="80" readonly>@logText</textarea>
+}
+
+@code {
+    List<PluginManifest> plugins = new();
+    string selectedPlugin;
+    string selectedAction;
+    string logText = "";
+    string editPluginJson = "";
+    string pluginMessage = "";
+
+    protected override void OnInitialized()
+    {
+        plugins = Plugins.GetAll().ToList();
+        if (plugins.Any())
+        {
+            selectedPlugin = plugins.First().Name;
+            selectedAction = Plugins.Get(selectedPlugin).Actions.FirstOrDefault()?.Name;
+            editPluginJson = Plugins.ExportToJson(selectedPlugin);
+        }
+        RefreshLogs();
+    }
+
+    void RunAction()
+    {
+        var result = Policy.Execute(selectedPlugin, selectedAction);
+        Logger.Log(Users.CurrentUser.Username, selectedPlugin, selectedAction, DateTime.UtcNow, result);
+        logText = $"{DateTime.UtcNow:HH:mm:ss} | {selectedPlugin}:{selectedAction} => {result}\n" + logText;
+    }
+
+    void SavePlugin()
+    {
+        try
+        {
+            var plugin = JsonSerializer.Deserialize<PluginManifest>(editPluginJson);
+            if (plugin == null)
+            {
+                pluginMessage = "Invalid plugin JSON.";
+                return;
+            }
+            if (Plugins.Save(plugin))
+            {
+                pluginMessage = "Plugin saved successfully.";
+                plugins = Plugins.GetAll().ToList();
+            }
+            else
+            {
+                pluginMessage = "Failed to save plugin.";
+            }
+        }
+        catch (Exception ex)
+        {
+            pluginMessage = $"Error: {ex.Message}";
+        }
+    }
+
+    void ImportPlugin()
+    {
+        SavePlugin();
+    }
+
+    void ExportPlugin()
+    {
+        var json = Plugins.ExportToJson(selectedPlugin);
+        if (json != null)
+        {
+            editPluginJson = json;
+            pluginMessage = "Exported plugin JSON.";
+        }
+        else
+        {
+            pluginMessage = "Plugin not found.";
+        }
+    }
+
+    void Logout()
+    {
+        Users.Logout();
+        NavigationManager.NavigateTo("login");
+    }
+
+    void RefreshLogs()
+    {
+        logText = string.Join('\n', Logger.GetLogs(100));
+    }
+}
+builder.Services.AddSingleton<IUserService>(new UserServiceSQLite());
+builder.Services.AddSingleton<IPluginRepository>(new PluginRepositorySQLite());
+builder.Services.AddSingleton<ILogService>(new LogServiceSQLite());
+builder.Services.AddSingleton<ForceTriggerPolicy>();
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Security.Cryptography;
+using System.Linq;
+
+// Enum for platform detection (simplified)
+public enum PlatformType
+{
+    Universal, Cloud, Edge, Mobile, Desktop, Browser, IoT, Embedded, AISystem
+}
+
+public static class Compatibility
+{
+    public static PlatformType DetectPlatform()
+    {
+        try
+        {
+            if (OperatingSystem.IsLinux() && File.Exists("/proc/device-tree/model"))
+            {
+                var model = File.ReadAllText("/proc/device-tree/model");
+                if (model.Contains("arm", StringComparison.OrdinalIgnoreCase))
+                    return PlatformType.Embedded;
+            }
+            if (Environment.GetEnvironmentVariable("AI_SYSTEM") != null)
+                return PlatformType.AISystem;
+
+            if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
+                return PlatformType.Desktop;
+
+            return PlatformType.Universal;
+        }
+        catch { return PlatformType.Universal; }
+    }
+
+    public static bool CheckCompatibility(PlatformType system, PlatformType plugin) =>
+        system == plugin || plugin == PlatformType.Universal;
+}
+
+// User & Role Management
+public class User
+{
+    public string Username { get; set; }
+    public string PasswordHash { get; set; }
+    public string Role { get; set; } = "User"; // Default role
+}
+
+public class UserService
+{
+    private const string UserFile = "users.json";
+    private List<User> _users = new();
+
+    public UserService()
+    {
+        LoadUsers();
+    }
+
+    private void LoadUsers()
+    {
+        if (File.Exists(UserFile))
+        {
+            var json = File.ReadAllText(UserFile);
+            _users = JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
+        }
+        else
+        {
+            // Create default admin if none exist
+            var admin = new User
+            {
+                Username = "admin",
+                PasswordHash = HashPassword("admin123"),
+                Role = "Admin"
+            };
+            _users.Add(admin);
+            SaveUsers();
+        }
+    }
+
+    private void SaveUsers()
+    {
+        var json = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(UserFile, json);
+    }
+
+    public bool Register(string username, string password)
+    {
+        if (_users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            return false;
+        var user = new User
+        {
+            Username = username,
+            PasswordHash = HashPassword(password),
+            Role = "User"
+        };
+        _users.Add(user);
+        SaveUsers();
+        return true;
+    }
+
+    public User Authenticate(string username, string password)
+    {
+        var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+        if (user == null) return null;
+        if (VerifyPassword(password, user.PasswordHash))
+            return user;
+        return null;
+    }
+
+    public bool IsInRole(User user, string role) =>
+        user != null && user.Role.Equals(role, StringComparison.OrdinalIgnoreCase);
+
+    private static string HashPassword(string password)
+    {
+        using var sha = SHA256.Create();
+        var hashedBytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(hashedBytes);
+    }
+
+    private static bool VerifyPassword(string password, string hashed)
+    {
+        return HashPassword(password) == hashed;
+    }
+}
+
+// Plugin system
+public class PluginAction
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public bool RequiresAuth { get; set; } = true;
+}
+
+public class PluginManifest
+{
+    public string Name { get; set; }
+    public string Version { get; set; } = "1.0.0";
+    public List<PlatformType> Platforms { get; set; } = new() { PlatformType.Universal };
+    public List<PluginAction> Actions { get; set; } = new()
+    {
+        new PluginAction { Name = "status", Description = "Get plugin status", RequiresAuth = false }
+    };
+    public string Checksum { get; set; }
+
+    public string CalculateChecksum()
+    {
+        using var sha = SHA256.Create();
+        var props = new[] {
+            Name ?? "",
+            Version,
+            string.Join(",", Platforms.Select(p => p.ToString())),
+            string.Join(",", Actions.Select(a => a.Name))
+        };
+        return Convert.ToBase64String(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(string.Join("|", props))));
+    }
+}
+
+public class PluginRepository
+{
+    private const string PluginDir = "ai_plugins";
+    private List<PluginManifest> _plugins = new();
+
+    public PluginRepository()
+    {
+        if (!Directory.Exists(PluginDir))
+            Directory.CreateDirectory(PluginDir);
+
+        LoadPlugins();
+    }
+
+    private void LoadPlugins()
+    {
+        _plugins.Clear();
+        foreach (var file in Directory.EnumerateFiles(PluginDir, "*.json"))
+        {
+            try
+            {
+                var json = File.ReadAllText(file);
+                var plugin = JsonSerializer.Deserialize<PluginManifest>(json);
+                if (plugin != null)
+                {
+                    plugin.Checksum = plugin.CalculateChecksum();
+                    _plugins.Add(plugin);
+                }
+            }
+            catch { /* ignore errors */ }
+        }
+    }
+
+    public IEnumerable<PluginManifest> GetAll() => _plugins;
+
+    public PluginManifest Get(string name) => _plugins.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+    public bool Save(PluginManifest plugin)
+    {
+        try
+        {
+            plugin.Checksum = plugin.CalculateChecksum();
+            var json = JsonSerializer.Serialize(plugin, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(Path.Combine(PluginDir, $"{plugin.Name}.json"), json);
+            LoadPlugins(); // reload plugins after save
+            return true;
+        }
+        catch { return false; }
+    }
+}
+
+// Logging service
+public class LogService
+{
+    private const string LogFile = "action_logs.txt";
+    private readonly object _lock = new();
+
+    public void Log(string user, string plugin, string action, DateTime timestamp, string result)
+    {
+        lock (_lock)
+        {
+            var line = $"{timestamp:O} | {user} | {plugin}:{action} => {result}";
+            File.AppendAllLines(LogFile, new[] { line });
+        }
+    }
+
+    public IEnumerable<string> GetLogs(int limit = 100)
+    {
+        if (!File.Exists(LogFile)) return Enumerable.Empty<string>();
+        var lines = File.ReadLines(LogFile).Reverse().Take(limit).Reverse();
+        return lines;
+    }
+}
+
+// Force-trigger policy enforcing Admin-only commands
+public class ForceTriggerPolicy
+{
+    private readonly UserService _userService;
+
+    public ForceTriggerPolicy(UserService userService)
+    {
+        _userService = userService;
+    }
+
+    public string Execute(User user, string plugin, string action)
+    {
+        if (!_userService.IsInRole(user, "Admin"))
+            return "❌ Access denied: Admin role required to execute commands.";
+
+        // Simulate execution
+        return $"✅ Executed '{action}' on plugin '{plugin}' (enforced mode)";
+    }
+}
+
+// The CLI Main Menu and flow
+public static class Program
+{
+    private static UserService _userService = new();
+    private static PluginRepository _pluginRepo = new();
+    private static LogService _logger = new();
+    private static ForceTriggerPolicy _policy = new(_userService);
+
+    private static User _currentUser = null;
+
+    public static void Main()
+    {
+        Console.Title = "Universal AI Bootloader CLI";
+        Console.WriteLine("Universal AI Bootloader CLI - Cross-platform, Universal Plugin System\n");
+
+        AuthenticateUser();
+
+        while (true)
+        {
+            ShowMainMenu();
+
+            var input = Console.ReadLine()?.Trim().ToLower() ?? "";
+            switch (input)
+            {
+                case "1": ListPlugins(); break;
+                case "2": RunPluginAction(); break;
+                case "3": if (_userService.IsInRole(_currentUser, "Admin")) ManagePlugins(); else AccessDenied(); break;
+                case "4": ShowLogs(); break;
+                case "5": Logout(); return;
+                default:
+                    Console.WriteLine("Invalid option, try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void AuthenticateUser()
+    {
+        while (_currentUser == null)
+        {
+            Console.Write("Username: ");
+            var username = Console.ReadLine()?.Trim();
+            Console.Write("Password: ");
+            var password = ReadPassword();
+
+            var user = _userService.Authenticate(username, password);
+            if (user != null)
+            {
+                _currentUser = user;
+                Console.WriteLine($"\n✅ Welcome, {_currentUser.Username}! Role: {_currentUser.Role}\n");
+            }
+            else
+            {
+                Console.WriteLine("❌ Invalid credentials, please try again.\n");
+            }
+        }
+    }
+
+    private static void ShowMainMenu()
+    {
+        Console.WriteLine("Main Menu:");
+        Console.WriteLine("1) List Plugins");
+        Console.WriteLine("2) Run Plugin Action (Admin only for forced commands)");
+        if (_userService.IsInRole(_currentUser, "Admin"))
+            Console.WriteLine("3) Manage Plugins (Add/Edit)");
+        else
+            Console.WriteLine("3) Manage Plugins (Admin only)");
+        Console.WriteLine("4) View Logs");
+        Console.WriteLine("5) Logout & Exit");
+        Console.Write("Select an option: ");
+    }
+
+    private static void ListPlugins()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins available.\n");
+            return;
+        }
+
+        Console.WriteLine("\nAvailable Plugins:");
+        foreach (var p in plugins)
+        {
+            Console.WriteLine($"- {p.Name} (v{p.Version}) - Actions: {string.Join(", ", p.Actions.Select(a => a.Name))}");
+        }
+        Console.WriteLine();
+    }
+
+    private static void RunPluginAction()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins available to run.\n");
+            return;
+        }
+
+        Console.WriteLine("\nSelect a plugin:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int pChoice) || pChoice < 1 || pChoice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var selectedPlugin = plugins[pChoice - 1];
+
+        Console.WriteLine($"Selected plugin: {selectedPlugin.Name}");
+        Console.WriteLine("Available actions:");
+        for (int i = 0; i < selectedPlugin.Actions.Count; i++)
+            Console.WriteLine($"{i + 1}) {selectedPlugin.Actions[i].Name} - {selectedPlugin.Actions[i].Description}");
+
+        Console.Write("Action choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int aChoice) || aChoice < 1 || aChoice > selectedPlugin.Actions.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var selectedAction = selectedPlugin.Actions[aChoice - 1];
+
+        string result;
+
+        // Enforce admin-only forced-trigger commands (simulate only)
+        if (selectedAction.RequiresAuth && !_userService.IsInRole(_currentUser, "Admin"))
+        {
+            result = "❌ Access denied: Action requires Admin role.";
+        }
+        else
+        {
+            result = _policy.Execute(_currentUser, selectedPlugin.Name, selectedAction.Name);
+        }
+
+        _logger.Log(_currentUser.Username, selectedPlugin.Name, selectedAction.Name, DateTime.UtcNow, result);
+
+        Console.WriteLine($"Result: {result}\n");
+    }
+
+    private static void ManagePlugins()
+    {
+        Console.WriteLine("\n--- Plugin Management ---");
+        Console.WriteLine("1) Add New Plugin");
+        Console.WriteLine("2) Edit Existing Plugin");
+        Console.WriteLine("3) Delete Plugin");
+        Console.WriteLine("4) Back to Main Menu");
+        Console.Write("Select an option: ");
+        var input = Console.ReadLine()?.Trim();
+
+        switch (input)
+        {
+            case "1":
+                AddPlugin();
+                break;
+            case "2":
+                EditPlugin();
+                break;
+            case "3":
+                DeletePlugin();
+                break;
+            case "4":
+                break;
+            default:
+                Console.WriteLine("Invalid option.\n");
+                break;
+        }
+    }
+
+    private static void AddPlugin()
+    {
+        Console.Write("Plugin name: ");
+        var name = Console.ReadLine()?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            Console.WriteLine("Plugin name cannot be empty.\n");
+            return;
+        }
+
+        if (_pluginRepo.Get(name) != null)
+        {
+            Console.WriteLine("Plugin already exists.\n");
+            return;
+        }
+
+        var plugin = new PluginManifest
+        {
+            Name = name,
+            Version = "1.0.0",
+            Platforms = new List<PlatformType> { PlatformType.Universal },
+            Actions = new List<PluginAction>()
+        };
+
+        Console.WriteLine("Add actions (format: actionName:description:requiresAuth(true/false))");
+        Console.WriteLine("Type 'done' when finished.");
+        while (true)
+        {
+            Console.Write("Action> ");
+            var line = Console.ReadLine()?.Trim();
+            if (string.Equals(line, "done", StringComparison.OrdinalIgnoreCase)) break;
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            var parts = line.Split(':');
+            if (parts.Length < 3)
+            {
+                Console.WriteLine("Invalid format. Use actionName:description:requiresAuth");
+                continue;
+            }
+
+            bool requiresAuth = parts[2].Trim().ToLower() == "true";
+            plugin.Actions.Add(new PluginAction
+            {
+                Name = parts[0].Trim(),
+                Description = parts[1].Trim(),
+                RequiresAuth = requiresAuth
+            });
+        }
+
+        if (_pluginRepo.Save(plugin))
+            Console.WriteLine($"Plugin '{name}' added successfully.\n");
+        else
+            Console.WriteLine("Failed to save plugin.\n");
+    }
+
+    private static void EditPlugin()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins to edit.\n");
+            return;
+        }
+
+        Console.WriteLine("Select a plugin to edit:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var plugin = plugins[choice - 1];
+        Console.WriteLine($"Editing plugin: {plugin.Name}");
+        Console.WriteLine($"Current version: {plugin.Version}");
+        Console.Write("Enter new version (or leave blank): ");
+        var version = Console.ReadLine()?.Trim();
+        if (!string.IsNullOrWhiteSpace(version))
+            plugin.Version = version;
+
+        Console.WriteLine("Current actions:");
+        for (int i = 0; i < plugin.Actions.Count; i++)
+        {
+            var a = plugin.Actions[i];
+            Console.WriteLine($"{i + 1}) {a.Name} - {a.Description} - RequiresAuth: {a.RequiresAuth}");
+        }
+
+        Console.WriteLine("Modify actions? (yes/no)");
+        var modify = Console.ReadLine()?.Trim().ToLower();
+        if (modify == "yes")
+        {
+            var newActions = new List<PluginAction>();
+            Console.WriteLine("Enter actions (actionName:description:requiresAuth(true/false))");
+            Console.WriteLine("Type 'done' when finished.");
+            while (true)
+            {
+                Console.Write("Action> ");
+                var line = Console.ReadLine()?.Trim();
+                if (string.Equals(line, "done", StringComparison.OrdinalIgnoreCase)) break;
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                var parts = line.Split(':');
+                if (parts.Length < 3)
+                {
+                    Console.WriteLine("Invalid format.");
+                    continue;
+                }
+
+                bool requiresAuth = parts[2].Trim().ToLower() == "true";
+                newActions.Add(new PluginAction
+                {
+                    Name = parts[0].Trim(),
+                    Description = parts[1].Trim(),
+                    RequiresAuth = requiresAuth
+                });
+            }
+            if (newActions.Any())
+                plugin.Actions = newActions;
+        }
+
+        if (_pluginRepo.Save(plugin))
+            Console.WriteLine($"Plugin '{plugin.Name}' updated successfully.\n");
+        else
+            Console.WriteLine("Failed to update plugin.\n");
+    }
+
+    private static void DeletePlugin()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins to delete.\n");
+            return;
+        }
+
+        Console.WriteLine("Select a plugin to delete:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var plugin = plugins[choice - 1];
+
+        Console.Write($"Are you sure you want to delete plugin '{plugin.Name}'? (yes/no): ");
+        var confirm = Console.ReadLine()?.Trim().ToLower();
+        if (confirm == "yes")
+        {
+            try
+            {
+                File.Delete(Path.Combine("ai_plugins", $"{plugin.Name}.json"));
+                _pluginRepo = new PluginRepository(); // reload
+                Console.WriteLine("Plugin deleted.\n");
+            }
+            catch
+            {
+                Console.WriteLine("Failed to delete plugin.\n");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Delete cancelled.\n");
+        }
+    }
+
+    private static void ShowLogs()
+    {
+        var logs = _logger.GetLogs(50).ToList();
+        if (!logs.Any())
+        {
+            Console.WriteLine("No logs available.\n");
+            return;
+        }
+
+        Console.WriteLine("\n--- Recent Logs ---");
+        foreach (var line in logs)
+            Console.WriteLine(line);
+        Console.WriteLine();
+    }
+
+    private static void Logout()
+    {
+        Console.WriteLine("\nLogging out...");
+        _currentUser = null;
+        Environment.Exit(0);
+    }
+
+    private static void AccessDenied()
+    {
+        Console.WriteLine("❌ Access denied: You do not have sufficient permissions.\n");
+    }
+
+    private static string ReadPassword()
+    {
+        var pass = "";
+        ConsoleKeyInfo key;
+        do
+        {
+            key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+            {
+                pass = pass[0..^1];
+                Console.Write("\b \b");
+            }
+            else if (!char.IsControl(key.KeyChar))
+            {
+                pass += key.KeyChar;
+                Console.Write("*");
+            }
+        } while (key.Key != ConsoleKey.Enter);
+        Console.WriteLine();
+        return pass;
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Security.Cryptography;
+using System.Linq;
+
+// Enum for platform detection (simplified)
+public enum PlatformType
+{
+    Universal, Cloud, Edge, Mobile, Desktop, Browser, IoT, Embedded, AISystem
+}
+
+public static class Compatibility
+{
+    public static PlatformType DetectPlatform()
+    {
+        try
+        {
+            if (OperatingSystem.IsLinux() && File.Exists("/proc/device-tree/model"))
+            {
+                var model = File.ReadAllText("/proc/device-tree/model");
+                if (model.Contains("arm", StringComparison.OrdinalIgnoreCase))
+                    return PlatformType.Embedded;
+            }
+            if (Environment.GetEnvironmentVariable("AI_SYSTEM") != null)
+                return PlatformType.AISystem;
+
+            if (OperatingSystem.IsWindows() || OperatingSystem.IsMacOS())
+                return PlatformType.Desktop;
+
+            return PlatformType.Universal;
+        }
+        catch { return PlatformType.Universal; }
+    }
+
+    public static bool CheckCompatibility(PlatformType system, PlatformType plugin) =>
+        system == plugin || plugin == PlatformType.Universal;
+}
+
+// User & Role Management
+public class User
+{
+    public string Username { get; set; }
+    public string PasswordHash { get; set; }
+    public string Role { get; set; } = "User"; // Default role
+}
+
+public class UserService
+{
+    private const string UserFile = "users.json";
+    private List<User> _users = new();
+
+    public UserService()
+    {
+        LoadUsers();
+    }
+
+    private void LoadUsers()
+    {
+        if (File.Exists(UserFile))
+        {
+            var json = File.ReadAllText(UserFile);
+            _users = JsonSerializer.Deserialize<List<User>>(json) ?? new List<User>();
+        }
+        else
+        {
+            // Create default admin if none exist
+            var admin = new User
+            {
+                Username = "admin",
+                PasswordHash = HashPassword("admin123"),
+                Role = "Admin"
+            };
+            _users.Add(admin);
+            SaveUsers();
+        }
+    }
+
+    private void SaveUsers()
+    {
+        var json = JsonSerializer.Serialize(_users, new JsonSerializerOptions { WriteIndented = true });
+        File.WriteAllText(UserFile, json);
+    }
+
+    public bool Register(string username, string password)
+    {
+        if (_users.Any(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
+            return false;
+        var user = new User
+        {
+            Username = username,
+            PasswordHash = HashPassword(password),
+            Role = "User"
+        };
+        _users.Add(user);
+        SaveUsers();
+        return true;
+    }
+
+    public User Authenticate(string username, string password)
+    {
+        var user = _users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+        if (user == null) return null;
+        if (VerifyPassword(password, user.PasswordHash))
+            return user;
+        return null;
+    }
+
+    public bool IsInRole(User user, string role) =>
+        user != null && user.Role.Equals(role, StringComparison.OrdinalIgnoreCase);
+
+    private static string HashPassword(string password)
+    {
+        using var sha = SHA256.Create();
+        var hashedBytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(hashedBytes);
+    }
+
+    private static bool VerifyPassword(string password, string hashed)
+    {
+        return HashPassword(password) == hashed;
+    }
+}
+
+// Plugin system
+public class PluginAction
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public bool RequiresAuth { get; set; } = true;
+}
+
+public class PluginManifest
+{
+    public string Name { get; set; }
+    public string Version { get; set; } = "1.0.0";
+    public List<PlatformType> Platforms { get; set; } = new() { PlatformType.Universal };
+    public List<PluginAction> Actions { get; set; } = new()
+    {
+        new PluginAction { Name = "status", Description = "Get plugin status", RequiresAuth = false }
+    };
+    public string Checksum { get; set; }
+
+    public string CalculateChecksum()
+    {
+        using var sha = SHA256.Create();
+        var props = new[] {
+            Name ?? "",
+            Version,
+            string.Join(",", Platforms.Select(p => p.ToString())),
+            string.Join(",", Actions.Select(a => a.Name))
+        };
+        return Convert.ToBase64String(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(string.Join("|", props))));
+    }
+}
+
+public class PluginRepository
+{
+    private const string PluginDir = "ai_plugins";
+    private List<PluginManifest> _plugins = new();
+
+    public PluginRepository()
+    {
+        if (!Directory.Exists(PluginDir))
+            Directory.CreateDirectory(PluginDir);
+
+        LoadPlugins();
+    }
+
+    private void LoadPlugins()
+    {
+        _plugins.Clear();
+        foreach (var file in Directory.EnumerateFiles(PluginDir, "*.json"))
+        {
+            try
+            {
+                var json = File.ReadAllText(file);
+                var plugin = JsonSerializer.Deserialize<PluginManifest>(json);
+                if (plugin != null)
+                {
+                    plugin.Checksum = plugin.CalculateChecksum();
+                    _plugins.Add(plugin);
+                }
+            }
+            catch { /* ignore errors */ }
+        }
+    }
+
+    public IEnumerable<PluginManifest> GetAll() => _plugins;
+
+    public PluginManifest Get(string name) => _plugins.FirstOrDefault(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+    public bool Save(PluginManifest plugin)
+    {
+        try
+        {
+            plugin.Checksum = plugin.CalculateChecksum();
+            var json = JsonSerializer.Serialize(plugin, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(Path.Combine(PluginDir, $"{plugin.Name}.json"), json);
+            LoadPlugins(); // reload plugins after save
+            return true;
+        }
+        catch { return false; }
+    }
+}
+
+// Logging service
+public class LogService
+{
+    private const string LogFile = "action_logs.txt";
+    private readonly object _lock = new();
+
+    public void Log(string user, string plugin, string action, DateTime timestamp, string result)
+    {
+        lock (_lock)
+        {
+            var line = $"{timestamp:O} | {user} | {plugin}:{action} => {result}";
+            File.AppendAllLines(LogFile, new[] { line });
+        }
+    }
+
+    public IEnumerable<string> GetLogs(int limit = 100)
+    {
+        if (!File.Exists(LogFile)) return Enumerable.Empty<string>();
+        var lines = File.ReadLines(LogFile).Reverse().Take(limit).Reverse();
+        return lines;
+    }
+}
+
+// Force-trigger policy enforcing Admin-only commands
+public class ForceTriggerPolicy
+{
+    private readonly UserService _userService;
+
+    public ForceTriggerPolicy(UserService userService)
+    {
+        _userService = userService;
+    }
+
+    public string Execute(User user, string plugin, string action)
+    {
+        if (!_userService.IsInRole(user, "Admin"))
+            return "❌ Access denied: Admin role required to execute commands.";
+
+        // Simulate execution
+        return $"✅ Executed '{action}' on plugin '{plugin}' (enforced mode)";
+    }
+}
+
+// The CLI Main Menu and flow
+public static class Program
+{
+    private static UserService _userService = new();
+    private static PluginRepository _pluginRepo = new();
+    private static LogService _logger = new();
+    private static ForceTriggerPolicy _policy = new(_userService);
+
+    private static User _currentUser = null;
+
+    public static void Main()
+    {
+        Console.Title = "Universal AI Bootloader CLI";
+        Console.WriteLine("Universal AI Bootloader CLI - Cross-platform, Universal Plugin System\n");
+
+        AuthenticateUser();
+
+        while (true)
+        {
+            ShowMainMenu();
+
+            var input = Console.ReadLine()?.Trim().ToLower() ?? "";
+            switch (input)
+            {
+                case "1": ListPlugins(); break;
+                case "2": RunPluginAction(); break;
+                case "3": if (_userService.IsInRole(_currentUser, "Admin")) ManagePlugins(); else AccessDenied(); break;
+                case "4": ShowLogs(); break;
+                case "5": Logout(); return;
+                default:
+                    Console.WriteLine("Invalid option, try again.");
+                    break;
+            }
+        }
+    }
+
+    private static void AuthenticateUser()
+    {
+        while (_currentUser == null)
+        {
+            Console.Write("Username: ");
+            var username = Console.ReadLine()?.Trim();
+            Console.Write("Password: ");
+            var password = ReadPassword();
+
+            var user = _userService.Authenticate(username, password);
+            if (user != null)
+            {
+                _currentUser = user;
+                Console.WriteLine($"\n✅ Welcome, {_currentUser.Username}! Role: {_currentUser.Role}\n");
+            }
+            else
+            {
+                Console.WriteLine("❌ Invalid credentials, please try again.\n");
+            }
+        }
+    }
+
+    private static void ShowMainMenu()
+    {
+        Console.WriteLine("Main Menu:");
+        Console.WriteLine("1) List Plugins");
+        Console.WriteLine("2) Run Plugin Action (Admin only for forced commands)");
+        if (_userService.IsInRole(_currentUser, "Admin"))
+            Console.WriteLine("3) Manage Plugins (Add/Edit)");
+        else
+            Console.WriteLine("3) Manage Plugins (Admin only)");
+        Console.WriteLine("4) View Logs");
+        Console.WriteLine("5) Logout & Exit");
+        Console.Write("Select an option: ");
+    }
+
+    private static void ListPlugins()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins available.\n");
+            return;
+        }
+
+        Console.WriteLine("\nAvailable Plugins:");
+        foreach (var p in plugins)
+        {
+            Console.WriteLine($"- {p.Name} (v{p.Version}) - Actions: {string.Join(", ", p.Actions.Select(a => a.Name))}");
+        }
+        Console.WriteLine();
+    }
+
+    private static void RunPluginAction()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins available to run.\n");
+            return;
+        }
+
+        Console.WriteLine("\nSelect a plugin:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int pChoice) || pChoice < 1 || pChoice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var selectedPlugin = plugins[pChoice - 1];
+
+        Console.WriteLine($"Selected plugin: {selectedPlugin.Name}");
+        Console.WriteLine("Available actions:");
+        for (int i = 0; i < selectedPlugin.Actions.Count; i++)
+            Console.WriteLine($"{i + 1}) {selectedPlugin.Actions[i].Name} - {selectedPlugin.Actions[i].Description}");
+
+        Console.Write("Action choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int aChoice) || aChoice < 1 || aChoice > selectedPlugin.Actions.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var selectedAction = selectedPlugin.Actions[aChoice - 1];
+
+        string result;
+
+        // Enforce admin-only forced-trigger commands (simulate only)
+        if (selectedAction.RequiresAuth && !_userService.IsInRole(_currentUser, "Admin"))
+        {
+            result = "❌ Access denied: Action requires Admin role.";
+        }
+        else
+        {
+            result = _policy.Execute(_currentUser, selectedPlugin.Name, selectedAction.Name);
+        }
+
+        _logger.Log(_currentUser.Username, selectedPlugin.Name, selectedAction.Name, DateTime.UtcNow, result);
+
+        Console.WriteLine($"Result: {result}\n");
+    }
+
+    private static void ManagePlugins()
+    {
+        Console.WriteLine("\n--- Plugin Management ---");
+        Console.WriteLine("1) Add New Plugin");
+        Console.WriteLine("2) Edit Existing Plugin");
+        Console.WriteLine("3) Delete Plugin");
+        Console.WriteLine("4) Back to Main Menu");
+        Console.Write("Select an option: ");
+        var input = Console.ReadLine()?.Trim();
+
+        switch (input)
+        {
+            case "1":
+                AddPlugin();
+                break;
+            case "2":
+                EditPlugin();
+                break;
+            case "3":
+                DeletePlugin();
+                break;
+            case "4":
+                break;
+            default:
+                Console.WriteLine("Invalid option.\n");
+                break;
+        }
+    }
+
+    private static void AddPlugin()
+    {
+        Console.Write("Plugin name: ");
+        var name = Console.ReadLine()?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            Console.WriteLine("Plugin name cannot be empty.\n");
+            return;
+        }
+
+        if (_pluginRepo.Get(name) != null)
+        {
+            Console.WriteLine("Plugin already exists.\n");
+            return;
+        }
+
+        var plugin = new PluginManifest
+        {
+            Name = name,
+            Version = "1.0.0",
+            Platforms = new List<PlatformType> { PlatformType.Universal },
+            Actions = new List<PluginAction>()
+        };
+
+        Console.WriteLine("Add actions (format: actionName:description:requiresAuth(true/false))");
+        Console.WriteLine("Type 'done' when finished.");
+        while (true)
+        {
+            Console.Write("Action> ");
+            var line = Console.ReadLine()?.Trim();
+            if (string.Equals(line, "done", StringComparison.OrdinalIgnoreCase)) break;
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            var parts = line.Split(':');
+            if (parts.Length < 3)
+            {
+                Console.WriteLine("Invalid format. Use actionName:description:requiresAuth");
+                continue;
+            }
+
+            bool requiresAuth = parts[2].Trim().ToLower() == "true";
+            plugin.Actions.Add(new PluginAction
+            {
+                Name = parts[0].Trim(),
+                Description = parts[1].Trim(),
+                RequiresAuth = requiresAuth
+            });
+        }
+
+        if (_pluginRepo.Save(plugin))
+            Console.WriteLine($"Plugin '{name}' added successfully.\n");
+        else
+            Console.WriteLine("Failed to save plugin.\n");
+    }
+
+    private static void EditPlugin()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins to edit.\n");
+            return;
+        }
+
+        Console.WriteLine("Select a plugin to edit:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var plugin = plugins[choice - 1];
+        Console.WriteLine($"Editing plugin: {plugin.Name}");
+        Console.WriteLine($"Current version: {plugin.Version}");
+        Console.Write("Enter new version (or leave blank): ");
+        var version = Console.ReadLine()?.Trim();
+        if (!string.IsNullOrWhiteSpace(version))
+            plugin.Version = version;
+
+        Console.WriteLine("Current actions:");
+        for (int i = 0; i < plugin.Actions.Count; i++)
+        {
+            var a = plugin.Actions[i];
+            Console.WriteLine($"{i + 1}) {a.Name} - {a.Description} - RequiresAuth: {a.RequiresAuth}");
+        }
+
+        Console.WriteLine("Modify actions? (yes/no)");
+        var modify = Console.ReadLine()?.Trim().ToLower();
+        if (modify == "yes")
+        {
+            var newActions = new List<PluginAction>();
+            Console.WriteLine("Enter actions (actionName:description:requiresAuth(true/false))");
+            Console.WriteLine("Type 'done' when finished.");
+            while (true)
+            {
+                Console.Write("Action> ");
+                var line = Console.ReadLine()?.Trim();
+                if (string.Equals(line, "done", StringComparison.OrdinalIgnoreCase)) break;
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                var parts = line.Split(':');
+                if (parts.Length < 3)
+                {
+                    Console.WriteLine("Invalid format.");
+                    continue;
+                }
+
+                bool requiresAuth = parts[2].Trim().ToLower() == "true";
+                newActions.Add(new PluginAction
+                {
+                    Name = parts[0].Trim(),
+                    Description = parts[1].Trim(),
+                    RequiresAuth = requiresAuth
+                });
+            }
+            if (newActions.Any())
+                plugin.Actions = newActions;
+        }
+
+        if (_pluginRepo.Save(plugin))
+            Console.WriteLine($"Plugin '{plugin.Name}' updated successfully.\n");
+        else
+            Console.WriteLine("Failed to update plugin.\n");
+    }
+
+    private static void DeletePlugin()
+    {
+        var plugins = _pluginRepo.GetAll().ToList();
+        if (!plugins.Any())
+        {
+            Console.WriteLine("No plugins to delete.\n");
+            return;
+        }
+
+        Console.WriteLine("Select a plugin to delete:");
+        for (int i = 0; i < plugins.Count; i++)
+            Console.WriteLine($"{i + 1}) {plugins[i].Name}");
+
+        Console.Write("Choice: ");
+        if (!int.TryParse(Console.ReadLine(), out int choice) || choice < 1 || choice > plugins.Count)
+        {
+            Console.WriteLine("Invalid choice.\n");
+            return;
+        }
+
+        var plugin = plugins[choice - 1];
+
+        Console.Write($"Are you sure you want to delete plugin '{plugin.Name}'? (yes/no): ");
+        var confirm = Console.ReadLine()?.Trim().ToLower();
+        if (confirm == "yes")
+        {
+            try
+            {
+                File.Delete(Path.Combine("ai_plugins", $"{plugin.Name}.json"));
+                _pluginRepo = new PluginRepository(); // reload
+                Console.WriteLine("Plugin deleted.\n");
+            }
+            catch
+            {
+                Console.WriteLine("Failed to delete plugin.\n");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Delete cancelled.\n");
+        }
+    }
+
+    private static void ShowLogs()
+    {
+        var logs = _logger.GetLogs(50).ToList();
+        if (!logs.Any())
+        {
+            Console.WriteLine("No logs available.\n");
+            return;
+        }
+
+        Console.WriteLine("\n--- Recent Logs ---");
+        foreach (var line in logs)
+            Console.WriteLine(line);
+        Console.WriteLine();
+    }
+
+    private static void Logout()
+    {
+        Console.WriteLine("\nLogging out...");
+        _currentUser = null;
+        Environment.Exit(0);
+    }
+
+    private static void AccessDenied()
+    {
+        Console.WriteLine("❌ Access denied: You do not have sufficient permissions.\n");
+    }
+
+    private static string ReadPassword()
+    {
+        var pass = "";
+        ConsoleKeyInfo key;
+        do
+        {
+            key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.Backspace && pass.Length > 0)
+            {
+                pass = pass[0..^1];
+                Console.Write("\b \b");
+            }
+            else if (!char.IsControl(key.KeyChar))
+            {
+                pass += key.KeyChar;
+                Console.Write("*");
+            }
+        } while (key.Key != ConsoleKey.Enter);
+        Console.WriteLine();
+        return pass;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+ // API_Server/Program.cs
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Text.Json;
+using CLI_Core; // Reference to your CLI core library
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<PluginService>(); // Wrap your plugin management
+builder.Services.AddEndpointsApiExplorer();
+
+var app = builder.Build();
+
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Basic simple auth middleware (replace with JWT for production)
+app.Use(async (context, next) =>
+{
+    // Simple header check for token (in prod use JWT or OAuth)
+    if (!context.Request.Headers.TryGetValue("X-Auth-Token", out var token) || token != "admin-token")
+    {
+        context.Response.StatusCode = 401;
+        await context.Response.WriteAsync("Unauthorized");
+        return;
+    }
+    await next();
+});
+
+app.MapGet("/api/plugins", (PluginService plugins) =>
+{
+    return plugins.GetAllPlugins();
+});
+
+app.MapPost("/api/plugins/{name}/actions/{actionName}", async (string name, string actionName, PluginService plugins) =>
+{
+    var result = await plugins.ExecutePluginActionAsync(name, actionName);
+    return Results.Ok(new { success = result });
+});
+
+app.MapGet("/api/logs", (PluginService plugins) =>
+{
+    return plugins.GetLogs();
+});
+
+app.MapPost("/api/login", async (HttpRequest req, UserService users) =>
+{
+    var creds = await JsonSerializer.DeserializeAsync<LoginRequest>(req.Body);
+    var token = users.Authenticate(creds.Username, creds.Password);
+    if (token == null)
+        return Results.Unauthorized();
+    return Results.Ok(new { token });
+});
+
+app.Run();
+
+public record LoginRequest(string Username, string Password);
+
+// Dummy PluginService (implement properly wrapping your core system)
+public class PluginService
+{
+    public List<string> GetAllPlugins() => new() { "ai_core", "platform_adapter" };
+    public Task<bool> ExecutePluginActionAsync(string plugin, string action) => Task.FromResult(true);
+    public List<string> GetLogs() => new() { "Log entry 1", "Log entry 2" };
+}
+
+public class UserService
+{
+    public string Authenticate(string username, string password)
+    {
+        if (username == "admin" && password == "admin123")
+            return "admin-token";
+        return null;
+    }
+}
+// GUI_App/MainWindow.axaml.cs
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+public partial class MainWindow : Window
+{
+    private HttpClient _http = new HttpClient();
+    private string _token;
+
+    public MainWindow()
+    {
+        InitializeComponent();
+    }
+
+    private async void LoginButton_Click(object sender, RoutedEventArgs e)
+    {
+        var username = UsernameTextBox.Text;
+        var password = PasswordBox.Password;
+
+        var response = await _http.PostAsync("http://localhost:5000/api/login",
+            new StringContent(JsonSerializer.Serialize(new { Username = username, Password = password }),
+            System.Text.Encoding.UTF8, "application/json"));
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var obj = JsonSerializer.Deserialize<LoginResponse>(json);
+            _token = obj.token;
+            StatusTextBlock.Text = "Login successful!";
+            await LoadPluginsAsync();
+        }
+        else
+        {
+            StatusTextBlock.Text = "Login failed.";
+        }
+    }
+
+    private async Task LoadPluginsAsync()
+    {
+        _http.DefaultRequestHeaders.Clear();
+        _http.DefaultRequestHeaders.Add("X-Auth-Token", _token);
+        var response = await _http.GetAsync("http://localhost:5000/api/plugins");
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var plugins = JsonSerializer.Deserialize<List<string>>(json);
+            PluginsListBox.Items = plugins;
+        }
+    }
+
+    private async void ExecuteActionButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (PluginsListBox.SelectedItem is string plugin)
+        {
+            _http.DefaultRequestHeaders.Clear();
+            _http.DefaultRequestHeaders.Add("X-Auth-Token", _token);
+            var response = await _http.PostAsync($"http://localhost:5000/api/plugins/{plugin}/actions/execute", null);
+            StatusTextBlock.Text = response.IsSuccessStatusCode ? "Action executed" : "Failed";
+        }
+    }
+
+    private record LoginResponse(string token);
+}
+/UniversalAIBootloaderSolution
+  /CLI_Core             -- Your CLI logic as .NET Standard library
+  /API_Server           -- ASP.NET Core Web API
+  /GUI_App              -- Avalonia UI desktop app
+
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace CLI_Core
+{
+    public class PluginService
+    {
+        // Load plugins from disk, cache them
+        public List<PluginManifest> GetPlugins() { /* ... */ }
+        
+        // Execute action by plugin name & action name
+        public Task<bool> ExecutePluginActionAsync(string pluginName, string actionName) { /* ... */ }
+        
+        // Logs storage & retrieval
+        public List<string> GetLogs() { /* ... */ }
+        
+        // Add logging helper
+        public void LogAction(string user, string action, string plugin) { /* ... */ }
+    }
+}
+using CLI_Core;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<UserService>();     // your user auth manager
+builder.Services.AddSingleton<PluginService>();   // core CLI logic
+
+var app = builder.Build();
+
+app.UseRouting();
+
+// Simple token auth middleware (for demo purposes)
+app.Use(async (ctx, next) =>
+{
+    if (!ctx.Request.Headers.TryGetValue("X-Auth-Token", out var token) || token != "admin-token")
+    {
+        ctx.Response.StatusCode = 401;
+        await ctx.Response.WriteAsync("Unauthorized");
+        return;
+    }
+    await next();
+});
+
+app.MapGet("/api/plugins", (PluginService svc) => svc.GetPlugins());
+
+app.MapPost("/api/plugins/{plugin}/actions/{action}", async (string plugin, string action, PluginService svc) =>
+{
+    var result = await svc.ExecutePluginActionAsync(plugin, action);
+    return Results.Ok(new { success = result });
+});
+
+app.MapGet("/api/logs", (PluginService svc) => svc.GetLogs());
+
+app.Run();
+using Avalonia.Controls;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+public partial class MainWindow : Window
+{
+    private HttpClient _client = new HttpClient();
+    private string _token = "admin-token";  // hardcoded or login-based
+
+    public MainWindow()
+    {
+        InitializeComponent();
+        LoadPlugins();
+    }
+
+    private async Task LoadPlugins()
+    {
+        _client.DefaultRequestHeaders.Clear();
+        _client.DefaultRequestHeaders.Add("X-Auth-Token", _token);
+        var response = await _client.GetAsync("http://localhost:5000/api/plugins");
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            var plugins = JsonSerializer.Deserialize<List<PluginManifest>>(json);
+            PluginsListBox.Items = plugins;
+        }
+    }
+
+    private async void ExecuteButton_Click(object sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (PluginsListBox.SelectedItem is PluginManifest plugin)
+        {
+            var actionName = "execute"; // or user-selected
+            var response = await _client.PostAsync($"http://localhost:5000/api/plugins/{plugin.Name}/actions/{actionName}", null);
+            // Show success/fail
+        }
+    }
+}
+UniversalAIBootloaderSolution/
+├── CLI_Core/
+│   ├── CLI_Core.csproj
+│   ├── PluginManifest.cs
+│   ├── PluginService.cs
+│   └── UserService.cs
+├── API_Server/
+│   ├── API_Server.csproj
+│   └── Program.cs
+└── GUI_App/
+    ├── GUI_App.csproj
+    ├── MainWindow.axaml
+    └── MainWindow.axaml.cs
+using System;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace CLI_Core
+{
+    public enum PlatformType
+    {
+        Universal, Cloud, Edge, Mobile, Desktop, Browser, IoT, Embedded, AISystem
+    }
+
+    public class PluginAction
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool RequiresAuth { get; set; } = true;
+    }
+
+    public class PluginManifest
+    {
+        public string Name { get; set; }
+        public string Version { get; set; } = "1.0.0";
+        public List<PlatformType> Platforms { get; set; } = new() { PlatformType.Universal };
+        public List<PluginAction> Actions { get; set; } = new() {
+            new PluginAction { Name = "status", Description = "Get plugin status", RequiresAuth = false }
+        };
+
+        public string CalculateChecksum()
+        {
+            using var sha = SHA256.Create();
+            var props = $"{Name}|{Version}|{string.Join(",", Platforms)}";
+            return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(props)));
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+namespace CLI_Core
+{
+    public class PluginService
+    {
+        private readonly string _pluginDir;
+        private readonly List<PluginManifest> _plugins = new();
+
+        private readonly List<string> _logs = new();
+
+        public PluginService(string pluginDirectory = null)
+        {
+            _pluginDir = pluginDirectory ?? Path.Combine(AppContext.BaseDirectory, "ai_plugins");
+            Directory.CreateDirectory(_pluginDir);
+            LoadPlugins();
+        }
+
+        private void LoadPlugins()
+        {
+            foreach (var file in Directory.EnumerateFiles(_pluginDir, "*.json"))
+            {
+                try
+                {
+                    var json = File.ReadAllText(file);
+                    var manifest = JsonSerializer.Deserialize<PluginManifest>(json);
+                    if (manifest != null)
+                    {
+                        var checksum = manifest.CalculateChecksum();
+                        _plugins.Add(manifest);
+                        LogAction("system", $"Loaded plugin {manifest.Name}", "plugin");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogAction("system", $"Failed to load plugin file {file}: {ex.Message}", "plugin");
+                }
+            }
+        }
+
+        public List<PluginManifest> GetPlugins() => _plugins;
+
+        public Task<bool> ExecutePluginActionAsync(string pluginName, string actionName)
+        {
+            var plugin = _plugins.FirstOrDefault(p => p.Name.Equals(pluginName, StringComparison.OrdinalIgnoreCase));
+            if (plugin == null)
+            {
+                LogAction("system", $"Plugin '{pluginName}' not found", "plugin");
+                return Task.FromResult(false);
+            }
+
+            var action = plugin.Actions.FirstOrDefault(a => a.Name.Equals(actionName, StringComparison.OrdinalIgnoreCase));
+            if (action == null)
+            {
+                LogAction("system", $"Action '{actionName}' not found in plugin '{pluginName}'", pluginName);
+                return Task.FromResult(false);
+            }
+
+            // Real plugin action execution logic would go here.
+            LogAction("admin", $"Executed action '{actionName}' on plugin '{pluginName}'", pluginName);
+            return Task.FromResult(true);
+        }
+
+        public List<string> GetLogs() => _logs.ToList();
+
+        public void LogAction(string user, string action, string plugin)
+        {
+            var log = $"{DateTime.UtcNow:u} | User:{user} | Plugin:{plugin} | Action:{action}";
+            _logs.Add(log);
+        }
+    }
+}
+using System.Collections.Generic;
+
+namespace CLI_Core
+{
+    public class UserService
+    {
+        private readonly Dictionary<string, string> _users = new()
+        {
+            { "admin", "admin123" } // Passwords must be hashed in production!
+        };
+
+        public bool ValidateUser(string username, string password)
+        {
+            return _users.TryGetValue(username, out var storedPassword) && storedPassword == password;
+        }
+    }
+}
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+using CLI_Core;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<PluginService>();
+
+var app = builder.Build();
+
+app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    if (!context.Request.Headers.TryGetValue("X-Auth-Token", out var token) || token != "admin-token")
+    {
+        context.Response.StatusCode = 401;
+        await context.Response.WriteAsync("Unauthorized");
+        return;
+    }
+    await next();
+});
+
+app.MapGet("/api/plugins", (PluginService svc) => svc.GetPlugins());
+
+app.MapPost("/api/plugins/{plugin}/actions/{action}", async (string plugin, string action, PluginService svc) =>
+{
+    var result = await svc.ExecutePluginActionAsync(plugin, action);
+    return Results.Ok(new { success = result });
+});
+
+app.MapGet("/api/logs", (PluginService svc) => svc.GetLogs());
+
+app.MapPost("/api/login", async (HttpRequest req, UserService users) =>
+{
+    var creds = await System.Text.Json.JsonSerializer.DeserializeAsync<LoginRequest>(req.Body);
+    if (creds == null || !users.ValidateUser(creds.Username, creds.Password))
+        return Results.Unauthorized();
+
+    return Results.Ok(new { token = "admin-token" });
+});
+
+app.Run();
+
+public record LoginRequest(string Username, string Password);
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CLI_Core\CLI_Core.csproj" />
+  </ItemGroup>
+
+</Project>
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="GUI_App.MainWindow"
+        Width="600" Height="400"
+        Title="Universal AI Bootloader GUI">
+  <StackPanel Margin="20" Spacing="10">
+    <TextBox x:Name="UsernameTextBox" Watermark="Username" />
+    <PasswordBox x:Name="PasswordBox" Watermark="Password" />
+    <Button Content="Login" Click="LoginButton_Click" />
+    <TextBlock x:Name="StatusTextBlock" />
+    <ListBox x:Name="PluginsListBox" Height="200" DisplayMemberPath="Name" />
+    <Button Content="Execute 'execute' Action" Click="ExecuteActionButton_Click" />
+  </StackPanel>
+</Window>
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+namespace GUI_App
+{
+    public partial class MainWindow : Window
+    {
+        private HttpClient _http = new();
+        private string _token;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private async void LoginButton_Click(object? sender, RoutedEventArgs e)
+        {
+            var username = UsernameTextBox.Text;
+            var password = PasswordBox.Password;
+
+            var creds = new { Username = username, Password = password };
+            var content = new StringContent(JsonSerializer.Serialize(creds), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await _http.PostAsync("http://localhost:5000/api/login", content);
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var obj = JsonSerializer.Deserialize<LoginResponse>(json);
+                _token = obj.token;
+                StatusTextBlock.Text = "Login successful!";
+                await LoadPluginsAsync();
+            }
+            else
+            {
+                StatusTextBlock.Text = "Login failed!";
+            }
+        }
+
+        private async Task LoadPluginsAsync()
+        {
+            _http.DefaultRequestHeaders.Clear();
+            _http.DefaultRequestHeaders.Add("X-Auth-Token", _token);
+            var response = await _http.GetAsync("http://localhost:5000/api/plugins");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var plugins = JsonSerializer.Deserialize<List<PluginManifest>>(json);
+                PluginsListBox.Items = plugins;
+            }
+            else
+            {
+                StatusTextBlock.Text = "Failed to load plugins.";
+            }
+        }
+
+        private async void ExecuteActionButton_Click(object? sender, RoutedEventArgs e)
+        {
+            if (PluginsListBox.SelectedItem is PluginManifest plugin)
+            {
+                _http.DefaultRequestHeaders.Clear();
+                _http.DefaultRequestHeaders.Add("X-Auth-Token", _token);
+                var response = await _http.PostAsync($"http://localhost:5000/api/plugins/{plugin.Name}/actions/execute", null);
+                StatusTextBlock.Text = response.IsSuccessStatusCode ? "Action executed!" : "Execution failed!";
+            }
+            else
+            {
+                StatusTextBlock.Text = "Select a plugin first.";
+            }
+        }
+
+        private record LoginResponse(string token);
+
+        public record PluginManifest(string Name, string Version);
+    }
+}
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.0-preview6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview6" />
+    <PackageReference Include="System.Text.Json" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CLI_Core\CLI_Core.csproj" />
+  </ItemGroup>
+
+</Project>
+cd CLI_Core
+
+
+
+
+
+
+
+
+
+
+
+
+
+cd ../API_Server
+dotnet run
+cd ../GUI_App
+dotnet run
+
+
 // === HARDWARE/SYSTEM CONSTANTS ===
 public static class HardwareConstants
 {
