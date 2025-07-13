@@ -159,8 +159,161 @@ fn analyze(input_data: &str) -> AnalysisResults {
         raw_matches,
     }
 }
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use rand::Rng;
 
-// --- Reporting Engine ---
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum CommMode {
+    Spike,   // Event-driven (reactive)
+    Batch,   // Periodic (routine)
+    Hybrid,  // Adaptive (context-driven)
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum NodeStatus {
+    Healthy,
+    Overloaded,
+    LowEnergy,
+    Engaged,
+    Idle,
+}
+
+#[derive(Clone, Debug)]
+pub struct CombatMsg {
+    pub sender_id: usize,
+    pub intent: String,
+    pub urgency: f32, // 0.0 = low, 1.0 = high
+    pub energy: f32,
+    pub timestamp: u64,
+}
+
+pub struct CombatNode {
+    pub id: usize,
+    pub state: String,
+    pub status: NodeStatus,
+    pub energy: f32,
+    pub comm_mode: CommMode,
+    pub peers: Vec<usize>,
+    pub received: Mutex<HashMap<usize, CombatMsg>>,
+}
+impl CombatNode {
+    pub fn new(id: usize, peers: Vec<usize>, initial_state: &str, energy: f32) -> Self {
+        CombatNode {
+            id,
+            state: initial_state.to_string(),
+            status: NodeStatus::Healthy,
+            energy,
+            comm_mode: CommMode::Hybrid,
+            peers,
+            received: Mutex::new(HashMap::new()),
+        }
+    }
+pub fn select_comm_mode(&mut self, urgency: f32) {
+        if urgency > 0.8 || self.status == NodeStatus::Engaged {
+            self.comm_mode = CommMode::Spike;
+        } else if self.energy < 0.2 {
+            self.comm_mode = CommMode::Spike; // Conserve energy, only react to threats
+        } else if self.status == NodeStatus::Idle {
+            self.comm_mode = CommMode::Batch;
+        } else {
+            self.comm_mode = CommMode::Hybrid;
+        }
+    }
+    pub fn send_intent(&mut self, intent: &str, urgency: f32) {
+        self.select_comm_mode(urgency);
+        let msg = CombatMsg {
+            sender_id: self.id,
+            intent: intent.to_string(),
+            urgency,
+            energy: self.energy,
+            timestamp: chrono::Utc::now().timestamp_millis() as u64,
+        };
+        match self.comm_mode {
+            CommMode::Spike => {
+                if urgency > 0.5 {
+                    for peer_id in &self.peers {
+                        if let Some(peer) = GLOBAL_COMBAT_NET.lock().unwrap().get(peer_id) {
+                            peer.receive(msg.clone());
+                        }
+                    }
+                }
+            }
+            CommMode::Batch => {
+                for peer_id in &self.peers {
+                    if let Some(peer) = GLOBAL_COMBAT_NET.lock().unwrap().get(peer_id) {
+                        peer.receive(msg.clone());
+                    }
+                }
+            }
+            CommMode::Hybrid => {
+                let n = (self.peers.len() as f32 * urgency).ceil() as usize;
+                for peer_id in self.peers.iter().take(n.max(1)) {
+                    if let Some(peer) = GLOBAL_COMBAT_NET.lock().unwrap().get(peer_id) {
+                        peer.receive(msg.clone());
+                    }
+                }
+            }
+        }
+    }
+
+    // Receive combat intent from peer
+    pub fn receive(&self, msg: CombatMsg) {
+        let mut rec = self.received.lock().unwrap();
+        rec.insert(msg.sender_id, msg);
+    }
+
+    // Real-time decision logic influenced by neuromorphic comms
+    pub fn decide_action(&mut self) -> String {
+        let rec = self.received.lock().unwrap();
+        // If any high-urgency spike received, immediately react
+        if let Some((_, msg)) = rec.iter().find(|(_, m)| m.urgency > 0.8) {
+            self.state = format!("COUNTER {}", msg.intent);
+            return self.state.clone();
+        }
+        // Otherwise, if batch or hybrid, aggregate intents for consensus
+        let mut intent_counts = HashMap::new();
+        for msg in rec.values() {
+            *intent_counts.entry(&msg.intent).or_insert(0) += 1;
+        }
+        if let Some((intent, _)) = intent_counts.into_iter().max_by_key(|(_, v)| *v) {
+            self.state = format!("COORDINATE {}", intent);
+            return self.state.clone();
+        }
+        // Default: maintain or patrol
+        self.state = "PATROL".to_string();
+        self.state.clone()
+    }
+}
+lazy_static::lazy_static! {
+    pub static ref GLOBAL_COMBAT_NET: Mutex<HashMap<usize, Arc<CombatNode>>> = Mutex::new(HashMap::new());
+}
+// 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_neuromorphic_combat_decisions() {
+        let mut net = GLOBAL_COMBAT_NET.lock().unwrap();
+        net.clear();
+        for i in 0..3 {
+            let peers = (0..3).filter(|&j| j != i).collect();
+            net.insert(i, Arc::new(CombatNode::new(i, peers, "PATROL", 1.0)));
+        }
+        drop(net);
+
+        // Node 0 detects a high-urgency threat (spike)
+        let mut node0 = Arc::get_mut(&mut GLOBAL_COMBAT_NET.lock().unwrap().get_mut(&0).unwrap()).unwrap();
+        node0.send_intent("ENEMY_SPOTTED", 0.95);
+
+        /
+        for i in 1..3 {
+            let mut node = Arc::get_mut(&mut GLOBAL_COMBAT_NET.lock().unwrap().get_mut(&i).unwrap()).unwrap();
+            let action = node.decide_action();
+            assert!(action.starts_with("COUNTER") || action.starts_with("COORDINATE"));
+        }
+    }
+}
 fn generate_reports(analysis: &AnalysisResults) {
     std::fs::create_dir_all(OUTPUT_DIR).unwrap();
 
