@@ -1,4 +1,117 @@
+pragma solidity ^0.8.0;
 
+contract VirtaSysAssetManager {
+    // Mapping of assets by owner and ID
+    mapping(address => mapping(uint256 => Asset)) public assets;
+    // Mapping of asset IDs by owner
+    mapping(address => uint256[]) public assetIds;
+
+    // Asset structure
+    struct Asset {
+        uint256 id;
+        string name;
+        uint256 quantity;
+    }
+
+    // Event emitted when an asset is created
+    event AssetCreated(address indexed owner, uint256 id, string name, uint256 quantity);
+    // Event emitted when an asset is transferred
+    event AssetTransferred(address indexed from, address indexed to, uint256 id);
+
+    // Function to create a new asset
+    function createAsset(uint256 _id, string memory _name, uint256 _quantity) public {
+        require(bytes(_name).length > 0, "Asset name cannot be empty");
+        assets[msg.sender][_id] = Asset(_id, _name, _quantity);
+        assetIds[msg.sender].push(_id);
+        emit AssetCreated(msg.sender, _id, _name, _quantity);
+    }
+
+    // Function to transfer an asset
+    function transferAsset(address _to, uint256 _id) public {
+        require(assets[msg.sender][_id].quantity > 0, "You do not own this asset or quantity is zero");
+        assets[_to][_id] = assets[msg.sender][_id];
+        delete assets[msg.sender][_id];
+        // Update assetIds for both sender and receiver
+        uint256[] storage senderIds = assetIds[msg.sender];
+        for (uint256 i = 0; i < senderIds.length; i++) {
+            if (senderIds[i] == _id) {
+                senderIds[i] = senderIds[senderIds.length - 1];
+                senderIds.pop();
+                break;
+            }
+        }
+        assetIds[_to].push(_id);
+        emit AssetTransferred(msg.sender, _to, _id);
+    }
+}
+
+contract VirtaSysAssetExtensions {
+    // Mapping of fractional assets
+    mapping(address => mapping(uint256 => FractionalAsset)) public fractionalAssets;
+
+    // Fractional asset structure
+    struct FractionalAsset {
+        uint256 id;
+        uint256 totalQuantity;
+        uint256 fractionalUnit;
+    }
+
+    // Event emitted when a fractional asset is created
+    event FractionalAssetCreated(address indexed owner, uint256 id, uint256 totalQuantity, uint256 fractionalUnit);
+
+    // Function to create a fractional asset
+    function createFractionalAsset(uint256 _id, uint256 _totalQuantity, uint256 _fractionalUnit) public {
+        fractionalAssets[msg.sender][_id] = FractionalAsset(_id, _totalQuantity, _fractionalUnit);
+        emit FractionalAssetCreated(msg.sender, _id, _totalQuantity, _fractionalUnit);
+    }
+}
+
+contract VirtaSysMetadata {
+    // Mapping of asset metadata
+    mapping(uint256 => string) public assetMetadata;
+
+    // Event emitted when asset metadata is updated
+    event AssetMetadataUpdated(uint256 id, string ipfsHash);
+
+    // Function to update asset metadata
+    function updateAssetMetadata(uint256 _id, string memory _ipfsHash) public {
+        assetMetadata[_id] = _ipfsHash;
+        emit AssetMetadataUpdated(_id, _ipfsHash);
+    }
+}
+
+contract VirtaSysGovernance {
+    // Mapping of voting power
+    mapping(address => uint256) public votingPower;
+
+    // Event emitted when voting power is updated
+    event VotingPowerUpdated(address indexed voter, uint256 power);
+
+    // Function to update voting power
+    function updateVotingPower(uint256 _power) public {
+        votingPower[msg.sender] = _power;
+        emit VotingPowerUpdated(msg.sender, _power);
+    }
+}
+
+contract SystemSaveState {
+    // Mapping of platform states
+    mapping(address => mapping(string => bytes)) public platformStates;
+
+    // Event emitted when a platform state is updated
+    event StateUpdated(address indexed _address, string _platform, bytes _state);
+
+    // Function to update a platform state
+    function updateState(string memory _platform, bytes memory _state) public {
+        platformStates[msg.sender][_platform] = _state;
+        emit StateUpdated(msg.sender, _platform, _state);
+    }
+
+    // Function to get a platform state
+    function getState(string memory _platform) public view returns (bytes memory) {
+        return platformStates[msg.sender][_platform];
+    }
+}
 // --- Imports ---
 use std::collections::{HashMap, HashSet, BTreeMap, VecDeque};
 use std::fs::{File, OpenOptions};
