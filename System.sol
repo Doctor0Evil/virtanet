@@ -1,3 +1,241 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title VirtaSysRegistry
+/// @notice Central registry for all system modules, contracts, and plugins.
+/// @dev Implements the Instance Registry Pattern for modular, upgradable architectures.
+contract VirtaSysRegistry {
+    mapping(bytes32 => address) public contracts;
+    event ContractRegistered(bytes32 indexed name, address indexed contractAddress);
+
+    /// @notice Register or update a contract address by name.
+    function setContract(bytes32 _name, address _address) external {
+        contracts[_name] = _address;
+        emit ContractRegistered(_name, _address);
+    }
+
+    /// @notice Retrieve a contract address by name.
+    function getContract(bytes32 _name) external view returns (address) {
+        return contracts[_name];
+    }
+}
+
+/// @title VirtaSysAccessControl
+/// @notice Role-based access control for Virta-Sys ecosystem.
+contract VirtaSysAccessControl {
+    mapping(bytes32 => mapping(address => bool)) public hasRole;
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+
+    event RoleGranted(bytes32 indexed role, address indexed account);
+    event RoleRevoked(bytes32 indexed role, address indexed account);
+
+    constructor() {
+        hasRole[ADMIN_ROLE][msg.sender] = true;
+    }
+
+    modifier onlyRole(bytes32 role) {
+        require(hasRole[role][msg.sender], "Not authorized");
+        _;
+    }
+
+    function grantRole(bytes32 role, address account) external onlyRole(ADMIN_ROLE) {
+        hasRole[role][account] = true;
+        emit RoleGranted(role, account);
+    }
+
+    function revokeRole(bytes32 role, address account) external onlyRole(ADMIN_ROLE) {
+        hasRole[role][account] = false;
+        emit RoleRevoked(role, account);
+    }
+}
+
+/// @title PersistentKeyValueStore
+/// @notice On-chain key-value store for state persistence.
+contract PersistentKeyValueStore {
+    mapping(bytes32 => bytes) private store;
+    address public owner;
+
+    event DataStored(bytes32 indexed key, bytes value);
+    event DataDeleted(bytes32 indexed key);
+
+    constructor() { owner = msg.sender; }
+
+    modifier onlyOwner() { require(msg.sender == owner, "Not owner"); _; }
+
+    function storeData(bytes32 key, bytes calldata value) external onlyOwner {
+        store[key] = value;
+        emit DataStored(key, value);
+    }
+
+    function getData(bytes32 key) external view returns (bytes memory) {
+        return store[key];
+    }
+
+    function deleteData(bytes32 key) external onlyOwner {
+        delete store[key];
+        emit DataDeleted(key);
+    }
+}
+
+/// @title VirtaSysGovernance
+/// @notice On-chain proposal and voting contract, supports decentralized governance.
+contract VirtaSysGovernance {
+    struct Proposal {
+        uint256 id;
+        string description;
+        uint256 voteCount;
+        bool executed;
+        mapping(address => bool) hasVoted;
+    }
+    uint256 public nextProposalId;
+    mapping(uint256 => Proposal) public proposals;
+    address[] public voters;
+    mapping(address => bool) public isVoter;
+
+    event ProposalCreated(uint256 indexed id, string description);
+    event Voted(uint256 indexed proposalId, address indexed voter);
+    event ProposalExecuted(uint256 indexed id);
+
+    function addVoter(address voter) public {
+        require(!isVoter[voter], "Already a voter");
+        voters.push(voter);
+        isVoter[voter] = true;
+    }
+
+    function createProposal(string memory description) public returns (uint256) {
+        uint256 proposalId = ++nextProposalId;
+        Proposal storage p = proposals[proposalId];
+        p.id = proposalId;
+        p.description = description;
+        emit ProposalCreated(proposalId, description);
+        return proposalId;
+    }
+
+    function vote(uint256 proposalId) public {
+        require(isVoter[msg.sender], "Not a voter");
+        Proposal storage p = proposals[proposalId];
+        require(!p.hasVoted[msg.sender], "Already voted");
+        require(!p.executed, "Proposal executed");
+        p.voteCount++;
+        p.hasVoted[msg.sender] = true;
+        emit Voted(proposalId, msg.sender);
+    }
+
+    function executeProposal(uint256 proposalId) public {
+        Proposal storage p = proposals[proposalId];
+        require(!p.executed, "Already executed");
+        require(p.voteCount * 2 > voters.length, "Majority not reached");
+        p.executed = true;
+        emit ProposalExecuted(proposalId);
+    }
+}
+
+/// @title VirtaSysAssetManager
+/// @notice Manages creation, transfer, and metadata of on-chain assets.
+contract VirtaSysAssetManager {
+    struct Asset { uint256 id; string name; uint256 quantity; }
+    mapping(address => mapping(uint256 => Asset)) public assets;
+    mapping(address => uint256[]) public assetIds;
+
+    event AssetCreated(address indexed owner, uint256 id, string name, uint256 quantity);
+    event AssetTransferred(address indexed from, address indexed to, uint256 id);
+
+    function createAsset(uint256 id, string memory name, uint256 quantity) public {
+        require(bytes(name).length > 0, "Name empty");
+        assets[msg.sender][id] = Asset(id, name, quantity);
+        assetIds[msg.sender].push(id);
+        emit AssetCreated(msg.sender, id, name, quantity);
+    }
+
+    function transferAsset(address to, uint256 id) public {
+        require(assets[msg.sender][id].quantity > 0, "No asset");
+        assets[to][id] = assets[msg.sender][id];
+        delete assets[msg.sender][id];
+        emit AssetTransferred(msg.sender, to, id);
+    }
+}
+
+/// @title EventLogger
+/// @notice Immutable on-chain logging for audits and compliance.
+contract EventLogger {
+    struct LogEntry { uint256 timestamp; address sender; string message; }
+    LogEntry[] public logs;
+    address public owner;
+
+    event Logged(uint256 timestamp, address sender, string message);
+
+    constructor() { owner = msg.sender; }
+
+    modifier onlyOwner() { require(msg.sender == owner, "Not owner"); _; }
+
+    function addLog(string memory message) public onlyOwner {
+        logs.push(LogEntry(block.timestamp, msg.sender, message));
+        emit Logged(block.timestamp, msg.sender, message);
+    }
+
+    function getLog(uint256 index) public view returns (uint256, address, string memory) {
+        LogEntry storage entry = logs[index];
+        return (entry.timestamp, entry.sender, entry.message);
+    }
+
+    function getLogCount() public view returns (uint256) {
+        return logs.length;
+    }
+}
+
+/// @title CodeMetadataRegistry
+/// @notice Tracks code provenance, versions, and authorship for upgradeable systems.
+contract CodeMetadataRegistry {
+    struct CodeMetadata {
+        bytes32 codeHash;
+        address deployedAddress;
+        string contractName;
+        string version;
+        address author;
+        uint256 deployTimestamp;
+        string description;
+    }
+    mapping(bytes32 => CodeMetadata) public metadataByHash;
+    mapping(address => bytes32[]) public hashesByAddress;
+    bytes32[] public allCodeHashes;
+    address public owner;
+
+    event MetadataRegistered(bytes32 indexed codeHash, address indexed deployedAddress, string contractName, string version);
+
+    constructor() { owner = msg.sender; }
+
+    modifier onlyOwner() { require(msg.sender == owner, "Not owner"); _; }
+
+    function registerMetadata(
+        bytes32 codeHash,
+        address deployedAddress,
+        string memory contractName,
+        string memory version,
+        address author,
+        string memory description
+    ) public onlyOwner {
+        require(metadataByHash[codeHash].deployedAddress == address(0), "Already registered");
+        metadataByHash[codeHash] = CodeMetadata(
+            codeHash, deployedAddress, contractName, version, author, block.timestamp, description
+        );
+        hashesByAddress[deployedAddress].push(codeHash);
+        allCodeHashes.push(codeHash);
+        emit MetadataRegistered(codeHash, deployedAddress, contractName, version);
+    }
+
+    function getMetadataByHash(bytes32 codeHash) public view returns (CodeMetadata memory) {
+        return metadataByHash[codeHash];
+    }
+
+    function getHashesByAddress(address deployedAddress) public view returns (bytes32[] memory) {
+        return hashesByAddress[deployedAddress];
+    }
+
+    function getTotalMetadataCount() public view returns (uint256) {
+        return allCodeHashes.length;
+    }
+}
+
 pragma solidity ^0.8.0;
 # filename: build_solidity_assets.py
 # execution: true
