@@ -1,4 +1,458 @@
 pragma solidity ^0.8.0;
+# filename: build_solidity_assets.py
+# execution: true
+
+import os
+
+# Define the base directory for system assets
+base_dir = "system_assets"
+
+# Define the subdirectories for contracts
+contract_dirs = [
+    os.path.join(base_dir, "contracts", "registry"),
+    os.path.join(base_dir, "contracts", "access_control"),
+    os.path.join(base_dir, "contracts", "state_management"),
+    os.path.join(base_dir, "contracts", "governance"),
+    os.path.join(base_dir, "contracts", "assets"),
+    os.path.join(base_dir, "contracts", "logging"),
+    os.path.join(base_dir, "contracts", "meta")
+]
+
+# Create directories
+for d in contract_dirs:
+    os.makedirs(d, exist_ok=True)
+    print(f"Created directory: {d}")
+
+# Define Solidity contract content
+solidity_contracts = {
+    "registry/VirtaSysRegistry.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title VirtaSysRegistry
+/// @notice A registry for autonomous systems, modules, plugins, or agents within Virta-Sys.
+/// @dev Allows registration and lookup of system components.
+contract VirtaSysRegistry {
+    struct SystemComponent {
+        address componentAddress;
+        string name;
+        string componentType; // e.g., "Agent", "Plugin", "Module"
+        bool isActive;
+    }
+
+    mapping(bytes32 => SystemComponent) public components;
+    bytes32[] public registeredComponentHashes; // Store hashes for iteration
+
+    event ComponentRegistered(bytes32 indexed componentHash, address indexed componentAddress, string name, string componentType);
+    event ComponentStatusUpdated(bytes32 indexed componentHash, bool isActive);
+
+    /// @notice Registers a new system component.
+    /// @param _componentAddress The address of the component contract.
+    /// @param _name The human-readable name of the component.
+    /// @param _componentType The type of the component (e.g., "Agent").
+    function registerComponent(address _componentAddress, string memory _name, string memory _componentType) public {
+        bytes32 componentHash = keccak256(abi.encodePacked(_componentAddress, _name, _componentType));
+        require(components[componentHash].componentAddress == address(0), "Component already registered.");
+
+        components[componentHash] = SystemComponent(_componentAddress, _name, _componentType, true);
+        registeredComponentHashes.push(componentHash);
+        emit ComponentRegistered(componentHash, _componentAddress, _name, _componentType);
+    }
+
+    /// @notice Updates the active status of a registered component.
+    /// @param _componentHash The hash of the component to update.
+    /// @param _isActive The new active status.
+    function updateComponentStatus(bytes32 _componentHash, bool _isActive) public {
+        require(components[_componentHash].componentAddress != address(0), "Component not found.");
+        components[_componentHash].isActive = _isActive;
+        emit ComponentStatusUpdated(_componentHash, _isActive);
+    }
+
+    /// @notice Retrieves a registered component's details.
+    /// @param _componentHash The hash of the component.
+    /// @return component The SystemComponent struct.
+    function getComponent(bytes32 _componentHash) public view returns (SystemComponent memory) {
+        return components[_componentHash];
+    }
+
+    /// @notice Retrieves the total number of registered components.
+    /// @return count The number of registered components.
+    function getRegisteredComponentsCount() public view returns (uint256) {
+        return registeredComponentHashes.length;
+    }
+}
+""",
+    "access_control/AccessControlRegistry.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title AccessControlRegistry
+/// @notice Manages roles and permissions within the Virta-Sys ecosystem.
+/// @dev Implements a basic role-based access control (RBAC) system.
+contract AccessControlRegistry {
+    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
+    bytes32 public constant AGENT_ROLE = keccak256("AGENT_ROLE");
+
+    mapping(bytes32 => mapping(address => bool)) public hasRole;
+    address public owner;
+
+    event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender);
+    event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender);
+
+    constructor() {
+        owner = msg.sender;
+        _grantRole(ADMIN_ROLE, msg.sender); // Deployer is initial admin
+    }
+
+    /// @notice Modifier to restrict access to accounts with a specific role.
+    modifier onlyRole(bytes32 role) {
+        require(hasRole[role][msg.sender], "AccessControl: caller does not have the role");
+        _;
+    }
+
+    /// @notice Grants a role to an account. Only accounts with ADMIN_ROLE can grant roles.
+    /// @param role The role to grant.
+    /// @param account The address to grant the role to.
+    function grantRole(bytes32 role, address account) public onlyRole(ADMIN_ROLE) {
+        _grantRole(role, account);
+    }
+
+    /// @notice Revokes a role from an account. Only accounts with ADMIN_ROLE can revoke roles.
+    /// @param role The role to revoke.
+    /// @param account The address to revoke the role from.
+    function revokeRole(bytes32 role, address account) public onlyRole(ADMIN_ROLE) {
+        _revokeRole(role, account);
+    }
+
+    /// @dev Internal function to grant a role.
+    function _grantRole(bytes32 role, address account) internal {
+        if (!hasRole[role][account]) {
+            hasRole[role][account] = true;
+            emit RoleGranted(role, account, msg.sender);
+        }
+    }
+
+    /// @dev Internal function to revoke a role.
+    function _revokeRole(bytes32 role, address account) internal {
+        if (hasRole[role][account]) {
+            hasRole[role][account] = false;
+            emit RoleRevoked(role, account, msg.sender);
+        }
+    }
+
+    /// @notice Transfers ownership of the contract. Only the current owner can do this.
+    /// @param newOwner The address of the new owner.
+    function transferOwnership(address newOwner) public onlyRole(ADMIN_ROLE) {
+        require(newOwner != address(0), "New owner is the zero address");
+        owner = newOwner;
+        _grantRole(ADMIN_ROLE, newOwner);
+        _revokeRole(ADMIN_ROLE, msg.sender);
+    }
+}
+""",
+    "state_management/PersistentKeyValueStore.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title PersistentKeyValueStore
+/// @notice A generic key-value store for on-chain state persistence.
+/// @dev Allows storing and retrieving arbitrary byte data associated with a bytes32 key.
+contract PersistentKeyValueStore {
+    mapping(bytes32 => bytes) private dataStore;
+    address public owner;
+
+    event DataStored(bytes32 indexed key, bytes value);
+    event DataDeleted(bytes32 indexed key);
+
+    constructor() {
+        owner = msg.sender; // Only deployer can write initially
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can perform this action");
+        _;
+    }
+
+    /// @notice Stores a value associated with a key.
+    /// @param _key The bytes32 key.
+    /// @param _value The bytes value to store.
+    function store(bytes32 _key, bytes memory _value) public onlyOwner {
+        dataStore[_key] = _value;
+        emit DataStored(_key, _value);
+    }
+
+    /// @notice Retrieves the value associated with a key.
+    /// @param _key The bytes32 key.
+    /// @return value The stored bytes value.
+    function retrieve(bytes32 _key) public view returns (bytes memory) {
+        return dataStore[_key];
+    }
+
+    /// @notice Deletes a value associated with a key.
+    /// @param _key The bytes32 key to delete.
+    function deleteData(bytes32 _key) public onlyOwner {
+        delete dataStore[_key];
+        emit DataDeleted(_key);
+    }
+
+    /// @notice Transfers ownership of the contract.
+    /// @param newOwner The address of the new owner.
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "New owner is the zero address");
+        owner = newOwner;
+    }
+}
+""",
+    "governance/ProposalVoting.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title ProposalVoting
+/// @notice A simple contract for on-chain proposals and voting, reflecting governance capabilities.
+/// @dev Allows creation of proposals and voting by whitelisted voters.
+contract ProposalVoting {
+    struct Proposal {
+        uint256 id;
+        string description;
+        uint256 voteCount;
+        bool executed;
+        mapping(address => bool) hasVoted;
+    }
+
+    uint256 public nextProposalId;
+    mapping(uint256 => Proposal) public proposals;
+    address[] public voters;
+    mapping(address => bool) public isVoter;
+
+    event ProposalCreated(uint256 indexed id, string description, address indexed creator);
+    event Voted(uint256 indexed proposalId, address indexed voter);
+    event ProposalExecuted(uint256 indexed id);
+
+    constructor() {
+        nextProposalId = 1;
+    }
+
+    /// @notice Adds an address to the list of eligible voters.
+    /// @param _voter The address to add as a voter.
+    function addVoter(address _voter) public { // Simplified: In a real system, this would have access control
+        require(!isVoter[_voter], "Address is already a voter.");
+        voters.push(_voter);
+        isVoter[_voter] = true;
+    }
+
+    /// @notice Creates a new proposal.
+    /// @param _description The description of the proposal.
+    function createProposal(string memory _description) public returns (uint256) {
+        uint256 proposalId = nextProposalId++;
+        proposals[proposalId].id = proposalId;
+        proposals[proposalId].description = _description;
+        proposals[proposalId].voteCount = 0;
+        proposals[proposalId].executed = false;
+        emit ProposalCreated(proposalId, _description, msg.sender);
+        return proposalId;
+    }
+
+    /// @notice Allows an eligible voter to cast a vote for a proposal.
+    /// @param _proposalId The ID of the proposal to vote for.
+    function vote(uint256 _proposalId) public { // Simplified: In a real system, voting power could be weighted
+        require(isVoter[msg.sender], "Caller is not an eligible voter.");
+        require(proposals[_proposalId].id != 0, "Proposal does not exist.");
+        require(!proposals[_proposalId].hasVoted[msg.sender], "Already voted on this proposal.");
+        require(!proposals[_proposalId].executed, "Proposal already executed.");
+
+        proposals[_proposalId].voteCount++;
+        proposals[_proposalId].hasVoted[msg.sender] = true;
+        emit Voted(_proposalId, msg.sender);
+    }
+
+    /// @notice Executes a proposal if it has met a simple majority threshold (e.g., > 50% of current voters).
+    /// @param _proposalId The ID of the proposal to execute.
+    function executeProposal(uint256 _proposalId) public { // Simplified: Threshold logic can be complex
+        require(proposals[_proposalId].id != 0, "Proposal does not exist.");
+        require(!proposals[_proposalId].executed, "Proposal already executed.");
+        require(voters.length > 0, "No voters registered."); // Avoid division by zero
+
+        // Simple majority: more than half of registered voters
+        require(proposals[_proposalId].voteCount * 2 > voters.length, "Proposal has not reached majority votes.");
+
+        proposals[_proposalId].executed = true;
+        emit ProposalExecuted(_proposalId);
+        // In a real system, this would trigger actual logic based on the proposal.
+    }
+}
+""",
+    "assets/SimpleAssetToken.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+/// @title SimpleAssetToken
+/// @notice A basic ERC-20 token representing a fractional asset within Virta-Sys.
+/// @dev Demonstrates fractional asset management.
+contract SimpleAssetToken is ERC20, Ownable {
+    constructor(string memory name, string memory symbol, uint256 initialSupply) ERC20(name, symbol) {
+        _mint(msg.sender, initialSupply); // Mints initial supply to deployer
+    }
+
+    /// @notice Allows the owner to mint new tokens.
+    /// @param to The address to mint tokens to.
+    /// @param amount The amount of tokens to mint.
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+}
+""",
+    "logging/EventLogger.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title EventLogger
+/// @notice A simple contract for immutable logging of system events or actions.
+/// @dev Stores log entries as strings, providing an on-chain audit trail.
+contract EventLogger {
+    struct LogEntry {
+        uint256 timestamp;
+        address sender;
+        string message;
+    }
+
+    LogEntry[] public logs;
+    address public owner; // Only owner can add logs in this simplified version
+
+    event Logged(uint256 indexed timestamp, address indexed sender, string message);
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can add logs");
+        _;
+    }
+
+    /// @notice Adds a new log entry.
+    /// @param _message The message to log.
+    function addLog(string memory _message) public onlyOwner {
+        logs.push(LogEntry(block.timestamp, msg.sender, _message));
+        emit Logged(block.timestamp, msg.sender, _message);
+    }
+
+    /// @notice Retrieves a specific log entry by index.
+    /// @param _index The index of the log entry.
+    /// @return timestamp The timestamp of the log.
+    /// @return sender The sender of the log.
+    /// @return message The log message.
+    function getLog(uint256 _index) public view returns (uint256 timestamp, address sender, string memory message) {
+        require(_index < logs.length, "Log index out of bounds.");
+        LogEntry storage entry = logs[_index];
+        return (entry.timestamp, entry.sender, entry.message);
+    }
+
+    /// @notice Retrieves the total number of log entries.
+    /// @return count The total number of logs.
+    function getLogCount() public view returns (uint256) {
+        return logs.length;
+    }
+}
+""",
+    "meta/CodeMetadataRegistry.sol": """// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+/// @title CodeMetadataRegistry
+/// @notice Stores metadata about deployed code, supporting code provenance and traceability.
+/// @dev Allows registration of contract versions, authors, and other metadata.
+contract CodeMetadataRegistry {
+    struct CodeMetadata {
+        bytes32 codeHash; // Hash of the deployed bytecode or source code
+        address deployedAddress;
+        string contractName;
+        string version;
+        address author;
+        uint256 deployTimestamp;
+        string description;
+    }
+
+    mapping(bytes32 => CodeMetadata) public metadataByHash;
+    mapping(address => bytes32[]) public hashesByAddress; // Allows lookup by deployed address
+    bytes32[] public allCodeHashes; // For iterating all registered metadata
+
+    address public owner;
+
+    event MetadataRegistered(bytes32 indexed codeHash, address indexed deployedAddress, string contractName, string version);
+
+    constructor() {
+        owner = msg.sender; // Only deployer can register metadata
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can register metadata");
+        _;
+    }
+
+    /// @notice Registers metadata for a deployed contract.
+    /// @param _codeHash The hash of the contract's bytecode or source.
+    /// @param _deployedAddress The address where the contract is deployed.
+    /// @param _contractName The name of the contract.
+    /// @param _version The version of the contract.
+    /// @param _author The author's address.
+    /// @param _description A brief description.
+    function registerMetadata(
+        bytes32 _codeHash,
+        address _deployedAddress,
+        string memory _contractName,
+        string memory _version,
+        address _author,
+        string memory _description
+    ) public onlyOwner {
+        require(metadataByHash[_codeHash].deployedAddress == address(0), "Metadata for this code hash already registered.");
+
+        metadataByHash[_codeHash] = CodeMetadata(
+            _codeHash,
+            _deployedAddress,
+            _contractName,
+            _version,
+            _author,
+            block.timestamp,
+            _description
+        );
+        hashesByAddress[_deployedAddress].push(_codeHash);
+        allCodeHashes.push(_codeHash);
+        emit MetadataRegistered(_codeHash, _deployedAddress, _contractName, _version);
+    }
+
+    /// @notice Retrieves metadata by its code hash.
+    /// @param _codeHash The hash of the code.
+    /// @return metadata The CodeMetadata struct.
+    function getMetadataByHash(bytes32 _codeHash) public view returns (CodeMetadata memory) {
+        return metadataByHash[_codeHash];
+    }
+
+    /// @notice Retrieves all code hashes associated with a deployed address.
+    /// @param _deployedAddress The deployed contract address.
+    /// @return hashes An array of code hashes.
+    function getHashesByAddress(address _deployedAddress) public view returns (bytes32[] memory) {
+        return hashesByAddress[_deployedAddress];
+    }
+
+    /// @notice Retrieves the total number of registered code metadata entries.
+    /// @return count The total count.
+    function getTotalMetadataCount() public view returns (uint256) {
+        return allCodeHashes.length;
+    }
+}
+"""
+}
+
+# Write contracts to files
+for path, content in solidity_contracts.items():
+    full_path = os.path.join(base_dir, "contracts", path)
+    with open(full_path, "w") as f:
+        f.write(content)
+    print(f"Created contract file: {full_path}")
+
+print("\nSuccessfully built system-assets-directory(s) with exhaustive Solidity contracts.")
+print("To use SimpleAssetToken.sol, you will need to install OpenZeppelin Contracts via npm or yarn:")
+print("npm install @openzeppelin/contracts")
+print("or")
+print("yarn add @openzeppelin/contracts")
+
 
 contract VirtaSysAssetManager {
     // Mapping of assets by owner and ID
