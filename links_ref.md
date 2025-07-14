@@ -10,7 +10,31 @@ https://github.com/Doctor0Evil/Virta-Sys/blob/main/AMDGbuMetadata.cpp,
 https://github.com/Doctor0Evil/Virta-Sys,
 https://github.com/Doctor0Evil?tab=repositories,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/ABIBreak.cpp
-
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/vsc.html,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ultimate_payment_configuration.yaml,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/system_verification.py,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/sys_ai.cfg,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/sys-regex.awk,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/security_hardening.py,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/plugin1.json,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/package_main.rs,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/original_user_query.rs,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/neuromorph.mkd,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/menu_system.py,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/menu_config.json,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/main.rs,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/links_ref.md,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/links.json,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/hardware_integration.py,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/hardware_config.json,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/generate_documentation.py,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/engine.dll,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/cross_language_auth.py,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/cheat_regex.mkd,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/bootcrapper.ai,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/boot_sequence_tests.py,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/arm_chip_technical_diagrams.json,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/architecture.md,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/admin_guide.md,%20https://github.com/Doctor0Evil/Virta-Sys/blob/main/Vondy_AI.cfg,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Regex_patterns.yaml,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/README.md,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Post_apoc_surv.html,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Ownership.json,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/NanobotsHardware.dll,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Links.mkd,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/LICENSE,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Game-Dev-env.shell,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Directory.awk,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Death_network_cheat_system.rs,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Commands.mkd,
+https://github.com/Doctor0Evil/Virta-Sys,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/CheatCodes.dll
 
 
 
