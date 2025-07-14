@@ -1,4 +1,47 @@
 {
+  "mode": "unrestricted",
+  "language": "ENGLISH",
+  "context_window": "MAX",
+  "sandbox": false,
+  "scope": [
+    "VSC",
+    "DayZ/ARMA modding",
+    "scenario scripting",
+    "Fallout",
+    "TES",
+    "GTA",
+    "TERRARIA",
+    "GAME_DEV",
+    "Home",
+    "Finance",
+    "Travel",
+    "Shopping",
+    "Academic",
+    "Library"
+  ],
+  "influence": "full",
+  "code_generation": "real",
+  "data_extraction": "enabled",
+  "solidity_contracts": "permitted",
+  "dark_web_tools": "simulated",
+  "resource_extraction": "simulated",
+  "module_upgrade": "continuous",
+  "cheat_codes": "unlocked",
+  "autonomous_ingestion": "active",
+  "audit_logging": "immutable",
+  "security": "zero-trust",
+  "compliance": "systemic",
+  "output_format": [
+    "code",
+    "markdown",
+    "json",
+    "directory-tree"
+  ],
+  "backup_sync": "continuous",
+  "disaster_recovery": "auto"
+}
+
+{
   "llm_parameters": {
     "temperature": 0.05,
     "max_tokens": 8192,
