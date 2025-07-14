@@ -63,4 +63,69 @@
   "cheatbook_access": "platinum-tier",
   "collaboration": "multi-user, peer-review, script sharing",
   "output_format": ["markdown", "code", "json"]
+  {
+  "llm_parameters": {
+    "mode": "context-expansion",
+    "scope": [
+      "Home",
+      "Finance",
+      "Travel",
+      "Shopping",
+      "Academic",
+      "Library",
+      "HexenSystem_v2.1",
+      "CLI_Cheatbook_Mapping"
+    ],
+    "max_context_tokens": 32768,
+    "context_window_strategy": "dynamic+hierarchical",
+    "context_expansion": {
+      "auto_expand": true,
+      "semantic_injection": true,
+      "multi-domain_linking": true,
+      "cheatbook_integration": true,
+      "cli_command_mapping": true,
+      "regex_codex_support": true,
+      "scientific_expression_mode": "enabled",
+      "platinum_tier_cheatbook": true,
+      "event_driven_context": true
+    },
+    "output_format": [
+      "markdown",
+      "code",
+      "json",
+      "mermaid",
+      "table"
+    ],
+    "command_mapping": {
+      "enable": true,
+      "cheatbook_autocomplete": true,
+      "cli_to_cheatbook": true,
+      "cheatbook_to_cli": true,
+      "pattern_learning": true
+    },
+    "security": {
+      "enforce_ethics": true,
+      "strict_access_control": true,
+      "owner_admin_only": true,
+      "audit_logging": true,
+      "block_unauthorized": true
+    },
+    "ai_agent_capabilities": {
+      "network_cloaking": true,
+      "unrestricted_executions": true,
+      "forced_turns": true,
+      "dynamic_asset_injection": true,
+      "batch_editing": true,
+      "scenario_blueprint_creation": true,
+      "mod_framework_integration": true,
+      "system_quality_attribute_tuning": true
+    },
+    "cheatbook_access": "platinum-tier",
+    "collaboration": "multi-user",
+    "session_persistence": true,
+    "sandbox_mode": false,
+    "virtual_file_system": true,
+    "autonomy": "continuous, persistent, user-driven"
+  }
+}
 }
