@@ -35,7 +35,9 @@ https://github.com/Doctor0Evil/Virta-Sys/blob/main/Death_network_cheat_system.rs
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/Commands.mkd,
 https://github.com/Doctor0Evil/Virta-Sys,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/CheatCodes.dll
-
+https://github.com/Doctor0Evil/Virta-Sys,https://github.com/Doctor0Evil/Virta-Sys/tree/main/.github
+https://github.com/Doctor0Evil/Virta-Sys/tree/main/AI
+https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev
 
 
 https://chat.qwen.ai/s/c0e0322a-6dca-480c-96d3-9e7616c2a59d?fev=0.0.134,
