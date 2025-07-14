@@ -1,5 +1,19 @@
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/Bootloader.md,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ArmBuildAttrs.cpp,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ArmAttributeParser.cpp,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ApInt.cpp,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ApFloat.cpp,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ApFixedPoint.cpp,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/AMDGbuMetadata.cpp,
+https://github.com/Doctor0Evil/Virta-Sys,
+https://github.com/Doctor0Evil?tab=repositories,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/ABIBreak.cpp
+
+
+
+
 https://chat.qwen.ai/s/c0e0322a-6dca-480c-96d3-9e7616c2a59d?fev=0.0.134,
 https://chat.qwen.ai/s/3e6e499f-31d3-46f1-b81e-67361daf7f53?fev=0.0.134,
 https://chat.qwen.ai/s/93bfa08f-976a-48fa-b58e-a9aca0570bde?fev=0.0.134,
