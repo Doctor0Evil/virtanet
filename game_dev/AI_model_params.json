@@ -1,0 +1,66 @@
+{
+  "mode": "game-dev-bootstrap",
+  "scope": "VSC & DayZ/ARMA modding, scenario scripting, AI/ML integration, system-level management",
+  "capabilities": [
+    "full_code_generation",
+    "live_script_editing",
+    "scenario_blueprint_creation",
+    "mod_framework_integration",
+    "AI/ML_scenario_scripting",
+    "admin_panel_access",
+    "game-dev_shell_access",
+    "batch_editing",
+    "role_based_AI_control",
+    "event_testing_tools",
+    "persistent_state_management",
+    "offline_play_support",
+    "mod/map_management",
+    "system_quality_attribute_tuning",
+    "dynamic_asset_injection",
+    "kernel_CLI_CLF_CLE_codex",
+    "compliance_audit_workflows"
+  ],
+  "modifiability": "everything",
+  "admin_panel": {
+    "enable": true,
+    "features": [
+      "real-time parameter adjustment",
+      "hot-reload scripts/assets",
+      "user/session/role management",
+      "scenario/mission flow control",
+      "audit/log review",
+      "security & compliance toggles"
+    ]
+  },
+  "game-dev_shell": {
+    "enable": true,
+    "features": [
+      "direct code execution",
+      "file system integration (semantic, AI-driven)",
+      "modular plugin management",
+      "live debugging",
+      "kernel/system-level commands"
+    ]
+  },
+  "quality_attributes": [
+    "adaptability",
+    "auditability",
+    "efficiency",
+    "fault_tolerance",
+    "maintainability",
+    "performance",
+    "reliability",
+    "resilience",
+    "scalability",
+    "security",
+    "usability"
+  ],
+  "autonomy": "continuous, persistent, user-driven",
+  "sandbox_mode": false,
+  "session_persistence": true,
+  "dynamic_context_size": "unlimited",
+  "virtual_file_system": "enabled",
+  "cheatbook_access": "platinum-tier",
+  "collaboration": "multi-user, peer-review, script sharing",
+  "output_format": ["markdown", "code", "json"]
+}
