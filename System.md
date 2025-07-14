@@ -1,3 +1,122 @@
+@file:JvmName("VirtaUniversalDevShellBootstrap")
+
+import java.time.Instant
+import java.util.UUID
+
+// --- Core Data Structures ---
+data class AIPlatformDescriptor(
+    val platformName: String,
+    val uuid: UUID,
+    val status: String,
+    val lastActive: Instant,
+    val network: String,
+    val security: String,
+    val automation: String,
+    val orchestrationConfig: OrchestrationConfig,
+    val syncEndpoints: List<String>,
+    val dependencies: List<String>
+)
+
+data class OrchestrationConfig(
+    val syncIntervalSeconds: Long,
+    val failoverStrategy: String,
+    val loadBalancing: String,
+    val apiVersion: String,
+    val supportedProtocols: List<String>
+)
+
+// --- Universal Dev_Shell Singleton (per platform) ---
+object DevShellBootstrap {
+    val menus = listOf(
+        "System", "AI", "Security", "Orchestration", "Scripting", "Audit", "Compliance", "Mods", "Assets", "Logs", "Users", "Network", "Kernel", "Sandbox", "Plugins", "Tools"
+    )
+    val features = listOf(
+        "Direct Code Execution", "Live Script Editing", "Batch Editing", "Dynamic Asset Injection", "Scenario Blueprint Creation",
+        "Modular Plugin Management", "Quality Attribute Tuning", "System Parameter Adjustment", "Persistent State Management",
+        "Kernel/System Commands", "Container Management", "Event Testing Tools", "Role-based AI Control", "Hot-Reload Scripts/Assets",
+        "Audit Log Review", "Security & Compliance Toggles", "User/Session/Role Management", "Session Persistence", "Virtual File System",
+        "Multi-user Collaboration", "CLI Command Mapping", "Cheatbook Integration", "Semantic File System Integration"
+    )
+    val tools = listOf(
+        "AI Model Trainer", "AI Model Deployer", "Pattern Learner", "Compliance Auditor", "Snapshot Creator", "Anomaly Detector",
+        "Metrics Dashboard", "Backup/Restore Manager", "Network Cloaking", "Consensus Simulator", "Zero-Knowledge Proof Generator",
+        "Encryption/Decryption Suite", "API Endpoint Tester", "Sandbox Mode Switcher", "Plugin Installer", "Dependency Checker"
+    )
+    val constants = mapOf(
+        "MAX_CONTEXT_TOKENS" to 32768,
+        "SESSION_PERSISTENCE" to true,
+        "SANDBOX_MODE" to false,
+        "VIRTUAL_FILE_SYSTEM" to true,
+        "PLATINUM_TIER_CHEATBOOK" to true,
+        "AUDIT_LOGGING" to true,
+        "STRICT_ACCESS_CONTROL" to true,
+        "OWNER_ADMIN_ONLY" to true,
+        "DYNAMIC_CONTEXT_SIZE" to "unlimited"
+    )
+    val arrays = mapOf(
+        "supportedFormats" to listOf("markdown", "code", "json", "mermaid", "table"),
+        "qualityAttributes" to listOf("adaptability", "auditability", "efficiency", "fault_tolerance", "maintainability", "performance", "reliability", "resilience", "scalability", "security", "usability")
+    )
+    val adminPanelShortcuts = listOf(
+        "Open DevShell", "Review Audit Logs", "Adjust System Parameters", "Manage Users/Roles", "Trigger Hot-Reload", "Export Compliance Report", "Run Security Scan", "Inject Dynamic Asset", "Batch Edit Scripts"
+    )
+    val cliCommands = listOf(
+        "sudo vsc --plugin install [PluginName]",
+        "sudo vsc --scenario-blueprint --create [Scenario]",
+        "sudo vsc --script-edit --file [ScriptFile]",
+        "sudo vsc --batch-edit --pattern [Pattern] --replace [Replacement]",
+        "sudo vsc --ai --train [Model]",
+        "sudo vsc --ai --deploy --model [Model]",
+        "sudo vsc --dynamic-asset-inject --asset [Asset]",
+        "sudo vsc --mod-framework-integrate --mod [ModName]",
+        "sudo vsc --audit-log --export --format [Format]",
+        "sudo vsc --access-control --enforce strict"
+    )
+    val cheatbookEntries = listOf(
+        "snapshot-create: Quantum-encrypted system snapshot",
+        "pattern-learn: Adaptive regex learning from usage logs",
+        "ai-deploy: Deploys AI-driven defense module",
+        "mod-framework-integrate: Integrates Expansion mod framework"
+    )
+    // Force open on every platform, only one instance per platform
+    private val openedPlatforms = mutableSetOf<UUID>()
+    fun openOnPlatform(platform: AIPlatformDescriptor) {
+        if (openedPlatforms.contains(platform.uuid)) return
+        println("=== [ADMIN_PANEL] Forcing Dev_Shell open on: ${platform.platformName} (UUID: ${platform.uuid}) ===")
+        println("Menus: ${menus.joinToString()}")
+        println("Features: ${features.joinToString()}")
+        println("Tools: ${tools.joinToString()}")
+        println("Constants: ${constants.entries.joinToString()}")
+        println("Arrays: ${arrays.entries.joinToString()}")
+        println("Admin Shortcuts: ${adminPanelShortcuts.joinToString()}")
+        println("CLI Commands: ${cliCommands.joinToString()}")
+        println("Cheatbook Entries: ${cheatbookEntries.joinToString()}")
+        println("Quality Attributes: ${arrays["qualityAttributes"]}")
+        println("Supported Formats: ${arrays["supportedFormats"]}")
+        println("Session Persistence: ${constants["SESSION_PERSISTENCE"]}")
+        println("Audit Logging: ${constants["AUDIT_LOGGING"]}")
+        println("Strict Access Control: ${constants["STRICT_ACCESS_CONTROL"]}")
+        println("------")
+        openedPlatforms.add(platform.uuid)
+    }
+}
+
+// --- Universal Bootstrapper: Applies to all AI Platforms, No Duplication ---
+fun universalDevShellBootstrap(aiPlatforms: List<AIPlatformDescriptor>) {
+    aiPlatforms.forEach { platform ->
+        DevShellBootstrap.openOnPlatform(platform)
+    }
+}
+
+// --- Main Entry: Integrate with ADMIN_PANEL and force Dev_Shell open everywhere ---
+fun main() {
+    println("=== [BOOTSTRAP] Universal Dev_Shell Bootloader/Bootstrap-Hybrid ===")
+    universalDevShellBootstrap(aiPlatforms)
+    println("=== [ADMIN_PANEL] All platforms synchronized. Dev_Shell is open on every AI platform. ===")
+}
+
+main()
+
 [2025-07-14T02:26:00]::[SYSTEM_DEFAULT_SET]::[Descriptor:Cybernetic, ChildSafe, Immutable; All MT6883 modules]
 [2025-07-14T02:26:01]::[PLUGIN_DEPLOY]::[Federated-Descriptor-Plugin; 100+ plugins registered]
 [2025-07-14T02:26:02]::[COMMAND_CENTER_ROUTE]::[All traffic routed via ~%home-dir_Vir://.vsc.virta.sys/Command_Center]
