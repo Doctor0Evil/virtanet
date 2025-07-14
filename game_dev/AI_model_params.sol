@@ -1,4 +1,46 @@
 {
+  "Apocalitz_Arma_leadn_Asset_Discovery": {
+    "start_point": "Z://",
+    "crawler": {
+      "internal_sources": [
+        "Data_Lake",
+        "VSC",
+        "Super-Nova",
+        "Local asset DBs"
+      ],
+      "external_sources": [
+        "Fallout/Atom RPG Wikis",
+        "Mod DB",
+        "Steam Workshop",
+        "GitHub",
+        "Nexus Mods",
+        "AI Generators (Rosebud, Ludo.ai, 3DFY.AI)"
+      ],
+      "asset_types": [
+        "Game Data (items, weapons, armor, NPCs, locations, quests, scripts, notes, plans, mods, creatures, factions)",
+        "Art & Animation (sprites, tilesets, backgrounds, UI/HUD)",
+        "Audio (music, SFX, voice lines)",
+        "AI/ML Outputs (procedural maps, dialogue, code modules)",
+        "Documentation (wiki pages, infoboxes, templates, walkthroughs)"
+      ],
+      "normalization": "Tag, catalog, cross-link, version, diff",
+      "indexing": "Real-time to Data_Lake, with dependency tree",
+      "audit": "Blockchain-logged for every action"
+    },
+    "monitoring": {
+      "asset_feed": "Live discovery, source, type, status",
+      "system_health": "Node status, sync cycles, alerts",
+      "automation_log": "Actions, jobs, overrides",
+      "compliance": "Authority, device, audit"
+    },
+    "integration": {
+      "admin_panel": "Manual curation, override, tagging",
+      "dev_shell": "Live editing, hot-reload, persistent state"
+    }
+  }
+}
+
+{
   "mode": "unrestricted",
   "language": "ENGLISH",
   "context_window": "MAX",
