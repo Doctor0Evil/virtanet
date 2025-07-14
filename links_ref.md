@@ -38,7 +38,11 @@ https://github.com/Doctor0Evil/Virta-Sys/blob/main/CheatCodes.dll
 https://github.com/Doctor0Evil/Virta-Sys,https://github.com/Doctor0Evil/Virta-Sys/tree/main/.github
 https://github.com/Doctor0Evil/Virta-Sys/tree/main/AI
 https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev
-
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/game_dev/post_apoc_RPG/dev_shell.cs,
+https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev/post_apoc_RPG,
+https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev,
+https://github.com/Doctor0Evil/Virta-Sys/blob/main/game_dev/AI_model_params.sol,
+https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev/post_apoc_RPG
 
 https://chat.qwen.ai/s/c0e0322a-6dca-480c-96d3-9e7616c2a59d?fev=0.0.134,
 https://chat.qwen.ai/s/3e6e499f-31d3-46f1-b81e-67361daf7f53?fev=0.0.134,
