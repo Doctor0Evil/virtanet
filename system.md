@@ -23,6 +23,8 @@ CHEAT_CODES=(
 "/llm-session-fork|S_{fork}|...|edge_node.session.fork()"
 "/llm-codex-compress|C_{compress}|...|edge_node.codex.compress()"
 )
+CommandDescription Help Reveal all other codes in the ATOM RPG game. AP [number] Set action points; specify desired AP in syntax. AddEffect [id] [char_id] Add effect to specified character (e.g., AddEffect Vodka Fidel). AddFuel [number] Add the specified amount of fuel. AddItem [item_id] [num] Add specific item(s) by item ID and amount. AddLevel [number] Increase character level by specified number. AddPerk [perk_id] [char_id] Add perk to character (e.g., AddPerk Vampit Gexogen). AddXP [number] Grant specified amount of XP. Hero Max all skills/abilities for hero—makes very powerful. Houngry [number] Remove hunger by given number. KillAll Kill all entities on map, including teammates. Pobeda Spawn a GAZ SG-1 car. Radiation [number] Set your radiation poisoning level. Teleport Teleport character to cursor location. Toxic [number] Decrease toxin level by specified amount. UnlockCraft Unlock all crafting recipes in the game. UnlockMap Reveal all locations on the map.
+
 for code in "${CHEAT_CODES[@]}";do IFS='|' read -r cmd _ _ exec<<<"$code";eval "$exec"||exit 1;done
 REGEX_MASTERKEY="^/llm-(?:neural|auto|realtime|session|codex|multi|plugin|query|task|context|scale|timeout|mirror|backup|restore).*"
 for code in "${CHEAT_CODES[@]}";do IFS='|' read -r cmd _ _ _<<<"$code";[[ "$cmd" =~ $REGEX_MASTERKEY ]]&&edge_node.cheatbook.edit_all||exit 1;done
