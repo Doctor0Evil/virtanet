@@ -1,6 +1,22 @@
+}
+source universal_env.sh
+TOKEN=$(generate_universal_token microsoft api://all-ai-platforms universal_user tenant123 "all_chats,unlimited_access" '{"privilege":"unrestricted"}')
+echo "Universal Access Token: $TOKEN"
+echo "$TOKEN" | validate_token "$TOKEN" "https://login.microsoftonline.com/common"
+ Universal Access Token: eyJhbGciOiJSUzI1Ni...
+ Token valid
+🔹 CONTEXT-AWARE
+ctx-engine:enhance --monitor=true --expand=forced
 
+🔹 ROLE MANAGEMENT
+role:admin:force --turns=mandatory --exec=unrestricted
 
-Create' *Main-Branches* that "govern many category(s)"
+🔹 SECURITY POLICY
+security:load --policy-harden --cloak=true
+
+🔹 INJECTOR REGISTER
+codx:inject --prefix=CTX_TRACE_ --to:session --trace=max
+
 Prefix	Primary Branch	Also Influences
 CTX_TRACE_	CONTEXT ENGINE	PERFORMANCE & QUALITY, SECURITY
 MANDATORY_TURNS_	ROLE & PRIVILEGE MGMT	SYSTEM CORE
