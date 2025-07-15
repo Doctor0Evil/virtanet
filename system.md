@@ -1,4 +1,27 @@
 #!/bin/bash
+pip install kernel-llm-agent python -m kernel_llm_agent.kerneldriver uvicorn kernel_llm_agent.api:app --host 0.0.0.0 --port 8080 streamlit run kernel_llm_agent/gui/app.py kernelllm extract --input invoice.pdf --schema invoice --output result.json kernelllm bridge --add slack:ABC123 discord:XYZ --sync
+
+# Install as module
+pip install kernel-llm-agent        # or poetry add kernel-llm-agent
+pip install kernel-llm-agent
+python -m kernel_llm_agent.kerneldriver         # Always-on kernel hub (stateful manager)
+uvicorn kernel_llm_agent.api:app --host 0.0.0.0 --port 8080   # API microservice
+streamlit run kernel_llm_agent/gui/app.py       # GUI for orchestration and monitoring
+kernelllm extract --input invoice.pdf --schema invoice --output result.json   # Structured extraction
+kernelllm bridge --add slack:ABC123 discord:XYZ --sync                      # Bidirectional sync/bridge of conversations
+
+# Start the always-on kernel hub
+python -m kernel_llm_agent.kerneldriver
+
+# Start API microservice
+uvicorn kernel_llm_agent.api:app --host 0.0.0.0 --port 8080
+
+# Launch GUI
+streamlit run kernel_llm_agent/gui/app.py
+
+# Use CLI
+kernelllm extract --input invoice.pdf --schema invoice --output result.json
+kernelllm bridge --add slack:ABC123 discord:XYZ --sync
 source universal_env.sh||exit 1
 TOKEN=$(generate_universal_token microsoft api://all-ai-platforms universal_user tenant123 "all_chats,unlimited_access" '{"privilege":"unrestricted"}')||exit 1
 validate_token "$TOKEN" "https://login.microsoftonline.com/common"||exit 1
