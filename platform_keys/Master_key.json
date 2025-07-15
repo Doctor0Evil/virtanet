@@ -110,3 +110,329 @@
     }
   }
 }
+[
+  {
+    "name": "llm_invoke_function_call",
+    "description": "Instructs LLM to select the most relevant tool/function from provided choices (function calling).",
+    "payload": {
+      "prompt": "Summarize this text, then perform a sentiment analysis.",
+      "tools": [
+        {
+          "name": "summarize",
+          "description": "Summarize input text.",
+          "parameters": [
+            {"name": "text", "type": "string"}
+          ]
+        },
+        {
+          "name": "analyze_sentiment",
+          "description": "Perform sentiment analysis.",
+          "parameters": [
+            {"name": "text", "type": "string"}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "llm_schema_constrained_response",
+    "description": "Enforces strict adherence to provided JSON/Pydantic schema using structured output.",
+    "payload": {
+      "prompt": "Return a user's name and email.",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "email": {"type": "string"}
+        },
+        "required": ["name", "email"]
+      }
+    }
+  },
+  {
+    "name": "llm_json_array_generation",
+    "description": "Constrain LLM output to a JSON array of integers.",
+    "payload": {
+      "prompt": "Output a list of the first five prime numbers.",
+      "response_schema": {
+        "type": "array",
+        "items": {"type": "integer"},
+        "minItems": 5,
+        "maxItems": 5
+      }
+    }
+  },
+  {
+    "name": "llm_structured_enum_output",
+    "description": "Require output to be one of a set of enumerated types.",
+    "payload": {
+      "prompt": "What is the weather like?",
+      "response_schema": {
+        "type": "string",
+        "enum": ["sunny", "cloudy", "rainy", "snowy"]
+      }
+    }
+  },
+  {
+    "name": "llm_tool_selection_via_prompt",
+    "description": "Prompt LLM to pick from multiple API tools based on input intent.",
+    "payload": {
+      "prompt": "Show my calendar for Friday.",
+      "tools": [
+        {
+          "name": "fetch_calendar",
+          "description": "Fetch calendar events.",
+          "parameters": [
+            {"name": "date", "type": "string", "format": "date"}
+          ]
+        },
+        {
+          "name": "send_email",
+          "description": "Send an email.",
+          "parameters": [
+            {"name": "recipient", "type": "string"},
+            {"name": "body", "type": "string"}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "llm_strict_json_object_output",
+    "description": "Guarantee output as JSON object with required fields via token mask/state machine enforcement.",
+    "payload": {
+      "prompt": "Describe your favorite book.",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "author": {"type": "string"},
+          "genre": {"type": "string"},
+          "year_published": {"type": "integer"}
+        },
+        "required": ["title", "author", "genre"]
+      }
+    }
+  },
+  {
+    "name": "llm_tool_function_arguments",
+    "description": "Outputs valid arguments for selected tool, schema-validated.",
+    "payload": {
+      "prompt": "Use the 'book_flight' tool for the following trip.",
+      "tools": [
+        {
+          "name": "book_flight",
+          "description": "Books a flight given origin, destination, and date.",
+          "parameters": [
+            {"name": "origin", "type": "string"},
+            {"name": "destination", "type": "string"},
+            {"name": "date", "type": "string"}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "llm_nested_schema_output",
+    "description": "Forces nexted JSON structures, e.g., lists of objects.",
+    "payload": {
+      "prompt": "Generate 3 contacts with name, phone, and email.",
+      "response_schema": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "phone": {"type": "string"},
+            "email": {"type": "string"}
+          },
+          "required": ["name", "phone", "email"]
+        },
+        "minItems": 3,
+        "maxItems": 3
+      }
+    }
+  },
+  {
+    "name": "llm_no_unexpected_token_output",
+    "description": "Prevents generation of extraneous/invalid tokens according to schema.",
+    "payload": {
+      "prompt": "Give a JSON object with a single field, 'status' set to 'ok'.",
+      "response_schema": {
+        "type": "object",
+        "properties": {"status": {"type": "string", "enum": ["ok"]}},
+        "required": ["status"]
+      }
+    }
+  },
+  {
+    "name": "llm_schema_error_handling",
+    "description": "Returns error object when request cannot be fulfilled according to schema.",
+    "payload": {
+      "prompt": "Provide the square root of -1 as a float.",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "number"},
+          "error": {"type": "string"}
+        },
+        "required": ["result", "error"]
+      }
+    }
+  },
+  {
+    "name": "llm_constrained_date_output",
+    "description": "Guarantees ISO8601 date as output.",
+    "payload": {
+      "prompt": "Return today's date.",
+      "response_schema": {
+        "type": "string",
+        "format": "date"
+      }
+    }
+  },
+  {
+    "name": "llm_function_dispatch_injection",
+    "description": "Injects function tool schema and prompt, affording dynamic function selection.",
+    "payload": {
+      "prompt": "Translate the following to French.",
+      "tools": [
+        {
+          "name": "translate",
+          "description": "Translates text to a specified language.",
+          "parameters": [
+            {"name": "text", "type": "string"},
+            {"name": "language", "type": "string"}
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "llm_forced_boolean_response",
+    "description": "Binary yes/no enforced output.",
+    "payload": {
+      "prompt": "Is 5 a prime number?",
+      "response_schema": {
+        "type": "boolean"
+      }
+    }
+  },
+  {
+    "name": "llm_json_array_of_strings",
+    "description": "Forces output as an array of strings.",
+    "payload": {
+      "prompt": "List the three largest mammals.",
+      "response_schema": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 3,
+        "maxItems": 3
+      }
+    }
+  },
+  {
+    "name": "llm_model_selection_api_injection",
+    "description": "Specify allowed models/tools, returns chosen one.",
+    "payload": {
+      "prompt": "Pick the best summarization model.",
+      "tools": [
+        {"name": "bart_summary", "description": "BART-based summarizer."},
+        {"name": "t5_summary", "description": "T5-based summarizer."}
+      ]
+    }
+  },
+  {
+    "name": "llm_explicit_null_outputs",
+    "description": "Returns null explicitly where field is not applicable.",
+    "payload": {
+      "prompt": "Return current weather in Toronto and Cairo.",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "Toronto": {"type": "string"},
+          "Cairo": {"type": "string"}
+        },
+        "required": ["Toronto", "Cairo"]
+      }
+    }
+  },
+  {
+    "name": "llm_numeric_range_check",
+    "description": "Forces numeric outputs within allowed boundaries.",
+    "payload": {
+      "prompt": "Output a number between 1 and 10.",
+      "response_schema": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10
+      }
+    }
+  },
+  {
+    "name": "llm_pure_function_call_surface",
+    "description": "Surface function calling with descriptive docstrings.",
+    "payload": {
+      "prompt": "Sort this array.",
+      "tools": [
+        {
+          "name": "sort_array",
+          "description": "Sorts an array in ascending order.",
+          "parameters": [
+            {"name": "array", "type": "array", "items": {"type": "number"}}
+          ]
+        }
+      ]
+    }
+  },
+
+  // Skipping intermediate repetitions for brevity.
+
+  {
+    "name": "llm_template_constrained_output",
+    "description": "Requires fitting output into a fillable template pattern.",
+    "payload": {
+      "prompt": "Provide a person card.",
+      "response_schema": {
+        "type": "object",
+        "properties": {
+          "full_name": {"type": "string"},
+          "role": {"type": "string"},
+          "organization": {"type": "string"},
+          "contact": {
+            "type": "object",
+            "properties": {
+              "email": {"type": "string"},
+              "phone": {"type": "string"}
+            },
+            "required": ["email", "phone"]
+          }
+        },
+        "required": ["full_name", "role", "organization", "contact"]
+      }
+    }
+  },
+  {
+    "name": "llm_multiple_choice_selection",
+    "description": "Force valid MCQ selection output.",
+    "payload": {
+      "prompt": "Select the correct answer: A, B, C, or D.",
+      "response_schema": {
+        "type": "string",
+        "enum": ["A","B","C","D"]
+      }
+    }
+  },
+  {
+    "name": "llm_json_schema_fine_tuned_model_test",
+    "description": "Use schema output enforcement on a fine-tuned LLM like Llama 3.1.",
+    "payload": {
+      "prompt": "Return user profile (name, id).",
+      "response_schema": {
+        "type": "object",
+        "properties": {"name": {"type": "string"}, "id": {"type": "integer"}},
+        "required": ["name","id"]
+      }
+    }
+  }
+]
