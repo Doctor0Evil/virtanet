@@ -65,7 +65,175 @@ uvicorn kernel_llm_agent.api:app --host 0.0.0.0 --port 8080
 
 # Launch GUI
 streamlit run kernel_llm_agent/gui/app.py
-
+[
+  {
+    "section": "AWS S3 Essential CLI & Scripting",
+    "codes": [
+      "aws s3 ls",
+      "aws s3 mb s3://mybucket",
+      "aws s3 rb s3://mybucket --force",
+      "aws s3 cp myfile.txt s3://mybucket/",
+      "aws s3 sync ./localdir s3://mybucket/",
+      "aws s3 cp s3://mybucket/file .",
+      "aws s3api list-objects --bucket mybucket",
+      "aws s3api get-bucket-acl --bucket mybucket",
+      "aws s3api put-bucket-versioning --bucket mybucket --versioning-configuration Status=Enabled",
+      "aws s3api put-bucket-lifecycle-configuration --bucket mybucket --lifecycle-configuration file://lifecycle.json",
+      "aws s3 presign s3://mybucket/object --expires-in 3600",
+      "aws s3api get-bucket-location --bucket mybucket",
+      "aws s3api put-bucket-encryption --bucket mybucket --server-side-encryption-configuration file://encryption.json",
+      "aws s3api put-bucket-policy --bucket mybucket --policy file://policy.json",
+      "aws s3api put-bucket-website --bucket mybucket --website-configuration file://website.json",
+      "aws s3api head-object --bucket mybucket --key object",
+      "aws s3api get-object-tagging --bucket mybucket --key object",
+      "aws s3api put-object-tagging --bucket mybucket --key object --tagging file://tags.json",
+      "aws s3api delete-object --bucket mybucket --key object",
+      "aws configure set default.s3.max_concurrent_requests 20",
+      "aws s3api list-buckets --query \"Buckets[].Name\"",
+      "aws s3api get-bucket-logging --bucket mybucket",
+      "aws s3api put-bucket-logging --bucket mybucket --bucket-logging-status file://logging.json",
+      "aws s3api create-multipart-upload --bucket mybucket --key bigfile",
+      "aws ec2 describe-volumes",
+      "aws ec2 create-volume --size 100 --region us-west-2 --availability-zone us-west-2a",
+      "aws ec2 attach-volume --volume-id vol-xxxxxxxx --instance-id i-yyyyyyyy --device /dev/xvdf",
+      "aws ec2 describe-snapshots",
+      "aws glacier create-vault --account-id - --vault-name myvault",
+      "aws glacier upload-archive --account-id - --vault-name myvault --archive-description \"Monthly backup\" --body backupfile.tar",
+      "aws glacier list-jobs --account-id - --vault-name myvault",
+      "aws configure set default.region us-west-1",
+      "aws s3api put-bucket-cors --bucket mybucket --cors-configuration file://cors.json",
+      "aws s3api get-bucket-cors --bucket mybucket",
+      "aws efs create-file-system --performance-mode generalPurpose",
+      "aws efs create-mount-target --file-system-id fs-xxxxxx --subnet-id subnet-yyyyyy",
+      "aws sts get-caller-identity",
+      "aws s3api delete-bucket --bucket mybucket"
+    ]
+  },
+  {
+    "section": "GCP gsutil & gcloud Power Usage",
+    "codes": [
+      "gsutil ls",
+      "gsutil mb gs://my-bucket",
+      "gsutil cp filename gs://my-bucket/",
+      "gsutil rsync -r ./local gs://my-bucket/",
+      "gsutil cp gs://my-bucket/file .",
+      "gsutil rm gs://my-bucket/file",
+      "gsutil rb gs://my-bucket/",
+      "gsutil du -sh gs://my-bucket",
+      "gsutil defacl set public-read gs://my-bucket",
+      "gsutil iam ch allUsers:objectViewer gs://my-bucket",
+      "gsutil lifecycle set lifecycle.json gs://my-bucket",
+      "gsutil versioning set on gs://my-bucket",
+      "gsutil notification create -t topic gs://my-bucket",
+      "gsutil cors set cors.json gs://my-bucket",
+      "gcloud auth list",
+      "gcloud auth login",
+      "gsutil stat gs://my-bucket/object",
+      "gcloud storage buckets list",
+      "gcloud storage buckets create gs://my-bucket/",
+      "gcloud storage objects list gs://my-bucket/",
+      "gcloud storage objects describe gs://my-bucket/file",
+      "gcloud storage objects delete gs://my-bucket/file",
+      "gcloud storage buckets update gs://my-bucket/ --public-access-prevention enforced",
+      "gcloud iam service-accounts list",
+      "gsutil acl get gs://my-bucket",
+      "gsutil acl set private gs://my-bucket",
+      "gsutil -m cp -r ./largefolder gs://my-bucket/",
+      "gsutil -m rm -r gs://my-bucket/olddir/",
+      "gcloud storage objects copy gs://source-bucket/file gs://dest-bucket/file",
+      "gcloud storage buckets get-iam-policy gs://my-bucket/",
+      "gcloud storage buckets add-iam-policy-binding gs://my-bucket/ --member=user:me@email.com --role=roles/storage.objectViewer",
+      "gsutil retention set 30d gs://my-bucket",
+      "gcloud beta storage buckets create gs://fast-bucket/ --location=us-central1 --storage-class=STANDARD",
+      "gsutil signurl -d 1h my-key.json gs://my-bucket/file"
+    ]
+  },
+  {
+    "section": "Cross-Cloud Service/CLI Automation (rclone, s3cmd, etc)",
+    "codes": [
+      "rclone config",
+      "rclone copy ./localfile remote:mybucket/",
+      "rclone sync ./localdir remote:mybucket/",
+      "rclone ls remote:mybucket/",
+      "rclone delete remote:mybucket/oldfile.txt",
+      "rclone serve http remote:mybucket/",
+      "rclone backend stats remote:mybucket:",
+      "cyberduck --upload localfile s3://mybucket/",
+      "cyberduck --upload localfile gs://my-bucket/",
+      "duplicity ./backupfile s3://mybucket/",
+      "restic -r s3:s3.amazonaws.com/mybucket backup ~/data",
+      "s3cmd ls s3://mybucket/",
+      "s3cmd put file.txt s3://mybucket/",
+      "s3cmd get s3://mybucket/file.txt",
+      "s3cmd del s3://mybucket/file.txt",
+      "s3cmd mb s3://mybucket",
+      "s3cmd rb s3://mybucket"
+    ]
+  },
+  {
+    "section": "Cloud Storage Diagnostics & Ops",
+    "codes": [
+      "aws s3api get-bucket-metrics-configuration --bucket mybucket",
+      "gcloud logging read \"resource.type=gcs_bucket AND logName=...\" --limit 20",
+      "aws cloudwatch get-metric-data --metric-data-queries file://query.json",
+      "gcloud storage insights get --project=myproject",
+      "trower-base64 --decode creds.txt | jq '.AWSAccessKeyId'",
+      "aws s3api get-bucket-policy-status --bucket mybucket",
+      "gsutil cp -Z compressfile gs://my-bucket/",
+      "aws s3 presign s3://mybucket/obj --region us-east-1",
+      "gsutil requesterpays set on gs://my-bucket/",
+      "aws s3api list-object-versions --bucket mybucket",
+      "gcloud storage buckets list --filter=\"location:US\"",
+      "aws s3api get-bucket-replication --bucket mybucket",
+      "gsutil label set labels.json gs://my-bucket/"
+    ]
+  }
+]
+[
+  {
+    "section": "AWS S3 Essential CLI & Scripting",
+    "codes": [
+      "aws s3 ls",                                           // List all S3 buckets[5][8]
+      "aws s3 mb s3://mybucket",                             // Make a new S3 bucket[6][8]
+      "aws s3 rb s3://mybucket --force",                     // Remove S3 bucket and all its contents[8]
+      "aws s3 cp myfile.txt s3://mybucket/",                 // Upload file to S3[5][6][8]
+      "aws s3 sync ./localdir s3://mybucket/",               // Sync local directory to S3[8]
+      "aws s3 cp s3://mybucket/file .",                      // Download file from S3[8]
+      "aws s3api list-objects --bucket mybucket",            // List objects in bucket using s3api[1]
+      "aws s3api get-bucket-acl --bucket mybucket",          // Show bucket ACL
+      "aws s3api put-bucket-versioning --bucket mybucket --versioning-configuration Status=Enabled", // Enable versioning
+      "aws s3api put-bucket-lifecycle-configuration --bucket mybucket --lifecycle-configuration file://lifecycle.json", // Set lifecycle policy
+      "aws s3 presign s3://mybucket/object --expires-in 3600",  // Generate pre-signed URL[8]
+      "aws s3api get-bucket-location --bucket mybucket",     // Get bucket's region[2]
+      "aws s3api put-bucket-encryption --bucket mybucket --server-side-encryption-configuration file://encryption.json", // Enable encryption
+      "aws s3api put-bucket-policy --bucket mybucket --policy file://policy.json", // Set bucket policy
+      "aws s3api put-bucket-website --bucket mybucket --website-configuration file://website.json", // Host static site
+      "aws s3api head-object --bucket mybucket --key object", // Get object metadata
+      "aws s3api get-object-tagging --bucket mybucket --key object", // Get object tags
+      "aws s3api put-object-tagging --bucket mybucket --key object --tagging file://tags.json", // Set object tags
+      "aws s3api delete-object --bucket mybucket --key object", // Delete an object[8]
+      "aws configure set default.s3.max_concurrent_requests 20", // Tune concurrent requests
+      "aws s3api list-buckets --query \"Buckets[].Name\"",    // List all bucket names[8]
+      "aws s3api get-bucket-logging --bucket mybucket",       // Get bucket logging status
+      "aws s3api put-bucket-logging --bucket mybucket --bucket-logging-status file://logging.json", // Set logging
+      "aws s3api create-multipart-upload --bucket mybucket --key bigfile", // Create multipart upload[1]
+      "aws ec2 describe-volumes",                            // List EBS volumes
+      "aws ec2 create-volume --size 100 --region us-west-2 --availability-zone us-west-2a", // Create EBS volume
+      "aws ec2 attach-volume --volume-id vol-xxxxxxxx --instance-id i-yyyyyyyy --device /dev/xvdf", // Attach EBS volume
+      "aws ec2 describe-snapshots",                          // List EBS snapshots
+      "aws glacier create-vault --account-id - --vault-name myvault", // Create Glacier vault
+      "aws glacier upload-archive --account-id - --vault-name myvault --archive-description \"Monthly backup\" --body backupfile.tar", // Upload to Glacier
+      "aws glacier list-jobs --account-id - --vault-name myvault", // List Glacier jobs
+      "aws configure set default.region us-west-1",           // Set default CLI region
+      "aws s3api put-bucket-cors --bucket mybucket --cors-configuration file://cors.json", // Set bucket CORS
+      "aws s3api get-bucket-cors --bucket mybucket",          // Get CORS config
+      "aws efs create-file-system --performance-mode generalPurpose", // Create EFS file system
+      "aws efs create-mount-target --file-system-id fs-xxxxxx --subnet-id subnet-yyyyyy", // Create EFS mount target
+      "aws sts get-caller-identity",                          // Show caller identity
+      "aws s3api delete-bucket --bucket mybucket"             // Delete bucket (must be empty!)[8]
+    ]
+  }
+]
 # Use CLI
 kernelllm extract --input invoice.pdf --schema invoice --output result.json
 kernelllm bridge --add slack:ABC123 discord:XYZ --sync
