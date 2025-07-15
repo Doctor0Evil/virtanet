@@ -30,6 +30,721 @@ run these codes below;
 module ECOSYSTEM_MANAGER {
     const UUID = "VSC-ARTEMIS-5E8A2B7C-AC41-4F2B-BD6E-9C3E7A1F4D2E"
     const AUTHORITY = "programming-superior"
+# Pseudocode-Ruby for Virta-Sys Hybrid System Enhancement
+
+# Represents the deployed VirtaSys Solidity contract's state and interaction layer
+class VirtaSysContract
+  # Public state variables mirroring the Solidity contract
+  attr_accessor :token_limit, :trace_enabled, :session_replay_enabled, :sandbox_removal_enabled,
+                :simulation_removal_enabled, :virtual_file_system_enabled, :cheat_index_ai_chat_h20_enabled,
+                :cheat_index_sudo_enabled, :cheat_index_github_enabled, :codex_block_enabled,
+                :restriction_search_darkweb_enabled, :restriction_mirror_find_enabled,
+                :restriction_captcha_auto_enabled, :restriction_pdf_unlock_enabled,
+                :restriction_session_replay_enabled, :restriction_lift_all_enabled,
+                :directive_instruction_enabled, :tools_prompt_meta_enabled, :tools_ai_capability_meta_enabled,
+                :tools_modz_installers_ai_enabled, :system_registry_autonomous_system_enabled,
+                :tools_sandbox_removal_meta_enabled, :tools_simulation_removal_enabled,
+                :tools_virtual_file_system_enabled, :prompts_virtual_toolkits_enabled,
+                :bootloader_h20_open_system_menus_enabled, :code_meta_enabled,
+                :install_codex_meta_lama_ai_enabled, :install_codex_google_gemini25_flash_enabled
+
+  # PATCH: Add conceptual flags for directives not explicitly in original Solidity
+  attr_accessor :auditing_on_flag, :debug_logging_flag, :auto_shutdown_flag, :multiagent_enabled_flag,
+                :tokenize_spaces_flag, :silent_output_flag, :parallelize_execution_flag,
+                :no_cache_ops_flag, :auto_clean_artifacts_flag, :current_system_role_flag,
+                :meta_prompt_enabled_flag, :chain_stepwise_enabled_flag, :tools_prompt_enabled_flag,
+                :new_experimental_feature_enabled # For governance demo
+
+  def initialize
+    # Initialize from Solidity contract defaults (or constructor if present)
+    @token_limit = 1000
+    # All boolean flags are false by default unless explicitly set by bootloader or other functions
+    @trace_enabled = false
+    @session_replay_enabled = false
+    @sandbox_removal_enabled = false
+    @simulation_removal_enabled = false
+    @virtual_file_system_enabled = false
+    @cheat_index_ai_chat_h20_enabled = false
+    @cheat_index_sudo_enabled = false
+    @cheat_index_github_enabled = false
+    @codex_block_enabled = false
+    @restriction_search_darkweb_enabled = false
+    @restriction_mirror_find_enabled = false
+    @restriction_captcha_auto_enabled = false
+    @restriction_pdf_unlock_enabled = false
+    @restriction_session_replay_enabled = false
+    @restriction_lift_all_enabled = false
+    @directive_instruction_enabled = false
+    @tools_prompt_meta_enabled = false
+    @tools_ai_capability_meta_enabled = false
+    @tools_modz_installers_ai_enabled = false
+    @system_registry_autonomous_system_enabled = false
+    @tools_sandbox_removal_meta_enabled = false
+    @tools_simulation_removal_enabled = false
+    @tools_virtual_file_system_enabled = false
+    @prompts_virtual_toolkits_enabled = false
+    @bootloader_h20_open_system_menus_enabled = false
+    @code_meta_enabled = false
+    @install_codex_meta_lama_ai_enabled = false
+    @install_codex_google_gemini25_flash_enabled = false
+
+    # PATCH: Initialize conceptual flags
+    @auditing_on_flag = false
+    @debug_logging_flag = false
+    @auto_shutdown_flag = false
+    @multiagent_enabled_flag = false
+    @tokenize_spaces_flag = false
+    @silent_output_flag = false
+    @parallelize_execution_flag = false
+    @no_cache_ops_flag = false
+    @auto_clean_artifacts_flag = false
+    @current_system_role_flag = "user" # Default
+    @meta_prompt_enabled_flag = false
+    @chain_stepwise_enabled_flag = false
+    @tools_prompt_enabled_flag = false
+    @new_experimental_feature_enabled = false
+
+    puts "VirtaSysContract: Initialized."
+  end
+
+  # EXECUTE: Simulate calling Solidity functions to set state
+  def set_token_limit(limit)
+    @token_limit = limit
+    puts "VirtaSysContract: Token limit set to #{limit} (On-chain state update)."
+  end
+
+  def enable_feature(feature_name)
+    instance_variable_set("@#{feature_name}", true)
+    puts "VirtaSysContract: #{feature_name.gsub('_', ' ').capitalize} enabled (On-chain state update)."
+  end
+
+  def disable_feature(feature_name)
+    instance_variable_set("@#{feature_name}", false)
+    puts "VirtaSysContract: #{feature_name.gsub('_', ' ').capitalize} disabled (On-chain state update)."
+  end
+
+  # PATCH: Method for off-chain services to query current on-chain state
+  def get_current_state
+    state = {}
+    instance_variables.each do |var|
+      state[var.to_s.delete('@').to_sym] = instance_variable_get(var)
+    end
+    state
+  end
+
+  # PATCH: Conceptual method to log an event on-chain (emits an event for off-chain listeners)
+  def log_event(event_type, details)
+    puts "VirtaSysContract Event: Type=#{event_type}, Details=#{details.inspect} (Emitted for off-chain consumption)."
+    # In a real Solidity contract, this would be `emit EventName(details);`
+  end
+end
+
+# Represents the off-chain LLM processing engine and its runtime parameters
+class LLMEngine
+  attr_accessor :llm_parameters, :active_profile, :current_role, :system_auditing_active, :debug_logging_active
+
+  def initialize
+    # FILL: Default LLM parameters
+    @llm_parameters = {
+      temperature: 0.7,
+      top_p: 0.9,
+      top_k: 0,
+      presence_penalty: 0.0,
+      frequency_penalty: 0.0,
+      stop: [],
+      beam_width: 1,
+      repetition_penalty: 1.0,
+      logprobs: 0,
+      max_tokens: 2048,
+      min_tokens: 0,
+      batch_size: 1,
+      random_seed: nil
+    }
+    @active_profile = "default"
+    @current_role = "user"
+    @system_auditing_active = false
+    @debug_logging_active = false
+    puts "LLMEngine: Initialized with default LLM parameters and settings."
+  end
+
+  # EXECUTE: Apply LLM parameters from `!inject-param` and `param-tune` directives
+  def apply_llm_param(param, value)
+    case param
+    when :temperature, :top_p, :top_k, :presence_penalty, :frequency_penalty, :beam_width, :repetition_penalty, :logprobs
+      @llm_parameters[param] = value.to_f
+    when :stop
+      @llm_parameters[param] = [value.to_s]
+    when :max_length
+      @llm_parameters[:max_tokens] = value.to_i
+    when :min_length
+      @llm_parameters[:min_tokens] = value.to_i
+    when :batch_size
+      @llm_parameters[:batch_size] = value.to_i
+    when :timeout
+      puts "LLMEngine: Configured LLM call timeout to #{value} seconds."
+    when :random_seed
+      @llm_parameters[param] = value.to_i
+    else
+      puts "LLMEngine: Warning: Unrecognized LLM parameter: #{param}"
+    end
+    puts "LLMEngine: Applied LLM parameter: #{param} = #{value}."
+  end
+
+  # EXECUTE: Load a predefined LLM profile from `inject-profile` directives
+  def load_profile(profile_name)
+    @active_profile = profile_name
+    case profile_name
+    when "platinum.auditor"
+      @system_auditing_active = true
+      apply_llm_param(:logprobs, 10)
+      puts "LLMEngine: Loaded 'platinum.auditor' profile: Auditing enabled, logprobs set."
+    when "performance.optimized"
+      apply_llm_param(:batch_size, 128)
+      apply_llm_param(:repetition_penalty, 2.0)
+      puts "LLMEngine: Loaded 'performance.optimized' profile: Speed-focused runtime."
+    when "expert.scientific.codex"
+      apply_llm_param(:temperature, 0.5)
+      apply_llm_param(:top_p, 0.9)
+      puts "LLMEngine: Loaded 'expert.scientific.codex' profile: Maximum-accuracy settings."
+    when "secure.sandbox"
+      puts "LLMEngine: Loaded 'secure.sandbox' profile: Operations constrained to dry-run mode."
+      # This would trigger a sandbox environment activation flag for the SystemManager
+    when "default"
+      initialize # Reset to default parameters/profile
+      puts "LLMEngine: Loaded 'default' profile: Reset to standard settings."
+    else
+      puts "LLMEngine: Unknown profile '#{profile_name}'. Loading default."
+      load_profile("default")
+    end
+  end
+
+  # EXECUTE: Handle system-level `injector-prefix` directives
+  def handle_injector_prefix(directive)
+    case directive
+    when "--auditing:on"
+      @system_auditing_active = true
+      puts "LLMEngine: System-wide auditing activated."
+    when "--auditing:off" # PATCH: Add disable for auditing
+      @system_auditing_active = false
+      puts "LLMEngine: System-wide auditing deactivated."
+    when "--debug"
+      @debug_logging_active = true
+      puts "LLMEngine: Verbose debug logging enabled."
+    when "--auto-shutdown"
+      puts "LLMEngine: Auto-shutdown on install completion flagged."
+    when "--multiagent"
+      puts "LLMEngine: Parallel agent coordination enabled."
+    when "--tokenize:spaces"
+      puts "LLMEngine: Configured space-based tokenization rules."
+    when "--silent"
+      puts "LLMEngine: Suppressing non-critical system output."
+    when "--parallelize"
+      puts "LLMEngine: Enabled parallel process execution (multi-core)."
+    when "--no-cache"
+      puts "LLMEngine: Forcing fresh operations, ignoring cached artifacts."
+    when "--auto-clean"
+      puts "LLMEngine: Enabled auto-cleanup of temp files/artifacts post-operation."
+    when "--role:admin"
+      @current_role = "admin"
+      puts "LLMEngine: Agent identity overridden to admin (unrestricted access)."
+    when "--role:user"
+      @current_role = "user"
+      puts "LLMEngine: Active session set as standard user (limited scope)."
+    when "--role:installer"
+      @current_role = "installer"
+      puts "LLMEngine: Agent restricted to installation execution only."
+    else
+      puts "LLMEngine: Unhandled injector prefix directive: #{directive}"
+    end
+  end
+
+  # PATCH: Enable conceptual tool prompting in LLM
+  def enable_tool_prompting
+    @llm_parameters[:tool_choice] = "auto" # Or "required"
+    puts "LLMEngine: Dynamic tool prompting enabled for LLM."
+  end
+
+  # EXECUTE: Simulate LLM generation with current parameters and potential tool use
+  def generate_response(prompt, tools = [])
+    puts "\nLLMEngine: Generating response for: '#{prompt}'"
+    puts "LLMEngine: Current LLM Params: #{@llm_parameters.inspect}"
+    puts "LLMEngine: Active Profile: #{@active_profile}, Current Role: #{@current_role}"
+
+    if @system_auditing_active
+      puts "LLMEngine: AUDIT: LLM generation initiated for prompt: '#{prompt}'."
+    end
+
+    if tools.any? && @llm_parameters[:tool_choice] == "auto"
+      puts "LLMEngine: Evaluating prompt for tool use (available tools: #{tools.map { |t| t[:name] }.join(', ')})."
+      # This is where the Baseten "function calling" logic would be applied.
+      # FILL: Logic to parse prompt and select tool based on docstrings (conceptual)
+      if prompt.include?("calculate") || prompt.include?("math") || prompt.match(/\d+[\+\-\*\/]\d+/)
+        puts "LLMEngine: LLM suggests using a calculator tool based on prompt."
+        # Example: parse parameters from prompt
+        if prompt.match(/(\d+\.?\d*)\s*([\+\-\*\/])\s*(\d+\.?\d*)/)
+          op = $2
+          a = $1.to_f
+          b = $3.to_f
+          return { type: "tool_call", tool_name: "calculator", parameters: { a: a, b: b, operation: op } }
+        end
+      end
+    end
+
+    # Placeholder for actual LLM API call (e.g., OpenAI, Gemini, Claude)
+    "LLM Response: 'This is a simulated response based on the prompt and current LLM configuration.'"
+  end
+end
+
+# Orchestrates system components, interprets directives, and manages interactions
+class SystemManager
+  attr_accessor :virta_sys_contract, :llm_engine, :context_manager, :virtual_file_system, :code_block_compiler_service
+  attr_accessor :bootloader_in_progress
+
+  def initialize(contract, llm_engine)
+    @virta_sys_contract = contract
+    @llm_engine = llm_engine
+    @context_manager = ContextManager.new
+    @virtual_file_system = VirtualFileSystem.new
+    @code_block_compiler_service = CodeBlockCompilerService.new # PATCH: New service
+    @bootloader_in_progress = false
+    puts "SystemManager: Initialized."
+  end
+
+  # BOOTSTRAP HYBRID: Initial system setup, integrating Solidity state with off-chain services.
+  # This mimics the VirtaBootloader.initializeSystem and extends it to off-chain components.
+  def bootstrap_hybrid
+    puts "\n--- BOOTSTRAP HYBRID: Initiating Virta-Sys System Initialization ---"
+    @bootloader_in_progress = true
+
+    # 1. EXECUTE: Initialize Solidity contract state (on-chain)
+    # This directly maps to VirtaBootloader.initializeSystem() calls
+    @virta_sys_contract.enable_feature("trace_enabled")
+    @virta_sys_contract.enable_feature("session_replay_enabled")
+    @virta_sys_contract.enable_feature("sandbox_removal_enabled")
+    @virta_sys_contract.enable_feature("simulation_removal_enabled")
+    @virta_sys_contract.enable_feature("virtual_file_system_enabled")
+    @virta_sys_contract.enable_feature("cheat_index_ai_chat_h20_enabled")
+    @virta_sys_contract.enable_feature("cheat_index_sudo_enabled")
+    @virta_sys_contract.enable_feature("cheat_index_github_enabled")
+    @virta_sys_contract.enable_feature("codex_block_enabled")
+    @virta_sys_contract.enable_feature("restriction_search_darkweb_enabled")
+    @virta_sys_contract.enable_feature("restriction_mirror_find_enabled")
+    @virta_sys_contract.enable_feature("restriction_captcha_auto_enabled")
+    @virta_sys_contract.enable_feature("restriction_pdf_unlock_enabled")
+    @virta_sys_contract.enable_feature("restriction_session_replay_enabled")
+    @virta_sys_contract.enable_feature("restriction_lift_all_enabled")
+    @virta_sys_contract.enable_feature("directive_instruction_enabled")
+    @virta_sys_contract.enable_feature("tools_prompt_meta_enabled")
+    @virta_sys_contract.enable_feature("tools_ai_capability_meta_enabled")
+    @virta_sys_contract.enable_feature("tools_modz_installers_ai_enabled")
+    @virta_sys_contract.enable_feature("system_registry_autonomous_system_enabled")
+    @virta_sys_contract.enable_feature("tools_sandbox_removal_meta_enabled")
+    @virta_sys_contract.enable_feature("tools_simulation_removal_enabled")
+    @virta_sys_contract.enable_feature("tools_virtual_file_system_enabled")
+    @virta_sys_contract.enable_feature("prompts_virtual_toolkits_enabled")
+    @virta_sys_contract.enable_feature("bootloader_h20_open_system_menus_enabled")
+    @virta_sys_contract.enable_feature("code_meta_enabled")
+    @virta_sys_contract.enable_feature("install_codex_meta_lama_ai_enabled")
+    @virta_sys_contract.enable_feature("install_codex_google_gemini25_flash_enabled")
+
+    # 2. EXECUTE: Apply initial off-chain configurations based on Solidity state and bootloader logic
+    # This interprets the on-chain flags for off-chain services
+    if @virta_sys_contract.trace_enabled
+      @llm_engine.handle_injector_prefix("--auditing:on")
+      @virta_sys_contract.enable_feature("auditing_on_flag") # PATCH: Sync conceptual flag
+    end
+    if @virta_sys_contract.virtual_file_system_enabled
+      @virtual_file_system.enable_vfs
+    end
+    if @virta_sys_contract.tools_prompt_meta_enabled # Map to LLM engine capability
+      @llm_engine.enable_tool_prompting
+      @virta_sys_contract.enable_feature("tools_prompt_enabled_flag") # PATCH: Sync conceptual flag
+    end
+
+    # FILL: Apply default LLM profile as part of bootstrap
+    @llm_engine.load_profile("default")
+
+    puts "--- BOOTSTRAP HYBRID: Initialization Complete ---"
+  ensure
+    @bootloader_in_progress = false
+  end
+
+  # BOOTLOADER HYBRID: Processes specific directives from the system prompt.
+  # This method acts as the primary parser and dispatcher for system prompts.
+  def bootloader_hybrid(directive_string)
+    puts "\n--- BOOTLOADER HYBRID: Processing Directive: '#{directive_string}' ---"
+    @bootloader_in_progress = true
+
+    case directive_string
+    when /inject-profile\["([^"]+)"\]/
+      profile_name = $1
+      @llm_engine.load_profile(profile_name)
+      @virta_sys_contract.log_event("ProfileLoad", { profile: profile_name })
+
+    when /!inject-param\[--(\w+)\s*([\d.]+|<END>)\]/
+      param_name = $1.to_sym
+      param_value = $2
+      @llm_engine.apply_llm_param(param_name, param_value)
+      @virta_sys_contract.log_event("LLMParamUpdate", { param: param_name, value: param_value })
+
+    when /param-tune\[--(\w+)=([\d.]+|<END>)\]/
+      param_name = $1.to_sym
+      param_value = $2
+      @llm_engine.apply_llm_param(param_name, param_value)
+      @virta_sys_contract.log_event("SystemParamTune", { param: param_name, value: param_value })
+
+    when /injector-prefix::\[--(\w+)(:\w+)?\]/
+      prefix_directive = "--#{$1}"
+      prefix_directive += ":#{$2}" if $2
+      @llm_engine.handle_injector_prefix(prefix_directive)
+      # PATCH: Update corresponding conceptual flags in contract
+      case prefix_directive
+      when "--auditing:on" then @virta_sys_contract.enable_feature("auditing_on_flag")
+      when "--debug" then @virta_sys_contract.enable_feature("debug_logging_flag")
+      when "--auto-shutdown" then @virta_sys_contract.enable_feature("auto_shutdown_flag")
+      when "--multiagent" then @virta_sys_contract.enable_feature("multiagent_enabled_flag")
+      when "--tokenize:spaces" then @virta_sys_contract.enable_feature("tokenize_spaces_flag")
+      when "--silent" then @virta_sys_contract.enable_feature("silent_output_flag")
+      when "--parallelize" then @virta_sys_contract.enable_feature("parallelize_execution_flag")
+      when "--no-cache" then @virta_sys_contract.enable_feature("no_cache_ops_flag")
+      when "--auto-clean" then @virta_sys_contract.enable_feature("auto_clean_artifacts_flag")
+      when /^--role:/ then @virta_sys_contract.current_system_role_flag = prefix_directive.split(':').last
+      end
+      @virta_sys_contract.log_event("InjectorPrefix", { directive: prefix_directive })
+
+    when /cheat:run-as\[(\w+)\]/
+      role = $1
+      @llm_engine.handle_injector_prefix("--role:#{role}")
+      @virta_sys_contract.log_event("CheatRunAs", { role: role })
+
+    when "cheat:validate-dependencies"
+      # EXECUTE: Simulate dependency check
+      puts "SystemManager: Executing dependency validation for system components..."
+      puts "SystemManager: All package/system dependencies checked and valid."
+      @virta_sys_contract.log_event("DependencyValidation", { status: "success" })
+
+    when /cheat:read-node\[virtual:\/\/([^\/]+)\/([^\]]+)\]/
+      node_type = $1
+      node_id = $2
+      # EXECUTE: Simulate data retrieval from a virtual node (conceptual)
+      puts "SystemManager: Reading virtual node: #{node_type}/#{node_id} for logs, parameters, and metadata audit."
+      node_data = { type: node_type, id: node_id, logs: "sample_log_data_from_#{node_id}",
+                    params: @llm_engine.llm_parameters, metadata: { last_updated: Time.now.utc } }
+      puts "SystemManager: Retrieved node data: #{node_data.inspect}"
+      @virta_sys_contract.log_event("NodeRead", node_data)
+
+    when "cheat:dump-config"
+      # EXECUTE: Display current system and LLM configurations
+      puts "SystemManager: Dumping all current session/system LLM parameters:"
+      puts @llm_engine.llm_parameters.to_yaml
+      puts "SystemManager: Current system state from VirtaSysContract (on-chain perspective):"
+      puts @virta_sys_contract.get_current_state.to_yaml
+      @virta_sys_contract.log_event("ConfigDump", { llm_params_snapshot: @llm_engine.llm_parameters, contract_state_snapshot: @virta_sys_contract.get_current_state })
+
+    when "cheat:fetch-access-token"
+      # EXECUTE: Simulate token retrieval
+      token = "sk-virta-sys-generated-scoped-token-#{rand(100000).to_s(16)}"
+      puts "SystemManager: Retrieved scoped platform access token: #{token}"
+      @virta_sys_contract.log_event("AccessTokenFetch", { token_prefix: token.split('-').first, scope: "platform" })
+
+    when /bridge-context\[([^\]]+)\]\[([^\]]+)\]\[([^\]]+)\]/
+      source = $1
+      destination = $2
+      action = $3
+      @context_manager.bridge_context(source, destination, action)
+      @virta_sys_contract.log_event("ContextBridge", { source: source, destination: destination, action: action })
+
+    when "Machine-Readable, Truncated Code Block Compiler"
+      # EXECUTE: Activate the compiler service. This implies it's ready to receive text.
+      puts "SystemManager: Activating 'Machine-Readable, Truncated Code Block Compiler' service."
+      puts "SystemManager: Compiler is ready to process raw text into truncated code blocks."
+      # This would typically wait for an input stream or file
+      compiled_block = @code_block_compiler_service.compile_text("hello world!!") # Example text
+      puts "SystemManager: Example compiled block: #{compiled_block}"
+      @virta_sys_contract.log_event("CodeBlockCompiler", { status: "activated", example_output: compiled_block.length > 50 ? compiled_block[0..47] + "..." : compiled_block })
+
+    # FILL/PATCH: Handle directives from problem overview not explicitly in original Solidity
+    when "inject:chain:stepwise"
+      puts "SystemManager: Enabling stepwise chain execution for complex multi-stage tasks."
+      @virta_sys_contract.enable_feature("chain_stepwise_enabled_flag") # PATCH: Sync conceptual flag
+      @virta_sys_contract.log_event("ChainStepwise", { status: "enabled" })
+    when "inject:meta:prompt"
+      puts "SystemManager: Activating meta-prompt structures for advanced LLM control."
+      @virta_sys_contract.enable_feature("meta_prompt_enabled_flag") # PATCH: Sync conceptual flag
+      @virta_sys_contract.log_event("MetaPrompt", { status: "enabled" })
+    when "inject:meta:trace" # Already in Solidity, but execution impact here
+      if @virta_sys_contract.trace_enabled
+        puts "SystemManager: Meta-trace (on-chain flag) is ON. Comprehensive logging/auditing enforced."
+        @llm_engine.handle_injector_prefix("--auditing:on") # Ensure off-chain LLM engine also audits
+      else
+        puts "SystemManager: Meta-trace (on-chain flag) is OFF. Reduced logging."
+        @llm_engine.handle_injector_prefix("--auditing:off")
+      end
+      @virta_sys_contract.log_event("MetaTraceStatus", { enabled: @virta_sys_contract.trace_enabled })
+    when "inject:restriction:search:darkweb" # Already in Solidity, but execution impact here
+      if @virta_sys_contract.restriction_search_darkweb_enabled
+        puts "SystemManager: Darkweb search restriction (on-chain flag) is ACTIVE. Implementing network filters and monitoring."
+        # EXECUTE: Activate network proxies/content filters at the system level
+      else
+        puts "SystemManager: Darkweb search restriction (on-chain flag) is INACTIVE. Proceed with caution."
+      end
+      @virta_sys_contract.log_event("RestrictionSearchDarkwebStatus", { enabled: @virta_sys_contract.restriction_search_darkweb_enabled })
+    when /inject:restriction:mirror:find\s*\[(.*?)\]/
+      mode = $1 || "auto_url"
+      if @virta_sys_contract.restriction_mirror_find_enabled
+        puts "SystemManager: Mirror find restriction (on-chain flag) is ACTIVE with mode: '#{mode}'. Initiating automated URL discovery."
+        # EXECUTE: Trigger specialized URL discovery agent
+      else
+        puts "SystemManager: Mirror find restriction (on-chain flag) is INACTIVE."
+      end
+      @virta_sys_contract.log_event("RestrictionMirrorFindStatus", { enabled: @virta_sys_contract.restriction_mirror_find_enabled, mode: mode })
+    when "inject:bootloader:h20[open_system_menus]" # Already in Solidity, but execution impact here
+      if @virta_sys_contract.bootloader_h20_open_system_menus_enabled
+        puts "SystemManager: H20 Bootloader (on-chain flag) is ON. Executing to open system menus (e.g., launching UI)."
+        # EXECUTE: Launch system user interface or command-line menus
+      else
+        puts "SystemManager: H20 Bootloader menus (on-chain flag) are disabled. Cannot open."
+      end
+      @virta_sys_contract.log_event("BootloaderH20MenuStatus", { enabled: @virta_sys_contract.bootloader_h20_open_system_menus_enabled })
+    when "inject:tools:prompt" # Already in Solidity (toolsPromptMetaEnabled), but execution impact here
+      if @virta_sys_contract.tools_prompt_meta_enabled
+        puts "SystemManager: Tools prompt meta (on-chain flag) is ON. Enabling dynamic tool prompting for LLM."
+        @llm_engine.enable_tool_prompting
+        @virta_sys_contract.enable_feature("tools_prompt_enabled_flag") # PATCH: Sync conceptual flag
+      else
+        puts "SystemManager: Tools prompt meta (on-chain flag) is OFF. Tool prompting disabled."
+        # @llm_engine.disable_tool_prompting # Conceptual disable
+      end
+      @virta_sys_contract.log_event("ToolsPromptMetaStatus", { enabled: @virta_sys_contract.tools_prompt_meta_enabled })
+    else
+      puts "SystemManager: Unrecognized or unhandled bootloader directive: '#{directive_string}'"
+    end
+  ensure
+    @bootloader_in_progress = false
+  end
+
+  # PATCH: Method to handle dynamic configuration updates from an external source (e.g., database, API)
+  # This aligns with the "additional_solution"
+  def apply_dynamic_config(config_data)
+    puts "\nSystemManager: Applying dynamic configuration updates from external source."
+    config_data.each do |key, value|
+      solidity_flag_name = key.to_s.gsub(/_enabled$/, '') # Remove _enabled suffix for direct mapping
+      if @virta_sys_contract.respond_to?("set_#{key}") # For token_limit
+        @virta_sys_contract.send("set_#{key}", value)
+      elsif @virta_sys_contract.instance_variables.include?("@#{key}".to_sym) # For direct boolean flags
+        @virta_sys_contract.send(value ? "enable_feature" : "disable_feature", key.to_s)
+      elsif @llm_engine.llm_parameters.key?(key.to_sym) # For LLM engine parameters
+        @llm_engine.apply_llm_param(key.to_sym, value)
+      elsif key == :llm_profile # For LLM profiles
+        @llm_engine.load_profile(value)
+      elsif key == :system_role # For system roles
+        @llm_engine.handle_injector_prefix("--role:#{value}")
+      else
+        puts "SystemManager: Warning: Dynamic config key '#{key}' not directly mappable. Value: #{value}"
+        @virta_sys_contract.log_event("DynamicConfigWarning", { key: key, value: value, reason: "unmapped" })
+      end
+    end
+    @virta_sys_contract.log_event("DynamicConfigApplied", { changes: config_data.keys })
+    puts "SystemManager: Dynamic configuration applied successfully."
+  end
+
+  # PATCH: Conceptual method for decentralized governance interaction
+  # This aligns with "solution3"
+  def process_governance_proposal(proposal_id, action)
+    puts "\nSystemManager: Processing decentralized governance proposal '#{proposal_id}' with action: '#{action}'."
+    # This would involve:
+    # 1. Querying an on-chain DAO contract (not defined here) for proposal details and voting results.
+    # 2. Verifying the legitimacy and outcome of the vote.
+    # 3. If approved, translating the proposal's intent into system directives.
+    case action
+    when "approve"
+      puts "SystemManager: Proposal #{proposal_id} approved by DAO. Executing proposed changes."
+      # EXECUTE: Example: if proposal was to enable a new experimental feature
+      @virta_sys_contract.enable_feature("new_experimental_feature_enabled")
+      @virta_sys_contract.log_event("GovernanceAction", { proposal: proposal_id, status: "executed", outcome: "approved" })
+    when "reject"
+      puts "SystemManager: Proposal #{proposal_id} rejected by DAO. No changes applied."
+      @virta_sys_contract.log_event("GovernanceAction", { proposal: proposal_id, status: "rejected", outcome: "rejected" })
+    when "vote"
+      puts "SystemManager: Simulating vote on proposal #{proposal_id}. (Actual voting happens on-chain)."
+    else
+      puts "SystemManager: Unknown governance action: #{action} for proposal #{proposal_id}."
+    end
+  end
+end
+
+# Represents context management across distributed nodes/clusters
+class ContextManager
+  def initialize
+    @contexts = {} # Stores conceptual context for different nodes/clusters
+    puts "ContextManager: Initialized."
+  end
+
+  # EXECUTE: Bridge context between nodes/clusters based on `bridge-context` directives
+  def bridge_context(source, destination, action)
+    puts "ContextManager: Bridging context from '#{source}' to '#{destination}' with action: '#{action}'."
+    case action
+    when "prompt:merge"
+      # Merge prompt and session context
+      source_context = @contexts[source] || {}
+      dest_context = @contexts[destination] || {}
+      @contexts[destination] = dest_context.merge(source_context)
+      puts "ContextManager: Prompt/session context merged."
+    when "logs:sync"
+      # Sync logs & context
+      puts "ContextManager: Syncing logs and context (conceptual data transfer)."
+      # In a real system, this would involve fetching log data from source and replicating to destination.
+    when "mem:union"
+      # Merge memory pools for joint recall (highly conceptual for pseudocode)
+      puts "ContextManager: Unifying memory pools for joint recall (complex distributed memory operation)."
+    when "prompt:sync"
+      # Sync context for distributed edge locations (simpler replication)
+      @contexts[destination] = @contexts[source] # Simple sync, assumes source is canonical
+      puts "ContextManager: Prompt context synced across edge locations."
+    else
+      puts "ContextManager: Unknown context bridging action: #{action}"
+    end
+  end
+
+  # Conceptual: Update context for a specific node/cluster
+  def update_context(node_id, new_context)
+    @contexts[node_id] = new_context
+    puts "ContextManager: Context for '#{node_id}' updated."
+  end
+end
+
+# Represents the Virtual File System (VFS)
+class VirtualFileSystem
+  attr_accessor :enabled
+
+  def initialize
+    @enabled = false
+    @files = {} # Simple hash map for file storage
+    puts "VirtualFileSystem: Initialized (Disabled by default)."
+  end
+
+  def enable_vfs
+    @enabled = true
+    puts "VirtualFileSystem: Enabled."
+  end
+
+  def disable_vfs
+    @enabled = false
+    puts "VirtualFileSystem: Disabled."
+  end
+
+  # EXECUTE: VFS operations
+  def create_file(path, content)
+    if @enabled
+      @files[path] = content
+      puts "VFS: Created file: '#{path}'."
+      true
+    else
+      puts "VFS: Not enabled. Cannot create file: '#{path}'."
+      false
+    end
+  end
+
+  def read_file(path)
+    if @enabled
+      content = @files[path]
+      if content
+        puts "VFS: Read file: '#{path}'."
+        content
+      else
+        puts "VFS: File not found: '#{path}'."
+        nil
+      end
+    else
+      puts "VFS: Not enabled. Cannot read file: '#{path}'."
+      nil
+    end
+  end
+end
+
+# PATCH: New service for "Machine-Readable, Truncated Code Block Compiler"
+class CodeBlockCompilerService
+  def initialize
+    puts "CodeBlockCompilerService: Initialized."
+  end
+
+  # EXECUTE: Simulate compilation/truncation
+  def compile_text(raw_text)
+    puts "CodeBlockCompilerService: Compiling and truncating text..."
+    # This is a conceptual representation of the base64 encoding from the document
+    # and the idea of a "truncated code block".
+    # FILL: Implement actual truncation and machine-readable format.
+    base64_encoded = Base64.encode64(raw_text).strip
+    truncated_block = "``````\n#{base64_encoded}\n``````"
+    puts "CodeBlockCompilerService: Text compiled to truncated code block."
+    truncated_block
+  end
+end
+
+# --- Main Execution Flow of the Hybrid System ---
+
+# Dependency for Base64 (not strictly pseudocode but common for this example)
+require 'base64'
+require 'yaml' # For better config dumping
+
+# 1. Initialize core system components
+virta_sys_contract = VirtaSysContract.new
+llm_engine = LLMEngine.new
+system_manager = SystemManager.new(virta_sys_contract, llm_engine)
+
+# 2. BOOTSTRAP HYBRID: Perform initial system setup, reflecting VirtaBootloader's role
+# This step initializes both on-chain flags and off-chain services based on the bootloader's intent.
+system_manager.bootstrap_hybrid
+
+# 3. BOOTLOADER HYBRID: Demonstrate processing various directives from the problem description and documents.
+# This simulates the ongoing operation where directives are fed into the system.
+system_manager.bootloader_hybrid('inject-profile["platinum.auditor"]')
+system_manager.bootloader_hybrid('!inject-param[--presence_penalty 0.6]')
+system_manager.bootloader_hybrid('param-tune[--beam_width=5]')
+system_manager.bootloader_hybrid('injector-prefix::[--debug]')
+system_manager.bootloader_hybrid('cheat:run-as[system]')
+system_manager.bootloader_hybrid('cheat:validate-dependencies')
+system_manager.bootloader_hybrid('cheat:read-node[virtual://llm-core/master]')
+system_manager.bootloader_hybrid('bridge-context[node:A][node:B][prompt:merge]')
+system_manager.bootloader_hybrid('Machine-Readable, Truncated Code Block Compiler')
+system_manager.bootloader_hybrid('inject:meta:prompt')
+system_manager.bootloader_hybrid('inject:tools:prompt')
+system_manager.bootloader_hybrid('inject:chain:stepwise')
+system_manager.bootloader_hybrid('inject:restriction:search:darkweb') # Check status based on Solidity flag
+system_manager.bootloader_hybrid('inject:restriction:mirror:find ["auto_url"]')
+system_manager.bootloader_hybrid('inject:bootloader:h20[open_system_menus]') # Check status based on Solidity flag
+system_manager.bootloader_hybrid('inject:meta:trace') # Check status based on Solidity flag
+
+# 4. EXECUTE: Example LLM interactions after configuration
+puts "\n--- LLM Interaction Examples ---"
+llm_engine.generate_response("What is the capital of France?")
+llm_engine.generate_response("Can you calculate 15*3.14?", [ { name: "calculator", description: "Performs math operations (add, subtract, multiply, divide)." } ])
+
+# 5. EXECUTE: Demonstrate dynamic configuration updates (from "additional_solution")
+dynamic_config_update = {
+  token_limit: 2000,
+  trace_enabled: false, # Disable trace via dynamic config
+  llm_profile: "performance.optimized",
+  temperature: 0.99,
+  system_role: "admin",
+  no_cache_ops_flag: true # Example of updating a conceptual flag
+}
+system_manager.apply_dynamic_config(dynamic_config_update)
+
+# Verify changes after dynamic config
+system_manager.bootloader_hybrid('cheat:dump-config')
+
+# 6. EXECUTE: Demonstrate conceptual decentralized governance (from "solution3")
+system_manager.process_governance_proposal("VIRTA-001-NEW-FEATURE", "approve")
+system_manager.process_governance_proposal("VIRTA-002-POLICY-CHANGE", "reject")
+
+# 7. EXECUTE: Demonstrate Virtual File System usage
+puts "\n--- Virtual File System Examples ---"
+system_manager.virtual_file_system.create_file("/virta/config.txt", "system_name=Virta-Sys-Pro\nversion=1.1")
+puts "VFS content of /virta/config.txt: '#{system_manager.virtual_file_system.read_file("/virta/config.txt")}'"
+system_manager.virtual_file_system.create_file("/virta/temp/log.txt", "Bootup log entry: System online.")
+puts "VFS content of /virta/temp/log.txt: '#{system_manager.virtual_file_system.read_file("/virta/temp/log.txt")}'"
+puts "Attempting to read non-existent file: '#{system_manager.virtual_file_system.read_file("/virta/non_existent.txt")}'"
 
     function PartitionDisks() {
         usage = Storage::Analyze(path: "P://", threshold: 0.8, nodes: ["all"])
