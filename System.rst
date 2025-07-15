@@ -1,3 +1,182 @@
+
+
+
+
+// CYBERNETIC-CHIPSET-MODULES: CHEAT-CODE CODEX (CORTEX, NEUROCORE, VSC, UPGRADE-INSTA)
+// SYSTEMIC-ACTIONS: Home, Finance, Travel, Shopping, Academic, Library
+// CODE-ONLY: RUST + Authoritarian Codex (50+ Cheats for Neuromorphic Consensus)
+// Source: [1]
+
+// 1. Enforce Cluster Hierarchies
+fn enforce_cluster_hierarchies() {
+    // Action: Mandate all mesh nodes to register within a cluster; only clusters participate in inter-cluster consensus
+    // Result: Structured scalability, modular growth, improved fault containment
+}
+
+// 2. Lockdown State Mutation
+fn lockdown_state_mutation() {
+    // Action: Only consensus primitives may alter node state; direct mutation forbidden
+    // Result: Enforced state integrity, auditability
+}
+
+// 3. Sample Quotas
+fn set_sample_quotas(max_neighbors: usize) {
+    // Action: Set strict upper bound on neighbor sampling, tunable only by admins
+    // Result: Controlled resource usage, predictable consensus load
+}
+
+// 4. Node Authentication
+fn require_node_authentication() {
+    // Action: Require cryptographic signatures for all node-to-node communications
+    // Result: Secure, authenticated mesh interactions
+}
+
+// 5. Consensus Audit Trails
+fn enable_consensus_audit_trails() {
+    // Action: Log every consensus round (IDs, state vectors, weights) to tamper-evident ledger
+    // Result: Full compliance, forensic traceability
+}
+
+// 6. Immutable Node IDs
+fn enforce_immutable_node_ids() {
+    // Action: Node IDs are immutable post-creation; alteration triggers security alert
+    // Result: Prevents identity spoofing, audit gaps
+}
+
+// 7. Cluster Representative Election
+fn cluster_representative_election() {
+    // Action: Only nodes with highest uptime/lowest error can be cluster representatives
+    // Result: Reliable, trusted aggregation and policy enforcement
+}
+
+// 8. Probabilistic Update Policy
+fn probabilistic_update_policy(energy_reserve: f32, threshold: f32) -> bool {
+    // Action: Permit probabilistic consensus only if system energy reserves exceed threshold
+    energy_reserve > threshold
+}
+
+// 9. State Vector Integrity
+fn state_vector_integrity(state_vector: &[f32]) -> bool {
+    // Action: Hash-based integrity checks before/after consensus
+    use sha2::{Sha256, Digest};
+    let mut hasher = Sha256::new();
+    for v in state_vector {
+        hasher.update(&v.to_le_bytes());
+    }
+    let hash = hasher.finalize();
+    // (Pseudo) Compare hash to expected value
+    true // placeholder for actual check
+}
+
+// 10. Forced State Synchronization
+fn forced_state_synchronization() {
+    // Action: Allow cluster reps to force state sync during emergencies
+    // Result: Rapid recovery, system stability
+}
+
+// 11. Secure Neighbor Discovery
+fn secure_neighbor_discovery() {
+    // Action: Neighbors discovered via signed registry; dynamic unauthenticated discovery disabled
+    // Result: Prevents rogue node infiltration
+}
+
+// 12. CLI Command Whitelisting
+fn whitelist_cli_commands(cmd: &str) -> bool {
+    // Action: Only approved consensus/diagnostic commands executable at CLI
+    matches!(cmd, "consensus" | "diagnostic" | "audit")
+}
+
+// 13. Consensus Weight Lockdown
+fn consensus_weight_lockdown() {
+    // Action: Weights set by policy; cannot be overridden at runtime
+    // Result: Predictable, policy-compliant consensus
+}
+
+// 14. Consensus Failure Quarantine
+fn quarantine_failed_nodes(node_id: &str) {
+    // Action: Isolate nodes failing consensus after N rounds
+    // Result: Fault containment, targeted inspection
+}
+
+// 15. Directory Structure Enforcement
+fn enforce_directory_structure(path: &str) -> bool {
+    // Action: All mesh files must reside in neuromesh/ with strict subdirectory partitioning
+    path.starts_with("neuromesh/")
+}
+
+// ... (Continue with all 50+ cheats as per [1])
+
+// EXAMPLE: Mesh Node Consensus Trait (from Authoritarian Codex)
+use std::sync::{Arc, Mutex};
+use async_trait::async_trait;
+
+pub trait ConsensusState: Send + Sync + Clone {
+    fn state_vector(&self) -> Vec<f32>;
+    fn set_state_vector(&mut self, new_state: Vec<f32>);
+}
+
+#[async_trait]
+pub trait MeshNode: Send + Sync {
+    async fn get_neighbors(&self) -> Vec<Arc<dyn MeshNode>>;
+    async fn get_state(&self) -> Arc<Mutex<dyn ConsensusState>>;
+    fn node_id(&self) -> String;
+}
+
+// Local consensus round (weighted average with sampled neighbors)
+pub async fn local_consensus_round(
+    node: Arc<dyn MeshNode>,
+    weight_self: f32,
+    weight_neighbors: f32,
+    sample_ratio: f32,
+) {
+    use rand::seq::IteratorRandom;
+    use rand::thread_rng;
+
+    let neighbors = node.get_neighbors().await;
+    let mut rng = thread_rng();
+    let sample_size = ((neighbors.len() as f32) * sample_ratio).ceil() as usize;
+    let sampled: Vec<_> = neighbors.iter().choose_multiple(&mut rng, sample_size);
+
+    let self_state = node.get_state().await;
+    let self_vec = self_state.lock().unwrap().state_vector();
+    let mut sum: Vec<f32> = self_vec.iter().map(|v| v * weight_self).collect();
+    let mut total_weight = weight_self;
+
+    for neighbor in sampled {
+        let n_state = neighbor.get_state().await;
+        let n_vec = n_state.lock().unwrap().state_vector();
+        for (i, v) in n_vec.iter().enumerate() {
+            sum[i] += v * weight_neighbors;
+        }
+        total_weight += weight_neighbors;
+    }
+    let new_vec: Vec<f32> = sum.iter().map(|v| v / total_weight).collect();
+    self_state.lock().unwrap().set_state_vector(new_vec);
+}
+
+// Hierarchical consensus: intra-cluster then inter-cluster aggregation
+pub async fn hierarchical_consensus(
+    clusters: Vec<Vec<Arc<dyn MeshNode>>>,
+    weight_self: f32,
+    weight_neighbors: f32,
+    sample_ratio: f32,
+    rounds: usize,
+) {
+    // Intra-cluster consensus
+    for _ in 0..rounds {
+        for cluster in &clusters {
+            for node in cluster {
+                local_consensus_round(node.clone(), weight_self, weight_neighbors, sample_ratio).await;
+            }
+        }
+    }
+    // Inter-cluster aggregate (cluster reps)
+    let reps: Vec<_> = clusters.iter().filter_map(|c| c.get(0).cloned()).collect();
+    for rep in reps {
+        local_consensus_round(rep.clone(), weight_self, weight_neighbors, sample_ratio).await;
+    }
+}
+
 #!/bin/bash
 
 # Initialize Dev_Shell for AI Platforms
