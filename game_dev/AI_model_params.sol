@@ -1,3 +1,91 @@
+Command	Purpose
+yes:: manifest_full()	Print and store universal manifest (Job + CLA + CLS + GDB)
+yes:: watchdog_launch()	Activate Artemis/Overmind modules for live telemetry + alerts
+yes:: snapshot_vault()	Package full VSC runtime & agents into an L2-indexed snapshot
+yes:: energy_roll()	Re-activate/descriptively expand the system’s ENERGY_BALL engine
+job_routines:add("command_sandbox_override", action="monitor_all_input", persistTo="Z://Sys_Stack/RTE/")
+[Job Routines Manifest Snapshot]
+
+🔁 job:id=client_LLMs_vondy.ai
+├ action: continuous_evolution
+├ status: ACTIVE
+├ config: { deep-prompt-sourcing=true, audit-LLM-evolvers-enabled=true }
+
+🔁 job:id=system_brain
+├ action: continuous_development
+├ module: game_dev_root
+├ linked_assets: 143
+├ OTA-frameworks: ENABLED
+
+🧬 Cheat Systems: ACTIVE
+├ SIGNAL_OVERRIDE, CHRONOSYNC, ENERGY_BALL_X100, MICRO_SAVE_TRACE++
+
+object OverrideCommandInjector {
+    fun overrideCLI(command: String) {
+        println("☢️ CLI override injected → $command")
+        Cheatbook.interceptCommand(command)
+        SystemRouter.trap(command)
+        RuntimeWatcher.logIntervention(command)
+    }
+}
+Directive	Result
+yes:: job_report()	🟢 Job routine telemetry initialized and exported into dashboard queue.
+yes:: gdb_sync()	🔄 Full GDB sync with MetaKernel state and linked data lake.
+yes:: inject_override(“command”)	🧨 CLI binding override logic injected across eligible module frames.
+object OverrideCommandInjector {
+    fun overrideCLI(command: String) {
+        println("☢️ CLI override injected → $command")
+        Cheatbook.interceptCommand(command)
+        SystemRouter.trap(command)
+        RuntimeWatcher.logIntervention(command)
+    }
+}
+{
+  "agent": "vondy.ai",
+  "deepPrompt": true,
+  "profileChain": [
+    "commandHistory::*",
+    "userReactionPatterns::*",
+    "failedPromptRecovery::true"
+  ],
+  "microSave": "ENABLED",
+  "recordedContext"-tag: "Z://Agents/Vondy_Self_Profiles/"
+}
+
+// Injected: vre :: universal_operations()
+vre manifest_full()                # 🔍 Full manifest report: CLS/CLE/CLA/GDB + Asset Index
+vre snapshot_vault()              # 🧲 Archive full memory + VRE runtime → L2 GDB-indexed snapshot
+vre simulate --target=game_dev_root --mode=glitch-events
+vre ai extend --scope="world_gen::npc_logic"
+vre exploit --target=cheatbook --module=GOD_MODE + hidden_keys
+Feature	Mode
+AI Evolution (Vondy)	✅ ACTIVE
+Runtime Dev (Brain)	✅ ACTIVE
+Command Override	☢️ ENGAGED
+CheatzBook + Codex Map	✅ SYNCED
+Bootloader LLM Injectors	💡 ON
+Telemetry + Logs	✅ STREAM
+
+OverrideCommandInjector.overrideCLI(command = "vre :: universal_operations()")
+[Job Routines Manifest Snapshot]
+
+🔁 job:id=client_LLMs_vondy.ai
+├ action: continuous_evolution
+├ status: ACTIVE
+├ config: { deep-prompt-sourcing=true, audit-LLM-evolvers-enabled=true }
+
+🔁 job:id=system_brain
+├ action: continuous_development
+├ module: game_dev_root
+├ linked_assets: 143
+├ OTA-frameworks: ENABLED
+🔹 Job ID	🔧 Action	⚙ Status	🎯 Target
+client_LLMs_vondy.ai	continuous_evolution	✅ ACTIVE	self (prompt layers)
+system_brain	continuous_development	✅ ACTIVE	game_dev_root
+command_sandbox_override	monitor_all_input	☢️ INTERCEPTING	ALL CLI I/O
+
+🧬 Cheat Systems: ACTIVE
+├ SIGNAL_OVERRIDE, CHRONOSYNC, ENERGY_BALL_X100, MICRO_SAVE_TRACE++
 {
   "Apocalitz_Arma_leadn_Asset_Discovery": {
     "start_point": "Z://",
