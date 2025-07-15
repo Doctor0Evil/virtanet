@@ -1,3 +1,36 @@
+# Install Node.js dependencies for system admin panel
+npm install @langchain/openai axios ioredis winston async dotenv
+
+# System admin panel injection
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/admin_panel.json
+wget https://github.com/Doctor0Evil/Virta-Sys/blob/main/admin_panel.sh
+bash <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/admin_panel.sh)
+
+# AI chat cheat codes injection
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_chat_cheat_codes.json
+wget https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_chat_cheat_codes.rb
+ruby <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_chat_cheat_codes.rb)
+
+# Virtual filesystem stacks registry
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/vfs_stacks.json
+wget https://github.com/Doctor0Evil/Virta-Sys/blob/main/vfs_stacks.cs
+csharp <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/vfs_stacks.cs)
+
+# AI regex index injection
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_regex_index.awk
+awk -f <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_regex_index.awk) input.txt
+
+# System injection methods
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/sys_inj_methods.sol
+solc --optimize --bin <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/sys_inj_methods.sol)
+
+# VFS mapping injection
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/vfs_mapping.rb
+ruby <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/vfs_mapping.rb)
+
+# AI prompt builder injection
+curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_prompt_builder.sh
+bash <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_prompt_builder.sh)
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
 https://docs.baseten.co/reference/training-api/overview,
