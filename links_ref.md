@@ -1,5 +1,18 @@
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
+https://docs.baseten.co/reference/training-api/overview,
+https://docs.baseten.co/reference/sdk/training,
+https://docs.baseten.co/reference/cli/training/training-cli,
+https://docs.baseten.co/training/deployment,
+https://docs.baseten.co/training/management,
+https://docs.baseten.co/training/concepts,
+https://docs.baseten.co/training/getting-started,
+https://docs.baseten.co/training/overview,
+https://docs.livekit.io/agents/integrations/tts/baseten/,
+https://docs.litellm.ai/docs/providers/baseten,
+https://python.langchain.com/docs/integrations/llms/baseten,
+https://docs.baseten.co/inference/integrations,
+https://github.com/Chainlit/cookbook/tree/main/baseten-llama-2-chat,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/Bootloader.md,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/ArmBuildAttrs.cpp,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/ArmAttributeParser.cpp,
