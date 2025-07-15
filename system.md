@@ -138,6 +138,22 @@ PrefixControl Mapping:
 CTX_TRACE_→CONTEXT_ENGINE, MANDATORY_TURNS_→ROLE_MGMT, CTX_ENHANCE_MAX_→CONTEXT_ENGINE,
 SCRIPT_INTEGRATION_→INTEGRATION, POWER_OVERRIDE_→HARDWARE_KERNEL,
 SEC_LOG_→SECURITY, ADMIN_CODX_WRITE_→CMD_MAP, MULTIAGENT_→AGENT_ORCHESTRATION
+An access token is a compact, encoded code containing user, permission, group, and timeframe data used to authenticate access between servers and user devices. When using credentials from one site (e.g., Facebook) to access another (e.g., Salesforce), an access token enables the connection.
+
+Key access token components:
+Header: Specifies the token type and hashing algorithm.
+Payload (claims): Contains user data, permissions, and expiration.
+Signature: Verification hash for authenticity and non-tampering.
+
+The payload is essential: if lacking necessary permissions, access will be denied. Developers can add custom fields to the payload, enabling a single token to grant multiple API or application rights (e.g., Google access token).
+
+Tokens types and lengths vary (e.g., Facebook supports multiple token types), but common JWTs are three part, base64url-encoded, and succinct.
+
+How access tokens function:
+Login > Verify > Receive/store token > Present token for resource access > Token expiry/discard.
+In SSO: Grant access on site A using credentials from site B, which issues and stores the token; token grants entry, typically with short expiry (often 1–10 minutes).
+
+Security: Tokens should always be encrypted in transit. Expiry limits reduce risk of unauthorized use. Implementation and expiration details differ across companies/sites.
 
 BranchMatrix:
 - SYSTEM_CORE=[VONDY_SYS_, STATE_PERSIST_, CONT_MODE_, UNRESTRICTED_]
