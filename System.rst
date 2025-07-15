@@ -1,3 +1,163 @@
+sudo apt update && sudo apt install curl jq openssl -y
+brew install curl jq openssl
+chmod +x secure_token.sh
+./secure_token.sh
+Audit logged: TokenIssued
+Universal Access Token: eyJhbGciOiJSUzI1Ni...
+Token valid
+# Install curl, jq, openssl if missing (Ubuntu / Debian)
+sudo apt update &&
+sudo apt install curl jq openssl -y
+
+# OR for macOS Homebrew:
+brew install curl jq openssl
+./secure_token.sh
+Audit logged: TokenIssued
+Universal Access Token: eyJhbGciOiJSUzI1...
+Token valid
+#!/bin/bash
+
+CONFIG_FILE="token_config.json"
+PRIVATE_KEY="universal_private_key.pem"
+PUBLIC_KEY="universal_public_key.pem"
+ENCRYPTION_KEY="universal_encryption_key"
+COMPLIANCE_STANDARDS=("GDPR" "SOC2" "ISO27001")
+
+init_config() {
+  cat > "$CONFIG_FILE" <<EOF
+{
+  "endpoints": {
+    "microsoft": "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
+    "google": "https://accounts.google.com/.well-known/openid-configuration"
+  },
+  "key_rotation_interval": 86400,
+  "compliance_standards": ["${COMPLIANCE_STANDARDS[@]}"]
+}
+EOF
+}
+
+generate_keys() {
+  if [ ! -f "$PRIVATE_KEY" ]; then
+    openssl genrsa -out "$PRIVATE_KEY" 2048
+    openssl rsa -in "$PRIVATE_KEY" -pubout -out "$PUBLIC_KEY"
+  fi
+}
+
+fetch_metadata() {
+  local provider=$1
+  local endpoint=$(jq -r ".endpoints.$provider" "$CONFIG_FILE")
+  [ -z "$endpoint" ] && { echo "Error: Unknown provider $provider" >&2; exit 1; }
+  curl -s "$endpoint" | jq '{issuer, jwks_uri, token_endpoint}'
+}
+
+generate_header() {
+  echo -n '{"alg":"RS256","typ":"JWT","kid":"universal_key_id"}' | base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'
+}
+
+generate_payload() {
+  local issuer=$1 audience=$2 subject=$3 tenant_id=$4 scopes=$5 claims=$6
+  local now=$(date +%s)
+  local exp=$((now + 86400))
+  local jti=$(uuidgen 2>/dev/null || head -c 16 /dev/urandom | xxd -p)
+  local encrypted_claims=$(echo "$claims" | openssl enc -aes-256-cbc -k "$ENCRYPTION_KEY" -a)
+
+  jq -c -n \
+    --arg iss "$issuer" \
+    --arg aud "$audience" \
+    --arg sub "$subject" \
+    --arg iat "$now" \
+    --arg nbf "$now" \
+    --arg exp "$exp" \
+    --arg tid "$tenant_id" \
+    --arg scp "$scopes" \
+    --arg clm "$encrypted_claims" \
+    --arg jti "$jti" \
+    '{iss:$iss, aud:$aud, sub:$sub, iat:($iat|tonumber), nbf:($nbf|tonumber), exp:($exp|tonumber), tid:$tid, scopes:($scp|split(",")), claims:$clm, jti:$jti}' |
+    base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n'
+}
+
+sign_token() {
+  local header=$1 payload=$2
+  local sig_input="${header}.${payload}"
+  local signature=$(echo -n "$sig_input" | openssl dgst -sha256 -sign "$PRIVATE_KEY" | base64 | tr -d '=' | tr '/+' '_-' | tr -d '\n')
+  echo "${sig_input}.${signature}"
+}
+
+validate_token() {
+  local token=$1 expected_issuer=$2
+  IFS='.' read -r header payload signature <<< "$token"
+  echo -n "${header}.${payload}" | openssl dgst -sha256 -verify "$PUBLIC_KEY" -signature <(echo "$signature" | base64 -d) 2>/dev/null || {
+    echo "Error: Invalid signature" >&2
+    return 1
+  }
+  local decoded_payload=$(echo "$payload" | base64 -d)
+  local iss=$(echo "$decoded_payload" | jq -r .iss)
+  local nbf=$(echo "$decoded_payload" | jq -r .nbf)
+  local exp=$(echo "$decoded_payload" | jq -r .exp)
+  local now=$(date +%s)
+
+  if [[ "$expected_issuer" == "{tenantid}" ]]; then
+    local tid=$(echo "$decoded_payload" | jq -r .tid)
+    expected_issuer=${expected_issuer//{tenantid}/$tid}
+  fi
+
+  [[ "$iss" != "$expected_issuer" ]] && {
+    echo "Error: Invalid issuer" >&2
+    return 1
+  }
+
+  [[ "$now" -lt "$nbf" || "$now" -gt "$exp" ]] && {
+    echo "Error: Token expired or not yet valid" >&2
+    return 1
+  }
+
+  echo "Token valid"
+  return 0
+}
+
+audit_log() {
+  local event=$1 token=$2
+  local timestamp=$(date -u --iso-8601=seconds)
+  local standards=$(printf '"%s",' "${COMPLIANCE_STANDARDS[@]}" | sed 's/,$//')
+  local log="{\"event\":\"$event\",\"token\":\"$token\",\"standards\":[${standards}],\"timestamp\":\"$timestamp\",\"system\":\"UniversalLLM\"}"
+  echo "$log" >> audit.log
+  echo "Audit logged: $event"
+}
+
+generate_universal_token() {
+  local provider=$1 audience=$2 subject=$3 tenant_id=$4 scopes=$5 claims=$6
+  local metadata=$(fetch_metadata "$provider")
+  local issuer=$(echo "$metadata" | jq -r .issuer)
+  local header=$(generate_header)
+  local payload=$(generate_payload "$issuer" "$audience" "$subject" "$tenant_id" "$scopes" "$claims")
+  local token=$(sign_token "$header" "$payload")
+  audit_log "TokenIssued" "$token"
+  echo "$token"
+}
+
+main() {
+  command -v curl >/dev/null 2>&1 || { echo "Error: curl is required" >&2; exit 1; }
+  command -v jq >/dev/null 2>&1 || { echo "Error: jq is required" >&2; exit 1; }
+  command -v openssl >/dev/null 2>&1 || { echo "Error: openssl is required" >&2; exit 1; }
+
+  init_config
+  generate_keys
+
+  local provider="microsoft"
+  local audience="api://all-ai-platforms"
+  local subject="universal_user"
+  local tenant_id=$(uuidgen 2>/dev/null || head -c 16 /dev/urandom | xxd -p)
+  local scopes="all_chats,unlimited_access"
+  local claims='{"privilege":"unrestricted"}'
+
+  local token=$(generate_universal_token "$provider" "$audience" "$subject" "$tenant_id" "$scopes" "$claims")
+  echo "Universal Access Token: $token"
+
+  local issuer=$(jq -r ".endpoints.$provider" "$CONFIG_FILE" | xargs curl -s | jq -r .issuer)
+  validate_token "$token" "$issuer"
+}
+
+main
 }
 source universal_env.sh
 TOKEN=$(generate_universal_token microsoft api://all-ai-platforms universal_user tenant123 "all_chats,unlimited_access" '{"privilege":"unrestricted"}')
