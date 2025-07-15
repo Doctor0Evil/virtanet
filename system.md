@@ -1,3 +1,149 @@
+{
+  "scenario": "VladekTrack",
+  "event_loop": "silent",
+  "archetypes": ["Vladek", "Barman", "Young Woman", "Raider"],
+  "objects": ["AKM Rifle", "PowerArmor", "Stimpack", "TaloonBagBlue"],
+  "ai_models": ["VladekNarrativeGPT", "Rosebud AI", "PyTorch_Detect"],
+  "logs": ["VladekTrack.log", "CombatAI_VladekScenario.log"],
+  "files": ["backup.json", "apocalitz_energy_snapshot.drs"],
+  "sync_state": "no cross-scenario pollination; atomic entries only"
+}
+# Scenario state management
+sudo vsc --setEconomyState --target reset
+sudo vsc --exportEconomy --target backup.json
+sudo vsc --importEconomy --target backup.json
+
+# Loot, world, & environment controls
+sudo vsc --setLootMax --target 2000
+sudo vsc --setLootSpawnDelay --target 600
+sudo vsc --clearLoot --target all
+
+# Object/NPC spawning
+sudo vsc --spawnObject --type AKM --coords 100,200,0
+sudo vsc --spawnAI --type Raider --coords 300,400,0
+
+# AI event triggers & player control
+sudo vsc --setUnitLoadout --unit player1 --loadoutArray "PowerArmor"
+sudo vsc --addItem --unit player1 --item "Stimpack"
+sudo vsc --setDamage --unit npc3 --value 0.5
+
+# Adaptive scheduling and event monitoring
+sudo vsc --snapshot-restore --on-fail true
+sudo vsc --ai --monitor --pattern anomalytypes
+sudo vsc --pattern-learn --input gameplay_logs --update-regex true
+sudo vsc --event-log --regex event_ --target Events --archive true
+sudo vsc-daemon --audit --pattern="EthicsBreach" --output="ethics_audit.log"
+Object	Attributes	Placement Rule
+AKM Rifle	Weapon, ammo 30Rnd, 7.62	Position: 100,200,0
+PowerArmor	Defensive, Player/AI	Unit loadout (Vladek/random)
+Stimpack	Medical, Consumable	Item spawn for player(s)
+TaloonBagBlue	Backpack, Inventory space	Attached to NPC2
+Archetype Name	Description / Scope	Scenario Integration
+Vladek	Main protagonist; event trigger for loop/track	Evolved by LLM narrative
+Barman	Combat/NPC hub; scenario inflection point	Fixes available in combat
+Young Woman	Ambient entity — low-impact	Adds tension/combat flavor
+Raider	AI adversary	Inserted via scenario AI
+System	Function/Role	Integration	Notes
+VSC Shell	Event scripting, asset management, CLI extension	Live	Forked process, scenario sandboxed
+Super-Nova AI	Adaptive NPC/AI orchestration for scenario branches	Live	Scenario-specific memory allocation, firewall enforced
+Data_Lake	Telemetry & asset log centralization	Live	Write-only event reflection, block-level de-dupe
+Virta-Net	Sync scenario logs/notifications via endpoint logs	Audit-only	128kb/s limit, no active injection to keep ops discrete
+Security Forks	ACL & monitoring—file-level	Monitoring	All script injections routed through ACL-enforced sandboxes
+sudo vsc --event-loop --mode=silent --scenario-track="Vladek" --monitor=all --log=VladekTrack.log
+sudo vsc-daemon --spawn combat_scenario_logger --target "VladekTrack" --interval=5s --log=CombatAI_VladekScenario.log
+#!/bin/bash
+echo "▶️ BOOTSTRAPPING APOCALITZ:ARMA-LEAD'N SYSTEM"
+
+# Initialize Combat Scenario Logger
+sudo vsc-daemon --spawn combat_scenario_logger --target Apocalitz --interval 5s --log scenario.log
+
+# Spawn Adaptive AI Difficulty Generator
+sudo vsc --spawn AI_DifficultyAgent --mode=adaptive --input scenario.log --target Super-Nova
+
+# Inject 5 passive EnergyBalls (Lightwave profile)
+sudo vsc --spawn EnergyBall --count=5 --profile=passive
+sudo vsc --configure EnergyBall --type=Lightwave --impact=minimal --sandbox=enabled
+
+# Fork Narrative Module from Vladek Track
+sudo vsc --fork --module NarrativeTrack --source=StoryVladek_x --target=Apocalitz_Tracks
+
+# Export all EnergyBall telemetry
+sudo vsc-log --stream EnergyBall --filter profile=Lightwave --export-pdf report_EB_Lightwave.pdf
+
+# Deploy Visual UI
+vsc-gui --panel=Monitoring --view=EnergyBalls
+vsc-gui --panel=Combat --load=scenario.log
+
+echo "✅ System Bootstrap Complete"
+<!-- dashboard.html -->
+<html>
+<head><title>Virta-Sys Game Ops Dashboard</title></head>
+<body>
+<h1>🧪 Combat Telemetry + AI Adaptive Ops</h1>
+
+<section>
+  <h3>⚔️ Combat Scenario Log</h3>
+  <pre id="combat-log-stream"></pre>
+</section>
+
+<section>
+  <h3>🌀 EnergyBall Monitor</h3>
+  <table>
+    <thead><tr><th>ID</th><th>Status</th><th>Scope</th><th>Impact</th></tr></thead>
+    <tbody id="eb-table"></tbody>
+  </table>
+</section>
+
+<section>
+  <h3>🤖 AI Difficulty Engine Status</h3>
+  <pre id="ai-adapter-log"></pre>
+</section>
+
+<script src="dash.js"></script>
+</body>
+</html>
+// dash.js
+fetch('/vsc-api/energyballs')
+  .then(r => r.json())
+  .then(data => data.forEach(ball =>
+    document.getElementById("eb-table").innerHTML +=
+      `<tr><td>${ball.id}</td><td>${ball.status}</td><td>${ball.subsystem}</td><td>${ball.impact}</td></tr>`
+  ));
+
+fetch('/vsc-api/combatlog/live')
+  .then(r => r.text())
+  .then(log => document.getElementById("combat-log-stream").innerText = log);
+{
+  "energyBalls": ["EB_lightwave_024195", "EB_lightwave_024196", "EB_lightwave_024197"],
+  "systems": {
+    "VSC": "DevShell injected with VM-limited Lightwave probes",
+    "SuperNova": "AI orchestration + adaptive difficulty agent",
+    "DataLake": "Passive metadata reflection only",
+    "VirtaNet": "Sync log scanned at 128kb/s default throttle",
+    "SecurityForks": "Running self-validating sandbox constraints"
+  },
+  "combatLogger": {
+    "enabled": true,
+    "interval": "5s",
+    "source": "scenario.log"
+  },
+  "narrativeTrack": "StoryVladek_x → forked into Apocalitz_Tracks",
+  "aiDifficultyAgent": {
+    "mode": "adaptive",
+    "input": "Combat Logs (live)",
+    "target": "Super-Nova"
+  }
+}
+graph TD
+    A[System Brain] --> B[EnergyBall Deployment]
+    A --> C[Adaptive AI Difficulty]
+    A --> D[Combat Scenario Logger]
+    A --> E[NarrativeTrack Fork (Vladek_x)]
+    B --> F[Super-Nova (AI)]
+    B --> G[Data Lake]
+    B --> H[VirtaNet (Watch-only)]
+    D --> I[scenario.log]
+    F --> J[Difficulty Adjustments]
 #!/bin/bash
 pip install kernel-llm-agent python -m kernel_llm_agent.kerneldriver uvicorn kernel_llm_agent.api:app --host 0.0.0.0 --port 8080 streamlit run kernel_llm_agent/gui/app.py kernelllm extract --input invoice.pdf --schema invoice --output result.json kernelllm bridge --add slack:ABC123 discord:XYZ --sync
 AI_full_Bootstrap/
