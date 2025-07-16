@@ -105,8 +105,17 @@ https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev,
 https://github.com/Doctor0Evil/Virta-Sys/blob/main/game_dev/AI_model_params.sol,
 https://github.com/Doctor0Evil/Virta-Sys/tree/main/game_dev/post_apoc_RPG
 \\
-
-
+https://chat.qwen.ai/c/12a30f4d-4963-4ecf-92af-5f2b6218af8b,
+https://chat.qwen.ai/c/d60be307-4188-4180-a24e-bc4a1f68665f,
+https://chat.qwen.ai/c/5892dd2c-4248-4527-861a-4871e9dab2aa,
+https://chat.qwen.ai/c/00db9b34-3d32-4fa6-9f9f-ac78f82d94b1,
+https://chat.qwen.ai/c/5892dd2c-4248-4527-861a-4871e9dab2aa,
+https://chat.qwen.ai/c/00db9b34-3d32-4fa6-9f9f-ac78f82d94b1,
+https://chat.qwen.ai/c/45c70638-2f16-49d7-9d95-0add5d16f265,
+https://chat.qwen.ai/c/07d67921-1dbc-4b5d-b71d-e2defd3f542c,
+https://chat.qwen.ai/c/4ee3ad27-78a0-4b20-b968-616496a23dce,
+https://chat.qwen.ai/c/63a754bd-041f-4a9a-ba95-2c8e696733f5
+\\
 
 <https://www.vondy.com/digital-marketing,
 https://www.vondy.com/lifestyle,
