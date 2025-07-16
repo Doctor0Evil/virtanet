@@ -33,6 +33,19 @@ curl -O https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_prompt_builder.sh
 bash <(curl -s https://github.com/Doctor0Evil/Virta-Sys/blob/main/ai_prompt_builder.sh)
 **exhaustively** **write'** **cheat-codes** for **building a system** **entirely** out of **urls** **entirely** **self-dependent** & **functional** **from urls**;
 \\
+https://digitrendz.blog/tag/llms-txt/,
+https://digitrendz.blog/tag/large-language-models/,
+https://digitrendz.blog/tag/ai-search-optimization/,
+https://digitrendz.blog/?p=14026,
+https://digitrendz.blog/topic/early-adoption-future,
+https://digitrendz.blog/topic/llmstxt-file-structure,
+https://digitrendz.blog/topic/crafting-llm-friendly-content,
+https://digitrendz.blog/newswire/artificial-intelligence/27027/anthropics-ai-agent-automates-canva-asana-figma-heres-how/,
+https://searchengineland.com/llms-txt-isnt-robots-txt-its-a-treasure-map-for-ai-456586,
+https://digitrendz.blog/topic/ai-driven-search-importance,
+https://digitrendz.blog/topic/difference-from-robotstxt,
+https://digitrendz.blog/newswire/artificial-intelligence/14026/llms-txt-the-hidden-treasure-map-for-ai/,
+https://digitrendz.blog/topic/llmstxt-purpose
 https://docs.baseten.co/reference/training-api/overview,
 https://docs.baseten.co/reference/sdk/training,
 https://docs.baseten.co/reference/cli/training/training-cli,
