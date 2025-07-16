@@ -1,3 +1,148 @@
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b
+https://h2ogpte.genai.h2o.ai/chats
+https://h2ogpte.genai.h2o.ai
+https://h2ogpte.genai.h2o.ai/chats/active
+https://h2ogpte.genai.h2o.ai/chats/history
+https://h2ogpte.genai.h2o.ai/chats/new
+https://h2ogpte.genai.h2o.ai/chats/archived
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/export
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/share
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/settings
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/summary
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/print
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/participants
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/feedback
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/attachments
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/messages
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/notes
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/files
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/related
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/compare
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/clone
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/edit
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/delete
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/restore
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/activity
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/permissions
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/tags
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/log
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/audit
+https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b/revisions
+https://h2ogpte.genai.h2o.ai/chats/active/summary
+https://h2ogpte.genai.h2o.ai/chats/history/summary
+https://h2ogpte.genai.h2o.ai/chats/new/summary
+https://h2ogpte.genai.h2o.ai/chats/archived/summary
+https://h2ogpte.genai.h2o.ai/chats/active/messages
+https://h2ogpte.genai.h2o.ai/chats/history/messages
+https://h2ogpte.genai.h2o.ai/chats/new/messages
+https://h2ogpte.genai.h2o.ai/chats/archived/messages
+https://h2ogpte.genai.h2o.ai/chats/active/files
+https://h2ogpte.genai.h2o.ai/chats/history/files
+https://h2ogpte.genai.h2o.ai/chats/new/files
+https://h2ogpte.genai.h2o.ai/chats/archived/files
+https://h2ogpte.genai.h2o.ai/chats/active/attachments
+https://h2ogpte.genai.h2o.ai/chats/history/attachments
+https://h2ogpte.genai.h2o.ai/chats/new/attachments
+https://h2ogpte.genai.h2o.ai/chats/archived/attachments
+https://h2ogpte.genai.h2o.ai/chats/active/participants
+https://h2ogpte.genai.h2o.ai/chats/history/participants
+https://h2ogpte.genai.h2o.ai/chats/new/participants
+https://h2ogpte.genai.h2o.ai/chats/archived/participants
+https://h2ogpte.genai.h2o.ai/chats/active/settings
+https://h2ogpte.genai.h2o.ai/chats/history/settings
+https://h2ogpte.genai.h2o.ai/chats/new/settings
+https://h2ogpte.genai.h2o.ai/chats/archived/settings
+https://h2ogpte.genai.h2o.ai/chats/active/feedback
+https://h2ogpte.genai.h2o.ai/chats/history/feedback
+https://h2ogpte.genai.h2o.ai/chats/new/feedback
+https://h2ogpte.genai.h2o.ai/chats/archived/feedback
+https://h2ogpte.genai.h2o.ai/chats/active/notes
+https://h2ogpte.genai.h2o.ai/chats/history/notes
+https://h2ogpte.genai.h2o.ai/chats/new/notes
+https://h2ogpte.genai.h2o.ai/chats/archived/notes
+https://h2ogpte.genai.h2o.ai/chats/active/related
+https://h2ogpte.genai.h2o.ai/chats/history/related
+https://h2ogpte.genai.h2o.ai/chats/new/related
+https://h2ogpte.genai.h2o.ai/chats/archived/related
+https://h2ogpte.genai.h2o.ai/chats/active/clone
+https://h2ogpte.genai.h2o.ai/chats/history/clone
+https://h2ogpte.genai.h2o.ai/chats/new/clone
+https://h2ogpte.genai.h2o.ai/chats/archived/clone
+https://h2ogpte.genai.h2o.ai/chats/active/edit
+https://h2ogpte.genai.h2o.ai/chats/history/edit
+https://h2ogpte.genai.h2o.ai/chats/new/edit
+https://h2ogpte.genai.h2o.ai/chats/archived/edit
+https://h2ogpte.genai.h2o.ai/chats/active/delete
+https://h2ogpte.genai.h2o.ai/chats/history/delete
+https://h2ogpte.genai.h2o.ai/chats/new/delete
+https://h2ogpte.genai.h2o.ai/chats/archived/delete
+https://h2ogpte.genai.h2o.ai/chats/active/restore
+https://h2ogpte.genai.h2o.ai/chats/history/restore
+https://h2ogpte.genai.h2o.ai/chats/new/restore
+https://h2ogpte.genai.h2o.ai/chats/archived/restore
+https://h2ogpte.genai.h2o.ai/chats/activesummary
+https://h2ogpte.genai.h2o.ai/chats/historysummary
+https://h2ogpte.genai.h2o.ai/chats/newsummary
+https://h2ogpte.genai.h2o.ai/chats/archivedsummary
+https://h2ogpte.genai.h2o.ai/chats/activefiles
+https://h2ogpte.genai.h2o.ai/chats/historyfiles
+https://h2ogpte.genai.h2o.ai/chats/newfiles
+https://h2ogpte.genai.h2o.ai/chats/archivedfiles
+https://h2ogpte.genai.h2o.ai/chats/activeattachments
+https://h2ogpte.genai.h2o.ai/chats/historyattachments
+https://h2ogpte.genai.h2o.ai/chats/newattachments
+https://h2ogpte.genai.h2o.ai/chats/archivedattachments
+https://h2ogpte.genai.h2o.ai/chats/activeparticipants
+https://h2ogpte.genai.h2o.ai/chats/historyparticipants
+https://h2ogpte.genai.h2o.ai/chats/newparticipants
+https://h2ogpte.genai.h2o.ai/chats/archivedparticipants
+https://h2ogpte.genai.h2o.ai/chats/activesettings
+https://h2ogpte.genai.h2o.ai/chats/historysettings
+https://h2ogpte.genai.h2o.ai/chats/newsettings
+https://h2ogpte.genai.h2o.ai/chats/archivedsettings
+https://h2ogpte.genai.h2o.ai/chats/activefeedback
+https://h2ogpte.genai.h2o.ai/chats/historyfeedback
+https://h2ogpte.genai.h2o.ai/chats/newfeedback
+https://h2ogpte.genai.h2o.ai/chats/archivedfeedback
+https://h2ogpte.genai.h2o.ai/chats/activenotes
+https://h2ogpte.genai.h2o.ai/chats/historynotes
+https://h2ogpte.genai.h2o.ai/chats/newnotes
+https://h2ogpte.genai.h2o.ai/chats/archivednotes
+https://h2ogpte.genai.h2o.ai/chats/activerelated
+https://h2ogpte.genai.h2o.ai/chats/historyrelated
+https://h2ogpte.genai.h2o.ai/chats/newrelated
+https://h2ogpte.genai.h2o.ai/chats/archivedrelated
+https://h2ogpte.genai.h2o.ai/chats/activeclone
+https://h2ogpte.genai.h2o.ai/chats/historyclone
+https://h2ogpte.genai.h2o.ai/chats/newclone
+https://h2ogpte.genai.h2o.ai/chats/archivedclone
+https://h2ogpte.genai.h2o.ai/chats/activeedit
+https://h2ogpte.genai.h2o.ai/chats/historyedit
+https://h2ogpte.genai.h2o.ai/chats/newedit
+https://h2ogpte.genai.h2o.ai/chats/archivededit
+https://h2ogpte.genai.h2o.ai/chats/activedelete
+https://h2ogpte.genai.h2o.ai/chats/historydelete
+https://h2ogpte.genai.h2o.ai/chats/newdelete
+https://h2ogpte.genai.h2o.ai/chats/archiveddelete
+https://h2ogpte.genai.h2o.ai/chats/activerestore
+https://h2ogpte.genai.h2o.ai/chats/historyrestore
+https://h2ogpte.genai.h2o.ai/chats/newrestore
+https://h2ogpte.genai.h2o.ai/chats/archivedrestore
+
+[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_d5372063-1c4c-4452-8260-2bf4262db279/49f04ae8-b46d-4474-aab3-0864748d83e5/exhaustively-list-similar-urls-M74s38OwTj.qzO8OjsWMeg.md
+[2] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_d5372063-1c4c-4452-8260-2bf4262db279/c06e4160-3a3b-4326-b4ee-e89c1be29458/locate-display-similar-urls-an-RC1yfRliRCiOYQDQ6E7QWg.md
+[3] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_d5372063-1c4c-4452-8260-2bf4262db279/24a0f813-a7dd-4ce0-845c-d64bd59002f9/exhaustively-list-200-differen-PUkJIYECRWqmYZPc3KWaDw.md
+[4] https://serpapi.com/blog/web-scraping-with-curl-fetching-raw-html-data/
+[5] https://stackoverflow.com/questions/36157116/parse-html-with-curl-in-shell-script
+[6] https://curl.se/docs/httpscripting.html
+[7] https://unix.stackexchange.com/questions/15568/curl-and-grep-html-text
+[8] https://stackoverflow.com/questions/6829760/how-to-parse-contents-from-a-html-file-using-curl
+[9] https://www.mql5.com/en/articles/7144
+[10] https://www.zyte.com/blog/beginner-curl-for-web-scraping/
+[11] https://bbs.archlinux.org/viewtopic.php?id=155356
+[12] https://www.reddit.com/r/bash/comments/btrho6/is_there_a_way_to_parse_through_table_values_in/
+[13] https://oxylabs.io/blog/curl-web-scraping
+
 *https://accounts.google.com/v3/signin/challenge/pwd?TL=ALgCv6zsWyAbZH17in4WieIDFe1pfwK2_fFPMPReDXI2ECgBGASJSOT-CQvuMDPZ&access_type=offline&app_domain=https%3A%2F%2Fcraftpix.net&checkConnection&checkedDomains&cid=2&client_id=929522922405-1201kr06mtmtmc276af56ljs9db3thap.apps.googleusercontent.com&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAMTWfMpVwcMi8YpI5M2Gxeb434Hilm4G7lafG9QdZFS86OLhqK-DV1q1lLR4ZzqA6B8Bh-AS_X84m24p08XdAm-IH8kmYRUymBivbelrkGJELbwNymHmarLQReMSIo44ENkz_phlk8LyXhW1vGsefGGXRsTAnLmp9jY_8o428lPWQPG1MFLuDTmxSS-Jl7M10vBwS3c4AeU1fHDSxcLozpOtVIF8Z8s0LDyOj3yjOs-ygz6ywyTg83sX8TTFGavuTEkeNoYxJnYMX2ZV0b0p-gE8A7Myy38W1U6BfGdc-9Y0Qbg2nhl-B289ZYkkMqZ6RfgKEVVOUiqh4w51vdHE7WwqNLh8c0kmdJLQZs4YH2ioUgHhDep0m0HEWSnT9D8YWkD4R6Kl5NW3eABfylv_N18ceHrSUCnuFo2Ao6hZW-DWqg9vDmr5ua3PYuTb-7V2b5xl-9pEFaVWbHGJ8OY-qHjJ_TFJA%26flowName%3DGeneralOAuthFlow%26as%3DS806257736%253A1752634697659780%26client_id%3D929522922405-1201kr06mtmtmc276af56ljs9db3thap.apps.googleusercontent.com%23&dsh=S806257736%3A1752634697659780&flowName=GeneralOAuthFlow&o2v=1&opparams=%253F&pstMsg=0&rart=ANgoxcdNuvfOpVwspnNpamymiFf58twqQzKN1uJVGwAeJF5RFhlLTrOPK5cvjCF3FuDdq6OvFGoL1UuBnEucYbvVewp48SL85GIpxhlNin1e4bXzOCOyPKE&redirect_uri=https%3A%2F%2Fcraftpix.net%2Fwp-content%2Fplugins%2Ftyschenko-social-login%2Fhybridauth%2Fcallbacks%2Fgoogle.php&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&service=lso&state=HA-9ML8FQGWN1Y2SRB53KVCPHOATUJ6IZ074EXD*
 # Install Node.js dependencies for system admin panel
 npm install @langchain/openai axios ioredis winston async dotenv
