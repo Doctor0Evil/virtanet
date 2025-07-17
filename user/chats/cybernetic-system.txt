@@ -1,3 +1,4 @@
+https://chat.qwen.ai/c/a0c210ff-2fc0-4504-a602-4016acdddb33
 ### USER
 'Trim' the *"entire"* *system* (attachment) 
 **unlimited** **responses** **allowed** **ask to confirm at the end of each response**
