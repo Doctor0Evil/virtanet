@@ -1,3 +1,16 @@
+[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_efbfe8d5-4a47-4872-8b8c-2c2c26fa7c42/2e8f052c-55b9-4a97-a746-028b48bb8868/legendary-tier-100-cheat-comma-utZ_V1uLQtubBf7T0_tjBA.md
+[2] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_efbfe8d5-4a47-4872-8b8c-2c2c26fa7c42/f75af132-6095-4771-af1c-a5a15b8f3e98/q-next-gen-llm-runtime-ops-q-p-BGCemyJWSguZfMb0lCBL7w.md
+[3] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_efbfe8d5-4a47-4872-8b8c-2c2c26fa7c42/0fbb51c7-9f0a-4d9d-a3d1-c638cf0984b0/gpg-gnupg-2-2-40-copyright-c-2-fU1i32NnRwqWwLbxoUO0oA.md
+[4] https://www.digitalocean.com/community/tutorials/using-grep-regular-expressions-to-search-for-text-patterns-in-linux
+[5] https://www.cyberciti.biz/faq/grep-regular-expressions/
+[6] https://unix.stackexchange.com/questions/83260/reading-grep-patterns-from-a-file
+[7] https://stackoverflow.com/questions/54534533/using-grep-to-check-a-naming-convention-follows-a-regular-expression
+[8] https://www.ibm.com/docs/SSLTBW_2.4.0/com.ibm.zos.v2r4.bpxa500/grep.htm
+[9] https://linuxconfig.org/match-beginning-and-end-of-the-filename-using-meta-characters-and-regex
+[10] https://developers.redhat.com/articles/2022/09/14/beginners-guide-regular-expressions-grep
+[11] https://www.reddit.com/r/bash/comments/lru3bk/regex_to_match_a_path_or_pathfilename_in_a_text/
+[12] https://blog.cloudsigma.com/using-grep-and-regex-to-search-text-patterns/
+[13] https://man7.org/linux/man-pages/man1/grep.1.html
 https://claude.ai/public/artifacts/051a86ee-d8a5-4a72-a7ba-121104c2b41b
 https://h2ogpte.genai.h2o.ai/chats/5d480bb2-affe-449e-85c8-67c51fa1439b
 https://h2ogpte.genai.h2o.ai/chats
