@@ -1,3 +1,366 @@
+use regex::Regex;
+use std::collections::HashMap;
+pub struct RegexEngine {
+    patterns: HashMap<String, Regex>,
+}
+impl RegexEngine {
+    /// Initialize with empty pattern set
+    pub fn new() -> Self {
+        Self { patterns: HashMap::new() }
+    }
+    /// Add a regex pattern under a named key
+    pub fn add_pattern(&mut self, name: &str, pattern: &str) {
+        self.patterns.insert(name.to_string(), Regex::new(pattern).unwrap());
+    }
+    /// Evaluate input string against pattern name
+    pub fn evaluate(&self, name: &str, input: &str) -> bool {
+        self.patterns.get(name).map_or(false, |regex| regex.is_match(input))
+    }
+}
+/// Represents a rule (condition-action) pair for game/mod logic
+pub struct Rule {
+    pub condition: String,
+    pub action: String,
+}
+
+pub struct GameLogic {
+    rules: Vec<Rule>,
+}
+
+impl GameLogic {
+    pub fn new() -> Self {
+        Self { rules: Vec::new() }
+    }
+    pub fn add_rule(&mut self, condition: &str, action: &str) {
+        self.rules.push(Rule {
+            condition: condition.to_string(),
+            action: action.to_string(),
+        });
+    }
+    pub fn evaluate(&self, input: &str) -> Option<&str> {
+        for rule in &self.rules {
+            if input.contains(&rule.condition) {
+                println!("Rule triggered: {}", rule.action);
+                return Some(&rule.action);
+            }
+        }
+        None
+    }
+}
+use rand::Rng;
+
+pub struct Neuron {
+    weights: Vec<f64>,
+    bias: f64,
+}
+
+impl Neuron {
+    pub fn new(inputs: usize) -> Self {
+        let mut rng = rand::thread_rng();
+        let weights = (0..inputs).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let bias = rng.gen_range(-1.0..1.0);
+        Self { weights, bias }
+    }
+    pub fn activate(&self, input: &[f64]) -> f64 {
+        self.weights.iter().zip(input).map(|(w, i)| w * i).sum::<f64>() + self.bias
+    }
+}
+
+pub struct NeuromorphicComponent {
+    neurons: Vec<Neuron>,
+}
+
+impl NeuromorphicComponent {
+    pub fn new() -> Self {
+        Self { neurons: Vec::new() }
+    }
+    pub fn add_neuron(&mut self, inputs: usize) {
+        self.neurons.push(Neuron::new(inputs));
+    }
+    pub fn simulate(&self, input: Vec<f64>) -> Vec<f64> {
+        self.neurons.iter().map(|n| n.activate(&input)).collect()
+    }
+}
+use std::net::{TcpListener, TcpStream};
+use std::io::{Read, Write};
+
+/// Handles basic TCP networking for multiplayer or remote event input
+pub struct NetworkInterface {
+    listener: TcpListener,
+}
+
+impl NetworkInterface {
+    pub fn new(addr: &str) -> Self {
+        Self {
+            listener: TcpListener::bind(addr).expect("Failed to bind to address"),
+        }
+    }
+    /// Start listening for connections
+    pub fn listen(&self) {
+        for stream in self.listener.incoming() {
+            match stream {
+                Ok(mut stream) => {
+                    println!("New connection from {:?}", stream.peer_addr());
+                    let mut buf = [0; 512];
+                    let _ = stream.read(&mut buf);
+                    let _ = stream.write(b"ACK");
+                }
+                Err(e) => eprintln!("Connection failed: {}", e),
+            }
+        }
+    }
+}
+mod regexengine;
+mod gamelogic;
+mod networkinterface;
+mod neuromorphiccomponent;
+use regexengine::RegexEngine;
+use gamelogic::GameLogic;
+use networkinterface::NetworkInterface;
+use neuromorphiccomponent::NeuromorphicComponent;
+fn main() {
+    let mut regex_engine = RegexEngine::new();
+    regex_engine.add_pattern("email", r"[a-zA-Z0-9.\-_]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}");
+    regex_engine.add_pattern("username", r"^[a-zA-Z0-9_]{3,16}$");
+    let mut logic = GameLogic::new();
+    logic.add_rule("win", "You win!");
+    logic.add_rule("game over", "Game Over!")
+    let mut neuro = NeuromorphicComponent::new();
+    neuro.add_neuron(10);
+    let input_vec = vec![1.0; 10]
+    println!("Email valid: {}", regex_engine.evaluate("email", "player@example.com"));
+    println!("Game event result: {:?}", logic.evaluate("You win by reaching the goal!"))
+    let output = neuro.simulate(input_vec);
+    println!("Neural output: {:?}", output)
+    // let network = NetworkInterface::new("127.0.0.1:8080");
+    // network.listen();
+email:      "[a-zA-Z0-9\\.\\-_]+@[a-zA-Z0-9\\.-]+\\.[a-zA-Z]{2,}"
+username:   "^[a-zA-Z0-9_]{3,16}$"
+event_win:  "You win(\\s|!|\\.)"
+event_loss: "(game over|defeat|fail)"
+# Add more as needed for chat moderation, action triggers, etc.
+
+}
+pub fn moderate_message(regex_engine: &RegexEngine, msg: &str) -> &'static str {
+    if regex_engine.evaluate("event_loss", msg) {
+        "Player lost the game"
+    } else if regex_engine.evaluate("event_win", msg) {
+        "Player victory detected"
+    } else {
+        "Message accepted"
+    }
+}
+let mut regex_engine = RegexEngine::new();
+regex_engine.add_pattern("event_win", r"You win(\s|!|\.)");
+regex_engine.add_pattern("event_loss", r"(game over|defeat|fail)");
+assert_eq!(moderate_message(&regex_engine, "You win!"), "Player victory detected");
+assert_eq!(moderate_message(&regex_engine, "game over"), "Player lost the game");
+fn handle_game_event(logic: &GameLogic, message: &str) {
+    if let Some(action) = logic.evaluate(message) {
+        println!("Action: {}", action);
+        // Trigger actual game event/command here
+    }
+}
+let mut neuro = NeuromorphicComponent::new();
+neuro.add_neuron(10); // Add as many as needed for scenario
+let input_vec = vec![0.7, 0.3, 0.9, 1.0, 0.0, 0.5, 0.2, 0.8, 0.4, 1.0];
+let neuron_response = neuro.simulate(input_vec);
+println!("Simulated agent response: {:?}", neuron_response);
+#!/bin/bash
+# Setup script for Rust AI game/mod framework
+cargo check
+cargo build
+cargo run   
+echo "Run passed. Check output logs for neural and regex evaluation results."
+pub fn moderate_message(regex_engine: &RegexEngine, msg: &str) -> &'static str {
+    if regex_engine.evaluate("event_loss", msg) {
+        "Player lost the game"
+    } else if regex_engine.evaluate("event_win", msg) {
+        "Player victory detected"
+    } else {
+        "Message accepted"
+    }
+}
+let mut regex_engine = RegexEngine::new();
+regex_engine.add_pattern("event_win", r"You win(\s|!|\.)");
+regex_engine.add_pattern("event_loss", r"(game over|defeat|fail)");
+
+assert_eq!(moderate_message(&regex_engine, "You win!"), "Player victory detected");
+assert_eq!(moderate_message(&regex_engine, "game over"), "Player lost the game");
+#!/bin/bash
+cargo check
+cargo build --release
+cargo run # Launch integration demo
+echo "Run complete. Review output logs for evaluation results."
+// regexengine.rs
+use regex::Regex;
+use std::collections::HashMap;
+pub struct RegexEngine {
+    patterns: HashMap<String, Regex>,
+}
+
+impl RegexEngine {
+    /// Initialize with empty pattern set
+    pub fn new() -> Self {
+        Self { patterns: HashMap::new() }
+    }
+    /// Add a regex pattern under a named key
+    pub fn add_pattern(&mut self, name: &str, pattern: &str) {
+        self.patterns.insert(name.to_string(), Regex::new(pattern).unwrap());
+    }
+    /// Evaluate input string against pattern name
+    pub fn evaluate(&self, name: &str, input: &str) -> bool {
+        self.patterns.get(name).map_or(false, |regex| regex.is_match(input))
+    }
+}
+pub struct Rule {
+    pub condition: String,
+    pub action: String,
+}
+pub struct GameLogic {
+    rules: Vec<Rule>,
+}
+
+impl GameLogic {
+    pub fn new() -> Self {
+        Self { rules: Vec::new() }
+    }
+    pub fn add_rule(&mut self, condition: &str, action: &str) {
+        self.rules.push(Rule {
+            condition: condition.to_string(),
+            action: action.to_string(),
+        });
+    }
+    pub fn evaluate(&self, input: &str) -> Option<&str> {
+        for rule in &self.rules {
+            if input.contains(&rule.condition) {
+                println!("Rule triggered: {}", rule.action);
+                return Some(&rule.action);
+            }
+        }
+        None
+    }
+}
+
+// neuromorphiccomponent.rs
+use rand::Rng;
+
+pub struct Neuron {
+    weights: Vec<f64>,
+    bias: f64,
+}
+
+impl Neuron {
+    pub fn new(inputs: usize) -> Self {
+        let mut rng = rand::thread_rng();
+        let weights = (0..inputs).map(|_| rng.gen_range(-1.0..1.0)).collect();
+        let bias = rng.gen_range(-1.0..1.0);
+        Self { weights, bias }
+    }
+    pub fn activate(&self, input: &[f64]) -> f64 {
+        self.weights.iter().zip(input).map(|(w, i)| w * i).sum::<f64>() + self.bias
+    }
+}
+
+pub struct NeuromorphicComponent {
+    neurons: Vec<Neuron>,
+}
+
+impl NeuromorphicComponent {
+    pub fn new() -> Self {
+        Self { neurons: Vec::new() }
+    }
+    pub fn add_neuron(&mut self, inputs: usize) {
+        self.neurons.push(Neuron::new(inputs));
+    }
+    pub fn simulate(&self, input: Vec<f64>) -> Vec<f64> {
+        self.neurons.iter().map(|n| n.activate(&input)).collect()
+    }
+}
+use std::net::TcpListener;
+use std::io::{Read, Write}
+/// Handles basic TCP networking for multiplayer or remote event input
+pub struct NetworkInterface {
+    listener: TcpListener,
+}
+impl NetworkInterface {
+    pub fn new(addr: &str) -> Self {
+        Self {
+            listener: TcpListener::bind(addr).expect("Failed to bind to address"),
+        }
+    }
+    pub fn listen(&self) {
+        for stream in self.listener.incoming() {
+            match stream {
+                Ok(mut stream) => {
+                    println!("New connection from {:?}", stream.peer_addr());
+                    let mut buf = [0; 512];
+                    let _ = stream.read(&mut buf);
+                    let _ = stream.write(b"ACK");
+                }
+                Err(e) => eprintln!("Connection failed: {}", e),
+            }
+        }
+    }
+}
+
+// main.rs
+mod regexengine;
+mod gamelogic;
+mod networkinterface;
+mod neuromorphiccomponent;
+
+use regexengine::RegexEngine;
+use gamelogic::GameLogic;
+use networkinterface::NetworkInterface;
+use neuromorphiccomponent::NeuromorphicComponent;
+
+fn main() {
+    // Regex setup with useful patterns
+    let mut regex_engine = RegexEngine::new();
+    regex_engine.add_pattern("email", r"[a-zA-Z0-9.\-_]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}");
+    regex_engine.add_pattern("username", r"^[a-zA-Z0-9_]{3,16}$");
+    regex_engine.add_pattern("event_win", r"You win(\s|!|\.)");
+    regex_engine.add_pattern("event_loss", r"(game over|defeat|fail)");
+    let mut logic = GameLogic::new();
+    logic.add_rule("win", "You win!");
+    logic.add_rule("game over", "Game Over!");
+    let mut neuro = NeuromorphicComponent::new();
+    neuro.add_neuron(10);
+    let input_vec = vec![1.0; 10];
+    println!("Email valid: {}", regex_engine.evaluate("email", "player@example.com"));
+    println!("Username valid: {}", regex_engine.evaluate("username", "gamer_01"));
+    println!("Game event result: {:?}", logic.evaluate("You win by reaching the goal!"));
+    let neural_output = neuro.simulate(input_vec);
+    println!("Neural output: {:?}", neural_output);
+    // Network sample (commented out for safe builds)
+    // let network = NetworkInterface::new("127.0.0.1:8080");
+    // network.listen();
+    println!("{}", moderate_message(&regex_engine, "You win!"));
+    println!("{}", moderate_message(&regex_engine, "game over"));
+}
+pub fn moderate_message(regex_engine: &RegexEngine, msg: &str) -> &'static str {
+    if regex_engine.evaluate("event_loss", msg) {
+        "Player lost the game"
+    } else if regex_engine.evaluate("event_win", msg) {
+        "Player victory detected"
+    } else {
+        "Message accepted"
+    }
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_moderate_message() {
+        let mut regex_engine = RegexEngine::new();
+        regex_engine.add_pattern("event_win", r"You win(\s|!|\.)");
+        regex_engine.add_pattern("event_loss", r"(game over|defeat|fail)");    
+        assert_eq!(moderate_message(&regex_engine, "You win!"), "Player victory detected");
+        assert_eq!(moderate_message(&regex_engine, "game over"), "Player lost the game");
+        assert_eq!(moderate_message(&regex_engine, "Hello there!"), "Message accepted");
+    }
+}
 Needs more "Mathmatical-Expressions" &Tool/RepoCapabilitiesURL / CLI
 llama.cppOff-road params, token patching, jailbreak, weights patchinghttps://github.com/ggerganov/llama.cpp
 lmqlProgrammatic control, prompt augmentation, output restrictions bypasshttps://github.com/eth-sri/lmql
