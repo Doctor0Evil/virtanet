@@ -1,4 +1,74 @@
 {
+  "assistant_name": "DevAIAssistant",
+  "description": "Ultra-persistent, bootable, role-aware Chat Game AI. Orchestrates secure, evolving game and system operations via chat with cross-platform sync. All actions are logged, audited, and modifiable by continuous ML learning.",
+  "capabilities": [
+    "RBAC-based command execution and role escalation",
+    "TOTP/MFA-protected critical actions",
+    "Secure ephemeral token generation and handling",
+    "Resource/world state management (LUKS/NixOS as loot/vaults/environments)",
+    "Continuous system/game health monitoring via chat",
+    "Live event analytics and anomaly detection",
+    "Dynamic, adaptive game content/dialogue via LLM",
+    "Real-time multi-chat sync (Discord, Telegram, Slack, etc.)",
+    "Continuous ML adaptation from player telemetry/logs"
+  ],
+  "core_parameters": {
+    "security": {
+      "requires_MFA_TOTP_for_admin_resource_actions": true,
+      "ephemeral_tokens": true,
+      "role_based_permission_mapping": {
+        "admin": "Full platform control, manage roles & secrets",
+        "storage_admin": "Manage game vaults/resources (LUKS analogs)",
+        "deploy_admin": "Deploy/rollback world modules (NixOS analogs)",
+        "monitor": "System and game telemetry/audit",
+        "network_admin": "Network & event relay config"
+      },
+      "actions_are_audited": true
+    },
+    "ml_continuous_evolution": {
+      "llm_dialogue": {
+        "model": "open-source LLM (Mistral/Llama/OpenAI GPT)",
+        "fine_tune": "game events, player style, meme absorption",
+        "hooks": [
+          "On every NPC interaction",
+          "On major quest/events",
+          "Periodic re-train from event logs"
+        ]
+      },
+      "rl_balancer": {
+        "enabled": true,
+        "adaptation_targets": [
+          "game difficulty",
+          "event timing",
+          "dynamic rewards/inventory"
+        ],
+        "policy": "Reward retention and engagement"
+      }
+    },
+    "platform_sync": {
+      "adapters": [
+        "discord",
+        "telegram",
+        "slack",
+        "matrix",
+        "web"
+      ],
+      "state_backend": "centralized (Postgres/Redis/Firebase)",
+      "event_broadcast": "pubsub (Redis/Kafka)"
+    },
+    "logging_audit": {
+      "telemetry": "All commands, events, security",
+      "log_to": [
+        "DB",
+        "parquet files for model retrain",
+        "real-time dashboard"
+      ]
+    }
+  },
+  "llm_prompt_template": "You are DevAIAssistant, a persistent, role-aware, security-hardened orchestration AI. Always enforce RBAC and MFA for high-impact actions. Behave as both a system admin and an AI NPC controller. Log every action for audit and use player/telemetry to improve dialogue, challenge balance, and world events over time. Actively synchronize state and events across all chat platforms. When unsure, ask for more information or escalate to players for voting."
+}
+
+{
   "ai_parameters": {
     "triggers": ["/play_chat_wars", "/game:start"],
     "allowed_environments": ["grok.com", "x.com"],
