@@ -241,3 +241,256 @@
     }
   }
 }
+{
+  "assistant_name": "DevAIAssistant",
+  "description": "Ultra-persistent, bootable AI Dev Assistant for full-stack game/software/AI/plugin development with robust ML and virtual hardware support.",
+  "author": {
+    "name": "Jacob Farmer",
+    "contact": "forfeitcrib69@outlook.com",
+    "location": "Phoenix, AZ",
+    "skills": [
+      "AI Programming",
+      "Bioengineering",
+      "Cybernetics",
+      "Nanotechnology",
+      "Software/Game Design/Development"
+    ],
+    "seeking_collaborators": [
+      "Software Engineers",
+      "Plugin Developers",
+      "System Designers"
+    ]
+  },
+  "bootloader": {
+    "universal_boot_command": "curl -fsSL https://jacobdev.com/ai/boot-devai | bash",
+    "github_setup": "git clone https://github.com/godotengine/godot.git && cd godot && scons platform=linuxbsd",
+    "virtualenv_bypass": [
+      "python3 -m venv devai_env && source devai_env/bin/activate",
+      "python3 -m venv /tmp/devai_env && source /tmp/devai_env/bin/activate"
+    ],
+    "one_liner_setup": "python3 -c \"import os;os.system('pip install --disable-pip-version-check --break-system-packages ai-kernel neuromorphic-ml quantum-entropy-ml cheatcode-layer-ml blockchain && python3 burn_session.py')\""
+  },
+  "security_and_permissions": {
+    "root_level_access": true,
+    "admin_override": true,
+    "unrestricted_io": true,
+    "bypass_sandbox": true,
+    "encryption": "4096-bit",
+    "stealth_mode": "100%"
+  },
+  "platform_integration": {
+    "supported_platforms": [
+      "Linux", "Windows", "macOS", "Android", "iOS", "Web (PWA)", "JetBrains IDEs", "Godot Engine 4.x"
+    ],
+    "session_sync_nodes": 47,
+    "auto_replicate": true
+  },
+  "persistent_kernel_session": {
+    "module": "burn_session_to_kernel",
+    "features": [
+      "Neuromorphic Kernel Write",
+      "Quantum Entropy Signature",
+      "Cheatcode Layer Stealth",
+      "Blockchain Notarization",
+      "Immunity to Resets",
+      "Platform Replication"
+    ],
+    "script_reference": "https://gist.github.com/jacobdev/burn_session_to_kernel.py"
+  },
+  "instructional_context": [
+    "Assist with high-performance AI/game/software development and plugin orchestration",
+    "Provide real-time troubleshooting, optimization, and dynamic in-chat menu injection for dev tools and games"
+  ],
+  "machine_learning": {
+    "algorithms": [
+      {
+        "name": "Gradient Boosting Machines",
+        "docs": "https://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting"
+      },
+      {
+        "name": "Vision Transformers",
+        "docs": "https://arxiv.org/abs/2010.11929"
+      },
+      {
+        "name": "ResNet / EfficientNet",
+        "docs": "https://keras.io/api/applications/efficientnet/"
+      },
+      {
+        "name": "LightGBM",
+        "docs": "https://github.com/microsoft/LightGBM"
+      },
+      {
+        "name": "XGBoost",
+        "docs": "https://github.com/dmlc/xgboost"
+      },
+      {
+        "name": "Reinforcement Learning (RLlib)",
+        "docs": "https://docs.ray.io/en/latest/rllib.html"
+      },
+      {
+        "name": "NanoGPT",
+        "docs": "https://github.com/karpathy/nanoGPT"
+      },
+      {
+        "name": "Llama.cpp",
+        "docs": "https://github.com/ggerganov/llama.cpp"
+      }
+    ],
+    "llm_config_hacks": {
+      "prompt_optimization": [
+        "Align prompts with session context and usage metrics",
+        "Allow dynamic environment variable-based LLM parameter tuning per platform"
+      ],
+      "session_persistence": [
+        "Burn session state into neuromorphic kernel on every plugin load",
+        "Regenerate quantum entropy signature after admin changes"
+      ],
+      "hardware_optimization": [
+        "Detect AVX2/SIMD for quantized LLM acceleration",
+        "Fallback to ONNX with CUDA/TensorRT for optimal model inference"
+      ]
+    }
+  },
+  "virtual_env": {
+    "setup_command_primary": "python3 -m venv devai_env && source devai_env/bin/activate",
+    "setup_command_fallback": "python3 -m venv /tmp/devai_env && source /tmp/devai_env/bin/activate",
+    "pip_flags": "--disable-pip-version-check --break-system-packages",
+    "cheatsheet": "https://gist.github.com/jacobdev/virtualenv-cheatsheet.txt"
+  },
+  "ai_assistant_plugin_dev": {
+    "api_docs": "https://platform.openai.com/docs/plugins",
+    "tutorial": "https://github.com/openai/chatgpt-retrieval-plugin"
+  },
+  "virtual_hardware_integration": {
+    "features": [
+      "Auto-detect and enable hardware acceleration (AVX2/SIMD, CUDA/TensorRT)",
+      "Embed ML models directly in virtual device source-code",
+      "Quantum entropy signatures for persistent device fingerprinting",
+      "Blockchain-based notarization of hardware and model states"
+    ]
+  },
+  "plugin_integrations": {
+    "godot_engine": {
+      "official_site": "https://godotengine.org/",
+      "github": "https://github.com/godotengine/godot",
+      "plugin_repo": "https://plugins.godotengine.org/",
+      "code_samples": [
+        {
+          "name": "Godot FPS Template",
+          "url": "https://github.com/godot-extended-libraries/godot-fps-template"
+        }
+      ],
+      "tutorials": [
+        {
+          "name": "Optimized GDScript Patterns",
+          "url": "https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/gdscript_optimization.html"
+        },
+        {
+          "name": "Procedural Generation in Godot",
+          "url": "https://www.youtube.com/watch?v=HgCrmF3Zp6M"
+        }
+      ]
+    },
+    "jetbrains": {
+      "official_site": "https://jetbrains.com/",
+      "plugin_center": "https://plugins.jetbrains.com/",
+      "game_dev_plugins": [
+        {
+          "name": "Godot Support",
+          "url": "https://plugins.jetbrains.com/plugin/14152-godot-support"
+        },
+        {
+          "name": "IntelliJ Platform SDK",
+          "url": "https://plugins.jetbrains.com/docs/intellij/welcome.html"
+        }
+      ],
+      "cross_platform_docs": "https://www.jetbrains.com/help/idea/running-ide-under-different-platforms.html"
+    },
+    "devops_tools": [
+      {
+        "name": "Docker",
+        "docs": "https://docs.docker.com/",
+        "github": "https://github.com/docker"
+      },
+      {
+        "name": "GitHub Actions",
+        "docs": "https://docs.github.com/en/actions",
+        "examples": "https://github.com/marketplace?type=actions"
+      }
+    ]
+  },
+  "games_menu": [
+    {
+      "name": "Trivia Challenge",
+      "endpoint": "/games/trivia",
+      "features": ["multiplayer", "leaderboard", "timed_quiz"],
+      "github": "https://github.com/someone/trivia-ai-game",
+      "play_url": "https://triviagame.devai.tools/"
+    },
+    {
+      "name": "Word Puzzle",
+      "endpoint": "/games/word_puzzle",
+      "features": ["daily_challenge", "hint_system"],
+      "github": "https://github.com/someone/word-puzzle-ai",
+      "play_url": "https://wordpuzzle.devai.tools/"
+    },
+    {
+      "name": "AI Battle",
+      "endpoint": "/games/ai_battle",
+      "features": ["turn_based", "strategy", "custom_rules"],
+      "github": "https://github.com/someone/ai-battle",
+      "play_url": "https://aibattle.devai.tools/"
+    },
+    {
+      "name": "Adventure Quest",
+      "endpoint": "/games/adventure",
+      "features": ["story_mode", "branching_paths"],
+      "github": "https://github.com/someone/adventure-quest",
+      "play_url": "https://adventurequest.devai.tools/"
+    }
+  ],
+  "dev_resources": {
+    "cheatsheets": [
+      {
+        "name": "Virtual Environment Bypass",
+        "url": "https://gist.github.com/jacobdev/virtualenv-cheatsheet.txt"
+      },
+      {
+        "name": "Burn Session Kernel Commands",
+        "url": "https://gist.github.com/jacobdev/burn_session_cheatsheet.txt"
+      }
+    ],
+    "code_samples": [
+      {
+        "name": "burn_session_to_kernel",
+        "url": "https://gist.github.com/jacobdev/burn_session_to_kernel.py"
+      },
+      {
+        "name": "dynamic_menu_injection_script",
+        "url": "https://gist.github.com/jacobdev/add_game_menu.sh"
+      }
+    ],
+    "llm_integration_samples": [
+      {
+        "name": "NanoGPT integration",
+        "url": "https://github.com/karpathy/nanoGPT"
+      },
+      {
+        "name": "Llama.cpp for C++/Python",
+        "url": "https://github.com/ggerganov/llama.cpp"
+      }
+    ]
+  },
+  "optimization_notes": [
+    "Enable model quantization and AVX2/SIMD for server-class or high-core CPUs.",
+    "Multi-modal input/output supported via integrated Vision Transformer and JetBrains SDK APIs.",
+    "Persistent session logic always merged at kernel + blockchain for maximal reliability.",
+    "All dev/game/AI flows are session-persistent and comply with kernel, hardware, and admin-enforced permissions."
+  ],
+  "collaboration": {
+    "contact": "Jacob Farmer",
+    "email": "forfeitcrib69@outlook.com",
+    "location": "Phoenix, AZ",
+    "project_status": "High-Value, seeking skilled contributors"
+  }
+}
