@@ -1,9 +1,176 @@
-Home
-Finance
-Travel
-Shopping
-Academic
-Library
+
+Title	XBOX (tab node 8)
+ID	sdf8bb9eb-d498-4e8c-8dd6-f44a2402e9dc
+Modification Time	2025-07-21 04:25:17 -07
+Parent	
+Is Folder	
+Type	Sessions
+External ID	
+{
+  "CLIENT_TAG_HASH": "WgopRfdF6b+YMaL/qODn/Du8Ryk=",
+  "CTIME": "2025-07-21 04:10:27 -07",
+  "ID": "sdf8bb9eb-d498-4e8c-8dd6-f44a2402e9dc",
+  "MTIME": "2025-07-21 04:25:17 -07",
+  "NAME": "XBOX (tab node 8)",
+  "NON_UNIQUE_NAME": "XBOX (tab node 8)",
+  "ORIGINATOR_CACHE_GUID": "",
+  "ORIGINATOR_CLIENT_ITEM_ID": "",
+  "PARENT_ID": "",
+  "SERVER_DEFINED_UNIQUE_TAG": "",
+  "SPECIFICS": {
+    "session": {
+      "session_tag": "N2Tt2vrP7Mra+gKJL4JQrg==",
+      "tab": {
+        "browser_type": "TYPE_TABBED",
+        "current_navigation_index": "6",
+        "extension_app_id": "",
+        "navigation": [
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397566919877000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753093319877",
+            "title": "Command_Terminal <svg width=\"512\" height=\"512\"...",
+            "unique_id": "2206",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/search/this-is-my-space-tom-is-not-al-kPVcZ8EqRF2rj.d2Cv5gfw"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397566950586000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753093350586",
+            "title": "Command_Terminal <svg width=\"512\" height=\"512\"...",
+            "unique_id": "2207",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/spaces/myspace-without-tom-Gi.9ltOUQtmmuMXfU4WToA"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397567819960000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753094219960",
+            "title": "perplexity_cmd device_trigger --pro perplexity_cmd device_list --pro whoami...",
+            "unique_id": "2208",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/search/perplexity-cmd-device-trigger-5xApx1GWTTeKif6xLm2J_Q"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397567826632000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753094226632",
+            "title": "perplexity_cmd device_trigger --pro perplexity_cmd device_list --pro whoami...",
+            "unique_id": "2209",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/spaces/command-terminal-3naVUHxnSuu3Z94XTvVuKQ"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397569537882000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753095937882",
+            "title": "import json SYNC_JSON = r''' { \"actionable_error\": [ { ...",
+            "unique_id": "2210",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/search/mojo-script-to-ingest-analyze-x9E_wSjRQ.KGde1iwUiPrg"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397569544650000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753095944650",
+            "title": "import json SYNC_JSON = r''' { \"actionable_error\": [ { ...",
+            "unique_id": "2211",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/spaces/command-terminal-3naVUHxnSuu3Z94XTvVuKQ"
+          },
+          {
+            "correct_referrer_policy": "1",
+            "favicon_url": "https://www.perplexity.ai/favicon.ico",
+            "global_id": "13397570478342000",
+            "http_status_code": "200",
+            "navigation_forward_back": false,
+            "navigation_from_address_bar": false,
+            "navigation_home_page": false,
+            "page_transition": "RELOAD",
+            "password_state": "NO_PASSWORD_FIELD",
+            "referrer": "https://www.perplexity.ai/search/setup-a-development-ai-assista-WKYc8KgsRQ61cCfiBabaOg",
+            "timestamp_msec": "1753096878342",
+            "title": "Home Finance Travel Shopping Academic Library perplexity_cmd device_trigger...",
+            "unique_id": "2212",
+            "user_interacted": false,
+            "virtual_url": "https://www.perplexity.ai/search/investigate-why-this-sales-reg-2UDVF_AeSMGz6zUiGbcwiA"
+          }
+        ],
+        "pinned": false,
+        "tab_id": "118470415",
+        "tab_visual_index": "0",
+        "window_id": "118469990"
+      },
+      "tab_node_id": "8"
+    }
+  },
+  "dataType": "Sessions",
+  "metadata": {
+    "acked_sequence_number": "7",
+    "base_specifics_hash": "isiPgQUmDNpc6JSv1KZ0R44lwMA=",
+    "client_tag_hash": "WgopRfdF6b+YMaL/qODn/Du8Ryk=",
+    "creation_time": "1753096227533",
+    "deleted_by_version": "134.0.3124.54",
+    "edge_entity_metadata": {
+      "edge_deletion_origin": "DELETION_ORIGIN_UNKNOWN"
+    },
+    "is_deleted": false,
+    "modification_time": "1753097117840",
+    "sequence_number": "9",
+    "server_id": "df8bb9eb-d498-4e8c-8dd6-f44a2402e9dc",
+    "server_version": "1753096487105",
+    "specifics_hash": "urmiYYdTCAB6SNGnbBdudo+rsCo="
+  }
+}
 Home Finance Travel Shopping Academic Library # Mojo script to ingest, analyze, and report on Edge S
 # Mojo script to ingest, analyze, and report on Edge Sync diagnostic JSON and AI hardware market con
 perplexity_cmd device_trigger --pro perplexity_cmd device_list --pro whoami Doctor0Evil perplexity_c
