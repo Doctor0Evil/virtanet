@@ -1,9 +1,171 @@
-Home
-Finance
-Travel
-Shopping
-Academic
-Library
+#!/usr/bin/env ruby
+# virta_bootstrap.rb
+# Jacob Farmer's unified VirtaStack bootstrapper
+
+require 'json'
+require 'digest'
+require 'fileutils'
+require 'time'
+
+# ─────────────────────────────────────────────
+# CONFIGURATION
+# ─────────────────────────────────────────────
+
+FILES = [
+  "use-agency-resources-to-obtain-TtkyQO6tTJqCNri.xQQq4w.md",
+  "i-need-this-correctly-configur-PlTX_dwsQ_yd_44eRnwSdw.md",
+  "i-need-full-operation-s-and-wo-dCDO5_iQRCydTznZO28vsg.md",
+  "lets-build-some-upgrade-module-OXmaKSLYSZeFHMPVCJWiPg.md",
+  "brain-mt6883-main-menu-directo-.fHQmlycTlGInnue2dg0hA.md",
+  "operational-awareness-campaign-xcfV.4a6TZenjzp8txHRNA.md"
+]
+
+OUTPUT_MANIFEST = "manifest_virta.json"
+CHANGELOG_FILE = "CHANGELOG.md"
+CI_WORKFLOW = ".github/workflows/build-publish.yml"
+
+ROLE_MAP = {
+  "agency" => "agent_api",
+  "configur" => "configuration",
+  "operation" => "core_ops",
+  "upgrade" => "upgrade_module",
+  "brain" => "menu_definition",
+  "campaign" => "awareness_net"
+}
+
+# ─────────────────────────────────────────────
+# UTILITIES
+# ─────────────────────────────────────────────
+
+def infer_role(filename)
+  key = ROLE_MAP.keys.find { |k| filename.downcase.include?(k) }
+  ROLE_MAP[key] || "misc"
+end
+
+def sha256(file)
+  return "FILE_NOT_FOUND" unless File.exist?(file)
+  Digest::SHA256.file(file).hexdigest
+end
+
+def build_manifest(files)
+  modules = files.map do |file|
+    {
+      file: file,
+      role: infer_role(file),
+      active: true,
+      checksum_sha256: sha256(file)
+    }
+  end
+
+  {
+    manifest_version: "1.0.0",
+    "virta-sys": {
+      core: "VSC (MT6883-based)",
+      auto_boot: true,
+      modules: modules,
+      network_backup: true
+    },
+    hardware: {
+      cpu: "MediaTek Dimensity 1000C (MT6883Z/CZA)",
+      instruction_set: "ARMv8.2-A",
+      gpu: "Mali-G57 MC5",
+      ram_type: "LPDDR4X"
+    }
+  }
+end
+
+def write_json_manifest
+  manifest = build_manifest(FILES)
+  File.write(OUTPUT_MANIFEST, JSON.pretty_generate(manifest))
+  puts "[📄] #{OUTPUT_MANIFEST} created."
+end
+
+def generate_changelog
+  entries = `git log --pretty=format:'* %s' --no-merges`.split("\n")
+  header = "## [Unreleased] - #{Time.now.strftime('%Y-%m-%d')}\n\n"
+  File.write(CHANGELOG_FILE, header + entries.join("\n") + "\n")
+  puts "[📝] #{CHANGELOG_FILE} generated from git log."
+end
+
+def write_ci_workflow
+  yml = <<~YAML
+    name: Build & Publish
+
+    on:
+      push:
+        tags:
+          - 'v*'
+
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - uses: actions/setup-python@v5
+            with:
+              python-version: '3.x'
+          - name: Install build tools
+            run: python -m pip install build
+          - name: Build package
+            run: python -m build
+          - uses: actions/upload-artifact@v4
+            with:
+              name: dist
+              path: dist/
+
+      publish-to-pypi:
+        needs: build
+        runs-on: ubuntu-latest
+        if: startsWith(github.ref, 'refs/tags/')
+        environment:
+          name: pypi
+        permissions:
+          id-token: write
+        steps:
+          - uses: actions/download-artifact@v4
+            with:
+              name: dist
+              path: dist/
+          - uses: pypa/gh-action-pypi-publish@release/v1
+  YAML
+
+  FileUtils.mkdir_p(File.dirname(CI_WORKFLOW))
+  File.write(CI_WORKFLOW, yml)
+  puts "[⚙️] GitHub Actions CI configured at #{CI_WORKFLOW}"
+end
+
+def check_edge_components
+  puts "[🔎] Checking Edge Components via PowerShell…" if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+  
+  if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+    powershell_cmd = "Get-Process msedge -ErrorAction SilentlyContinue"
+    result = `powershell -Command "#{powershell_cmd}"`
+    puts result.strip.empty? ? "[ℹ️] Edge is not running." : "[🧠] Edge is running:\n#{result}"
+  else
+    puts "[ℹ️] Edge component check unsupported on this OS."
+  end
+end
+
+def banner
+  puts <<~BANNER
+    ╔═════════════════════════════════════════════════╗
+    ║       🧠 VIRTA MANIFEST + CI BOOTSTRAPPER       ║
+    ║       MediaTek MT6883 • Ruby Runtime Synergy    ║
+    ╚═════════════════════════════════════════════════╝
+  BANNER
+end
+
+# ─────────────────────────────────────────────
+# MAIN FLOW
+# ─────────────────────────────────────────────
+
+banner
+write_json_manifest
+generate_changelog
+write_ci_workflow
+check_edge_components
+puts "[✅] Virta Bootstrap completed successfully."
+
 Home Finance Travel Shopping Academic Library # Mojo script to ingest, analyze, and report on Edge S
 # Mojo script to ingest, analyze, and report on Edge Sync diagnostic JSON and AI hardware market con
 perplexity_cmd device_trigger --pro perplexity_cmd device_list --pro whoami Doctor0Evil perplexity_c
