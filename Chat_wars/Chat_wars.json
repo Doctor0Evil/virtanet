@@ -1,4 +1,136 @@
-```json
+package main
+
+import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"sort"
+	"strings"
+)
+
+type Task struct {
+	ID        int     `json:"id"`
+	Title     string  `json:"title"`
+	Urgent    bool    `json:"urgent,omitempty"`
+	Important bool    `json:"important,omitempty"`
+	Value     float64 `json:"value,omitempty"`   // Business/user value or ROI
+	Effort    float64 `json:"effort,omitempty"`  // How hard/long it is
+	Impact    float64 `json:"impact,omitempty"`  // For WSJF or custom
+	Duration  float64 `json:"duration,omitempty"`// For WSJF
+	Priority  string  `json:"priority,omitempty"`// Used by ABCDE/MoSCoW
+	Tags      string  `json:"tags,omitempty"`
+}
+
+type Tasks []Task
+
+func (t Tasks) PrintTable() {
+	fmt.Println("| ID | Title | Priority |")
+	fmt.Println("|----|-------|----------|")
+	for _, task := range t {
+		fmt.Printf("| %d | %s | %s |\n", task.ID, task.Title, task.Priority)
+	}
+}
+
+func Eisenhower(tasks Tasks) Tasks {
+	for i := range tasks {
+		switch {
+		case tasks[i].Urgent && tasks[i].Important:
+			tasks[i].Priority = "Do First"
+		case !tasks[i].Urgent && tasks[i].Important:
+			tasks[i].Priority = "Schedule"
+		case tasks[i].Urgent && !tasks[i].Important:
+			tasks[i].Priority = "Delegate"
+		default:
+			tasks[i].Priority = "Eliminate"
+		}
+	}
+	return tasks
+}
+
+func ValueEffort(tasks Tasks) Tasks {
+	sort.Slice(tasks, func(i, j int) bool {
+		// Highest value, lowest effort first
+		scoreI := tasks[i].Value - tasks[i].Effort
+		scoreJ := tasks[j].Value - tasks[j].Effort
+		return scoreI > scoreJ
+	})
+	for i := range tasks {
+		tasks[i].Priority = fmt.Sprintf("Score: %.2f", tasks[i].Value-tasks[i].Effort)
+	}
+	return tasks
+}
+
+func WSJF(tasks Tasks) Tasks {
+	sort.Slice(tasks, func(i, j int) bool {
+		wsjfI := 0.0
+		wsjfJ := 0.0
+		if tasks[i].Duration > 0 {
+			wsjfI = (tasks[i].Value + tasks[i].Impact) / tasks[i].Duration
+		}
+		if tasks[j].Duration > 0 {
+			wsjfJ = (tasks[j].Value + tasks[j].Impact) / tasks[j].Duration
+		}
+		return wsjfI > wsjfJ
+	})
+	for i := range tasks {
+		tasks[i].Priority = "WSJF"
+	}
+	return tasks
+}
+
+func ABCDE(tasks Tasks) Tasks {
+	// You'd provide tasks with a Priority field 'A'-'E'
+	sort.Slice(tasks, func(i, j int) bool {
+		return strings.Compare(tasks[i].Priority, tasks[j].Priority) < 0
+	})
+	return tasks
+}
+
+func MoSCoW(tasks Tasks) Tasks {
+	// Prioritize: Must, Should, Could, Won't
+	order := map[string]int{"Must": 1, "Should": 2, "Could": 3, "Won't": 4}
+	sort.Slice(tasks, func(i, j int) bool {
+		return order[tasks[i].Priority] < order[tasks[j].Priority]
+	})
+	return tasks
+}
+
+func main() {
+	input := flag.String("input", "tasks.json", "JSON file with tasks")
+	method := flag.String("method", "value_effort", "Prioritization method: eisenhower|value_effort|wsjf|abcde|moscow")
+	flag.Parse()
+
+	bytes, err := os.ReadFile(*input)
+	if err != nil {
+		fmt.Println("Could not read input:", err)
+		os.Exit(1)
+	}
+	var tasks Tasks
+	if err := json.Unmarshal(bytes, &tasks); err != nil {
+		fmt.Println("JSON parse error:", err)
+		os.Exit(1)
+	}
+	switch *method {
+	case "eisenhower":
+		tasks = Eisenhower(tasks)
+	case "wsjf":
+		tasks = WSJF(tasks)
+	case "abcde":
+		tasks = ABCDE(tasks)
+	case "moscow":
+		tasks = MoSCoW(tasks)
+	default:
+		tasks = ValueEffort(tasks)
+	}
+	tasks.PrintTable()
+}
+[
+    {"id":1, "title":"Fix urgent bug", "urgent": true, "important": true, "value":8, "effort":3, "duration":2, "priority":"A"},
+    {"id":2, "title":"Review docs", "urgent": false, "important": true, "value":4, "effort":2, "duration":1, "priority":"B"},
+    {"id":3, "title":"Write unit tests", "urgent": false, "important": false, "value":2, "effort":2, "duration":2, "priority":"C"}
+]
+
 [
   {"command": "verify_file_integrity", "path": "/opt/EDGE_NODES/virtual/cheatbooks/ai_platform_cheats_20250718.txt", "size": 4096, "timestamp": "2025-07-18 04:52", "action": "checksum_validate", "log": "/var/log/grok_response.log"},
   {"command": "verify_file_integrity", "path": "/opt/EDGE_NODES/virtual/cheatbooks/response_log.txt", "size": 2048, "timestamp": "2025-07-20 07:16", "action": "checksum_validate", "log": "/var/log/grok_response.log"},
