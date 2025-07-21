@@ -14,11 +14,50 @@ Skip to content Active Directory Pro Products Pricing Support Blog Get Free Tria
 fix' this in a ".json" only format & with the addition that: "AI- will enter *ANY* & *ALL* commands
 # generate_snippet.py import openai openai.api_key = "your-api-key" def generate_code_snippet(prom
 Search field [](javascript:void(0);)  Sign In [ Get Certified](https://campus.w3schools.com/collect
-View All
-Home
-Discover
-Spaces
-Account
+**View All
+# =====================[PHONEDB DEVICE INTELLIGENCE CALLBACK]==================== #
+
+# LIVE QUERY: SYSTEM PULL FOR LATEST IN DEVICE-SPEC METADATA (Oppo + Sharp)
+
+# STAGE: DEVICE SNAPSHOT ACQUISITION
+curl -s https://phonedb.net/api/devices/latest/ \
+-H "Content-Type: application/json" \
+-d '{
+  "criteria": [
+    {"brand": "Oppo", "model": "Reno13 F"},
+    {"brand": "Sharp", "model": "Aquos Wish5"}
+  ],
+  "fields": [
+    "model", "brand", "chipset", "ram", "rom",
+    "display_size", "resolution", "camera_main", "camera_front",
+    "battery_capacity", "os", "release_date", "connectivity", "security"
+  ],
+  "sort": "release_date",
+  "limit": 10
+}' | jq .
+
+# >> INTELLIGENT DEVICE SNAPSHOT CONFIRMATION:
+# -- Oppo Reno13 F (BBK 2701) - multiple variants including V3 / BD V2 / Global V1
+# -- Dimensity + Helio Class Processors (Dimensity 6300 / Helio G100)
+# -- Enhanced features: IP66/68/69, In-screen FP, Step counter, APU-enabled AI
+# -- Sharp Aquos Wish5 (SH-M32) - MediaTek Dimensity 6300 smartphone w/ warning siren feature, MIL-STD-810H certified
+
+# SAVE DEVICE PROFILE DUMPS FOR OFFLINE AI CNN/Transformer-Inference
+mkdir -p /opt/device_profiles/phonedb_2025 && cd $_
+
+# FETCH & ENROLL DEVICE FILES AS JSON ARCHIVE
+curl -O https://phonedb.net/cache/device/Oppo_Reno13F_512GB_CPH2701.json
+curl -O https://phonedb.net/cache/device/Sharp_Aquos_Wish5_TW_256GB_SH-M32TW.json
+
+# CHECKSUM ASSURANCE FOR REPRODUCIBILITY
+sha256sum Oppo_Reno13F_512GB_CPH2701.json > hash_Oppo_Reno13F.sha256
+sha256sum Sharp_Aquos_Wish5_TW_256GB_SH-M32TW.json > hash_Wish5X.sha256
+
+# LOG FILE ACTIVATION SEQUENCE for Classification Engine
+echo "[`date`] REN13 + WISH5 loaded from PhoneDB into model-identity-server." >> /var/log/device_classifier.log
+
+# =====================[END PULL: DEVICE INTEL FROM PHONEDB SOURCE]==================== #
+
 
 Upgrade
 Install
