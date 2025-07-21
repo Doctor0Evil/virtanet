@@ -23,7 +23,13 @@ FILES = [
 OUTPUT_MANIFEST = "manifest_virta.json"
 CHANGELOG_FILE = "CHANGELOG.md"
 CI_WORKFLOW = ".github/workflows/build-publish.yml"
-
+{
+"agent_class": "bandit_contextual",
+"kernel": "matern32",
+"sampling_mode": "adaptive_reward_free",
+"target_system": "firmware_control_context",
+"fallback_defense": "gauss_newton_diffuser"
+}
 ROLE_MAP = {
   "agency" => "agent_api",
   "configur" => "configuration",
