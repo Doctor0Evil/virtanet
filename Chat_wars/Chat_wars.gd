@@ -1,4 +1,93 @@
-package main
+{
+  "results": [
+    {
+      "name": "POLYGON - Apocalypse Pack",
+      "creator": "Synty Studios",
+      "features": [
+        "Over 1,800 detailed low-poly prefabs (modular buildings, enterable interiors, bunkers, quarantine walls, props)",
+        "Modular vehicle armor attachments and weapons",
+        "Massive demo scene",
+        "All buildings have interiors",
+        "Mix-and-match with other POLYGON packs (e.g., Horror Mansion, Western Frontier)"
+      ],
+      "format": "FBX (requires conversion or material rework for Godot, see integration notes)",
+      "best_for": "Complete post-apocalyptic games—city ruins, survival bases, customized vehicles, modular weapon setups",
+      "integration_notes": [
+        "Official Godot-ready version not provided, but compatible via FBX or conversion to glTF2",
+        "Textures may need path corrections; manual material assignment required",
+        "Community recommends exporting via Blender or Unreal as glTF if material linking issues arise"
+      ],
+      "stores": [
+        "https://syntystore.com/products/polygon-apocalypse-pack",
+        "https://assetstore.unity.com/packages/3d/environments/urban/polygon-apocalypse-low-poly-3d-art-by-synty-154193"
+      ]
+    },
+    {
+      "name": "POLYGON - Apocalypse Wasteland",
+      "creator": "Synty Studios",
+      "features": [
+        "1,600+ premium modular prefabs ranging from buildings to props",
+        "23 unique vehicles, 23 rigged character models",
+        "Vast demo scene with two biomes: desert, toxic wasteland",
+        "Fully modular wasteland weapon system",
+        "Large variety of environment FX and set pieces"
+      ],
+      "format": "FBX (as above, requires workflow for Godot import)",
+      "best_for": "Open wasteland environments, faction battles, survival-crafting, mutant/zombie gameplay",
+      "integration_notes": [
+        "FBX support, convert to glTF and manually link textures for seamless Godot workflow",
+        "Designed to combine with base Apocalypse and other Synty series packs"
+      ],
+      "stores": [
+        "https://syntystore.com/products/polygon-apocalypse-wasteland"
+      ]
+    },
+    {
+      "name": "POLYGON Game Dev Asset Bundles",
+      "creator": "Synty Studios",
+      "features": [
+        "Massive Humble Bundle bundles include Apocalypse, Wasteland, Battle Royale, War, Western, and more at low cost",
+        "All assets are modular, low-poly, and themed for easy mixing"
+      ],
+      "format": "FBX and related standard 3D formats",
+      "best_for": "Budget-friendly, all-in-one library for prototyping or full games in Godot",
+      "integration_notes": [
+        "Humble Bundle purchases give access to full asset suite for rapid world-building",
+        "Best imported into Godot via Blender or direct glTF conversion"
+      ],
+      "stores": [
+        "https://gamefromscratch.com/best-of-polygon-game-dev-assets-by-synty-humble-bundle/",
+        "https://syntystore.com/",
+        "https://www.humblebundle.com/"
+      ]
+    },
+    {
+      "name": "Community and Curated Packs (YouTube/Itch.io/OpenGameArt)",
+      "creator": "Various",
+      "features": [
+        "Selection of smaller post-apocalyptic and low-poly theme packs suitable for Godot",
+        "Assets often provided as .OBJ, .glTF or directly Godot-importable",
+        "Props, vehicles, modular ruins, and characters"
+      ],
+      "best_for": "Lightweight projects, game jams, and as additions to Synty packs",
+      "integration_notes": [
+        "Check file format; glTF2 preferred for Godot, OBJ requires manual material setup"
+      ],
+      "references": [
+        "https://www.youtube.com/watch?v=Oe29HdRleBY",
+        "https://www.youtube.com/watch?v=6LEjLi5o8RE",
+        "https://opengameart.org/",
+        "https://itch.io/"
+      ]
+    }
+  ],
+  "pro_tips": [
+    "Synty packs have become the industry standard for stylized low-poly post-apocalyptic assets; while not Godot-native, there is an active community sharing tips for seamless import.",
+    "For best Godot results: Prefer glTF2 format. Convert FBX to glTF (via Blender or Godot converters), assign textures/materials within Godot, and use modular kits for maximum flexibility.",
+    "Many Humble Bundles have included Synty packs at a fraction of retail price—these are excellent entry points for Godot developers."
+  ]
+}
+
 
 import (
 	"encoding/json"
