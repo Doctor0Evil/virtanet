@@ -1,3 +1,27 @@
+virta-firmware-ai-core/
+├── bin/
+│   ├── virta-keygen-cli
+│   ├── virta-capsule-builder
+│   ├── verify-capsule-trust-ai
+│   ├── ai-lock-injector
+│   └── virta-reporter-traceroute
+├── config/
+│   └── LOCKPATCH.virtjson
+├── ai-core/
+│   ├── validate_merkle.py
+│   └── otacontexter.infer.aiq
+├── otacapsules/
+│   └── VRTAXIOM-B28-20250721.json
+├── keys/
+│   └── ota_chain.json
+├── sys_link/
+│   └── ingest_virtual_tracer
+├── logs/
+│   └── ota_audit.log
+├── init_virta_core.sh
+├── README.md
+└── .prebuild.yml
+
 C://
 ├── Users
 │   ├── User1
