@@ -45,6 +45,133 @@
 │   │   └── Diagnostics/
 │   │       ├── Error_Codes.list
 │   │       └── Live_Profiler.report
+│
+├── BCI_Telemetry/
+│   ├── EEG_Input/
+│   │   ├── Raw_Stream.bn
+│   │   ├── Filtered_Signals.csv
+│   │   ├── Artifact_Detection/
+│   │   │   └── EyeBlink.txt
+│   │   ├── Spectral_Analysis.report
+│   │   └── Channel_Map.png
+│   ├── fMRI/
+│   │   ├── Session_Timeline.log
+│   │   ├── Activation_Map.nii
+│   │   ├── Signal_QC.json
+│   │   └── RealTime_Stream/
+│   │       ├── Data_Sample.bin
+│   │       └── Latency_Stats.txt
+│   ├── Implants/
+│   │   ├── Device_Inventory.csv
+│   │   ├── Firmware_Status.pdf
+│   │   ├── Eco_Mode.toggle
+│   │   └── Implant_Telemetry/
+│   │       ├── TimeSeries.lz4
+│   │       ├── Battery_Levels.csv
+│   │       └── Error_Alerts.log
+│   ├── ML_Decoding/
+│   │   ├── Gesture_Decode.json
+│   │   ├── Speech_Intent.json
+│   │   ├── Anomaly_Detector/
+│   │   │   └── OutlierScores.csv
+│   │   └── Model_Weights.pt
+│   ├── Security/
+│   │   ├── Data_Privacy_Policy.md
+│   │   └── Telemetry_Access_Control.txt
+│   └── Research_Exports/
+│       ├── Session_DB.sqlite
+│       ├── Annotated_Events.csv
+│       └── Export_Bundle.zip
+│
+├── User_Interface/
+│   ├── Dashboard.html
+│   ├── Config_Menu/
+│   │   ├── Display_Profiles.ui
+│   │   ├── Alert_Settings.cfg
+│   │   └── Accessibility/
+│   │       ├── HighContrast.toggle
+│   │       └── VoiceOutput.enable
+│   ├── Notifications/
+│   │   ├── Alert_Log.json
+│   │   └── Event_Summary.txt
+│   └── Help/
+│       ├── UserGuide.pdf
+│       └── Troubleshoot_FAQ.md
+│
+├── Virtual_Drive_Map/
+│   ├── C://  (host OS, core BIOS, legacy file roots)
+│   ├── D://  (implant/EEG data buffer, temp)
+│   ├── E://  (fMRI pipeline, image volumes)
+│   ├── N://  (network/multi-user LLM telemetry)
+│   ├── R://  (regulatory/legal/audit)
+│   ├── S://  (sandboxed AI auto-tuning, sim)
+│   ├── T://  (temporary exports, diagnostics)
+│   ├── X://  (advanced ML models, remote folders)
+│   ├── Z://  (cloud backup, AI/BCI overlays, logs)
+│   └── V://  (virtual env deployments: AR/VR/edge)
+│
+├── Scripts_Tools/
+│   ├── DeviceScan.ps1
+│   ├── TelemetrySync.py
+│   ├── AuditTrail_Export.sh
+│   ├── Capsule_OTA_Signer.bat
+│   ├── VR_Launcher.js
+│   └── SimRunner.bash
+│
+├── Documentation/
+│   ├── MT6883_BIOS_README.md
+│   ├── BCI_Telemetry_API.pdf
+│   ├── Security_Model.md
+│   ├── Compliance_Map.xlsx
+│   └── ChangeLog.txt
+
+/BCI_MGMT_SYS/
+├── BIOS_Config_MT6883/
+│   ├── Firmware/
+│   │   ├── Version_Info.json
+│   │   ├── OTA_Update.bin
+│   │   ├── Capsule_Signature.pem
+│   │   ├── Bootloader/
+│   │   │   ├── Boot_Settings.cfg
+│   │   │   └── SMM_Hooks/
+│   │   │       └── Enabled_Modules.list
+│   │   └── Recovery/
+│   │       ├── Rollback.bin
+│   │       └── Diagnostics.log
+│   ├── AI_CoProcessor/
+│   │   ├── Runtime_Mode.select
+│   │   ├── LLM_Core_Params.json
+│   │   ├── Sandbox_Switch.toggle
+│   │   └── Accelerator_Telemetry/
+│   │       ├── Usage_Stats.csv
+│   │       ├── Error_Log.txt
+│   │       └── Firmware_Metrics.json
+│   ├── Security/
+│   │   ├── SecureBoot.enable
+│   │   ├── Trusted_Execution.toggle
+│   │   ├── Capsule_Validation/
+│   │   │   ├── Merkle_Attestation.log
+│   │   │   └── Chain_Of_Trust.status
+│   │   ├── BCI_Policy/
+│   │   │   ├── Ethics_Filter.cfg
+│   │   │   └── Consent_Logs.json
+│   │   └── Compliance/
+│   │       ├── GDPR_Status.txt
+│   │       ├── FDA_Report.pdf
+│   │       └── Audit_Trail.db
+│   ├── System_Monitor/
+│   │   ├── Power/
+│   │   │   ├── Battery_Voltage.log
+│   │   │   └── Thermal_Throttle.status
+│   │   ├── Sensors/
+│   │   │   ├── Fan_RPM.csv
+│   │   │   └── VRM_Status.json
+│   │   ├── Logs/
+│   │   │   ├── Kernel.log
+│   │   │   └── BootTrace-AI.log
+│   │   └── Diagnostics/
+│   │       ├── Error_Codes.list
+│   │       └── Live_Profiler.report
 ├── BCI_Telemetry/
 │   ├── EEG_Input/
 │   │   ├── Raw_Stream.bn
