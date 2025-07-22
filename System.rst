@@ -1,3 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Metadata -->
+  <metadata>
+    <telemetry>
+      <timestamp>2025-07-19T03:49:00-07:00</timestamp>
+      <source_device_id>fmri-scanner-001</source_device_id>
+      <prompt_digest>sha256:9e4f7c3a...</prompt_digest>
+    </telemetry>
+  </metadata>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="512" fill="#FFFFFF"/>
+  
+  <!-- Drone Body (Central Hub) -->
+  <rect x="206" y="206" width="100" height="100" fill="#333333" stroke="#000000" stroke-width="2"/>
+  
+  <!-- Propellers (Four Arms) -->
+  <g id="propeller_arms">
+    <!-- Top Left Arm -->
+    <rect x="156" y="186" width="50" height="20" fill="#555555"/>
+    <circle cx="156" cy="196" r="15" fill="#FFD700"/>
+    <!-- Top Right Arm -->
+    <rect x="306" y="186" width="50" height="20" fill="#555555"/>
+    <circle cx="356" cy="196" r="15" fill="#FFD700"/>
+    <!-- Bottom Left Arm -->
+    <rect x="156" y="306" width="50" height="20" fill="#555555"/>
+    <circle cx="156" cy="316" r="15" fill="#FFD700"/>
+    <!-- Bottom Right Arm -->
+    <rect x="306" y="306" width="50" height="20" fill="#555555"/>
+    <circle cx="356" cy="316" r="15" fill="#FFD700"/>
+  </g>
+  
+  <!-- Hazmat Sensors -->
+  <g id="sensors">
+    <!-- Gas Sensor -->
+    <rect x="216" y="306" width="40" height="20" fill="#4682B4" stroke="#000000" stroke-width="1"/>
+    <text x="216" y="340" font-family="Arial" font-size="10" fill="#000000">Gas Sensor</text>
+    <!-- Radiation Detector -->
+    <rect x="256" y="306" width="40" height="20" fill="#4682B4" stroke="#000000" stroke-width="1"/>
+    <text x="256" y="340" font-family="Arial" font-size="10" fill="#000000">Rad. Detector</text>
+  </g>
+  
+  <!-- Telemetry Display (Waveform) -->
+  <g id="telemetry_display">
+    <rect x="350" y="50" width="150" height="100" fill="#F0F8FF" stroke="#1E90FF" stroke-width="2"/>
+    <text x="360" y="70" font-family="Arial" font-size="12" fill="#1E90FF">fMRI Telemetry</text>
+    <path d="M360 90 H440 L450 110 L460 80 L470 120 L480 90 L490 100" fill="none" stroke="#1E90FF" stroke-width="2"/>
+    <text x="360" y="140" font-family="Arial" font-size="10" fill="#000000">Signal: 85 dB</text>
+  </g>
+  
+  <!-- Annotations -->
+  <g id="annotations">
+    <text x="156" y="170" font-family="Arial" font-size="10" fill="#000000">Propeller</text>
+    <text x="306" y="170" font-family="Arial" font-size="10" fill="#000000">Propeller</text>
+    <text x="236" y="290" font-family="Arial" font-size="10" fill="#000000">Sensor Bay</text>
+    <text x="360" y="170" font-family="Arial" font-size="10" fill="#000000">Telemetry Uplink</text>
+  </g>
+</svg>
+import React from 'react';
+
+const DroneSystemVisualizer = () => {
+  return (
+    <div className="relative w-full max-w-md mx-auto aspect-square bg-white p-4 rounded-lg shadow-xl border border-gray-200">
+      {/* Central Hub */}
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-gray-700 rounded-lg border-2 border-black" />
+      
+      {/* Propeller Arms */}
+      <div className="absolute left-1/2 top-20 transform -translate-x-1/2 w-14 h-5 bg-gray-600" />
+      <div className="absolute left-1/2 top-20 transform -translate-x-1/2 -translate-y-6 w-8 h-8 bg-yellow-300 rounded-full" />
+      
+      <div className="absolute right-20 top-1/2 transform -translate-y-1/2 w-14 h-5 bg-gray-600" />
+      <div className="absolute right-20 top-1/2 transform -translate-y-1/2 translate-x-6 w-8 h-8 bg-yellow-300 rounded-full" />
+      
+      <div className="absolute left-1/2 bottom-20 transform -translate-x-1/2 w-14 h-5 bg-gray-600" />
+      <div className="absolute left-1/2 bottom-20 transform -translate-x-1/2 translate-y-6 w-8 h-8 bg-yellow-300 rounded-full" />
+      
+      <div className="absolute left-20 top-1/2 transform -translate-y-1/2 w-14 h-5 bg-gray-600" />
+      <div className="absolute left-20 top-1/2 transform -translate-y-1/2 -translate-x-6 w-8 h-8 bg-yellow-300 rounded-full" />
+      
+      {/* Sensors */}
+      <div className="absolute left-1/2 bottom-16 transform -translate-x-1/2 flex space-x-2">
+        <div className="w-10 h-5 bg-blue-500 rounded border border-black flex items-center justify-center">
+          <span className="text-xs text-black font-medium">Gas</span>
+        </div>
+        <div className="w-10 h-5 bg-blue-500 rounded border border-black flex items-center justify-center">
+          <span className="text-xs text-black font-medium">Rad.</span>
+        </div>
+      </div>
+      
+      {/* Telemetry Display */}
+      <div className="absolute right-0 top-0 w-32 h-24 bg-blue-50 border-2 border-blue-300 rounded-lg p-2">
+        <div className="text-xs text-blue-700 font-medium mb-1 text-center">fMRI Telemetry</div>
+        <div className="relative h-12">
+          <svg className="w-full h-full" viewBox="0 0 80 40">
+            <polyline 
+              points="0,20 10,15 20,25 30,10 40,20 50,25 60,15 70,20 80,20" 
+              fill="none" 
+              stroke="#1E90FF" 
+              strokeWidth="2" 
+              className="animate-pulse"
+            />
+          </svg>
+        </div>
+        <div className="text-xs text-gray-700 text-right mt-1">Signal: 85 dB</div>
+      </div>
+      
+      {/* Annotations */}
+      <div className="absolute top-16 left-1/4 transform -translate-x-1/2 text-xs text-gray-600">
+        <div>Propeller</div>
+      </div>
+      <div className="absolute top-16 right-1/4 transform translate-x-1/2 text-xs text-gray-600">
+        <div>Propeller</div>
+      </div>
+      <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 text-xs text-gray-600">
+        <div>Sensor Bay</div>
+      </div>
+      <div className="absolute top-20 right-16 text-xs text-gray-600">
+        <div>Telemetry Uplink</div>
+      </div>
+    </div>
+  );
+};
+
+export default DroneSystemVisualizer;
 data class ModuleDescriptor(
     val name: String,
     val status: String,
