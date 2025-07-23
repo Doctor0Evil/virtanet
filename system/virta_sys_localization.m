@@ -1,3 +1,40 @@
+
+% Hello World
+disp('Hello, World!')
+
+% Math Function
+function result = mathFunction(num)
+    numSquare = num * num;
+    result = floor(nthroot(numSquare, 3) + log(numSquare));
+end
+disp(mathFunction(4))  % Output: 6
+
+% Point Class equivalent (using structure and functions)
+function Point = createPoint(x, y, addToGrid)
+    if nargin < 3, addToGrid = false; end
+    if nargin < 2, x = 0; y = 0; end
+    Point.x = x;
+    Point.y = y;
+    persistent grid;
+    if isempty(grid), grid = createPoint(0, 0); end
+    if addToGrid
+        grid = Point;
+    end
+    Point.distanceToPoint = @(other) distanceBetweenPoints(Point.x, Point.y, other.x, other.y);
+end
+
+function dist = distanceBetweenPoints(x1, y1, x2, y2)
+    dist = hypot(x1 - x2, y1 - y2);
+end
+
+p1 = createPoint(3.0, 4.0);
+p2 = createPoint(6.0, 8.0);
+disp(p1.distanceToPoint(p2))  % Output: 5.0
+
+% REPL Example equivalent
+arr = [1, 2, 3];
+result = arr .* arr;
+disp(result)  % Output: [1, 4, 9]
 % VirtualSystemLocalization.m
 % MATLAB implementation for independent localization of a virtual system
 % Uses matrix calculations to localize without physical or simulated grid connections
