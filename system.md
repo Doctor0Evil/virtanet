@@ -1,3 +1,240 @@
+% windows_commands_cheat_sheet.m
+% This script demonstrates equivalents of various Windows commands using MATLAB syntax.
+% It covers directory navigation, file operations, searching, process management,
+% and basic batch scripting concepts.
+% Compiled from information provided.
+% Date: July 22, 2025
+
+%% 1. Basic Directory Navigation Commands
+disp('=== 1. Directory Navigation ===');
+% dir -> Display contents of current directory
+disp('Contents of current directory:');
+dir
+
+% cd -> Change directory
+% Note: Use forward slashes or double backslashes for paths in MATLAB strings.
+% cd('c:/path/to/my_folder') % Example - Uncomment and modify path as needed
+% cd('..') % Move up one directory
+% cd('d:/videos') % Change to another drive/directory - Example
+
+%% 2. File and Directory Management Commands
+disp('=== 2. File and Directory Management ===');
+% mkdir -> Create directory
+% mkdir('new_folder')
+
+% copy -> Copy file
+% copyfile('source.txt', 'destination.txt')
+
+% move -> Move file
+% movefile('old_name.txt', 'new_name.txt')
+
+% del -> Delete file
+% delete('unwanted_file.txt')
+
+% ren -> Rename file (using movefile)
+% movefile('old_name.txt', 'new_name.txt')
+
+% xcopy /S -> Copy directory tree (recursive copy)
+% copyfile('source_folder', 'destination_folder', 'f') % 'f' for overwrite
+
+% type -> Display file contents
+% content = fileread('example.txt');
+% disp(content);
+
+% type | sort /unique -> Display sorted unique lines from a file
+% fid = fopen('playlist.m3u','r');
+% if fid ~= -1
+%     lines = textscan(fid,'%s','Delimiter','');
+%     fclose(fid);
+%     unique_lines = unique(lines{1});
+%     disp('Unique lines sorted:');
+%     disp(unique_lines);
+%     % Optionally write to a new file:
+%     % fid_out = fopen('unique_playlist.m3u','w');
+%     % fprintf(fid_out,'%s\n',unique_lines{:});
+%     % fclose(fid_out);
+% else
+%     warning('Could not open playlist.m3u');
+% end
+
+% fc -> Compare files
+% text1 = fileread('file1.txt');
+% text2 = fileread('file2.txt');
+% if isequal(text1, text2)
+%     disp('Files are identical.');
+% else
+%     disp('Files differ.');
+% end
+% % For line-by-line comparison, text1 and text2 would need to be split into lines.
+
+% find -> Search for text within a file
+% fid = fopen('run_script.bat','r');
+% if fid ~= -1
+%     lines = textscan(fid,'%s','Delimiter','');
+%     fclose(fid);
+%     matches = contains(lines{1},'python'); % Logical index of matching lines
+%     matching_lines = lines{1}(matches);
+%     disp('Lines containing "python":');
+%     disp(matching_lines);
+%
+%     % find /C -> Count matches
+%     match_count = sum(matches);
+%     fprintf('Number of lines containing "python": %d\n', match_count);
+% else
+%     warning('Could not open run_script.bat');
+% end
+
+
+%% 3. Process Management Commands
+disp('=== 3. Process Management ===');
+% tasklist -> List running tasks (using system call)
+[status, tasks_output] = system('tasklist');
+if status == 0
+    disp('Current running tasks:');
+    disp(tasks_output);
+else
+    warning('Failed to execute tasklist command.');
+end
+
+% tasklist | find -> Find specific task (using system call and MATLAB processing)
+% [status, tasks_output] = system('tasklist');
+% if status == 0
+%     task_lines = splitlines(tasks_output);
+%     % Example: Find lines containing a specific process name or PID
+%     matches = contains(task_lines, 'notepad.exe'); % Change 'notepad.exe' as needed
+%     matching_processes = task_lines(matches);
+%     if ~isempty(matching_processes)
+%         disp('Matching processes:');
+%         disp(matching_processes);
+%     else
+%         disp('No matching processes found.');
+%     end
+% else
+%     warning('Failed to execute tasklist command for finding.');
+% end
+
+% taskkill -> Kill process by name or PID (using system call)
+% system('taskkill /IM msedge.exe /F') % Example: Force kill Microsoft Edge - Uncomment carefully
+% system('taskkill /PID 1234 /F')      % Example: Force kill process with PID 1234 - Uncomment carefully
+
+
+%% 4. Batch Scripting Concepts in MATLAB
+disp('=== 4. Batch Scripting Concepts in MATLAB ===');
+% rem -> Comment
+% This line is a comment, equivalent to 'rem' in batch.
+
+% set /A -> Arithmetic operations
+a = 5;
+b = 3;
+c = a + b; % Equivalent to 'set /A c=%a%+%b%'
+disp(['Result of a + b: ', num2str(c)]);
+
+% echo -> Display output
+disp('This is a string of characters.'); % Equivalent to 'echo This is a string...'
+
+% cls -> Clear screen
+% clc % Uncomment to clear the Command Window
+
+% pause -> Pause execution
+% pause(5) % Pause for 5 seconds. Equivalent to 'timeout /T 5' or 'pause'
+% pause    % Pause until user presses a key. Equivalent to 'pause'
+
+% choice -> Get user input (basic)
+% choice = input('Press y=Yes, n=No, c=Cancel: ', 's'); % 's' for string input
+% disp(['You pressed: ', choice]);
+
+% goto -> MATLAB uses function calls and control flow (if/for/while) instead of goto.
+% Example using a function for structure:
+% myScriptFunction();
+
+% timeout -> Use pause(seconds)
+% pause(3600) % Equivalent to 'timeout /T 3600'
+
+
+%% 5. Example Functions Demonstrating Concepts
+disp('=== 5. Example Functions ===');
+
+% Hello World
+disp('Hello, World!');
+
+% Math Function Example
+function result = mathFunction(num)
+    if nargin < 1
+        num = 4; % Default value if no input provided
+    end
+    numSquare = num * num;
+    % Calculate cube root and natural log, then sum and floor
+    result = floor(nthroot(numSquare, 3) + log(numSquare));
+end
+
+calculated_result = mathFunction(4);
+fprintf('mathFunction(4) result: %g\n', calculated_result); % Should output 6
+
+
+% Point Class equivalent (using structure and function handles)
+function Point = createPoint(x, y, addToGrid)
+    if nargin < 3
+        addToGrid = false;
+    end
+    if nargin < 2
+        x = 0;
+        y = 0;
+    end
+
+    Point.x = x;
+    Point.y = y;
+
+    % Simulate persistent grid behavior (basic)
+    persistent grid;
+    if isempty(grid) || addToGrid
+        grid = struct('x', 0, 'y', 0); % Initialize or update grid
+    end
+
+    % Attach a method to calculate distance
+    Point.distanceToPoint = @(otherPoint) distanceBetweenPoints(Point.x, Point.y, otherPoint.x, otherPoint.y);
+end
+
+function dist = distanceBetweenPoints(x1, y1, x2, y2)
+    % Calculate Euclidean distance
+    dist = hypot(x1 - x2, y1 - y2);
+end
+
+% Create points and calculate distance
+p1 = createPoint(3.0, 4.0);
+p2 = createPoint(6.0, 8.0);
+distance_p1_p2 = p1.distanceToPoint(p2);
+fprintf('Distance between p1(3,4) and p2(6,8): %.2f\n', distance_p1_p2); % Should output 5.00
+
+
+% REPL Example equivalent (Vectorized operations)
+arr = [1, 2, 3];
+result = arr .* arr; % Element-wise squaring
+disp('Vectorized squaring result:');
+disp(result); % Should output [1, 4, 9]
+
+
+%% 6. System Interaction
+disp('=== 6. System Interaction ===');
+% notepad -> Open application using system call
+% system('notepad') % Example: Opens Notepad - Uncomment to try
+% system('notepad example.txt') % Example: Opens example.txt in Notepad - Uncomment to try
+
+% cmd -> Open Command Prompt
+% system('cmd') % Example: Opens new CMD window - Uncomment carefully
+
+% powershell -> Open PowerShell
+% system('powershell') % Example: Opens PowerShell - Uncomment carefully
+
+
+disp('=== End of Windows Commands Cheat Sheet in MATLAB ===');
+
+%% Example Function for GOTO simulation
+% function myScriptFunction()
+%     disp('Inside myScriptFunction - simulating GOTO structure');
+%     % Perform actions here
+%     % Instead of GOTO, use standard control flow
+%     % if condition, call another function or loop
+% end
 from pydantic import BaseModel, Field, ValidationError, validator
 from typing import Optional, List
 
