@@ -156,7 +156,60 @@ https://h2ogpte.genai.h2o.ai/chats/archivedrestore
 [11] https://bbs.archlinux.org/viewtopic.php?id=155356
 [12] https://www.reddit.com/r/bash/comments/btrho6/is_there_a_way_to_parse_through_table_values_in/
 [13] https://oxylabs.io/blog/curl-web-scraping
+https://tpb.party/torrent/9224174/Filme_-_Exterm_iacute_nio_28_Dias_Depois_(Dublado)_PTBR
+https://tpb.party/torrent/6244124/Call_of_Duty-_Modern_Warfare_2-_The_Pirate(TPR)
+https://tpb.party/torrent/8541504/Matrix_(1999)_BDRip_bluray_720p_dublado_-_derew
+https://tpb.party/torrent/11684493/The_Theory_of_Everything_(2014)_1080p_BrRip_x264_-_YIFY
+https://tpb.party/torrent/5548044/Marvin_the_Martian_cartoons
+https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/7d9b5a2a-ea72-4b06-8e8d-dbe9d58ec3e0/git-clone-https-github-com-doc-4hp6R1mcR7K0hJy3pqj5Vg.md
+https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/c424a3e7-53df-443b-8438-0bf330547324/skip-to-content-active-directo-1DI.JY1LRQ69jhVrSqX8PA.md
+https://dzone.com/articles/use-aws-lambda-and-api-gateway-with-nodejs-and-cou
+https://www.couchbase.com/blog/aws-serverless-lambda-scheduled-events-tweets-couchbase/
+https://www.couchbase.com/blog/use-aws-lambda-api-gateway-node-js-couchbase-nosql/
+https://molo17.com/discover-couchbase/couchbase-server-integrate-couchbase-to-your-serverless-backend/
+https://awstip.com/building-a-serverless-application-with-aws-lambda-and-couchbase-1059910ec2f0?gi=ccb78d68d748
+https://stackoverflow.com/questions/56180812/not-able-to-load-node-js-function-in-aws-lambda-using-serverless-couchbase-loung
+https://www.serverless.com/framework/docs/providers/aws/guide/functions
+https://ajurasz.github.io/2017-05-28-kotlin-aws-lambda-serverless-framework/
+https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/deploy-and-manage-a-serverless-data-lake-on-the-aws-cloud-by-using-infrastructure-as-code.html
+https://www.serverless.com/guides/using-aws-lambda-as-a-serverless-provider
+https://policysim.aws.amazon.com/home/index.jsp?#
+ https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+ https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios.html
+ https://dzone.com/articles/least-privilege-aws-iam-best-practices
+ https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/
+ https://blog.slauth.io/iam-policy-examples
 
+https://tpb.party/torrent/74331385/Python_Fusion_by_Hayden_Van_Der_Post_PDF
+https://tpb.party/torrent/17538764/Adobe_Acrobat_XI_Pro_11_0_20_FINAL___Crack_%5BTechTools%5D
+https://tpb.party/torrent/17860221/The_Sims_4_Deluxe_Edition_MULTi-17_All_DLC-RePack
+https://tpb.party/torrent/13020894/The_Walk_2015_1080p_WEB-DL_x264_AC3-JYK
+https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/c424a3e7-53df-443b-8438-0bf330547324/skip-to-content-active-directo-1DI.JY1LRQ69jhVrSqX8PA.md
+https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/7d9b5a2a-ea72-4b06-8e8d-dbe9d58ec3e0/git-clone-https-github-com-doc-4hp6R1mcR7K0hJy3pqj5Vg.md
+https://numericaideas.com/blog/how-to-build-python-lambda-functions-using-serverless-framework/
+https://www.freecodecamp.org/news/how-to-deploy-aws-lambda-with-serverless/
+https://www.serverless.com/framework/docs/providers/aws/guide/deploying
+https://www.serverless.com/framework/docs/providers/aws/guide/functions
+https://www.tutorialspoint.com/serverless/serverless_deploying_function.htm
+https://businesscompassllc.com/streamlining-python-application-deployment-on-aws-lambda-with-the-serverless-framework-a-step-by-step-guide/
+https://github.com/dvsu/aws-python-serverless
+https://www.packtpub.com/en-us/product/building-serverless-microservices-in-python-9781789535297/chapter/deploying-your-serverless-stack-3/section/building-and-deploying-with-api-gateway-lambda-and-dynamodb-ch03lvl1sec24
+https://www.serverless.com/blog/serverless-python-packaging
+https://www.serverless.com/examples/aws-python
+ https://tpb.party/torrent/74331385/Python_Fusion_by_Hayden_Van_Der_Post_PDF https://tpb.party/torrent/17538764/Adobe_Acrobat_XI_Pro_11_0_20_FINAL___Crack_%5BTechTools%5D https://tpb.party/torrent/17860221/The_Sims_4_Deluxe_Edition_MULTi-17_All_DLC-RePack https://tpb.party/torrent/13020894/The_Walk_2015_1080p_WEB-DL_x264_AC3-JYK https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/c424a3e7-53df-443b-8438-0bf330547324/skip-to-content-active-directo-1DI.JY1LRQ69jhVrSqX8PA.md https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_ece5cb8c-687b-4133-a687-23a3d0ab0081/7d9b5a2a-ea72-4b06-8e8d-dbe9d58ec3e0/git-clone-https-github-com-doc-4hp6R1mcR7K0hJy3pqj5Vg.md https://numericaideas.com/blog/how-to-build-python-lambda-functions-using-serverless-framework/ https://www.freecodecamp.org/news/how-to-deploy-aws-lambda-with-serverless/ https://www.serverless.com/framework/docs/providers/aws/guide/deploying https://www.serverless.com/framework/docs/providers/aws/guide/functions https://www.tutorialspoint.com/serverless/serverless_deploying_function.htm https://businesscompassllc.com/streamlining-python-application-deployment-on-aws-lambda-with-the-serverless-framework-a-step-by-step-guide/ https://github.com/dvsu/aws-python-serverless https://www.packtpub.com/en-us/product/building-serverless-microservices-in-python-9781789535297/chapter/deploying-your-serverless-stack-3/section/building-and-deploying-with-api-gateway-lambda-and-dynamodb-ch03lvl1sec24 https://www.serverless.com/blog/serverless-python-packaging https://www.serverless.com/examples/aws-python
+https://spacelift.io/blog/aws-iam-roles
+https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios.html
+https://awsfundamentals.com/blog/aws-iam-roles-terms-concepts-and-examples
+https://dzone.com/articles/least-privilege-aws-iam-best-practices
+https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/
+https://blog.slauth.io/iam-policy-examples
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_understand-policy-summary-access-level-summaries.html
+https://www.appsecengineer.com/blog/aws-security-basics-iam-users-vs-roles-vs-groups
+ https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+ https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios.html
+ https://dzone.com/articles/least-privilege-aws-iam-best-practices
 *https://accounts.google.com/v3/signin/challenge/pwd?TL=ALgCv6zsWyAbZH17in4WieIDFe1pfwK2_fFPMPReDXI2ECgBGASJSOT-CQvuMDPZ&access_type=offline&app_domain=https%3A%2F%2Fcraftpix.net&checkConnection&checkedDomains&cid=2&client_id=929522922405-1201kr06mtmtmc276af56ljs9db3thap.apps.googleusercontent.com&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hAMTWfMpVwcMi8YpI5M2Gxeb434Hilm4G7lafG9QdZFS86OLhqK-DV1q1lLR4ZzqA6B8Bh-AS_X84m24p08XdAm-IH8kmYRUymBivbelrkGJELbwNymHmarLQReMSIo44ENkz_phlk8LyXhW1vGsefGGXRsTAnLmp9jY_8o428lPWQPG1MFLuDTmxSS-Jl7M10vBwS3c4AeU1fHDSxcLozpOtVIF8Z8s0LDyOj3yjOs-ygz6ywyTg83sX8TTFGavuTEkeNoYxJnYMX2ZV0b0p-gE8A7Myy38W1U6BfGdc-9Y0Qbg2nhl-B289ZYkkMqZ6RfgKEVVOUiqh4w51vdHE7WwqNLh8c0kmdJLQZs4YH2ioUgHhDep0m0HEWSnT9D8YWkD4R6Kl5NW3eABfylv_N18ceHrSUCnuFo2Ao6hZW-DWqg9vDmr5ua3PYuTb-7V2b5xl-9pEFaVWbHGJ8OY-qHjJ_TFJA%26flowName%3DGeneralOAuthFlow%26as%3DS806257736%253A1752634697659780%26client_id%3D929522922405-1201kr06mtmtmc276af56ljs9db3thap.apps.googleusercontent.com%23&dsh=S806257736%3A1752634697659780&flowName=GeneralOAuthFlow&o2v=1&opparams=%253F&pstMsg=0&rart=ANgoxcdNuvfOpVwspnNpamymiFf58twqQzKN1uJVGwAeJF5RFhlLTrOPK5cvjCF3FuDdq6OvFGoL1UuBnEucYbvVewp48SL85GIpxhlNin1e4bXzOCOyPKE&redirect_uri=https%3A%2F%2Fcraftpix.net%2Fwp-content%2Fplugins%2Ftyschenko-social-login%2Fhybridauth%2Fcallbacks%2Fgoogle.php&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&service=lso&state=HA-9ML8FQGWN1Y2SRB53KVCPHOATUJ6IZ074EXD*
 # Install Node.js dependencies for system admin panel
 npm install @langchain/openai axios ioredis winston async dotenv
