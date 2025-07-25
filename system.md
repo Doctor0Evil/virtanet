@@ -1,6 +1,3 @@
-
-
-GROK 4
 % gamble_game.m
 % MATLAB implementation of a free-to-play gambling game embedded in a virtual game environment
 % Integrates matrix-based localization, NPC dialogues, and game-world logic
