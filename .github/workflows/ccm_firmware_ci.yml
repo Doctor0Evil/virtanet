@@ -1,0 +1,20 @@
+name: CCM Firmware CI
+on:
+  push:
+      - main
+jobs:
+  build_firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build CCU Firmware
+        run: |
+          cd firmware/ccu_fw
+          # Placeholder for actual ARM cross-compilation command
+          echo "Simulating firmware build for ARM target..."
+          # Example: arm-none-eabi-gcc main.c ccm_api.c -o ccm_firmware.elf
+      - name: Archive Firmware Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ccm-firmware
+          path: firmware/ccu_fw/*.elf
