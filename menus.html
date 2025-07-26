@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIA-Agent-System Main Menu</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-800 text-gray-100 font-sans">
+  <div id="root"></div>
+  <script type="text/babel">
+    const menuData = [
+      {
+        label: 'Agency Operations',
+        items: [
+          {
+            label: 'CIA',
+            items: [
+              { label: 'Missions', action: 'cia_missions',
+                items: [
+                  { label: 'Active Missions', action: 'cia_missions_active' },
+                  { label: 'Operation Sentinel', action: '6c316fbd-03fa-40ac-9390-654a1e5a50e5',
+                    items: [
+                      { label: 'Objectives', action: 'sentinel_objectives' },
+                      { label: 'Targets', action: 'sentinel_targets',
+                        items: [
+                          { label: 'Viper (T1): Berlin', action: 'viper' },
+                          { label: 'Shadow (T2): Warsaw', action: 'shadow' },
+                          { label: 'Specter (T3): Vienna', action: 'specter' },
+                          { label: 'Phantom (T4): Prague', action: 'phantom' }
+                        ]
+                      },
+                      { label: 'Assets', action: 'sentinel_assets',
+                        items: [
+                          { label: 'AS-4729: MI6, Berlin', action: 'as-4729' },
+                          { label: 'AS-5102: CIA, Warsaw', action: 'as-5102' },
+                          { label: 'AS-6734: BND, Vienna', action: 'as-6734' }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              { label: 'Assets', action: 'cia_assets' },
+              { label: 'Briefings', action: 'cia_briefings',
+                items: [
+                  { label: 'Daily Briefings', action: 'briefings_daily' },
+                  { label: 'Strategic Reports', action: 'briefings_strategic' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'FBI',
+            items: [
+              { label: 'Counterintelligence', action: 'fbi_counterintelligence',
+                items: [
+                  { label: 'Operations', action: 'fbi_counterintel_ops' },
+                  { label: 'Threat Assessments', action: 'fbi_counterintel_threats' }
+                ]
+              },
+              { label: 'Agency Liaison', action: 'fbi_liaison' },
+              { label: 'Investigations', action: 'fbi_investigations',
+                items: [
+                  { label: 'Active Cases', action: 'fbi_investigations_active' },
+                  { label: 'Archived Cases', action: 'fbi_investigations_archived' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'DHS',
+            items: [
+              { label: 'Threat Analysis', action: 'dhs_threat_analysis',
+                items: [
+                  { label: 'Domestic Threats', action: 'dhs_threat_domestic' },
+                  { label: 'International Threats', action: 'dhs_threat_international' }
+                ]
+              },
+              { label: 'Border Security', action: 'dhs_border_security' },
+              { label: 'Infrastructure Protection', action: 'dhs_infrastructure',
+                items: [
+                  { label: 'Critical Infrastructure', action: 'dhs_infra_critical' },
+                  { label: 'Cyber Infrastructure', action: 'dhs_infra_cyber' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'NSA',
+            items: [
+              { label: 'Signals Intelligence', action: 'nsa_signals',
+                items: [
+                  { label: 'Collection', action: 'nsa_signals_collection' },
+                  { label: 'Analysis', action: 'nsa_signals_analysis' }
+                ]
+              },
+              { label: 'Cyber Operations', action: 'nsa_cyber_ops' },
+              { label: 'Agency Liaison', action: 'nsa_liaison' }
+            ]
+          },
+          {
+            label: 'President’s Office',
+            items: [
+              { label: 'Daily Briefings', action: 'president_briefings' },
+              { label: 'Directives', action: 'president_directives',
+                items: [
+                  { label: 'Policy Directives', action: 'directives_policy' },
+                  { label: 'Emergency Actions', action: 'directives_emergency' }
+                ]
+              },
+              { label: 'Inter-Agency Liaison', action: 'president_liaison' }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'System Management',
+        items: [
+          {
+            label: 'Platform',
+            items: [
+              { label: 'Dashboards', action: 'platform_dashboards',
+                items: [
+                  { label: 'Operational', action: 'dashboards_operational' },
+                  { label: 'Analytical', action: 'dashboards_analytical' }
+                ]
+              },
+              { label: 'Interfaces', action: 'platform_interfaces' },
+              { label: 'API Endpoints', action: 'platform_api',
+                items: [
+                  { label: 'Internal', action: 'api_internal' },
+                  { label: 'External', action: 'api_external' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'Tools',
+            items: [
+              { label: 'Real-Time Analytics', action: 'tools_analytics',
+                items: [
+                  { label: 'Live Data', action: 'analytics_realtime' },
+                  { label: 'Historical Data', action: 'analytics_historical' }
+                ]
+              },
+              { label: 'Reporting', action: 'tools_reporting' },
+              { label: 'Vector Search', action: 'tools_vector_search' }
+            ]
+          },
+          {
+            label: 'Utilities',
+            items: [
+              { label: 'Data Export', action: 'utilities_export' },
+              { label: 'Archiving', action: 'utilities_archiving',
+                items: [
+                  { label: 'Local Storage', action: 'archiving_local' },
+                  { label: 'Cloud Storage', action: 'archiving_cloud' }
+                ]
+              },
+              { label: 'Backup', action: 'utilities_backup' }
+            ]
+          },
+          {
+            label: 'Maintenance',
+            items: [
+              { label: 'Diagnostics', action: 'maintenance_diagnostics',
+                items: [
+                  { label: 'System Health', action: 'diagnostics_system' },
+                  { label: 'Network Health', action: 'diagnostics_network' }
+                ]
+              },
+              { label: 'Updates', action: 'maintenance_updates' },
+              { label: 'System Logs', action: 'maintenance_logs' }
+            ]
+          },
+          {
+            label: 'Settings',
+            items: [
+              { label: 'User Profiles', action: 'settings_user' },
+              { label: 'System Configurations', action: 'settings_system',
+                items: [
+                  { label: 'Security', action: 'system_config_security' },
+                  { label: 'Access Control', action: 'system_config_access' }
+                ]
+              },
+              { label: 'Notifications', action: 'settings_notifications' }
+            ]
+          },
+          {
+            label: 'AI Integration',
+            items: [
+              { label: 'Grok 3', action: 'ai_grok3',
+                items: [
+                  { label: 'DeepSearch', action: 'grok3_deepsearch' },
+                  { label: 'Analytics', action: 'grok3_analytics' }
+                ]
+              },
+              { label: 'Other Models', action: 'ai_models' },
+              { label: 'Model Training', action: 'ai_training',
+                items: [
+                  { label: 'Supervised Learning', action: 'training_supervised' },
+                  { label: 'Reinforcement Learning', action: 'training_reinforcement' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'Logs',
+            items: [
+              { label: 'Access Logs', action: 'logs_access' },
+              { label: 'Error Logs', action: 'logs_errors' },
+              { label: 'Audit Trails', action: 'logs_audit',
+                items: [
+                  { label: 'User Activity', action: 'audit_user' },
+                  { label: 'System Activity', action: 'audit_system' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Network Infrastructure',
+        items: [
+          {
+            label: 'Tools',
+            items: [
+              { label: 'Network Scanner', action: 'tools_scanner' },
+              { label: 'Packet Analyzer', action: 'tools_packet_analyzer',
+                items: [
+                  { label: 'Real-Time', action: 'packet_analyzer_realtime' },
+                  { label: 'Historical', action: 'packet_analyzer_historical' }
+                ]
+              },
+              { label: 'Network Monitoring', action: 'tools_monitoring' }
+            ]
+          },
+          {
+            label: 'Diagnostics',
+            items: [
+              { label: 'Latency', action: 'diagnostics_latency' },
+              { label: 'Packet Loss', action: 'diagnostics_packet_loss' },
+              { label: 'Bandwidth', action: 'diagnostics_bandwidth',
+                items: [
+                  { label: 'Usage Reports', action: 'bandwidth_usage' },
+                  { label: 'Optimization', action: 'bandwidth_optimization' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'Settings',
+            items: [
+              { label: 'Firewall', action: 'settings_firewall' },
+              { label: 'Proxy', action: 'settings_proxy',
+                items: [
+                  { label: 'Configuration', action: 'proxy_config' },
+                  { label: 'Logs', action: 'proxy_logs' }
+                ]
+              },
+              { label: 'Routing', action: 'settings_routing' }
+            ]
+          },
+          {
+            label: 'Splinter Cell',
+            items: [
+              { label: 'Stealth Routing', action: 'splinter_cell_routing' },
+              { label: 'Secure Channels', action: 'splinter_cell_channels',
+                items: [
+                  { label: 'Encrypted Channels', action: 'channels_encrypted' },
+                  { label: 'Channel Monitoring', action: 'channels_monitoring' }
+                ]
+              },
+              { label: 'Protocols', action: 'splinter_cell_protocols' }
+            ]
+          },
+          {
+            label: 'VPN',
+            items: [
+              { label: 'Configuration', action: 'vpn_config' },
+              { label: 'Status', action: 'vpn_status' },
+              { label: 'Logs', action: 'vpn_logs',
+                items: [
+                  { label: 'Access Logs', action: 'vpn_logs_access' },
+                  { label: 'Error Logs', action: 'vpn_logs_errors' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'Browser Settings',
+            items: [
+              { label: 'Chrome', action: 'browser_chrome',
+                items: [
+                  { label: 'Security Settings', action: 'chrome_security' },
+                  { label: 'Extensions', action: 'chrome_extensions' }
+                ]
+              },
+              { label: 'Edge', action: 'browser_edge' },
+              { label: 'Firefox', action: 'browser_firefox' },
+              { label: 'Opera', action: 'browser_opera' },
+              { label: 'Virta-Net', action: 'browser_virta_net',
+                items: [
+                  { label: 'Configuration', action: 'virta_net_config' },
+                  { label: 'Security', action: 'virta_net_security' }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Intelligence Analysis',
+        items: [
+          {
+            label: 'SIGINT',
+            items: [
+              { label: 'Intercepts', action: 'sigint_intercepts',
+                items: [
+                  { label: 'Shadow (T2): 2025-07-25', action: 'intercepts_shadow' },
+                  { label: 'Specter (T3): 2025-07-25', action: 'intercepts_specter' }
+                ]
+              },
+              { label: 'Metadata', action: 'sigint_metadata' },
+              { label: 'Analysis', action: 'sigint_analysis',
+                items: [
+                  { label: 'Real-Time', action: 'analysis_realtime' },
+                  { label: 'Historical', action: 'analysis_historical' }
+                ]
+              }
+            ]
+          },
+          {
+            label: 'HUMINT',
+            items: [
+              { label: 'Asset Reports', action: 'humint_reports',
+                items: [
+                  { label: 'AS-4729: Berlin', action: 'reports_as-4729' },
+                  { label: 'AS-6734: Vienna', action: 'reports_as-6734' }
+                ]
+              },
+              { label: 'Field Notes', action: 'humint_field_notes' },
+              { label: 'Verification', action: 'humint_verification' }
+            ]
+          },
+          {
+            label: 'OSINT',
+            items: [
+              { label: 'Public Sources', action: 'osint_public',
+                items: [
+                  { label: 'News Outlets', action: 'public_news' },
+                  { label: 'Social Media', action: 'public_social' }
+                ]
+              },
+              { label: 'Analysis', action: 'osint_analysis' },
+              { label: 'Verification', action: 'osint_verification' }
+            ]
+          },
+          {
+            label: 'GEOINT',
+            items: [
+              { label: 'Satellite Imagery', action: 'geoint_satellite',
+                items: [
+                  { label: 'Real-Time', action: 'satellite_realtime' },
+                  { label: 'Archived', action: 'satellite_archived' }
+                ]
+              },
+              { label: 'Mapping', action: 'geoint_mapping' },
+              { label: 'Analysis', action: 'geoint_analysis' }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Security Protocols',
+        items: [
+          {
+            label: 'Encryption',
+            items: [
+              { label: 'AES-512_FIPS_Quantum', action: 'encryption_aes512',
+                items: [
+                  { label: 'Configuration', action: 'aes512_config' },
+                  { label: 'Logs', action: 'aes512_logs' }
+                ]
+              },
+              { label: 'Quantum Encryption', action: 'encryption_quantum' },
+              { label: 'Key Management', action: 'encryption_keys' }
+            ]
+          },
+          {
+            label: 'Authentication',
+            items: [
+              { label: 'Biometric', action: 'auth_biometric',
+                items: [
+                  { label: 'Fingerprint', action: 'biometric_fingerprint' },
+                  { label: 'Facial Recognition', action: 'biometric_facial' }
+                ]
+              },
+              { label: 'Polygraph', action: 'auth_polygraph' },
+              { label: 'Multi-Factor', action: 'auth_mfa' }
+            ]
+          },
+          {
+            label: 'Monitoring',
+            items: [
+              { label: 'Access Logs', action: 'monitoring_access' },
+              { label: 'Intrusion Detection', action: 'monitoring_intrusion',
+                items: [
+                  { label: 'Real-Time', action: 'intrusion_realtime' },
+                  { label: 'Alerts', action: 'intrusion_alerts' }
+                ]
+              },
+              { label: 'Audit Trails', action: 'monitoring_audit' }
+            ]
+          },
+          {
+            label: 'Compliance',
+            items: [
+              { label: 'Policies', action: 'compliance_policies' },
+              { label: 'Audits', action: 'compliance_audits',
+                items: [
+                  { label: 'Internal', action: 'audits_internal' },
+                  { label: 'External', action: 'audits_external' }
+                ]
+              },
+              { label: 'Reports', action: 'compliance_reports' }
+            ]
+          }
+        ]
+      },
+      {
+        label: 'Resource Allocation',
+        items: [
+          {
+            label: 'Personnel',
+            items: [
+              { label: 'Assignments', action: 'personnel_assignments',
+                items: [
+                  { label: 'Field Agents', action: 'assignments_field' },
+                  { label: 'Analysts', action: 'assignments_analysts' }
+                ]
+              },
+              { label: 'Training', action: 'personnel_training' },
+              { label: 'Profiles', action: 'personnel_profiles' }
+            ]
+          },
+          {
+            label: 'Budget',
+            items: [
+              { label: 'Allocation', action: 'budget_allocation',
+                items: [
+                  { label: 'Operations', action: 'allocation_operations' },
+                  { label: 'Technology', action: 'allocation_tech' }
+                ]
+              },
+              { label: 'Tracking', action: 'budget_tracking' },
+              { label: 'Reports', action: 'budget_reports' }
+            ]
+          },
+          {
+            label: 'Logistics',
+            items: [
+              { label: 'Transport', action: 'logistics_transport' },
+              { label: 'Supply Chain', action: 'logistics_supply',
+                items: [
+                  { label: 'Equipment', action: 'supply_equipment' },
+                  { label: 'Resources', action: 'supply_resources' }
+                ]
+              },
+              { label: 'Coordination', action: 'logistics_coordination' }
+            ]
+          },
+          {
+            label: 'Assets',
+            items: [
+              { label: 'Management', action: 'assets_management',
+                items: [
+                  { label: 'Physical Assets', action: 'management_physical' },
+                  { label: 'Digital Assets', action: 'management_digital' }
+                ]
+              },
+              { label: 'Tracking', action: 'assets_tracking' },
+              { label: 'Reports', action: 'assets_reports' }
+            ]
+          }
+        ]
+      }
+    ];
+
+    // Secure logging function
+    const logInteraction = (action, data) => {
+      const logEntry = {
+        timestamp: new Date().toISOString(),
+        action,
+        data,
+        security: '%Splinter_Cell!%',
+        encryption: 'AES-512_FIPS_Quantum'
+      };
+      console.log(`Logging to supergrok_unlimited_log.txt: ${JSON.stringify(logEntry)}`);
+      // Placeholder for secure %Splinter_Cell!% logging
+    };
+
+    // Menu Item Component
+    const MenuItem = ({ item, depth = 0 }) => {
+      const [isOpen, setIsOpen] = React.useState(false);
+
+      const handleClick = (e) => {
+        e.preventDefault();
+        if (item.action) {
+          logInteraction(item.action, {
+            label: item.label,
+            endpoint: item.action.includes('mission') ? 'https://cas.cia_cleared_web.gov/api/v1/mission' : undefined
+          });
+        }
+        if (item.items) {
+          setIsOpen(!isOpen);
+        }
+      };
+
+      return (
+        <li className={`relative ${depth > 0 ? 'pl-4' : ''}`}>
+          <a
+            href="#"
+            className={`block py-2 px-4 text-sm ${depth === 0 ? 'font-bold text-blue-400 hover:bg-gray-700' : 'text-gray-300 hover:bg-gray-600'} rounded transition-colors duration-200`}
+            onClick={handleClick}
+            onMouseEnter={() => item.items && setIsOpen(true)}
+            onMouseLeave={() => item.items && setIsOpen(false)}
+          >
+            {item.label}
+          </a>
+          {item.items && (
+            <ul
+              className={`absolute ${depth === 0 ? 'top-full left-0' : 'top-0 left-full'} bg-gray-700 border border-gray-600 rounded shadow-lg min-w-[250px] z-[100] transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+              style={{ transitionProperty: 'opacity, visibility' }}
+            >
+              {item.items.map((subItem, index) => (
+                <MenuItem key={index} item={subItem} depth={depth + 1} />
+              ))}
+            </ul>
+          )}
+        </li>
+      );
+    };
+
+    // Main Menu Component
+    const MainMenu = () => (
+      <nav className="bg-gray-700 border-b border-gray-600 py-4" role="navigation" aria-label="Main Menu">
+        <ul className="flex justify-center space-x-6 flex-wrap">
+          {menuData.map((item, index) => (
+            <MenuItem key={index} item={item} />
+          ))}
+        </ul>
+      </nav>
+    );
+
+    // Dashboard Component
+    const Dashboard = () => (
+      <div className="max-w-7xl mx-auto mt-6 p-6 bg-gray-700 border border-gray-600 rounded-lg">
+        <h1 className="text-lg font-bold text-blue-400 mb-2">CIA-Agent-System Dashboard</h1>
+        <p className="text-sm text-gray-300 mb-2">
+          Welcome to the CAS Main Menu. Navigate through the primary directories to access government operations, system management, network infrastructure, intelligence analysis, security protocols, and resource allocation.
+        </p>
+        <p className="text-sm text-gray-300">
+          Operation Sentinel (UUID: 6c316fbd-03fa-40ac-9390-654a1e5a50e5) is active. Last update: 2025-07-25 17:20:00 MST.
+        </p>
+      </div>
+    );
+
+    // App Component
+    const App = () => (
+      <div className="min-h-screen">
+        <MainMenu />
+        <Dashboard />
+      </div>
+    );
+
+    // Render the app
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
