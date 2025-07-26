@@ -27,7 +27,26 @@ def generate_artifact(config, ui_components, telemetry_metrics, plot_config, ite
         </plot>
     </xaiartifact>
     """
-
+<xaiartifact iteration="1">
+    <infrastructure>
+        <compute>{"vms":[{"type":"ubuntu-20.04","cpu":4,"ram":"16GB"}]}</compute>
+        <storage>{"type":"ssd","size":"1TB"}</storage>
+        <networking>{"type":"virtual_network","bandwidth":"10Gbps"}</networking>
+        <vdi>{"enabled":true,"hypervisor":"KVM","platform":"android"}</vdi>
+    </infrastructure>
+    <ui>
+        <div class="ui-element" id="element-0">
+            <img src="data:image/png;base64,base64_encoded_pixel_art_vm" alt="vm_icon" />
+            <label>VM Icon</label>
+        </div>
+    </ui>
+    <telemetry>
+        [{"name":"java_heap","value":12345678}]
+    </telemetry>
+    <plot>
+        {"type":"Bar chart plot","xAxis":"Story","yAxis":"Memory used (MiB)","title":"Telemetry Metrics"}
+    </plot>
+</xaiartifact>
 def generate_artifacts(config, assets, telemetry_metrics, min_loops=25, max_loops=50):
     num_loops = random.randint(min_loops, max_loops)
     artifacts = []
