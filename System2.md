@@ -7,7 +7,41 @@ from abc import ABC, abstractmethod
 #include <string>
 #include <vector>
 #include <map>
+def generate_artifact(config, ui_components, telemetry_metrics, plot_config, iteration):
+    return f"""
+    <xaiartifact iteration="{iteration}">
+        <infrastructure>
+            <compute>{json.dumps(config['compute'])}</compute>
+            <storage>{json.dumps(config['storage'])}</storage>
+            <networking>{json.dumps(config['networking'])}</networking>
+            <vdi>{json.dumps(config['vdi'])}</vdi>
+        </infrastructure>
+        <ui>
+            {''.join(ui_components)}
+        </ui>
+        <telemetry>
+            {json.dumps(telemetry_metrics)}
+        </telemetry>
+        <plot>
+            {json.dumps(plot_config)}
+        </plot>
+    </xaiartifact>
+    """
 
+def generate_artifacts(config, assets, telemetry_metrics, min_loops=25, max_loops=50):
+    num_loops = random.randint(min_loops, max_loops)
+    artifacts = []
+    for i in range(num_loops):
+        selected_assets = random.sample(assets, random.randint(1, len(assets)))
+        ui_components = [generate_ui_component(asset, j) for j, asset in enumerate(selected_assets)]
+        plot_config = {
+            "type": "Bar chart plot",
+            "xAxis": "Story",
+            "yAxis": "Memory used (MiB)",
+            "title": "Telemetry Metrics"
+        }
+        artifacts.append(generate_artifact(config, ui_components, telemetry_metrics, plot_config, i))
+    return artifacts
 // Function to display the welcome message
 void displayWelcomeMessage() {
     std::cout << "Welcome to the Virtual System!" << std::endl;
