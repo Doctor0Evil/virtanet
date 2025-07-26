@@ -3,6 +3,141 @@ import requests
 import json
 from typing import List, Dict, Optional, Any
 from abc import ABC, abstractmethod
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+def generate_artifact(config, ui_components, telemetry_metrics, plot_config, iteration):
+    return f"""
+    <xaiartifact iteration="{iteration}">
+        <infrastructure>
+            <compute>{json.dumps(config['compute'])}</compute>
+            <storage>{json.dumps(config['storage'])}</storage>
+            <networking>{json.dumps(config['networking'])}</networking>
+            <vdi>{json.dumps(config['vdi'])}</vdi>
+        </infrastructure>
+        <ui>
+            {''.join(ui_components)}
+        </ui>
+        <telemetry>
+            {json.dumps(telemetry_metrics)}
+        </telemetry>
+        <plot>
+            {json.dumps(plot_config)}
+        </plot>
+    </xaiartifact>
+    """
+<xaiartifact iteration="1">
+    <infrastructure>
+        <compute>{"vms":[{"type":"ubuntu-20.04","cpu":4,"ram":"16GB"}]}</compute>
+        <storage>{"type":"ssd","size":"1TB"}</storage>
+        <networking>{"type":"virtual_network","bandwidth":"10Gbps"}</networking>
+        <vdi>{"enabled":true,"hypervisor":"KVM","platform":"android"}</vdi>
+    </infrastructure>
+    <ui>
+        <div class="ui-element" id="element-0">
+            <img src="data:image/png;base64,base64_encoded_pixel_art_vm" alt="vm_icon" />
+            <label>VM Icon</label>
+        </div>
+    </ui>
+    <telemetry>
+        [{"name":"java_heap","value":12345678}]
+    </telemetry>
+    <plot>
+        {"type":"Bar chart plot","xAxis":"Story","yAxis":"Memory used (MiB)","title":"Telemetry Metrics"}
+    </plot>
+</xaiartifact>
+def generate_artifacts(config, assets, telemetry_metrics, min_loops=25, max_loops=50):
+    num_loops = random.randint(min_loops, max_loops)
+    artifacts = []
+    for i in range(num_loops):
+        selected_assets = random.sample(assets, random.randint(1, len(assets)))
+        ui_components = [generate_ui_component(asset, j) for j, asset in enumerate(selected_assets)]
+        plot_config = {
+            "type": "Bar chart plot",
+            "xAxis": "Story",
+            "yAxis": "Memory used (MiB)",
+            "title": "Telemetry Metrics"
+        }
+        artifacts.append(generate_artifact(config, ui_components, telemetry_metrics, plot_config, i))
+    return artifacts
+// Function to display the welcome message
+void displayWelcomeMessage() {
+    std::cout << "Welcome to the Virtual System!" << std::endl;
+    std::cout << "Type 'help' to see available commands." << std::endl;
+}
+
+// Function to display help information
+void displayHelp() {
+    std::cout << "Available Commands:" << std::endl;
+    std::cout << "  help - Display this help message." << std::endl;
+    std::cout << "  exit - Exit the virtual system." << std::endl;
+    std::cout << "  list - List all items in the system." << std::endl;
+    std::cout << "  add <item> - Add an item to the system." << std::endl;
+    std::cout << "  remove <item> - Remove an item from the system." << std::endl;
+}
+
+// Function to list all items
+void listItems(const std::vector<std::string>& items) {
+    std::cout << "Items in the system:" << std::endl;
+    for (const auto& item : items) {
+        std::cout << "- " << item << std::endl;
+    }
+}
+
+// Function to add an item
+void addItem(std::vector<std::string>& items, const std::string& item) {
+    items.push_back(item);
+    std::cout << "Item '" << item << "' added to the system." << std::endl;
+}
+
+// Function to remove an item
+void removeItem(std::vector<std::string>& items, const std::string& item) {
+    auto it = std::find(items.begin(), items.end(), item);
+    if (it != items.end()) {
+        items.erase(it);
+        std::cout << "Item '" << item << "' removed from the system." << std::endl;
+    } else {
+        std::cout << "Item '" << item << "' not found in the system." << std::endl;
+    }
+}
+
+int main() {
+    std::vector<std::string> items;
+    std::string input;
+
+    displayWelcomeMessage();
+
+    while (true) {
+        std::cout << "> ";
+        std::getline(std::cin, input);
+
+        if (input == "exit") {
+            break;
+        } else if (input == "help") {
+            displayHelp();
+        } else if (input == "list") {
+            listItems(items);
+        } else if (input.find("add ") == 0) {
+            std::string item = input.substr(4);
+            addItem(items, item);
+        } else if (input.find("remove ") == 0) {
+            std::string item = input.substr(7);
+            removeItem(items, item);
+        } else {
+            std::cout << "Unknown command. Type 'help' for available commands." << std::endl;
+        }
+    }
+
+    std::cout << "Exiting the Virtual System. Goodbye!" << std::endl;
+    return 0;
+}
+g++ -o virtual_system virtual_system.cpp
+./virtual_system
+g++ -o virtual_system virtual_system.cpp
+./virtual_system
+g++ -o virtual_system virtual_system.cpp
+./virtual_system
 
 # Abstract base class for AI platform integration
 class AIPlatform(ABC):
