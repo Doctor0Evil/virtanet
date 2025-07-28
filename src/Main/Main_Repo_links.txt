@@ -6,5 +6,7 @@ https://github.com/Doctor0Evil/Virta-Sys,
 https://github.com/Doctor0Evil?tab=repositories,
 https://github.com/Doctor0Evil,
 https://github.com/Doctor0Evil/kubernetes,
-https://github.com/Doctor0Evil/Cyber.corp-Chat
-https://github.com/Doctor0Evil/Virta-Sys/new/main
+https://github.com/Doctor0Evil/Cyber.corp-Chat,
+https://github.com/Doctor0Evil/Virta-Sys/new/main,
+https://github.com/Doctor0Evil/Virta-Sys/edit/main/src/Main/Main_Repo_links.txt,
+https://github.com/Doctor0Evil/Virta-Sys/new/main,
