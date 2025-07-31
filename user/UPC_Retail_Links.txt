@@ -1,0 +1,2 @@
+'Use' this link for "UPC" barcode lookups for any item;
+"https://upcdatabase.org/search"
