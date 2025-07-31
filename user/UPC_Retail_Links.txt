@@ -1,2 +1,6 @@
-'Use' this link for "UPC" barcode lookups for any item;
-"https://upcdatabase.org/search"
+'Use' the links below for "UPC" barcode lookups for any item;
+"https://upcdatabase.org/search
+https://www.attorneygeneral.gov/wp-content/uploads/2025/01/List-of-UPC-Codes.pdf,
+https://www.barcodelookup.com/,
+https://www.upcitemdb.com/,
+https://upcdatabase.org/"
