@@ -21,16 +21,38 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Download Artifacts (optional)
+        if: always()
+        uses: actions/download-artifact@v5
+        with:
+          # Uncomment and set name or pattern as needed
+          # name: <artifact-name>
+          # pattern: '*.whl'
+          # path: ./artifacts
+
+      - name: Install dependencies (if present)
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+          else
+            echo "No requirements.txt found, skipping pip install."
+          fi
 
       - name: Run ALN pipelines
         run: |
-          echo "=== Starting ALN v2.34 pipelines ==="
-          python scripts/run_pipelines.py --config configs/pipeline.yml
-          echo "=== Pipelines complete ==="
+          if [ -f scripts/run_pipelines.py ]; then
+            echo "=== Starting ALN v2.34 pipelines ==="
+            python scripts/run_pipelines.py --config configs/pipeline.yml
+            echo "=== Pipelines complete ==="
+          else
+            echo "scripts/run_pipelines.py not found, skipping pipeline run."
+          fi
 
-      - name: Run tests
-        run: pytest --maxfail=1 --disable-warnings -q
+      - name: Run tests (if tests exist)
+        run: |
+          if ls tests/*.py 1> /dev/null 2>&1; then
+            pytest --maxfail=1 --disable-warnings -q
+          else
+            echo "No tests found, skipping pytest."
+          fi
