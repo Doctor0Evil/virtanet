@@ -1,0 +1,45 @@
+name: Bit.Hub Scan Failed Jobs Enforcement
+version: 1.0.0
+scope: workflow
+description: >
+  Periodically scans for failed jobs using available Python scripts and emits a
+  compliance report. Supports multiple script variants; stops at first success.
+power:
+  default: standard
+  thresholds:
+    standard: audit_only
+    strict: deny_on_denials
+    paranoid: deny_on_denials_or_warnings
+bindings:
+  report_dir: .bithub/reports
+  policy_dir: .bithub/policy
+inputs:
+  include:
+    - "bithub/scripts/get_failed_jobs*.py"
+policies:
+  modules:
+    - path: .bithub/policy/workflow.rego
+      package: bithub.workflow
+actions:
+  on_warning:
+    - annotate
+    - write_report
+  on_denial:
+    - write_report
+  self_heal: false
+execution:
+  steps:
+    - shell: bash
+      run: |
+        mkdir -p .bithub/reports
+        for script in bithub/scripts/get_failed_jobs.py \
+                      bithub/scripts/get_failed_jobs_alt1.py \
+                      bithub/scripts/get_failed_jobs_alt2.py \
+                      bithub/scripts/get_failed_jobs_stub.py; do
+          if [ -f "$script" ]; then
+            echo "Running $script..."
+            python "$script" > .bithub/reports/failed_jobs.json && break
+          fi
+        done
+notes:
+  - This enforcement is non-blocking in standard mode; in strict/paranoid, policy denials can halt dependent jobs.
