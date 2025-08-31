@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "0 */6 * * *"
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
       - ".github/workflows/**"
 
@@ -39,6 +39,7 @@ jobs:
   validator:
     name: Workflow Validator (Ubuntu)
     needs: [preflight-fix, generator]
+    # Make sure this file exists in your repo; otherwise replace with a local job
     uses: ./.github/workflows/workflow_validator.yml
     with:
       caller: orchestrator-validator
@@ -103,3 +104,24 @@ jobs:
       depth: 1
       bot_name: "github-actions[bot]"
       bot_email: "41898282+github-actions[bot]@users.noreply.github.com"
+
+  preflight-hyperparams:
+    runs-on: ubuntu-latest
+    outputs:
+      yield_percent: ${{ steps.yield.outputs.percent }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate hyper.parameters.json
+        run: jq empty .meta/hyper.parameters.json
+      - id: yield
+        run: |
+          TOKEN=$(jq -r '.bitCoin.tokenPath' .meta/hyper.parameters.json)
+          if [ -f "$TOKEN" ]; then
+            COMPSCORE=$(jq -r '.compscore' "$TOKEN")
+            if [ "$COMPSCORE" -lt 800 ]; then
+              echo "percent=25" >> $GITHUB_OUTPUT
+            fi
+            if [ "$COMPSCORE" -lt 600 ]; then
+              echo "percent=50" >> $GITHUB_OUTPUT
+            fi
+          fi
