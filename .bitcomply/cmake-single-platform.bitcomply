@@ -1,0 +1,42 @@
+name: Bit.Hub Org Megawave — All Pinned Repos
+
+on:
+  workflow_dispatch:
+    inputs:
+      auto_fix:
+        type: boolean
+        default: true
+      workflow_name:
+        type: string
+        default: "Bit.Hub Megawave Compliance"
+
+permissions:
+  contents: read
+
+jobs:
+  fanout:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GitHub CLI
+        run: sudo apt-get update -y && sudo apt-get install -y gh jq
+
+      - name: Dispatch to all pinned repos
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+        run: |
+          scope=".bit/org-scope.json"
+          if [ ! -f "$scope" ]; then
+            echo "::error::No org scope file at $scope"
+            exit 1
+          fi
+
+          jq -r '.repos[]' "$scope" | while read -r repo; do
+            echo "::notice::Dispatching $repo"
+            gh workflow run "${{ inputs.workflow_name }}" \
+              -R "$repo" \
+              -f auto_fix=${{ inputs.auto_fix }} || \
+              echo "::warning::Failed to dispatch to $repo"
+          done
