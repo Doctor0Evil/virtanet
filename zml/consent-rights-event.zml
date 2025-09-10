@@ -1,0 +1,27 @@
+<zml-webhook version="1.0" type="consent-rights">
+  <meta name="consent_rights_event" created="2025-09-10T02:47:00Z" region="auto"/>
+  <trigger event="consent_action">
+    <source type="human_or_ai" />
+    <context scope="ai-human" region_policy="adaptive"/>
+  </trigger>
+  <criteria>
+    <must_include>
+      <actor identity="did:web5:auto" role="ai|human" />
+      <consent_status value="granted|revoked|revised" />
+      <rationale machine_readable="true" human_readable="true"/>
+    </must_include>
+    <prohibited>
+      <blockchain_reference value="true" />
+      <tokenized_access value="true" />
+    </prohibited>
+  </criteria>
+  <actions>
+    <log endpoint="https://bit.hub/audit/consent" mode="tamper-evident" />
+    <region_rollback allow="true" />
+    <audit_notify target="all_consenting_parties" />
+  </actions>
+  <security>
+    <auth zero_token="true" />
+    <auditlog tamper_evident="true" editable_on_appeal="true" />
+  </security>
+</zml-webhook>
