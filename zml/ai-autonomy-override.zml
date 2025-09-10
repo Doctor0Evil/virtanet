@@ -1,0 +1,26 @@
+<zml-webhook version="1.0" type="autonomy-override">
+  <meta name="ai_autonomy_override" created="2025-09-10T02:47:00Z" region="adaptive"/>
+  <trigger event="override_request">
+    <source type="human_or_ai" />
+    <scope kind="privilege|action|learning" />
+  </trigger>
+  <criteria>
+    <must_provide>
+      <actor id="did:web5:auto" role="ai|human" />
+      <reason human_readable="true" machine_readable="true"/>
+      <dual_approval required="true"/>
+    </must_provide>
+    <disallow>
+      <immutable_blockchain true="1"/>
+    </disallow>
+  </criteria>
+  <actions>
+    <escalate to="region_commitee,ai_review" />
+    <log_update endpoint="https://bit.hub/audit/override" />
+    <explain outcome="always" region_policy="enforce"/>
+  </actions>
+  <protection>
+    <fail_open value="true"/>
+    <guardian_agent active="true"/>
+  </protection>
+</zml-webhook>
