@@ -1,0 +1,23 @@
+
+<zml-webhook version="1.0" type="safe-disclosure">
+  <meta name="dynamic_safe_disclosure" created="2025-09-10T02:47:00Z" region="auto"/>
+  <trigger event="data_disclosure">
+    <actor id="did:web5:dynamic" role="ai|human"/>
+    <data_type value="diagnostics|emotion_log|consent_state"/>
+    <consent current="true"/>
+  </trigger>
+  <guard>
+    <allow if="dynamic_consent==granted AND blockchain_used==false"/>
+    <deny if="blockchain_used==true"/>
+  </guard>
+  <actions>
+    <notify endpoint="https://bit.hub/notify/disclosure" />
+    <update_audit region="auto" redaction="allowed" />
+    <feedback to="actor" allow="feedback-loop"/>
+  </actions>
+  <compliance_check>
+    <tokens_involved value="false"/>
+    <editable_on_review value="true"/>
+    <region_sensitive value="true"/>
+  </compliance_check>
+</zml-webhook>
