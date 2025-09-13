@@ -806,4 +806,8 @@ Strict adoption of these protocols, **without exception or override by user/supe
 [4](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f0322e76-7071-4c81-b9d8-bc01f89096f8/9e33e94b-c260-491e-8bd2-3f59f2640c43/gov.links.txt)
 [5](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f0322e76-7071-4c81-b9d8-bc01f89096f8/c5688cdd-ac60-480d-9f90-fcdd1504a45d/copilot.goverment.txt)
 
+\
+#Podcast;
+https://copilot.microsoft.com/shares/podcasts/UrYtNzduq9tmvL8wkcq2o
+
 **End of Release Note**
