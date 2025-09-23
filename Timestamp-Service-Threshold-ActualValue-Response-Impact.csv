@@ -1,0 +1,4 @@
+"Timestamp","Service","Threshold","Actual Value","Response","Impact"
+"2025-09-17 22:17:01","ALN Runtime","cpu_max (85%)","91%","Throttle API","Webhook timeout"
+"2025-09-17 22:19:42","ChatNative86","session_length (6h)","8h","Quarantine","New webhook deployment blocked"
+"2025-09-17 22:20:03","ALN Runtime","sandbox_breach","True","Rollback","Host registry sync error"

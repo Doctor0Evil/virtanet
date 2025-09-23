@@ -1,0 +1,4 @@
+"Root Cause","ChatNative86/ALN Trigger","Bit.Hub Impact","Resolution Step"
+"API/cpu threshold exceeded","Throttle/Rate Limit","Webhook delay/timeout","Scale + throttle reset"
+"Session lifespan overrun","Quarantine","New domain blocked","Quarantine review + audit"
+"Sandbox breach","Rollback/Lockdown","Host service sync failed","Repair + restore"
